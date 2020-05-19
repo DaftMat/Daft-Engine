@@ -5,7 +5,7 @@
 *.slo
 *.lo
 *.o
-*.obj
+#*.obj
 
 # Precompiled Headers
 *.gch
@@ -30,3 +30,24 @@
 *.exe
 *.out
 *.app
+
+#########################
+# Template addition
+#########################
+
+# Building directories
+*build*
+*bin*
+*output*
+
+# Jetbrain's
+.idea/
+
+# QtCreator's
+CMakeLists.txt.user*
+
+#clang format
+.clang-format
+
+#doxygen
+doc/docs*
