@@ -54,7 +54,7 @@ find_package(Eigen3 CONFIG REQUIRED)
 hunter_add_package(Assimp)
 find_package(Assimp CONFIG REQUIRED)
 
-set(EXT_LIBS glfw glm Assimp::assimp Eigen3)
+set(EXT_LIBS glfw glm Assimp::assimp ${EIGEN_LIBRARIES})
 
 ##################################
 #   Executable

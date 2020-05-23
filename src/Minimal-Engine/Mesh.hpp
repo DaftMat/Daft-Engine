@@ -20,13 +20,8 @@ class Mesh
         glm::vec2 texCoords;
     };
 
-    Mesh(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices);
-    ~Mesh();
-
-    Mesh(const Mesh&) = delete;
-    Mesh(Mesh&&) = delete;
-    Mesh &operator=(const Mesh&) = delete;
-    Mesh &operator=(Mesh&&) = delete;
+    Mesh(GLuint vao, GLuint numVertex) : m_vao{vao}, m_numVertex{numVertex} {}
+    ~Mesh() = default;
 
     void prepare() const;
 
@@ -35,7 +30,7 @@ class Mesh
     void unbind() const;
 
   private:
-    GLuint m_vao, m_vbo, m_ebo, m_numVertex;
+    GLuint m_vao, m_numVertex;
 };
 
 #endif // DAFT_GAMEENGINE_MESH_HPP

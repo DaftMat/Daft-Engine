@@ -1,12 +1,15 @@
-#include <Core/OpenGL.hpp>
+#include <Minimal-Engine/Renderer.hpp>
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <Minimal-Engine/ShaderProgram.hpp>
 #include <Minimal-Engine/Mesh.hpp>
+#include <memory>
 
 int width = 1600, height = 900;
 
 void framebuffer_size_callback(GLFWwindow *window, int pwidth, int pheight);
+
+std::unique_ptr<Renderer> renderer {nullptr};
 
 int main() {
     /// window creation and setup.
@@ -22,17 +25,11 @@ int main() {
         glfwTerminate();
     }
     glfwMakeContextCurrent(window);
-
-    /// initializing opengl
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cerr << "Failed to initialize OpenGL." << std::endl;
-        exit(-1);
-    }
-
-    glViewport(0, 0, width, height);
     glfwSetFramebufferSizeCallback( window, framebuffer_size_callback );
 
-    ShaderProgram shader("shaders/color.vert.glsl", "shaders/color.frag.glsl");
+    renderer = std::make_unique<Renderer>(width, height);
+
+    renderer->setShader(new ShaderProgram("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
 
     std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices{ 0, 2, 3, 0, 1, 2 };
@@ -53,27 +50,23 @@ int main() {
     vertex.normal    = { 0.f, 0.f, 1.f };
     vertex.position  = { -0.5f, 0.5f, 0.f };
     vertices.push_back( vertex );
-    Mesh mesh(vertices, indices);
+    renderer->addMesh(vertices, indices);
 
     while(!glfwWindowShouldClose(window)) {
-        glClearColor(0.5f, 0.5f, 0.5f, 1.f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        shader.use();
-        mesh.prepare();
-        mesh.render(GL_TRIANGLES);
-        mesh.unbind();
-        shader.stop();
+        renderer->prepare();
+        renderer->render();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
+    Loader::clean();
+    renderer.reset();
     return 0;
 }
 
 void framebuffer_size_callback(GLFWwindow *window, int pwidth, int pheight) {
     width = pwidth;
     height = pheight;
-    glViewport(0, 0, width, height);
+    renderer->resize(width, height);
 }
