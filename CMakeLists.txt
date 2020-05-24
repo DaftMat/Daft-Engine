@@ -16,84 +16,41 @@ HunterGate(
 #################################
 project(EngineExample) # CHANGE THE PROJECT NAME TO YOURS #
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -pedantic -Wextra -g -O")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -pedantic -Wextra -g -O")
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
-#################################
-#   Sources
-#################################
-file(GLOB_RECURSE sources
-        ${CMAKE_SOURCE_DIR}/src/*.cpp
-        ${CMAKE_SOURCE_DIR}/3rdPartyLibs/OpenGL/src/glad.c)
+# Win32 stuff
+if (MSVC OR MSVC_IDE)
+    # Use November CTP 2013 (constexpr and other non implemented stuff in the 2013 version)
+    if (MSVC_VERSION LESS 1800)
+        message(FATAL_ERROR
+                "This project requires C++11 stuff provided only with "
+                "Microsoft Visual C++ Compiler Nov 2013 CTP (v120_CTP_Nov2013).")
+    endif(MSVC_VERSION LESS 1800)
 
-file(GLOB_RECURSE headers
-        ${CMAKE_SOURCE_DIR}/src/*.h
-        ${CMAKE_SOURCE_DIR}/src/*.hpp
-        ${CMAKE_SOURCE_DIR}/3rdPartyLibs/random/random.hpp)
+    if (MSVC_VERSION EQUAL 1800)
+        #set(CMAKE_GENERATOR_TOOLSET "CTP_Nov2013" CACHE STRING "Platform Toolset" FORCE)
+    endif (MSVC_VERSION EQUAL 1800)
 
-file(GLOB_RECURSE inlines
-        ${CMAKE_SOURCE_DIR}/src/*.inl)
-
-#################################
-#   Dependencies - add what you need, delete what you don't
-#################################
-include_directories(${CMAKE_SOURCE_DIR}/src)
-include_directories(${CMAKE_SOURCE_DIR}/3rdPartyLibs)
-
-hunter_add_package(glfw)
-find_package(glfw3 CONFIG REQUIRED)
-
-hunter_add_package(glm)
-find_package(glm CONFIG REQUIRED)
-
-hunter_add_package(Eigen)
-find_package(Eigen3 CONFIG REQUIRED)
-
-hunter_add_package(Assimp)
-find_package(Assimp CONFIG REQUIRED)
-
-set(EXT_LIBS glfw glm Assimp::assimp ${EIGEN_LIBRARIES})
+    # Copy libs / targets in the correct directories
+    if ("${CMAKE_GENERATOR}" STREQUAL "NMake Makefiles")
+        set(PDB_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+    else()
+        foreach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
+            string(TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG)
+            set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+            set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
+            set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+        endforeach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
+    endif()
+endif(MSVC OR MSVC_IDE)
 
 ##################################
-#   Executable
+#   Build libraries and executables
 ##################################
-add_executable(${PROJECT_NAME} ${sources} ${headers} ${inlines})
-target_link_libraries(${PROJECT_NAME} ${EXT_LIBS})
+set(ENGINE_LIBRARIES)
 
-##################################
-#   Shaders
-##################################
-set(SHADER_DIR ${CMAKE_SOURCE_DIR}/shaders)
-file(GLOB_RECURSE SHADER_SOURCES ${SHADER_DIR}/.*.glsl)
-
-if(WIN32)
-    set(COPY_COMMAND copy_directory)
-else(WIN32)
-    set(COPY_COMMAND create_symlink)
-endif(WIN32)
-
-add_custom_target(
-        ${PROJECT_NAME}_shaders
-        COMMAND ${CMAKE_COMMAND} -E ${COPY_COMMAND} ${SHADER_DIR} ${EXECUTABLE_OUTPUT_PATH}/shaders
-        SOURCES ${SHADER_SOURCES}
-        COMMENT "Create symlink/copy for shaders" VERBATIM
-)
-
-add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_shaders)
-
-###################################
-#   Resources
-###################################
-set(RESOURCE_DIR ${CMAKE_SOURCE_DIR}/resources)
-file(GLOB_RECURSE RESOURCE_FILES ${RESOURCE_DIR}/*)
-
-add_custom_target(
-        ${PROJECT_NAME}_resources
-        COMMAND ${CMAKE_COMMAND} -E ${COPY_COMMAND} ${RESOURCE_DIR} ${EXECUTABLE_OUTPUT_PATH}/resources
-        SOURCES ${RESOURCE_FILES}
-        COMMENT "Create symlink/copy for resources" VERBATIM
-)
-
-add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_resources)
+add_subdirectory(${CMAKE_SOURCE_DIR}/src)
+add_subdirectory(${CMAKE_SOURCE_DIR}/AppExamples)
