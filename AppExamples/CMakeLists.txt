@@ -1,5 +1,7 @@
+#TODO: replace exampleApp with your application name
 set(apptarget exampleApp)
 
+#TODO: load the library you need in addition to your engine
 find_package(glfw3 CONFIG REQUIRED)
 set(EXT_LIBS glfw)
 

@@ -42,7 +42,7 @@ void GLFWExample::draw(double deltatime) {
 
 void GLFWExample::run() {
     while (!GLFWWindow::shouldClose()) {
-        draw(0.0);///TODO: show dt calculation
+        draw(0.0);
         GLFWWindow::finish();
     }
 }
