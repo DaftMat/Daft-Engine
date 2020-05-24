@@ -5,8 +5,8 @@ set(apptarget exampleApp)
 find_package(glfw3 3.3 CONFIG REQUIRED)
 set(EXT_LIBS glfw)
 
-file(GLOB sources ${CMAKE_CURRENT_SOURCE_DIR}/GLFW/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GLFW/*.c)
-file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/GLFW/*.hpp ${CMAKE_CURRENT_SOURCE_DIR}/GLFW/*.h)
+file(GLOB sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
+file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 
 add_executable(${apptarget} ${sources} ${headers})
 

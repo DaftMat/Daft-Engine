@@ -45,4 +45,4 @@ set(ENGINE_LIBRARIES)
 set(ENGINE_API)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/src)
-add_subdirectory(${CMAKE_SOURCE_DIR}/AppExamples)
+add_subdirectory(${CMAKE_SOURCE_DIR}/Applications)
