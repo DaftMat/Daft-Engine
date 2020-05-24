@@ -30,7 +30,9 @@ $ ./<Your_Project_Name>
 
 ### Before anything else
 
-In the `CMakeLists.txt` file, set the `title` to your project's title, then find the `DEPENDENCIES` section and edit them as you'll need in your project. Go in the`src` folder, delete the `Minimal-Engine` and start your own !
+Open the project in an IDE, then find the `TODO` list. Don't pay attention to those in `3rdPartyLibs` and `docs` the others will give you the locations where you can set your own settings. Make sure you don't forget any.
+
+Go in the`src` folder, delete the `Minimal-Engine` and start your own !
 
 Make sure you don't delete the `src/Core` folder, it provides useful include headers.
 
@@ -45,3 +47,5 @@ wherever you want to use OpenGL, and:
 #include <Core/Random.hpp>
 ```
 wherever you want to generate random numbers.
+
+As well, you can inherit from `BaseApplication` and use the engine api you made to build your own windowed abstraction. Follow the guidelines described by `AppExamples`

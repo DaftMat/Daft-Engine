@@ -7,6 +7,8 @@
 GLFWExample::GLFWExample() {
     GLFWWindow::init(1600, 900);
     init(1600, 900);
+    auto &renderer = *m_renderer;
+    GLFWWindow::setFramebufferCallback([&renderer](int width, int height){ renderer.resize(width, height); });
     loadExampleScene();
 }
 

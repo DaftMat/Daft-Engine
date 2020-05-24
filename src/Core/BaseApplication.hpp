@@ -7,6 +7,7 @@
 #include <memory>
 #include <Minimal-Engine/Renderer.hpp>
 
+///TODO: if you changed ENGINE_API macro, make sure you update it here.
 class ENGINE_API BaseApplication {
 public:
     BaseApplication() = default;

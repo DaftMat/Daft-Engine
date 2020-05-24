@@ -1,4 +1,4 @@
-#TODO: put your own engine api name
+#TODO: replace engineApi with your own engine api name
 set(api_target engineApi)
 
 file(GLOB_RECURSE sources ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_SOURCE_DIR}/3rdPartyLibs/OpenGL/src/glad.c)
@@ -28,9 +28,8 @@ target_link_libraries(${api_target} PUBLIC ${EXT_LIBS})
 set_target_properties(${api_target} PROPERTIES LINKER_LANGUAGE CXX)
 set_property(TARGET ${api_target} PROPERTY POSITION_INDEPENDENT_CODE ON)
 
-set(ENGINE_LIBRARIES ${ENGINE_LIBRARIES} engineApi PARENT_SCOPE)
-
-
+set(ENGINE_LIBRARIES ${ENGINE_LIBRARIES} ${api_target} PARENT_SCOPE)
+set(ENGINE_API ${api_target} PARENT_SCOPE)
 
 ##################################
 #   Shaders
