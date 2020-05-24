@@ -2,7 +2,7 @@
 // Created by mathis on 23/05/2020.
 //
 #pragma once
-
+#include <API.hpp>
 
 #include <memory>
 #include <vector>
@@ -10,7 +10,7 @@
 #include "Mesh.hpp"
 #include "Loader.hpp"
 
-class Renderer {
+class ENGINE_API Renderer {
 public:
     Renderer(int width, int height);
 

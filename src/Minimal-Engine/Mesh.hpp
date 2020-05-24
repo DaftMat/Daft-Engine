@@ -4,6 +4,7 @@
 
 #ifndef DAFT_GAMEENGINE_MESH_HPP
 #define DAFT_GAMEENGINE_MESH_HPP
+#include <API.hpp>
 
 #include <Core/OpenGL.hpp>
 #include <vector>
@@ -11,7 +12,7 @@
 /** mesh class.
  * a triangle based mesh that associates geometry and topology
  */
-class Mesh
+class ENGINE_API Mesh
 {
   public:
     struct Vertex {

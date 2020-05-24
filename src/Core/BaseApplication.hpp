@@ -2,11 +2,12 @@
 // Created by mathis on 24/05/2020.
 //
 #pragma once
+#include <API.hpp>
 
 #include <memory>
 #include <Minimal-Engine/Renderer.hpp>
 
-class BaseApplication {
+class ENGINE_API BaseApplication {
 public:
     BaseApplication() = default;
     virtual ~BaseApplication() { m_renderer.reset(); Loader::clean(); }

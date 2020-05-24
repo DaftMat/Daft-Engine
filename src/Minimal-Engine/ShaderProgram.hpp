@@ -4,6 +4,7 @@
 
 #ifndef DAFT_GAMEENGINE_SHADERPROGRAM_HPP
 #define DAFT_GAMEENGINE_SHADERPROGRAM_HPP
+#include <API.hpp>
 
 #include <Core/OpenGL.hpp>
 #include <string>
@@ -11,7 +12,7 @@
 /** Shader object base class.
  *
  */
-class ShaderProgram
+class ENGINE_API ShaderProgram
 {
   public:
     /** Constructor.

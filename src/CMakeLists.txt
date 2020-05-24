@@ -4,6 +4,9 @@ file(GLOB_RECURSE sources ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_SOURCE_DIR}/
 file(GLOB_RECURSE headers ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
 file(GLOB_RECURSE inlines ${CMAKE_CURRENT_SOURCE_DIR}/*.inl)
 
+#############################################################
+# Set up your dependencies here
+#############################################################
 find_package(glm CONFIG REQUIRED)
 
 find_package(Eigen3 CONFIG REQUIRED)
