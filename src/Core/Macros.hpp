@@ -10,8 +10,8 @@
 #define CLANG_COMPILER
 #elif defined(__GNUC__)
 #define GCC_COMPILER
-#elif defined(_MSC_VER)
-#define MSVC_COMPILER
+//#elif defined(_MSC_VER)
+//#define MSVC_COMPILER
 #else
 #error Unsupported compiler.
 #endif
@@ -19,16 +19,16 @@
 /// --------------------------------------------------
 /// Platform identification
 /// --------------------------------------------------
-#if defined(_WIN32) || defined(_WIN64)          /// Windows
+/*#if defined(_WIN32) || defined(_WIN64)          /// Windows
 #define WIN_OS
 #   if defined(_M_X64)
 #   define X64_ARCH
 #   elif defined(_M_IX86)
 #   define X86_ARCH
 #   else
-#   error Unsupported architecture.
+#   error Unsupported Operating System.
 #   endif
-#elif defined(__APPLE__) || defined(__MACH__)   /// Mac OS
+#el*/#if defined(__APPLE__) || defined(__MACH__)   /// Mac OS
 #define MAC_OS
 #   if defined(__i386__)
 #   define X86_ARCH
@@ -53,10 +53,10 @@
 /// --------------------------------------------------
 /// Library link identification + other
 /// --------------------------------------------------
-#if defined(MSVC_COMPILED)
+/*#if defined(MSVC_COMPILED)
 #   define DLL_EXPORT   __declspec(dllexport)
 #   define DLL_IMPORT   __declspec(dllimport)
-#elif defined(GCC_COMPILER) || defined(CLANG_COMPILER)
+#el*/#if defined(GCC_COMPILER) || defined(CLANG_COMPILER)
 #   define DLL_EXPORT
 #   define DLL_IMPORT
 #else
