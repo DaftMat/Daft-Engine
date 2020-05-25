@@ -4,6 +4,7 @@
 #pragma once
 
 #include <Core/BaseApplication.hpp>
+#include "GLFWWindow.hpp"
 
 class GLFWExample : public BaseApplication {
 public:
