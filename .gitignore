@@ -43,6 +43,10 @@
 # Jetbrain's
 .idea/
 
+* Visual Studio's
+.vs/
+CMakeSettings*
+
 # QtCreator's
 CMakeLists.txt.user*
 

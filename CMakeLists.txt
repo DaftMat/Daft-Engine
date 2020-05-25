@@ -2,13 +2,16 @@ cmake_minimum_required(VERSION 3.0)
 cmake_policy(SET CMP0043 NEW)
 cmake_policy(SET CMP0072 NEW)
 
+#if (Win32)
+#set(CMAKE_TOOLCHAIN_FILE "C:/Users/daker/OneDrive/Documents/Downloads/vcpkg/scripts/buildsystems/vcpkg.cmake")
+#endif (Win32)
+
 #################################
 #   Project variables
 #################################
 project(EngineProject) #TODO: Change the project name (not mandatory)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -pedantic -Wextra -g -O")
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
@@ -36,6 +39,8 @@ if (MSVC OR MSVC_IDE)
             set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
         endforeach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
     endif()
+else(MSVC OR MSVC_IDE)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -pedantic -Wextra -g -O")
 endif(MSVC OR MSVC_IDE)
 
 ##################################
