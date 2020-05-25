@@ -18,6 +18,8 @@ public:
 
     static void finish();
 
+    static void terminate() { glfwTerminate(); }
+
 private:
     static GLFWwindow *m_window;
 
