@@ -6,11 +6,11 @@
 
 
 #include "Mesh.hpp"
+#include <spdlog/common.h>
 
 class ENGINE_API Loader {
 public:
     static Mesh loadMesh(const std::vector<Mesh::Vertex> &vertices, const std::vector<GLuint> &indices);
-
     static void clean();
 private:
     static std::vector<GLuint> m_vaos;

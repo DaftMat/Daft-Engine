@@ -10,7 +10,7 @@ void GLFWWindow::init(int width, int height) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    m_window = glfwCreateWindow(width,height, "Hello world !", nullptr, nullptr);
+    m_window = glfwCreateWindow(width,height, "Engine Example Works !", nullptr, nullptr);
     if (m_window == nullptr) {
         std::cerr << "Failed to create GLFW window." << std::endl;
         glfwTerminate();
