@@ -9,7 +9,12 @@ project(EngineProject) #TODO: Change the project name (not mandatory)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
+if(NOT CMAKE_BUILD_TYPE)
+    message(STATUS "No CMAKE_BUILD_TYPE, using default CMAKE_BUILD_TYPE=Release")
+    set(CMAKE_BUILD_TYPE "Release")
+endif()
+
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
 
 # Win32 stuff
 if (MSVC OR MSVC_IDE)
@@ -48,3 +53,5 @@ set(ENGINE_API)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/src)
 add_subdirectory(${CMAKE_SOURCE_DIR}/Applications)
+
+target_compile_definitions(${ENGINE_API} PRIVATE "-D${CMAKE_BUILD_TYPE}")

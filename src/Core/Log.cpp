@@ -1,0 +1,19 @@
+//
+// Created by mathis on 26/05/2020.
+//
+#include "Log.hpp"
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+
+void Log::init(const std::string &engineLoggerName, const std::string &appLoggerName) {
+    spdlog::set_pattern("%^[%T] %n: %v%$");
+    m_engineLogger = spdlog::basic_logger_mt(engineLoggerName, "logs/"+engineLoggerName+".txt");
+    m_appLogger = spdlog::basic_logger_mt(appLoggerName, "logs/"+appLoggerName+".txt");
+    m_engineConsole = spdlog::stdout_color_mt("ENGINE");
+    m_appConsole = spdlog::stdout_color_mt("APP");
+}
+
+std::shared_ptr<spdlog::logger> Log::m_engineLogger{nullptr};
+std::shared_ptr<spdlog::logger> Log::m_appLogger{nullptr};
+std::shared_ptr<spdlog::logger> Log::m_engineConsole{nullptr};
+std::shared_ptr<spdlog::logger> Log::m_appConsole{nullptr};
