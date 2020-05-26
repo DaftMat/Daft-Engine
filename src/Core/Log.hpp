@@ -11,11 +11,11 @@ class ENGINE_API Log {
 public:
     static void init(const std::string &engineLoggerName = "engine_logs", const std::string &appLoggerName = "app_logs");
 
-    static std::shared_ptr<spdlog::logger> engine() { return m_engineLogger; }
-    static std::shared_ptr<spdlog::logger> app() { return m_appLogger; }
+    static auto engine() { return m_engineLogger; }
+    static auto app() { return m_appLogger; }
 
-    static std::shared_ptr<spdlog::logger> engineConsole() { return m_engineConsole; }
-    static std::shared_ptr<spdlog::logger> appConsole() { return m_appConsole; }
+    static auto engineConsole() { return m_engineConsole; }
+    static auto appConsole() { return m_appConsole; }
 
 private:
     static std::shared_ptr<spdlog::logger> m_engineLogger;
