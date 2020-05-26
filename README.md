@@ -15,8 +15,7 @@ $ ./<Your_Project_Name>
 ```
 
 ## List of features:
- - 3rdPartyLibs/cmake *>* dependencies management.
-   - usage of [HunterGate](https://github.com/hunter-packages/gate) for libraries loading.
+ - 3rdPartyLibs *>* dependencies management.
  - doc
    - run `./generate.sh` from /doc/ to generate any documentation.
  - scripts
