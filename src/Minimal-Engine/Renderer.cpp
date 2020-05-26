@@ -2,11 +2,12 @@
 // Created by mathis on 23/05/2020.
 //
 #include <iostream>
+#include <Core/Log.hpp>
 #include "Renderer.hpp"
 
 Renderer::Renderer(int width, int height) : m_width{width}, m_height{height} {
     if (!gladLoadGL()) {
-        std::cerr << "Failed to load OpenGL (glad)." << std::endl;
+        ENGINE_ERROR("Failed to load OpenGL.");
         exit(-1);
     }
 

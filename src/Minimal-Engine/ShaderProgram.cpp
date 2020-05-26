@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <Core/Log.hpp>
 
 ShaderProgram::ShaderProgram( const char* vertexPath, const char* fragmentPath ) {
     std::string vertexCode;
@@ -31,7 +32,7 @@ ShaderProgram::ShaderProgram( const char* vertexPath, const char* fragmentPath )
         fShaderFile.close();
     }
     catch ( std::ifstream::failure& e )
-    { std::cerr << "ERROR:SHADER:FILE_NOT_SUCCESSFULLY_READ" << std::endl; }
+    { ENGINE_ERROR("ERROR:SHADER:FILE_NOT_SUCCESSFULLY_READ"); }
 
     const char* vShaderCode = vertexCode.c_str();
     const char* fShaderCode = fragmentCode.c_str();
@@ -104,7 +105,7 @@ void ShaderProgram::checkCompileError( GLuint shader, const std::string& type ) 
     if ( !success )
     {
         glGetShaderInfoLog( shader, 1024, NULL, infoLog );
-        std::cerr << "ERROR:SHADER_COMPILATION of type : " << type << "\n" << infoLog << std::endl;
+        ENGINE_ERROR("ERROR:SHADER_COMPILATION of type : {0}{1}{2}", type, "\n", infoLog);
     }
 }
 
@@ -115,6 +116,6 @@ void ShaderProgram::checkLinkError( GLuint program ) {
     if ( !success )
     {
         glGetProgramInfoLog( program, 1024, NULL, infoLog );
-        std::cerr << "ERROR:PROGRAM_LINKING\n" << infoLog << std::endl;
+        ENGINE_ERROR("ERROR:PROGRAM_LINKING\n{0}", infoLog);
     }
 }
