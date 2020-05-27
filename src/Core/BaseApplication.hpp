@@ -24,6 +24,8 @@ protected:
     std::unique_ptr<Renderer> m_renderer;
     std::unique_ptr<WindowType> m_window;
 
+    double m_lastTime{0};
+
     void init(int width, int height) {
         m_window = std::make_unique<WindowType>(width, height);
         m_renderer = std::make_unique<Renderer>(width, height);

@@ -23,7 +23,11 @@ target_include_directories(${api_target} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_SOURCE_DIR}/3rdPartyLibs)
 
-target_compile_definitions(${api_target} PRIVATE "-DDYNAMIC_LINK")
+target_compile_definitions(${api_target} PUBLIC "-DDYNAMIC_LINK")
+target_compile_definitions(${api_target} PUBLIC "-D${CMAKE_BUILD_TYPE}")
+if (TRACE)
+target_compile_definitions(${api_target} PUBLIC "-DTRACE")
+endif(TRACE)
 
 target_link_libraries(${api_target} PUBLIC ${EXT_LIBS})
 

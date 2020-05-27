@@ -53,5 +53,3 @@ set(ENGINE_API)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/src)
 add_subdirectory(${CMAKE_SOURCE_DIR}/Applications)
-
-target_compile_definitions(${ENGINE_API} PRIVATE "-D${CMAKE_BUILD_TYPE}")

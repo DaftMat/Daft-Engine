@@ -16,6 +16,13 @@
 #error Unsupported compiler.
 #endif
 
+#if defined(Debug) || defined(DEBUG) || defined(_DEBUG)
+#define DEBUG
+#endif
+#if defined(Release) || defined(RELEASE) || defined(_RELEASE)
+#define RELEASE
+#endif
+
 /// --------------------------------------------------
 /// Platform identification
 /// --------------------------------------------------

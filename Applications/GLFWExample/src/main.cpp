@@ -4,8 +4,6 @@
 
 int main() {
     Log::init();
-    APP_INFO("Logger initialized.");
-    ENGINE_INFO("Logger initialized.");
 
     GLFWExample app;
     app.run();

@@ -1,6 +1,7 @@
 //
 // Created by mathis on 24/05/2020.
 //
+#include <Core/Log.hpp>
 #include "GLFWExample.hpp"
 #include "GLFWWindow.hpp"
 
@@ -9,9 +10,11 @@ GLFWExample::GLFWExample() {
     auto &renderer = *m_renderer;
     GLFWWindow::setFramebufferCallback([&renderer](int width, int height){ renderer.resize(width, height); });
     loadExampleScene();
+    APP_INFO("Application created.");
 }
 
 void GLFWExample::loadExampleScene() {
+    APP_INFO("Loading example scene...");
     m_renderer->setShader(new ShaderProgram("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
 
     std::vector<Mesh::Vertex> vertices;
@@ -34,6 +37,7 @@ void GLFWExample::loadExampleScene() {
     vertex.position  = { -0.5f, 0.5f, 0.f };
     vertices.push_back( vertex );
     m_renderer->addMesh(vertices, indices);
+    APP_INFO("Example scene loaded");
 }
 
 void GLFWExample::draw(double deltatime) {
@@ -42,8 +46,10 @@ void GLFWExample::draw(double deltatime) {
 }
 
 void GLFWExample::run() {
+    APP_INFO("launching application...");
     while (!m_window->shouldClose()) {
         draw(0.0);
         m_window->finish();
     }
+    APP_INFO("application got out of main loop");
 }

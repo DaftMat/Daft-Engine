@@ -1,10 +1,11 @@
 //
 // Created by mathis on 24/05/2020.
 //
-#include <iostream>
+#include <Core/Log.hpp>
 #include "GLFWWindow.hpp"
 
 GLFWWindow::GLFWWindow(int width, int height) {
+    APP_INFO("Creating window...");
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
@@ -12,11 +13,12 @@ GLFWWindow::GLFWWindow(int width, int height) {
 
     m_window = glfwCreateWindow(width,height, "Engine Example Works !", nullptr, nullptr);
     if (m_window == nullptr) {
-        std::cerr << "Failed to create GLFW window." << std::endl;
+        APP_ERROR("Failed to create GLFW window.");
         glfwTerminate();
     }
     glfwMakeContextCurrent(m_window);
     glfwSetFramebufferSizeCallback( m_window, framebuffer_size_callback );
+    APP_INFO("Window created.");
 }
 
 void GLFWWindow::finish() {
@@ -29,4 +31,5 @@ std::function<void(int,int)> GLFWWindow::m_framebufferCallback {[](int,int){}};
 void GLFWWindow::terminate() {
     glfwDestroyWindow(m_window);
     glfwTerminate();
+    APP_INFO("Window closed. Closing application...");
 }
