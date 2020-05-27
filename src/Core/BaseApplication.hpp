@@ -8,15 +8,24 @@
 #include <Minimal-Engine/Renderer.hpp>
 
 ///TODO: if you changed ENGINE_API macro, make sure you update it here.
+template <typename WindowType>
 class ENGINE_API BaseApplication {
 public:
     BaseApplication() = default;
-    ~BaseApplication() { m_renderer.reset(); Loader::clean(); }
+    virtual ~BaseApplication(){
+        Loader::clean();
+        m_renderer.reset();
+        m_window.reset();
+    }
 
     virtual void draw(double deltatime) = 0;
 
 protected:
     std::unique_ptr<Renderer> m_renderer;
+    std::unique_ptr<WindowType> m_window;
 
-    void init(int width, int height) { m_renderer = std::make_unique<Renderer>(width, height); }
+    void init(int width, int height) {
+        m_window = std::make_unique<WindowType>(width, height);
+        m_renderer = std::make_unique<Renderer>(width, height);
+    }
 };

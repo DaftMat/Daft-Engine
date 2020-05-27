@@ -6,10 +6,10 @@
 #include <Core/BaseApplication.hpp>
 #include "GLFWWindow.hpp"
 
-class GLFWExample : public BaseApplication {
+class GLFWExample : public BaseApplication<GLFWWindow> {
 public:
     GLFWExample();
-    ~GLFWExample() { GLFWWindow::terminate(); }///TODO: fix segfault (caused by the fact that BaseApplication is destroyed AFTER GLFWExample).
+    ~GLFWExample() override = default;///TODO: fix segfault (caused by the fact that BaseApplication is destroyed AFTER GLFWExample).
 
     void draw(double deltatime) override;
 

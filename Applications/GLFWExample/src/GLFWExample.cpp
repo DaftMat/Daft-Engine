@@ -5,7 +5,6 @@
 #include "GLFWWindow.hpp"
 
 GLFWExample::GLFWExample() {
-    GLFWWindow::init(1600, 900);
     init(1600, 900);
     auto &renderer = *m_renderer;
     GLFWWindow::setFramebufferCallback([&renderer](int width, int height){ renderer.resize(width, height); });
@@ -43,8 +42,8 @@ void GLFWExample::draw(double deltatime) {
 }
 
 void GLFWExample::run() {
-    while (!GLFWWindow::shouldClose()) {
+    while (!m_window->shouldClose()) {
         draw(0.0);
-        GLFWWindow::finish();
+        m_window->finish();
     }
 }

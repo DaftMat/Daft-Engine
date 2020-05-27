@@ -4,7 +4,7 @@
 #include <iostream>
 #include "GLFWWindow.hpp"
 
-void GLFWWindow::init(int width, int height) {
+GLFWWindow::GLFWWindow(int width, int height) {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
@@ -24,7 +24,6 @@ void GLFWWindow::finish() {
     glfwSwapBuffers(m_window);
 }
 
-GLFWwindow *GLFWWindow::m_window;
 std::function<void(int,int)> GLFWWindow::m_framebufferCallback {[](int,int){}};
 
 void GLFWWindow::terminate() {

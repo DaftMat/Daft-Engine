@@ -9,19 +9,19 @@
 
 class GLFWWindow {
 public:
-    static void init(int width, int height);
+    GLFWWindow(int width, int height);
+    ~GLFWWindow() { terminate(); }
 
-    static bool shouldClose() { return glfwWindowShouldClose(m_window); }
+    bool shouldClose() { return glfwWindowShouldClose(m_window); }
+
+    void finish();
 
     static void setFramebufferCallback(std::function<void(int,int)> framebufferCallback)
     { m_framebufferCallback = std::move(framebufferCallback); }
-
-    static void finish();
-
-    static void terminate();
-
 private:
-    static GLFWwindow *m_window;
+    void terminate();
+
+    GLFWwindow *m_window;
 
     static std::function<void(int,int)> m_framebufferCallback;
 
