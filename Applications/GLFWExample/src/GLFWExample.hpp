@@ -9,7 +9,7 @@
 class GLFWExample : public BaseApplication<GLFWWindow> {
 public:
     GLFWExample();
-    ~GLFWExample() override { APP_INFO("Application closed. Leaving now."); }
+    ~GLFWExample() override { APP_INFO("Application closed. Closing window..."); }
 
     void draw(double deltatime) override;
 

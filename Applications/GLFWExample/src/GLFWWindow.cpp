@@ -31,5 +31,5 @@ std::function<void(int,int)> GLFWWindow::m_framebufferCallback {[](int,int){}};
 void GLFWWindow::terminate() {
     glfwDestroyWindow(m_window);
     glfwTerminate();
-    APP_INFO("Window closed. Closing application...");
+    APP_INFO("Window closed. Leaving now.");
 }
