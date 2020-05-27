@@ -13,6 +13,7 @@
 class ENGINE_API Renderer {
 public:
     Renderer(int width, int height);
+    ~Renderer() { m_shader.reset(); }
 
     void prepare();
 

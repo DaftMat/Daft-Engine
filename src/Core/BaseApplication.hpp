@@ -11,7 +11,7 @@
 class ENGINE_API BaseApplication {
 public:
     BaseApplication() = default;
-    virtual ~BaseApplication() { m_renderer.reset(); Loader::clean(); }
+    ~BaseApplication() { m_renderer.reset(); Loader::clean(); }
 
     virtual void draw(double deltatime) = 0;
 

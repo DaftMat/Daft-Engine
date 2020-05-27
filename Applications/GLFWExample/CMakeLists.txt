@@ -2,7 +2,7 @@
 set(apptarget exampleApp)
 
 #TODO: load the library you need in addition to your engine (Qt, GLFW, ...)
-find_package(glfw3 3.3 CONFIG REQUIRED)
+find_package(glfw3 CONFIG REQUIRED)
 set(EXT_LIBS glfw)
 
 file(GLOB sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)

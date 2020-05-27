@@ -9,7 +9,7 @@
 class GLFWExample : public BaseApplication {
 public:
     GLFWExample();
-    ~GLFWExample() override = default;
+    ~GLFWExample() { GLFWWindow::terminate(); }///TODO: fix segfault (caused by the fact that BaseApplication is destroyed AFTER GLFWExample).
 
     void draw(double deltatime) override;
 
