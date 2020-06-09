@@ -1,5 +1,9 @@
 # Engine-Template
 Template repository for any C++/OpenGL project. Uses GLFW for the context.
+To download this template, make sure you download the submodules as well :
+```txt
+$ git clone --recurse-submodules https://github.com/Stardust-Softwares/Engine-Template.git
+```
 
 ## Compiling & Executing
 To compile with this project configuration, run:
