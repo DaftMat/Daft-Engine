@@ -5,7 +5,7 @@
 #ifndef DAFT_GAMEENGINE_TYPES_HPP
 #define DAFT_GAMEENGINE_TYPES_HPP
 
-#include <GLAD/gl45core/glad/glad.h>
+#include <GLAD/gl45core/glad.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
