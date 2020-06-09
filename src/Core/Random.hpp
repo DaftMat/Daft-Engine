@@ -5,7 +5,7 @@
 #ifndef OPENGLTUTO_RANDOM_HPP
 #define OPENGLTUTO_RANDOM_HPP
 
-#include <random/random.hpp>
+#include <random/include/effolkronium/random.hpp>
 
 using Random = effolkronium::random_static;
 

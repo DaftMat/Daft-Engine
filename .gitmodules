@@ -1,3 +1,9 @@
 [submodule "3rdPartyLibs/GLAD"]
 	path = 3rdPartyLibs/GLAD
 	url = https://github.com/Stardust-Softwares/GLAD-Includes.git
+[submodule "3rdPartyLibs/random"]
+	path = 3rdPartyLibs/random
+	url = https://github.com/effolkronium/random.git
+[submodule "3rdPartyLibs/stb"]
+	path = 3rdPartyLibs/stb
+	url = https://github.com/nothings/stb.git

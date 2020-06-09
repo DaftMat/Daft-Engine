@@ -1,7 +1,7 @@
 #TODO: replace engineApi with your own engine api name
 set(api_target engineApi)
 
-file(GLOB_RECURSE sources ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_SOURCE_DIR}/3rdPartyLibs/OpenGL/src/glad.c)
+file(GLOB_RECURSE sources ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/gl45core/glad/glad.c)
 file(GLOB_RECURSE headers ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
 file(GLOB_RECURSE inlines ${CMAKE_CURRENT_SOURCE_DIR}/*.inl)
 
