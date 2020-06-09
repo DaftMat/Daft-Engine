@@ -1,0 +1,3 @@
+[submodule "3rdPartyLibs/GLAD"]
+	path = 3rdPartyLibs/GLAD
+	url = https://github.com/Stardust-Softwares/GLAD-Includes.git
