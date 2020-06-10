@@ -9,10 +9,19 @@
 #include "Mesh.hpp"
 #include "ShaderProgram.hpp"
 
-class ENGINE_API Renderer {
+class ENGINE_API Renderer : public NonCopyable {
    public:
     Renderer(int width, int height);
+
     ~Renderer() { m_shader.reset(); }
+
+    Renderer(Renderer &&other) noexcept
+        : m_width{other.m_width},
+          m_height{other.m_height},
+          m_shader{std::move(other.m_shader)},
+          m_meshes{std::move(other.m_meshes)} {}
+
+    Renderer &operator=(Renderer &&other) noexcept;
 
     void prepare();
 
@@ -27,6 +36,7 @@ class ENGINE_API Renderer {
     void setShader(ShaderProgram *shaderProgram) { m_shader.reset(shaderProgram); }
 
    private:
+    static bool GLinitialized;
     int m_width, m_height;
 
     std::unique_ptr<ShaderProgram> m_shader{nullptr};

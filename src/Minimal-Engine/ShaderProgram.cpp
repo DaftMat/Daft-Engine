@@ -7,7 +7,6 @@
 #include <Core/Log.hpp>
 #include <fstream>
 #include <iostream>
-#include <sstream>
 
 ShaderProgram::ShaderProgram(const char *vertexPath, const char *fragmentPath) {
     std::string vertexCode;

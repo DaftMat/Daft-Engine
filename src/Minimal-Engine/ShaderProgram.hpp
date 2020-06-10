@@ -1,9 +1,8 @@
 //
 // Created by mathis on 09/05/2020.
 //
+#pragma once
 
-#ifndef DAFT_GAMEENGINE_SHADERPROGRAM_HPP
-#define DAFT_GAMEENGINE_SHADERPROGRAM_HPP
 #include <API.hpp>
 #include <Core/OpenGL.hpp>
 #include <string>
@@ -11,94 +10,109 @@
 /** Shader object base class.
  *
  */
-class ENGINE_API ShaderProgram {
+class ENGINE_API ShaderProgram : public ProjName::Core::NonCopyable {
    public:
-    /** Constructor.
-     *
+    /**
+     * Constructor.
      * @param vertexPath - file path of the vertex shader.
      * @param fragmentPath - file path of the fragment shader.
      */
     ShaderProgram(const char *vertexPath, const char *fragmentPath);
 
-    /** Destructor.
+    /**
+     * Destructor.
      * calls glDeleteProgram.
      */
     ~ShaderProgram() { glDeleteProgram(m_id); }
 
-    /** Activates the shaders.
+    /**
+     * Move constructor.
+     * @param other - Shader to be moved into this.
+     */
+    ShaderProgram(ShaderProgram &&other) = default;
+
+    /**
+     * Mose assignment operator.
+     * @param other - Shader to be moved into this.
+     * @return this shader after the other is moved.
+     */
+    ShaderProgram &operator=(ShaderProgram &&other) = default;
+
+    /**
+     * Activates the shaders.
      * call OpenGL's glUseShader().
      */
     void use() const { glUseProgram(m_id); }
 
-    /** Desactivates the shaders.
-     *
+    /**
+     * Desactivates the shaders.
      */
     void stop() const { glUseProgram(0); }
 
-    /** ID getter.
-     *
-     * @return shader program's OpenGL's ID
+    /**
+     * ID getter.
+     * @return shader program's OpenGL's ID.
      */
-    GLuint id() const { return m_id; }
+    [[nodiscard]] GLuint id() const { return m_id; }
 
-    /** Boolean uniform setter.
-     *
+    /**
+     * Boolean uniform setter.
      * @param name - name of the uniform variable.
      * @param value - boolean value to assign.
      */
     void setBool(const std::string &name, bool value) const;
 
-    /** Integer uniform setter.
-     *
+    /**
+     * Integer uniform setter.
      * @param name - name of the uniform variable.
      * @param value - integer value to assign.
      */
     void setInt(const std::string &name, int value) const;
 
-    /** Float uniform setter.
-     *
+    /**
+     * Float uniform setter.
      * @param name - name of the uniform variable.
      * @param value - float value to assign.
      */
     void setFloat(const std::string &name, float value) const;
 
-    /** Vector2 uniform setter.
-     *
+    /**
+     * 2D Vector uniform setter.
      * @param name - name of the uniform variable.
      * @param value - vector2 value to assign.
      */
     void setVec2(const std::string &name, const glm::vec2 &value) const;
 
-    /** Vector3 uniform setter.
-     *
+    /**
+     * 3D Vector uniform setter.
      * @param name - name of the uniform variable.
      * @param value - vector3 value to assign.
      */
     void setVec3(const std::string &name, const glm::vec3 &value) const;
 
-    /** Vector4 uniform setter.
-     *
+    /**
+     * 4D Vector uniform setter.
      * @param name - name of the uniform variable.
      * @param value - vector4 to assign.
      */
     void setVec4(const std::string &name, const glm::vec4 &value) const;
 
-    /** Matrix2 uniform setter.
-     *
+    /**
+     * 2D Matrix uniform setter.
      * @param name - name of the uniform variable.
      * @param value - matrix2 to assign.
      */
     void setMat2(const std::string &name, const glm::mat2 &value) const;
 
-    /** Matrix3 uniform setter.
-     *
+    /**
+     * 3D Matrix uniform setter.
      * @param name - name of the uniform variable.
      * @param value - matrix3 to assign.
      */
     void setMat3(const std::string &name, const glm::mat3 &value) const;
 
-    /** Matrix4 uniform setter.
-     *
+    /**
+     * 4D Matrix uniform setter.
      * @param name - name of the uniform variable.
      * @param value - matrix4 to assign.
      */
@@ -110,5 +124,3 @@ class ENGINE_API ShaderProgram {
 
     GLuint m_id;
 };
-
-#endif  // DAFT_GAMEENGINE_SHADERPROGRAM_HPP

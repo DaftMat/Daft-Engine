@@ -6,10 +6,20 @@
 #include <Core/Log.hpp>
 #include <iostream>
 
+Renderer &Renderer::operator=(Renderer &&other) noexcept {
+    m_width = other.m_width;
+    m_height = other.m_height;
+    m_shader = std::move(other.m_shader);
+    m_meshes = std::move(other.m_meshes);
+}
+
 Renderer::Renderer(int width, int height) : m_width{width}, m_height{height} {
-    if (!gladLoadGL()) {
-        ENGINE_ERROR("Failed to load OpenGL.");
-        exit(-1);
+    if (!GLinitialized) {
+        if (!gladLoadGL()) {
+            ENGINE_ERROR("Failed to load OpenGL.");
+            exit(-1);
+        }
+        GLinitialized = true;
     }
 
     glViewport(0, 0, m_width, m_height);
@@ -38,3 +48,5 @@ void Renderer::resize(int width, int height) {
     m_height = height;
     glViewport(0, 0, m_width, m_height);
 }
+
+bool Renderer::GLinitialized{false};
