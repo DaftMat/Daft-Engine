@@ -3,39 +3,32 @@
 //
 #pragma once
 #include <API.hpp>
-
-#include "Mesh.hpp"
-#include "ShaderProgram.hpp"
 #include <memory>
 #include <vector>
 
-class ENGINE_API Renderer
-{
-public:
-  Renderer (int width, int height);
-  ~Renderer () { m_shader.reset (); }
+#include "Mesh.hpp"
+#include "ShaderProgram.hpp"
 
-  void prepare ();
+class ENGINE_API Renderer {
+   public:
+    Renderer(int width, int height);
+    ~Renderer() { m_shader.reset(); }
 
-  void render ();
+    void prepare();
 
-  void resize (int width, int height);
+    void render();
 
-  void
-  addMesh (std::vector<Mesh::Vertex> vertices, std::vector<GLuint> indices)
-  {
-    m_meshes.emplace_back (std::move (vertices), std::move (indices));
-  }
+    void resize(int width, int height);
 
-  void
-  setShader (ShaderProgram *shaderProgram)
-  {
-    m_shader.reset (shaderProgram);
-  }
+    void addMesh(std::vector<Mesh::Vertex> vertices, std::vector<GLuint> indices) {
+        m_meshes.emplace_back(std::move(vertices), std::move(indices));
+    }
 
-private:
-  int m_width, m_height;
+    void setShader(ShaderProgram *shaderProgram) { m_shader.reset(shaderProgram); }
 
-  std::unique_ptr<ShaderProgram> m_shader{ nullptr };
-  std::vector<Mesh> m_meshes;
+   private:
+    int m_width, m_height;
+
+    std::unique_ptr<ShaderProgram> m_shader{nullptr};
+    std::vector<Mesh> m_meshes;
 };

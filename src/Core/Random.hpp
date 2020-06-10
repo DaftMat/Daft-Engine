@@ -5,7 +5,6 @@
 
 #include <random/include/effolkronium/random.hpp>
 
-namespace ProjName::Core
-{
+namespace ProjName::Core {
 using Random = effolkronium::random_static;
-} // namespace ProjName::Core
+}  // namespace ProjName::Core
