@@ -11,6 +11,7 @@ Renderer &Renderer::operator=(Renderer &&other) noexcept {
     m_height = other.m_height;
     m_shader = std::move(other.m_shader);
     m_meshes = std::move(other.m_meshes);
+    return *this;
 }
 
 Renderer::Renderer(int width, int height) : m_width{width}, m_height{height} {

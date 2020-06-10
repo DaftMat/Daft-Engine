@@ -4,6 +4,7 @@
 #pragma once
 
 #include <API.hpp>
+#include <Core/NonCopyable.hpp>
 #include <Core/OpenGL.hpp>
 #include <string>
 
