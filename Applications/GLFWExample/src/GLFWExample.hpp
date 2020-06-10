@@ -4,10 +4,12 @@
 #pragma once
 
 #include <Core/BaseApplication.hpp>
+#include <Core/Log.hpp>
+
 #include "GLFWWindow.hpp"
 
 class GLFWExample : public ProjName::Core::BaseApplication<GLFWWindow> {
-public:
+   public:
     GLFWExample();
     ~GLFWExample() override { APP_INFO("Application closed. Closing window..."); }
 
@@ -15,6 +17,6 @@ public:
 
     void run();
 
-private:
+   private:
     void loadExampleScene();
 };
