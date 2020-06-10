@@ -9,11 +9,10 @@
 #include <Core/OpenGL.hpp>
 #include <vector>
 
-using ProjName::Core::NonCopyable;
 /** mesh class.
  * a triangle based mesh that associates geometry and topology
  */
-class ENGINE_API Mesh : public NonCopyable {
+class ENGINE_API Mesh : public ProjName::Core::NonCopyable {
    public:
     /**
      * Intern structure of a vertex.

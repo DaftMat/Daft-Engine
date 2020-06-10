@@ -9,7 +9,7 @@
 #include "Mesh.hpp"
 #include "ShaderProgram.hpp"
 
-class ENGINE_API Renderer : public NonCopyable {
+class ENGINE_API Renderer : public ProjName::Core::NonCopyable {
    public:
     Renderer(int width, int height);
 
