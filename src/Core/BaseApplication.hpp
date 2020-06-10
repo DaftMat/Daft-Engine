@@ -6,20 +6,35 @@
 
 #include <memory>
 #include <Minimal-Engine/Renderer.hpp>
+#include <Core/NonCopyable.hpp>
 
 namespace ProjName::Core {
 
+    /**
+     * This class is a base class for any application abstraction of the engine
+     * @tparam WindowType - type of window to to create - see the examples GLFWExample and GLFWWindow
+     */
     template<typename WindowType>
-    class ENGINE_API BaseApplication {
+    class ENGINE_API BaseApplication : public NonCopyable {
     public:
+        /**
+         * Default constructor.
+         */
         BaseApplication() = default;
 
+        /**
+         * Virtual destructor.
+         */
         virtual ~BaseApplication() {
             Loader::clean();
             m_renderer.reset();
             m_window.reset();
         }
 
+        /**
+         * draw method - pure virtual
+         * @param deltatime - time elapsed since last frame.
+         */
         virtual void draw(double deltatime) = 0;
 
     protected:
