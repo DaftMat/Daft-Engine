@@ -36,7 +36,7 @@ class ENGINE_API NonCopyable {
     NonCopyable(const NonCopyable &) noexcept = delete;
 
     ///\exclude
-    void operator=(const NonCopyable &) noexcept = delete;
+    NonCopyable &operator=(const NonCopyable &) noexcept = delete;
 };
 
 }  // namespace ProjName::Core
