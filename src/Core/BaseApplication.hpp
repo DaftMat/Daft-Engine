@@ -26,7 +26,6 @@ namespace ProjName::Core {
          * Virtual destructor.
          */
         virtual ~BaseApplication() {
-            Loader::clean();
             m_renderer.reset();
             m_window.reset();
         }

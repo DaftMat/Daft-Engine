@@ -14,7 +14,7 @@ namespace ProjName::Core {
         /**
          * Constructor.
          */
-        NonCopyable() noexcept = default;
+        constexpr NonCopyable() noexcept = default;
 
         /**
          * Destructor.
@@ -36,7 +36,7 @@ namespace ProjName::Core {
         NonCopyable(const NonCopyable &) noexcept = delete;
 
         ///\exclude
-        NonCopyable &operator=(const NonCopyable &) noexcept = delete;
+        void operator=(const NonCopyable &) noexcept = delete;
     };
 
 } // namespace ProjName::Core

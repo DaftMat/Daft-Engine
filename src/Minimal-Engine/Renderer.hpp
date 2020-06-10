@@ -8,7 +8,6 @@
 #include <vector>
 #include "ShaderProgram.hpp"
 #include "Mesh.hpp"
-#include "Loader.hpp"
 
 class ENGINE_API Renderer {
 public:
@@ -21,8 +20,8 @@ public:
 
     void resize(int width, int height);
 
-    void addMesh(const std::vector<Mesh::Vertex> &vertices, const std::vector<GLuint> &indices)
-    { m_meshes.emplace_back(Loader::loadMesh(vertices, indices)); }
+    void addMesh(std::vector<Mesh::Vertex> vertices, std::vector<GLuint> indices)
+    { m_meshes.emplace_back(std::move(vertices), std::move(indices)); }
 
     void setShader(ShaderProgram *shaderProgram) {m_shader.reset(shaderProgram);}
 

@@ -3,7 +3,7 @@
 #include "GLFWExample.hpp"
 
 int main() {
-    Log::init();
+    ProjName::Core::Log::init();
 
     GLFWExample app;
     app.run();
