@@ -5,6 +5,4 @@
 
 #include <GLAD/gl45core/glad.h>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <Core/MathUtils/Adapters.hpp>
