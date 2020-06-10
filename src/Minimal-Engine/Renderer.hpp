@@ -11,25 +11,31 @@
 
 class ENGINE_API Renderer
 {
-  public:
-    Renderer( int width, int height );
-    ~Renderer() { m_shader.reset(); }
+public:
+  Renderer (int width, int height);
+  ~Renderer () { m_shader.reset (); }
 
-    void prepare();
+  void prepare ();
 
-    void render();
+  void render ();
 
-    void resize( int width, int height );
+  void resize (int width, int height);
 
-    void addMesh( std::vector<Mesh::Vertex> vertices, std::vector<GLuint> indices ) {
-        m_meshes.emplace_back( std::move( vertices ), std::move( indices ) );
-    }
+  void
+  addMesh (std::vector<Mesh::Vertex> vertices, std::vector<GLuint> indices)
+  {
+    m_meshes.emplace_back (std::move (vertices), std::move (indices));
+  }
 
-    void setShader( ShaderProgram* shaderProgram ) { m_shader.reset( shaderProgram ); }
+  void
+  setShader (ShaderProgram *shaderProgram)
+  {
+    m_shader.reset (shaderProgram);
+  }
 
-  private:
-    int m_width, m_height;
+private:
+  int m_width, m_height;
 
-    std::unique_ptr<ShaderProgram> m_shader { nullptr };
-    std::vector<Mesh> m_meshes;
+  std::unique_ptr<ShaderProgram> m_shader{ nullptr };
+  std::vector<Mesh> m_meshes;
 };
