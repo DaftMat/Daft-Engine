@@ -10,6 +10,7 @@ namespace ProjName::Core {
 *
 */
     class ENGINE_API NonCopyable {
+    public:
         /**
          * Constructor.
          */
