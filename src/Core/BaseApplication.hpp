@@ -7,27 +7,31 @@
 #include <memory>
 #include <Minimal-Engine/Renderer.hpp>
 
-///TODO: if you changed ENGINE_API macro, make sure you update it here.
-template <typename WindowType>
-class ENGINE_API BaseApplication {
-public:
-    BaseApplication() = default;
-    virtual ~BaseApplication(){
-        Loader::clean();
-        m_renderer.reset();
-        m_window.reset();
-    }
+namespace ProjName::Core {
 
-    virtual void draw(double deltatime) = 0;
+    template<typename WindowType>
+    class ENGINE_API BaseApplication {
+    public:
+        BaseApplication() = default;
 
-protected:
-    std::unique_ptr<Renderer> m_renderer;
-    std::unique_ptr<WindowType> m_window;
+        virtual ~BaseApplication() {
+            Loader::clean();
+            m_renderer.reset();
+            m_window.reset();
+        }
 
-    double m_lastTime{0};
+        virtual void draw(double deltatime) = 0;
 
-    void init(int width, int height) {
-        m_window = std::make_unique<WindowType>(width, height);
-        m_renderer = std::make_unique<Renderer>(width, height);
-    }
-};
+    protected:
+        std::unique_ptr<Renderer> m_renderer;
+        std::unique_ptr<WindowType> m_window;
+
+        double m_lastTime{0};
+
+        void init(int width, int height) {
+            m_window = std::make_unique<WindowType>(width, height);
+            m_renderer = std::make_unique<Renderer>(width, height);
+        }
+    };
+
+}// namespace ProjName::Core

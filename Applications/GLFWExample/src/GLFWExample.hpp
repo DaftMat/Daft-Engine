@@ -6,7 +6,7 @@
 #include <Core/BaseApplication.hpp>
 #include "GLFWWindow.hpp"
 
-class GLFWExample : public BaseApplication<GLFWWindow> {
+class GLFWExample : public ProjName::Core::BaseApplication<GLFWWindow> {
 public:
     GLFWExample();
     ~GLFWExample() override { APP_INFO("Application closed. Closing window..."); }
