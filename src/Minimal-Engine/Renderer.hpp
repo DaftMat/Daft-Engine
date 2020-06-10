@@ -4,30 +4,32 @@
 #pragma once
 #include <API.hpp>
 
+#include "Mesh.hpp"
+#include "ShaderProgram.hpp"
 #include <memory>
 #include <vector>
-#include "ShaderProgram.hpp"
-#include "Mesh.hpp"
 
-class ENGINE_API Renderer {
-public:
-    Renderer(int width, int height);
+class ENGINE_API Renderer
+{
+  public:
+    Renderer( int width, int height );
     ~Renderer() { m_shader.reset(); }
 
     void prepare();
 
     void render();
 
-    void resize(int width, int height);
+    void resize( int width, int height );
 
-    void addMesh(std::vector<Mesh::Vertex> vertices, std::vector<GLuint> indices)
-    { m_meshes.emplace_back(std::move(vertices), std::move(indices)); }
+    void addMesh( std::vector<Mesh::Vertex> vertices, std::vector<GLuint> indices ) {
+        m_meshes.emplace_back( std::move( vertices ), std::move( indices ) );
+    }
 
-    void setShader(ShaderProgram *shaderProgram) {m_shader.reset(shaderProgram);}
+    void setShader( ShaderProgram* shaderProgram ) { m_shader.reset( shaderProgram ); }
 
-private:
+  private:
     int m_width, m_height;
 
-    std::unique_ptr<ShaderProgram> m_shader{nullptr};
+    std::unique_ptr<ShaderProgram> m_shader { nullptr };
     std::vector<Mesh> m_meshes;
 };

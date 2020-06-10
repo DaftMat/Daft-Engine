@@ -6,9 +6,9 @@
 #define DAFT_GAMEENGINE_MESH_HPP
 #include <API.hpp>
 
+#include <Core/NonCopyable.hpp>
 #include <Core/OpenGL.hpp>
 #include <vector>
-#include <Core/NonCopyable.hpp>
 
 using ProjName::Core::NonCopyable;
 /** mesh class.
@@ -21,23 +21,23 @@ class ENGINE_API Mesh : public NonCopyable
      * Intern structure of a vertex.
      */
     struct Vertex {
-        glm::vec3 position;     ///< World position of the vertex.
-        glm::vec3 normal;       ///< Normal of the surface on the vertex.
-        glm::vec2 texCoords;    ///< Texture coordinates on the vertex.
+        glm::vec3 position;  ///< World position of the vertex.
+        glm::vec3 normal;    ///< Normal of the surface on the vertex.
+        glm::vec2 texCoords; ///< Texture coordinates on the vertex.
     };
 
     /**
      * Default constructor.
      * Creates an non-existing mesh.
      */
-    Mesh() noexcept : m_vao {0}, m_vbo {0}, m_ebo {0}, m_numVertex{0} {}
+    Mesh() noexcept : m_vao { 0 }, m_vbo { 0 }, m_ebo { 0 }, m_numVertex { 0 } {}
 
     /**
      * standard constructor.
      * @param vertices - geometry of the mesh.
      * @param indices - topology of the mesh.
      */
-    Mesh(std::vector<Mesh::Vertex> vertices, std::vector<GLuint> indices) noexcept;
+    Mesh( std::vector<Mesh::Vertex> vertices, std::vector<GLuint> indices ) noexcept;
 
     /**
      * destructor.
@@ -49,14 +49,14 @@ class ENGINE_API Mesh : public NonCopyable
      * Move constructor.
      * @param other - mesh to move into this mesh.
      */
-    Mesh(Mesh &&other) noexcept = default;
+    Mesh( Mesh&& other ) noexcept = default;
 
     /**
      * Move assignment operator.
      * @param other - mesh to move into this mesh.
      * @return this mesh after it was assigned to the other.
      */
-    Mesh &operator=(Mesh &&other) noexcept = default;
+    Mesh& operator=( Mesh&& other ) noexcept = default;
 
     /**
      * Prepares the mesh to be rendered.

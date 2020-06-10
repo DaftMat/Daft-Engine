@@ -2,7 +2,7 @@
 // Created by mathis on 24/05/2020.
 //
 #pragma once
-
+// clang-format off
 /// --------------------------------------------------
 /// Compiler identification
 /// --------------------------------------------------
@@ -69,3 +69,4 @@
 #else
 #   error Unsupported platform.
 #endif
+    // clang-format on

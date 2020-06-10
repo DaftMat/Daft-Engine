@@ -3,10 +3,10 @@
 //
 
 #include "ShaderProgram.hpp"
+#include <Core/Log.hpp>
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <Core/Log.hpp>
 
 ShaderProgram::ShaderProgram( const char* vertexPath, const char* fragmentPath ) {
     std::string vertexCode;
@@ -32,7 +32,7 @@ ShaderProgram::ShaderProgram( const char* vertexPath, const char* fragmentPath )
         fShaderFile.close();
     }
     catch ( std::ifstream::failure& e )
-    { ENGINE_ERROR("ERROR:SHADER:FILE_NOT_SUCCESSFULLY_READ"); }
+    { ENGINE_ERROR( "ERROR:SHADER:FILE_NOT_SUCCESSFULLY_READ" ); }
 
     const char* vShaderCode = vertexCode.c_str();
     const char* fShaderCode = fragmentCode.c_str();
@@ -84,18 +84,15 @@ void ShaderProgram::setVec4( const std::string& name, const glm::vec4& value ) c
 }
 
 void ShaderProgram::setMat2( const std::string& name, const glm::mat2& value ) const {
-    glUniformMatrix2fv(
-        glGetUniformLocation( m_id, name.c_str() ), 1, GL_FALSE, glm::value_ptr( value ) );
+    glUniformMatrix2fv( glGetUniformLocation( m_id, name.c_str() ), 1, GL_FALSE, glm::value_ptr( value ) );
 }
 
 void ShaderProgram::setMat3( const std::string& name, const glm::mat3& value ) const {
-    glUniformMatrix3fv(
-        glGetUniformLocation( m_id, name.c_str() ), 1, GL_FALSE, glm::value_ptr( value ) );
+    glUniformMatrix3fv( glGetUniformLocation( m_id, name.c_str() ), 1, GL_FALSE, glm::value_ptr( value ) );
 }
 
 void ShaderProgram::setMat4( const std::string& name, const glm::mat4& value ) const {
-    glUniformMatrix4fv(
-        glGetUniformLocation( m_id, name.c_str() ), 1, GL_FALSE, glm::value_ptr( value ) );
+    glUniformMatrix4fv( glGetUniformLocation( m_id, name.c_str() ), 1, GL_FALSE, glm::value_ptr( value ) );
 }
 
 void ShaderProgram::checkCompileError( GLuint shader, const std::string& type ) {
@@ -105,7 +102,7 @@ void ShaderProgram::checkCompileError( GLuint shader, const std::string& type ) 
     if ( !success )
     {
         glGetShaderInfoLog( shader, 1024, NULL, infoLog );
-        ENGINE_ERROR("ERROR:SHADER_COMPILATION of type : {0}{1}{2}", type, "\n", infoLog);
+        ENGINE_ERROR( "ERROR:SHADER_COMPILATION of type : {0}{1}{2}", type, "\n", infoLog );
     }
 }
 
@@ -116,6 +113,6 @@ void ShaderProgram::checkLinkError( GLuint program ) {
     if ( !success )
     {
         glGetProgramInfoLog( program, 1024, NULL, infoLog );
-        ENGINE_ERROR("ERROR:PROGRAM_LINKING\n{0}", infoLog);
+        ENGINE_ERROR( "ERROR:PROGRAM_LINKING\n{0}", infoLog );
     }
 }
