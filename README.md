@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/Stardust-Softwares/Engine-Template.svg?branch=master)](https://travis-ci.com/Stardust-Softwares/Engine-Template)
+
 # Engine-Template
 Template repository for any C++/OpenGL project. Uses GLFW for the context.
 To download this template, make sure you download the submodules as well :
