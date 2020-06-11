@@ -15,6 +15,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # Win32 stuff
 if (MSVC OR MSVC_IDE)
@@ -51,5 +52,13 @@ endif(MSVC OR MSVC_IDE)
 set(ENGINE_LIBRARIES)
 set(ENGINE_API)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/src)
-add_subdirectory(${CMAKE_SOURCE_DIR}/Applications)
+set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
+set(APP_DIR ${CMAKE_SOURCE_DIR}/Applications)
+set(TEST_DIR ${CMAKE_SOURCE_DIR}/tests)
+
+add_subdirectory(${SOURCE_DIR})
+add_subdirectory(${APP_DIR})
+
+include(CTest)
+include(ConfigTests)
+add_subdirectory(${TEST_DIR} EXCLUDE_FROM_ALL)
