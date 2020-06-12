@@ -66,6 +66,7 @@ jobs:
         - BUILD_DOC=Off
         - MATRIX_EVAL=""
       os: linux
+      dist: bionic
       addons: &clang50
         apt:
           sources:
@@ -79,6 +80,7 @@ jobs:
         - BUILD_DOC=Off
         - MATRIX_EVAL=""
       os: linux
+      dist: bionic
       addons: &gcc7
         apt:
           sources:
