@@ -10,11 +10,11 @@ find_package(glm CONFIG REQUIRED)
 
 find_package(Eigen3 CONFIG REQUIRED)
 
-find_package(Assimp CONFIG REQUIRED)
+#find_package(Assimp CONFIG REQUIRED)
 
 find_package(spdlog CONFIG REQUIRED)
 
-set(EXT_LIBS ${GLM_LIBRARIES} ${ASSIMP_LIBRARIES} ${EIGEN_LIBRARIES} ${SPDLOG_LIBRARIES})
+set(EXT_LIBS ${GLM_LIBRARIES} ${EIGEN_LIBRARIES} ${SPDLOG_LIBRARIES}) #${ASSIMP_LIBRARIES} )
 ###################################################################
 
 add_library(${api_target} SHARED ${sources} ${headers} ${inlines})

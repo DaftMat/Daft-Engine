@@ -18,6 +18,26 @@ before_install:
   - if [ -n "$CLANG_VERSION" ]; then export CXX="clang++-${CLANG_VERSION}" CC="clang-${CLANG_VERSION}"; fi
   - $CXX --version
   - cmake --version
+  # install glm
+  - git clone --recurse-submodules https://github.com/g-truc/glm.git
+  - cd glm && mkdir -p build && cd build
+  - cmake .. && make -j16 install
+  - cd ../..
+  # install eigen
+  - git clone --recurse-submodules https://gitlab.com/libeigen/eigen.git
+  - cd eigen && mkdir -p build && cd build
+  - cmake .. && make -j16 install
+  - cd ../..
+  # install spdlog
+  - git clone --recurse-submodules https://github.com/gabime/spdlog.git
+  - cd spdlog && mkdir -p build && cd build
+  - cmake .. && make -j16 install
+  - cd ../..
+  # install glfw3
+  - git clone --recurse-submodules https://github.com/glfw/glfw.git
+  - cd glfw && mkdir -p build && cd build
+  - cmake .. && make -j16 install
+  - cd ../..
 
 matrix:
   include:
