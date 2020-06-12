@@ -63,7 +63,9 @@ jobs:
         - BUILD_DOC=Off
         - MATRIX_EVAL=""
       os: osx
-      compiler: clang
+      compiler:
+        - clang
+        - gcc
 
     # linx clang Release
     - env:
