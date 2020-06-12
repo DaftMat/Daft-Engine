@@ -47,7 +47,10 @@ matrix:
         - BUILD_DOC=Off
         - MATRIX_EVAL=""
       os: osx
-      compiler: clang
+      addons: &clang50
+        brew:
+          packages:
+            - glm
 
     # linx clang Release
     - env:
@@ -66,6 +69,7 @@ matrix:
             - libgl1-mesa-dev
             - xorg-dev
             - libglu1-mesa-dev
+            - libglm-dev
           sources:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-xenial-5.0
@@ -87,6 +91,7 @@ matrix:
             - libgl1-mesa-dev
             - xorg-dev
             - libglu1-mesa-dev
+            - libglm-dev
           sources:
             - ubuntu-toolchain-r-test
 
@@ -94,4 +99,4 @@ install:
   - cd $CHECKOUT_PATH
   - mkdir -p build
   - cd build
-  - cmake .. -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_CXX_PREFIX_PATH=../glm/cmake/glm/
+  - cmake .. -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
