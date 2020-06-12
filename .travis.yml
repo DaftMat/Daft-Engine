@@ -64,6 +64,7 @@ matrix:
             - libglm-dev
           sources:
             - ubuntu-toolchain-r-test
+            - llvm-toolchain-bionic-5.0
 
     # linx gcc Release
     - env:
