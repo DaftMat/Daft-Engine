@@ -40,12 +40,9 @@ matrix:
     - env:
         - BUILD_TYPE=Release
         - BUILD_DOC=Off
-        - MATRIX_EVAL=""
+        - MATRIX_EVAL="brew install glm"
       os: osx
-      addons: &clang50
-        brew:
-          packages:
-            - glm
+      compiler: clang
 
     # linx clang Release
     - env:
