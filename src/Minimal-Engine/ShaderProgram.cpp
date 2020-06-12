@@ -96,9 +96,9 @@ void ShaderProgram::setMat4(const std::string &name, const glm::mat4 &value) con
 
 void ShaderProgram::checkCompileError(GLuint shader, const std::string &type) {
     int success;
-    char *infoLog;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if (!success) {
+        char *infoLog;
         glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
         ENGINE_ERROR("ERROR:SHADER_COMPILATION of type : {0}{1}{2}", type, "\n", infoLog);
     }
@@ -106,9 +106,9 @@ void ShaderProgram::checkCompileError(GLuint shader, const std::string &type) {
 
 void ShaderProgram::checkLinkError(GLuint program) {
     int success;
-    char *infoLog;
     glGetProgramiv(program, GL_LINK_STATUS, &success);
     if (!success) {
+        char *infoLog;
         glGetProgramInfoLog(program, 1024, nullptr, infoLog);
         ENGINE_ERROR("ERROR:PROGRAM_LINKING\n{0}", infoLog);
     }
