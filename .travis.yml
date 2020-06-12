@@ -21,7 +21,7 @@ before_install:
   # install glm
   - git clone --recurse-submodules https://github.com/g-truc/glm.git
   - cd glm && mkdir -p build && cd build
-  - cmake .. && make install
+  - cmake ..
   - cd ../..
   # install eigen
   - git clone --recurse-submodules https://gitlab.com/libeigen/eigen.git
