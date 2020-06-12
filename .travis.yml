@@ -18,10 +18,11 @@ addons:
       - g++-7
       - cmake
       - libgl1-mesa-dev
-      - libxrandr-dev
-      - libxcb-randr0-dev
       - xorg-dev
       - libglu1-mesa-dev
+      - libxrandr-dev
+      - libxcb-randr0-dev
+      - libxinerama-dev
       - libglm-dev
     sources:
       - ubuntu-toolchain-r-test
