@@ -21,17 +21,17 @@ before_install:
   # install eigen
   - git clone --recurse-submodules https://gitlab.com/libeigen/eigen.git
   - cd eigen && mkdir -p build && cd build
-  - cmake .. && make -j16 && sudo make install
+  - cmake .. && sudo make install
   - cd ../..
   # install spdlog
   - git clone --recurse-submodules https://github.com/gabime/spdlog.git
   - cd spdlog && mkdir -p build && cd build
-  - cmake .. && make -j16 && sudo make install
+  - cmake .. && sudo make install
   - cd ../..
   # install glfw3
   - git clone --recurse-submodules https://github.com/glfw/glfw.git
   - cd glfw && mkdir -p build && cd build
-  - cmake .. && make -j16 && sudo make install
+  - cmake .. && sudo make install
   - cd ../..
 
 jobs:
