@@ -1,6 +1,4 @@
 language: cpp
-os: linux
-dist: bionic
 
 script:
   - make -j 8
@@ -11,6 +9,23 @@ env:
     - OMP_NUM_THREADS=4
     - TIMEOUT=1000
 
+addons:
+  apt:
+    update: true
+    packages:
+      - util-linux
+      - clang-5.0
+      - g++-7
+      - cmake
+      - libgl1-mesa-dev
+      - libxrandr-dev
+      - libxcb-randr0-dev
+      - libglm-dev
+  homebrew:
+    update: true
+    packages:
+      - glm
+
 before_install:
   - export CHECKOUT_PATH=`pwd`;
   - eval "${MATRIX_EVAL}"
@@ -18,21 +33,24 @@ before_install:
   - if [ -n "$CLANG_VERSION" ]; then export CXX="clang++-${CLANG_VERSION}" CC="clang-${CLANG_VERSION}"; fi
   - $CXX --version
   - cmake --version
-  # install eigen
-  - git clone --recurse-submodules https://gitlab.com/libeigen/eigen.git
-  - cd eigen && mkdir -p build && cd build
-  - cmake .. && sudo make install
-  - cd ../..
-  # install spdlog
-  - git clone --recurse-submodules https://github.com/gabime/spdlog.git
-  - cd spdlog && mkdir -p build && cd build
-  - cmake .. && sudo make install
-  - cd ../..
-  # install glfw3
-  - git clone --recurse-submodules https://github.com/glfw/glfw.git
-  - cd glfw && mkdir -p build && cd build
-  - cmake .. && sudo make install
-  - cd ../..
+  - |
+    if [[ "TRAVIS_OS_NAME" = "linux" -o "TRAVIS_OS_NAME" = osx ]]; then
+# install eigen
+      git clone --recurse-submodules https://gitlab.com/libeigen/eigen.git
+      cd eigen && mkdir -p build && cd build
+      cmake .. && sudo make install
+      cd ../..
+# install spdlog
+      git clone --recurse-submodules https://github.com/gabime/spdlog.git
+      cd spdlog && mkdir -p build && cd build
+      cmake .. && sudo make install
+      cd ../..
+# install glfw3
+      git clone --recurse-submodules https://github.com/glfw/glfw.git
+      cd glfw && mkdir -p build && cd build
+      cmake .. && sudo make install
+      cd ../..
+    fi
 
 jobs:
   include:
@@ -40,7 +58,7 @@ jobs:
     - env:
         - BUILD_TYPE=Release
         - BUILD_DOC=Off
-        - MATRIX_EVAL="brew install glm"
+        - MATRIX_EVAL=""
       os: osx
       compiler: clang
 
@@ -53,15 +71,6 @@ jobs:
       os: linux
       addons: &clang50
         apt:
-          packages:
-            - util-linux
-            - clang-5.0
-            - g++-7
-            - cmake
-            - libgl1-mesa-dev
-            - xorg-dev
-            - libglu1-mesa-dev
-            - libglm-dev
           sources:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-bionic-5.0
@@ -70,20 +79,11 @@ jobs:
     - env:
         - BUILD_TYPE=Release
         - GCC_VERSION=7
-        - BUILD_DOC=On
+        - BUILD_DOC=Off
         - MATRIX_EVAL=""
       os: linux
       addons: &gcc7
         apt:
-          packages:
-            - g++-7
-            - cmake
-            - doxygen
-            - graphviz
-            - libgl1-mesa-dev
-            - xorg-dev
-            - libglu1-mesa-dev
-            - libglm-dev
           sources:
             - ubuntu-toolchain-r-test
 
