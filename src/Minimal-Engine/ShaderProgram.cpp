@@ -98,7 +98,7 @@ void ShaderProgram::checkCompileError(GLuint shader, const std::string &type) {
     int success;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if (!success) {
-        char *infoLog;
+        char *infoLog = nullptr;
         glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
         ENGINE_ERROR("ERROR:SHADER_COMPILATION of type : {0}{1}{2}", type, "\n", infoLog);
     }
@@ -108,7 +108,7 @@ void ShaderProgram::checkLinkError(GLuint program) {
     int success;
     glGetProgramiv(program, GL_LINK_STATUS, &success);
     if (!success) {
-        char *infoLog;
+        char *infoLog = nullptr;
         glGetProgramInfoLog(program, 1024, nullptr, infoLog);
         ENGINE_ERROR("ERROR:PROGRAM_LINKING\n{0}", infoLog);
     }

@@ -1,6 +1,6 @@
 language: cpp
+os: linux
 dist: bionic
-sudo: true
 
 script:
   - make -j 8
@@ -34,7 +34,7 @@ before_install:
   - cmake .. && make -j16 && sudo make install
   - cd ../..
 
-matrix:
+jobs:
   include:
     # mac clang Release
     - env:

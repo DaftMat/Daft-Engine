@@ -3,7 +3,7 @@
 //
 #pragma once
 
-#include <Eigen/Eigen>
+#include <eigen3/Eigen/Eigen>
 
 /**
  * This file gives a list of aliases to the engine programmer to use Eigen library with more comfort.
