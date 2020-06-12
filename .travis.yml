@@ -21,6 +21,9 @@ addons:
       - libxrandr-dev
       - libxcb-randr0-dev
       - libglm-dev
+    sources:
+      - ubuntu-toolchain-r-test
+      - llvm-toolchain-bionic-5.0
   homebrew:
     update: true
     packages:
@@ -67,11 +70,7 @@ jobs:
         - MATRIX_EVAL=""
       os: linux
       dist: bionic
-      addons: &clang50
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-bionic-5.0
+      compiler: clang
 
     # linx gcc Release
     - env:
@@ -81,10 +80,7 @@ jobs:
         - MATRIX_EVAL=""
       os: linux
       dist: bionic
-      addons: &gcc7
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
+      compiler: gcc
 
 install:
   - cd $CHECKOUT_PATH
