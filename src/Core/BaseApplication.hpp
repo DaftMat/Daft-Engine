@@ -8,7 +8,6 @@
 #include <memory>
 
 namespace ProjName::Core {
-
 /**
  * This class is a base class for any application abstraction of the engine
  * @tparam WindowType - type of window to to create - see the examples

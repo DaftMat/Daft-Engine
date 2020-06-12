@@ -5,8 +5,6 @@
 
 #include <Core/Log.hpp>
 
-#include "GLFWWindow.hpp"
-
 GLFWExample::GLFWExample() {
     init(1600, 900);
     auto &renderer = *m_renderer;

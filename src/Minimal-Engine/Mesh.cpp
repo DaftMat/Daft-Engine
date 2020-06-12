@@ -4,7 +4,7 @@
 
 #include "Mesh.hpp"
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices) noexcept {
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices) {
     m_numVertex = indices.size();
     int numVertices = vertices.size();
     glGenVertexArrays(1, &m_vao);
@@ -24,22 +24,22 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices) noexcept {
     glBindVertexArray(0);
 }
 
-Mesh::~Mesh() noexcept {
+Mesh::~Mesh() {
     glDeleteBuffers(1, &m_vbo);
     glDeleteBuffers(1, &m_ebo);
     glDeleteVertexArrays(1, &m_vao);
 }
 
-void Mesh::prepare() const noexcept {
+void Mesh::prepare() const {
     glBindVertexArray(m_vao);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
 }
 
-void Mesh::render(GLuint type) const noexcept { glDrawElements(type, m_numVertex, GL_UNSIGNED_INT, nullptr); }
+void Mesh::render(GLuint type) const { glDrawElements(type, m_numVertex, GL_UNSIGNED_INT, nullptr); }
 
-void Mesh::unbind() const noexcept {
+void Mesh::unbind() const {
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(2);

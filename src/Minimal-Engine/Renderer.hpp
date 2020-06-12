@@ -29,8 +29,8 @@ class ENGINE_API Renderer : public ProjName::Core::NonCopyable {
 
     void resize(int width, int height);
 
-    void addMesh(std::vector<Mesh::Vertex> vertices, std::vector<GLuint> indices) {
-        m_meshes.emplace_back(std::move(vertices), std::move(indices));
+    void addMesh(std::vector<Mesh::Vertex> vertices, std::vector<GLuint> indices) noexcept {
+        m_meshes.emplace_back(std::move_if_noexcept(vertices), std::move_if_noexcept(indices));
     }
 
     void setShader(ShaderProgram *shaderProgram) { m_shader.reset(shaderProgram); }

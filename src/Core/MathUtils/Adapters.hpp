@@ -19,7 +19,7 @@ namespace ProjName::Core::Utils {
  * @return matrix as a glm::mat.
  */
 template <int M, int N, typename T>
-inline glm::mat<M, N, T> toGlm(const Eigen::Matrix<T, M, N> &mat);
+inline constexpr glm::mat<M, N, T> toGlm(const Eigen::Matrix<T, M, N> &mat) noexcept;
 
 /**
  * Casts from Eigen::Vector to glm::vec.
@@ -29,7 +29,7 @@ inline glm::mat<M, N, T> toGlm(const Eigen::Matrix<T, M, N> &mat);
  * @return vector as a glm::vec.
  */
 template <int M, typename T>
-inline glm::vec<M, T> toGlm(const Eigen::Matrix<T, M, 1> &vec);
+inline constexpr glm::vec<M, T> toGlm(const Eigen::Matrix<T, M, 1> &vec) noexcept;
 
 /**
  * Casts from glm::mat to Eigen::Matrix.
@@ -40,7 +40,7 @@ inline glm::vec<M, T> toGlm(const Eigen::Matrix<T, M, 1> &vec);
  * @return matrix as an Eigen::Matrix.
  */
 template <int M, int N, typename T>
-inline Eigen::Matrix<T, M, N> toEigen(const glm::mat<M, N, T> &mat);
+inline constexpr Eigen::Matrix<T, M, N> toEigen(const glm::mat<M, N, T> &mat) noexcept;
 
 /**
  * Casts from glm::vec to Eigen::Vector.
@@ -50,7 +50,16 @@ inline Eigen::Matrix<T, M, N> toEigen(const glm::mat<M, N, T> &mat);
  * @return vector as an Eigen::Vector.
  */
 template <int M, typename T>
-inline Eigen::Matrix<T, M, 1> toEigen(const glm::vec<M, T> &vec);
+inline constexpr Eigen::Matrix<T, M, 1> toEigen(const glm::vec<M, T> &vec) noexcept;
+
+/**
+ * Casts any scoped enum value to any underlying type.
+ * @tparam T - underlying type.
+ * @param e - enum value.
+ * @return enum value with type T.
+ */
+template <typename T>
+inline constexpr auto toUType(T e) noexcept;
 
 }  // namespace ProjName::Core::Utils
 

@@ -27,20 +27,20 @@ class ENGINE_API Mesh : public ProjName::Core::NonCopyable {
      * Default constructor.
      * Creates an non-existing mesh.
      */
-    Mesh() noexcept : m_vao{0}, m_vbo{0}, m_ebo{0}, m_numVertex{0} {}
+    constexpr Mesh() noexcept : m_vao{0}, m_vbo{0}, m_ebo{0}, m_numVertex{0} {}
 
     /**
      * standard constructor.
      * @param vertices - geometry of the mesh.
      * @param indices - topology of the mesh.
      */
-    Mesh(std::vector<Mesh::Vertex> vertices, std::vector<GLuint> indices) noexcept;
+    Mesh(std::vector<Mesh::Vertex> vertices, std::vector<GLuint> indices);
 
     /**
      * destructor.
      * deletes OpenGL objects related to this mesh.
      */
-    ~Mesh() noexcept;
+    ~Mesh();
 
     /**
      * Move constructor.
@@ -58,18 +58,18 @@ class ENGINE_API Mesh : public ProjName::Core::NonCopyable {
     /**
      * Prepares the mesh to be rendered.
      */
-    void prepare() const noexcept;
+    void prepare() const;
 
     /**
      * Renders the mesh on the currently bound frame buffer.
      * @param type - type of rendering (GL_TRIANGLES, GL_LINES, ...).
      */
-    void render(GLuint type) const noexcept;
+    void render(GLuint type) const;
 
     /**
      * Unbind the mesh from OpenGL after it was rendered.
      */
-    void unbind() const noexcept;
+    void unbind() const;
 
    private:
     GLuint m_vao, m_vbo, m_ebo, m_numVertex;
