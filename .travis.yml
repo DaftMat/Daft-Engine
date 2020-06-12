@@ -34,7 +34,7 @@ before_install:
   - $CXX --version
   - cmake --version
   - |
-    if [[ "TRAVIS_OS_NAME" = "linux" -o "TRAVIS_OS_NAME" = osx ]]; then
+    if [[ "$TRAVIS_OS_NAME" = "linux" || "$TRAVIS_OS_NAME" = osx ]]; then
 # install eigen
       git clone --recurse-submodules https://gitlab.com/libeigen/eigen.git
       cd eigen && mkdir -p build && cd build
