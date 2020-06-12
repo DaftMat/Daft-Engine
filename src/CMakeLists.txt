@@ -6,15 +6,13 @@ file(GLOB_RECURSE headers ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
 file(GLOB_RECURSE inlines ${CMAKE_CURRENT_SOURCE_DIR}/*.inl)
 
 #TODO: set up all the dependencies of your engine api down here
-find_package(glm CONFIG REQUIRED)
-
 find_package(Eigen3 CONFIG REQUIRED)
 
 #find_package(Assimp CONFIG REQUIRED)
 
 find_package(spdlog CONFIG REQUIRED)
 
-set(EXT_LIBS ${GLM_LIBRARIES} ${EIGEN_LIBRARIES} ${SPDLOG_LIBRARIES}) #${ASSIMP_LIBRARIES} )
+set(EXT_LIBS ${EIGEN_LIBRARIES} ${SPDLOG_LIBRARIES}) #${ASSIMP_LIBRARIES} )
 ###################################################################
 
 add_library(${api_target} SHARED ${sources} ${headers} ${inlines})
