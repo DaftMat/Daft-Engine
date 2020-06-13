@@ -35,7 +35,20 @@ $ brew update
 $ brew install glm eigen assimp spdlog glfw
 ```
 
-#### Troubleshooting
+## Compiling & Executing
+To compile with this project configuration, run:
+```txt
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+```
+Then you can go and run the project from the `bin` folder:
+```txt 
+$ ./<Your_Project_Name>
+```
+
+### Troubleshooting
 On some distrib, the apt package `libspdlog-dev` will be outdated. 
 
 The `cmake ..` command will then output something like that :
@@ -53,20 +66,10 @@ $ cd spdlog && mkdir build && cd build
 & cmake .. && make install
 ```
 This will install `spdlog` last version in `/usr/local/`, you'll then be able to compile the engine.
+##
 
-## Compiling & Executing
-To compile with this project configuration, run:
-```txt
-$ mkdir build
-$ cd build
-$ cmake ..
-$ make
-```
-Then you can go and run the project from the `bin` folder:
-```txt 
-$ ./<Your_Project_Name>
-```
 
+(the rest of this README can be deleted after the project has been setup with this template)
 ## List of features:
  - 3rdPartyLibs *>* dependencies management.
  - doc
