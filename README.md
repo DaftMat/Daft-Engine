@@ -37,6 +37,7 @@ $ brew install glm eigen assimp spdlog glfw
 
 #### Troubleshooting
 On some distrib, the apt package `libspdlog-dev` will be outdated. 
+
 The `cmake ..` command will then output something like that :
 ```txt
 CMake Error at src/CMakeLists.txt:13 (find_package):
