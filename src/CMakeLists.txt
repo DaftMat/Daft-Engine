@@ -19,7 +19,8 @@ add_library(${api_target} SHARED ${sources} ${headers} ${inlines})
 
 target_include_directories(${api_target} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_SOURCE_DIR}/3rdPartyLibs)
+        ${CMAKE_SOURCE_DIR}/3rdPartyLibs
+        ${EIGEN3_INCLUDES})
 
 target_compile_definitions(${api_target} PUBLIC "-DDYNAMIC_LINK")
 target_compile_definitions(${api_target} PUBLIC "-D${CMAKE_BUILD_TYPE}")
