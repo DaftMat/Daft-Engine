@@ -28,6 +28,7 @@ addons:
       - libglm-dev
       - libassimp-dev
       - libeigen3-dev
+      - libspdlog-dev
       - libglew-dev
       - libglfw3-dev
     sources:
@@ -50,7 +51,7 @@ before_install:
   - $CXX --version
   - cmake --version
   - |
-    if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
+    if [[ "$TRAVIS_OS_NAME" = "dumby" ]]; then
       git clone --recurse-submodules https://github.com/gabime/spdlog.git
       cd spdlog && mkdir build && cd build
       cmake .. && sudo make -j16 install

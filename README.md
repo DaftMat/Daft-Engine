@@ -37,7 +37,7 @@ $ brew install glm eigen assimp spdlog glfw
 
 #### Troubleshooting
 On some distrib, the apt package `libspdlog-dev` will be outdated. 
-The code then doesn't compile and outputs the following error :
+The `cmake ..` will then output :
 ```txt
 Log.cpp:6:10: fatal error: spdlog/sinks/basic_file_sink.h: No such file or directory
  #include <spdlog/sinks/basic_file_sink.h>
