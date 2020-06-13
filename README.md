@@ -8,6 +8,49 @@ To download this template, make sure you download the submodules as well :
 $ git clone --recurse-submodules https://github.com/Stardust-Softwares/Engine-Template.git
 ```
 
+## Dependencies
+
+### As git submodules
+ - [GLAD](https://github.com/Stardust-Softwares/GLAD-Includes)
+ - [random](https://github.com/effolkronium/random)
+ - [stb](https://github.com/nothings/stb)
+
+### To install
+ - [OpenGL/GLSL 4.4+](https://www.opengl.org/)
+ - [GLM](https://github.com/g-truc/glm)
+ - [Eigen3](https://eigen.tuxfamily.org/dox/)
+ - [Assimp](https://github.com/assimp/assimp)
+ - [spdlog](https://github.com/gabime/spdlog)
+ - [GLFW3](https://github.com/glfw/glfw)
+ 
+#### How to install deps
+On linux with apt package manager :
+```txt
+$ sudo apt update
+$ sudo apt install libgl1-mesa-dev libglu1-mesa-dev xorg-dev libxrandr-dev libxcb-randr0-dev libxinerama-dev libglm-dev libassimp-dev libeigen3-dev libglew-dev libglfw3-dev
+```
+On mac using homebrew :
+```txt
+$ brew update
+$ brew install glm eigen assimp spdlog glfw
+```
+
+#### Troubleshooting
+On some distrib, the apt package `libspdlog-dev` will be outdated. 
+The code then doesn't compile and outputs the following error :
+```txt
+Log.cpp:6:10: fatal error: spdlog/sinks/basic_file_sink.h: No such file or directory
+ #include <spdlog/sinks/basic_file_sink.h>
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
+To solve this problem, you have to install `spdlog` *manually* by typing these commands from some download directory on your computer :
+```txt
+$ git clone --recurse-submodules https://github.com/gabime/spdlog.git
+$ cd spdlog && mkdir build && cd build
+& cmake .. && make install
+```
+This will install `spdlog` last version in `/usr/local/`, you'll then be able to compile the engine.
+
 ## Compiling & Executing
 To compile with this project configuration, run:
 ```txt

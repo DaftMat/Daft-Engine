@@ -10,17 +10,16 @@ find_package(Eigen3 3.3 CONFIG REQUIRED)
 
 find_package(Assimp CONFIG REQUIRED)
 
-find_package(spdlog CONFIG REQUIRED)
+find_package(spdlog 1 CONFIG REQUIRED)
 
-set(EXT_LIBS ${SPDLOG_LIBRARIES})
+set(EXT_LIBS)
 ###################################################################
 
 add_library(${api_target} SHARED ${sources} ${headers} ${inlines})
 
 target_include_directories(${api_target} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_SOURCE_DIR}/3rdPartyLibs
-        ${EIGEN3_INCLUDES})
+        ${CMAKE_SOURCE_DIR}/3rdPartyLibs)
 
 target_compile_definitions(${api_target} PUBLIC "-DDYNAMIC_LINK")
 target_compile_definitions(${api_target} PUBLIC "-D${CMAKE_BUILD_TYPE}")
