@@ -12,7 +12,7 @@ find_package(Assimp CONFIG REQUIRED)
 
 find_package(spdlog CONFIG REQUIRED)
 
-set(EXT_LIBS)
+set(EXT_LIBS ${SPDLOG_LIBRARIES})
 ###################################################################
 
 add_library(${api_target} SHARED ${sources} ${headers} ${inlines})
