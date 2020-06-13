@@ -24,6 +24,11 @@ addons:
       - libxcb-randr0-dev
       - libxinerama-dev
       - libglm-dev
+      - libassimp-dev
+      - libeigen3-dev
+      - libspdlog-dev
+      - libglew-dev
+      - libglfw3-dev
     sources:
       - ubuntu-toolchain-r-test
       - llvm-toolchain-bionic-5.0
@@ -31,6 +36,10 @@ addons:
     update: true
     packages:
       - glm
+      - eigen
+      - assimp
+      - spdlog
+      - glfw
 
 before_install:
   - export CHECKOUT_PATH=`pwd`;
@@ -39,21 +48,6 @@ before_install:
   - if [ -n "$CLANG_VERSION" ]; then export CXX="clang++-${CLANG_VERSION}" CC="clang-${CLANG_VERSION}"; fi
   - $CXX --version
   - cmake --version
-# install eigen
-  - git clone --recurse-submodules https://gitlab.com/libeigen/eigen.git
-  - cd eigen && mkdir -p build && cd build
-  - cmake .. && sudo make install
-  - cd ../..
-# install spdlog
-  - git clone --recurse-submodules https://github.com/gabime/spdlog.git
-  - cd spdlog && mkdir -p build && cd build
-  - cmake .. && sudo make install
-  - cd ../..
-# install glfw3
-  - git clone --recurse-submodules https://github.com/glfw/glfw.git
-  - cd glfw && mkdir -p build && cd build
-  - cmake .. && sudo make install
-  - cd ../..
 
 jobs:
   include:
