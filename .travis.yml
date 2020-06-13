@@ -49,6 +49,12 @@ before_install:
   - if [ -n "$CLANG_VERSION" ]; then export CXX="clang++-${CLANG_VERSION}" CC="clang-${CLANG_VERSION}"; fi
   - $CXX --version
   - cmake --version
+  - |
+    if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
+      git clone --recurse-submodules https://github.com/gabime/spdlog.git
+      cd spdlog && mkdir build && cd build
+      cmake .. && sudo make -j16 install
+    fi;
 
 jobs:
   include:
@@ -65,7 +71,7 @@ jobs:
         - BUILD_TYPE=Release
         - CLANG_VERSION=5.0
         - BUILD_DOC=Off
-        - MATRIX_EVAL="sudo apt install libspdlog1"
+        - MATRIX_EVAL=""
       os: linux
       dist: bionic
       compiler: clang
