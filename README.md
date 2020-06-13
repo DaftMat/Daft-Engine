@@ -37,11 +37,13 @@ $ brew install glm eigen assimp spdlog glfw
 
 #### Troubleshooting
 On some distrib, the apt package `libspdlog-dev` will be outdated. 
-The `cmake ..` will then output :
+The `cmake ..` command will then output something like that :
 ```txt
-Log.cpp:6:10: fatal error: spdlog/sinks/basic_file_sink.h: No such file or directory
- #include <spdlog/sinks/basic_file_sink.h>
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CMake Error at src/CMakeLists.txt:13 (find_package):
+  Could not find a configuration file for package "spdlog" that is compatible
+  with requested version "1".
+  The following configuration files were considered but not accepted:
+    /usr/lib/x86_64-linux-gnu/cmake/spdlog/spdlogConfig.cmake, version: 0.16.2
 ```
 To solve this problem, you have to install `spdlog` *manually* by typing these commands from some download directory on your computer :
 ```txt

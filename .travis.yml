@@ -51,7 +51,7 @@ before_install:
   - $CXX --version
   - cmake --version
   - |
-    if [[ "$TRAVIS_OS_NAME" = "dumby" ]]; then
+    if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
       git clone --recurse-submodules https://github.com/gabime/spdlog.git
       cd spdlog && mkdir build && cd build
       cmake .. && sudo make -j16 install
