@@ -12,6 +12,7 @@ env:
 addons:
   apt:
     update: true
+    upgrade: true
     packages:
       - util-linux
       - clang-5.0
@@ -26,7 +27,7 @@ addons:
       - libglm-dev
       - libassimp-dev
       - libeigen3-dev
-      - libspdlog-dev
+      - libspdlog1
       - libglew-dev
       - libglfw3-dev
     sources:
@@ -83,4 +84,4 @@ install:
   - cd $CHECKOUT_PATH
   - mkdir -p build
   - cd build
-  - cmake .. -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_PREFIX_PATH=/usr/include/
+  - cmake .. -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
