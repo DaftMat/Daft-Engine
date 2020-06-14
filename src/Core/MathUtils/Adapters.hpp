@@ -3,7 +3,7 @@
 //
 #pragma once
 
-#include "Maths.hpp"
+#include "Types.hpp"
 
 /**
  * This files provides casting function between glm and Eigen.
