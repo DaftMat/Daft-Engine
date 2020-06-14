@@ -43,7 +43,10 @@ if (MSVC OR MSVC_IDE)
 #    endif()
     message(ERROR Unsupported Compiler.)
 else(MSVC OR MSVC_IDE)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -pedantic -Wextra -g -O3 -fopenmp")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -pedantic -Wextra -g -O3")
+    if (NOT APPLE)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+    endif()
 endif(MSVC OR MSVC_IDE)
 
 ##################################
