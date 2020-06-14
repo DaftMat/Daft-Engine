@@ -38,6 +38,7 @@ addons:
   homebrew:
     update: true
     packages:
+      - llvm
       - libomp
       - glm
       - eigen
