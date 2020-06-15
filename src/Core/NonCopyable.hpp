@@ -32,6 +32,12 @@ class ENGINE_API NonCopyable {
      */
     NonCopyable &operator=(NonCopyable &&) noexcept = default;
 
+    /// getting ready for C++20 !
+    //[[nodiscard]] bool operator==(const NonCopyable &) const noexcept = default;
+
+    /// getting ready for C++20 !
+    //[[nodiscard]] bool operator==(NonCopyable &&) const noexcept = default;
+
     ///\exclude
     NonCopyable(const NonCopyable &) noexcept = delete;
 
