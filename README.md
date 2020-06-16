@@ -27,12 +27,12 @@ $ git clone --recurse-submodules https://github.com/Stardust-Softwares/Engine-Te
 On linux with apt package manager :
 ```txt
 $ sudo apt update
-$ sudo apt install libgl1-mesa-dev libglu1-mesa-dev xorg-dev libxrandr-dev libxcb-randr0-dev libxinerama-dev libglm-dev libassimp-dev libeigen3-dev libglew-dev libglfw3-dev
+$ sudo apt install libomp-dev libgl1-mesa-dev libglu1-mesa-dev xorg-dev libxrandr-dev libxcb-randr0-dev libxinerama-dev libglm-dev libassimp-dev libeigen3-dev libglew-dev libglfw3-dev
 ```
 On mac using homebrew :
 ```txt
 $ brew update
-$ brew install glm eigen assimp spdlog glfw
+$ brew install libomp glm eigen assimp spdlog glfw
 ```
 
 ## Compiling & Executing

@@ -1,9 +1,8 @@
 //
 // Created by mathis on 09/05/2020.
 //
+#pragma once
 
-#ifndef DAFT_GAMEENGINE_MESH_HPP
-#define DAFT_GAMEENGINE_MESH_HPP
 #include <API.hpp>
 #include <Core/NonCopyable.hpp>
 #include <Core/OpenGL.hpp>
@@ -74,5 +73,3 @@ class ENGINE_API Mesh : public ProjName::Core::NonCopyable {
    private:
     GLuint m_vao, m_vbo, m_ebo, m_numVertex;
 };
-
-#endif  // DAFT_GAMEENGINE_MESH_HPP

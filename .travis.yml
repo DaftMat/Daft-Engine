@@ -19,6 +19,7 @@ addons:
       - clang-5.0
       - g++-7
       - cmake
+      - libomp-dev
       - libgl1-mesa-dev
       - xorg-dev
       - libglu1-mesa-dev
@@ -37,6 +38,7 @@ addons:
   homebrew:
     update: true
     packages:
+      - libomp
       - glm
       - eigen
       - assimp
