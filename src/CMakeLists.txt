@@ -12,14 +12,15 @@ find_package(Assimp CONFIG REQUIRED)
 
 find_package(spdlog 1 CONFIG REQUIRED)
 
-set(EXT_LIBS)
+set(EXT_LIBS ${ASSIMP_LIBRARIES} spdlog::spdlog_header_only)
 ###################################################################
 
 add_library(${api_target} SHARED ${sources} ${headers} ${inlines})
 
 target_include_directories(${api_target} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_SOURCE_DIR}/3rdPartyLibs)
+        ${CMAKE_SOURCE_DIR}/3rdPartyLibs
+        ${ENGINE_INCLUDES} PARENT_SCOPE)
 
 target_compile_definitions(${api_target} PUBLIC "-DDYNAMIC_LINK")
 target_compile_definitions(${api_target} PUBLIC "-D${CMAKE_BUILD_TYPE}")

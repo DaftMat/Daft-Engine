@@ -2,6 +2,7 @@
 // Created by mathis on 10/06/2020.
 //
 #pragma once
+#include <API.hpp>
 
 #include "Maths.hpp"
 
@@ -19,7 +20,7 @@ namespace ProjName::Core::Utils {
  * @return matrix as a glm::mat.
  */
 template <int M, int N, typename T>
-inline constexpr glm::mat<M, N, T> toGlm(const Eigen::Matrix<T, M, N> &mat) noexcept;
+ENGINE_API inline constexpr glm::mat<M, N, T> toGlm(const Eigen::Matrix<T, M, N> &mat) noexcept;
 
 /**
  * Casts from Eigen::Vector to glm::vec.
@@ -29,7 +30,7 @@ inline constexpr glm::mat<M, N, T> toGlm(const Eigen::Matrix<T, M, N> &mat) noex
  * @return vector as a glm::vec.
  */
 template <int M, typename T>
-inline constexpr glm::vec<M, T> toGlm(const Eigen::Matrix<T, M, 1> &vec) noexcept;
+ENGINE_API inline constexpr glm::vec<M, T> toGlm(const Eigen::Matrix<T, M, 1> &vec) noexcept;
 
 /**
  * Casts from glm::mat to Eigen::Matrix.
@@ -40,7 +41,7 @@ inline constexpr glm::vec<M, T> toGlm(const Eigen::Matrix<T, M, 1> &vec) noexcep
  * @return matrix as an Eigen::Matrix.
  */
 template <int M, int N, typename T>
-inline constexpr Eigen::Matrix<T, M, N> toEigen(const glm::mat<M, N, T> &mat) noexcept;
+ENGINE_API inline constexpr Eigen::Matrix<T, M, N> toEigen(const glm::mat<M, N, T> &mat) noexcept;
 
 /**
  * Casts from glm::vec to Eigen::Vector.
@@ -50,7 +51,7 @@ inline constexpr Eigen::Matrix<T, M, N> toEigen(const glm::mat<M, N, T> &mat) no
  * @return vector as an Eigen::Vector.
  */
 template <int M, typename T>
-inline constexpr Eigen::Matrix<T, M, 1> toEigen(const glm::vec<M, T> &vec) noexcept;
+ENGINE_API inline constexpr Eigen::Matrix<T, M, 1> toEigen(const glm::vec<M, T> &vec) noexcept;
 
 /**
  * Casts any scoped enum value to any underlying type.
@@ -59,7 +60,7 @@ inline constexpr Eigen::Matrix<T, M, 1> toEigen(const glm::vec<M, T> &vec) noexc
  * @return enum value with type T.
  */
 template <typename T>
-inline constexpr auto toUType(T e) noexcept;
+ENGINE_API inline constexpr auto toUType(T e) noexcept;
 
 }  // namespace ProjName::Core::Utils
 
