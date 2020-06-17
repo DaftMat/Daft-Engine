@@ -8,7 +8,7 @@
 
 #include "GLFWWindow.hpp"
 
-class GLFWExample : public ProjName::Core::BaseApplication<GLFWWindow> {
+class ENGINE_API GLFWExample : public ProjName::Core::BaseApplication<GLFWWindow> {
    public:
     GLFWExample();
     ~GLFWExample() override { APP_INFO("Application closed. Closing window..."); }

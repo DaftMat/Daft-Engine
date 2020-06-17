@@ -13,15 +13,29 @@ set(EXT_INCLUDES ${EXT_INCLUDES} ${GLM_DIR})
 endif(WIN32)
 
 find_package(Eigen3 CONFIG REQUIRED)
+if(WIN32)
+set(EXT_LIBS ${EXT_LIBS} Eigen3::Eigen)
+set(EXT_INCLUDES ${EXT_INCLUDES} ${Eigen3_DIR})
+endif(WIN32)
 
-find_package(Assimp CONFIG REQUIRED)
+find_package(assimp CONFIG REQUIRED)
+if(WIN32)
+set(EXT_LIBS ${EXT_LIBS} assimp::assimp)
+else(WIN32)
+set(EXT_LIBS ${EXT_LIBS} ${ASSIMP_LIBRARIES})
+endif(WIN32)
 
 find_package(spdlog 1 CONFIG REQUIRED)
 
 find_package(OpenGL REQUIRED)
+if(WIN32)
+set(EXT_LIBS ${EXT_LIBS} opengl32)
+else(WIN32)
+set(EXT_LIBS ${EXT_LIBS} ${OPENGL_LIBRARIES})
+endif(WIN32)
 
-set(EXT_LIBS ${EXT_LIBS} ${ASSIMP_LIBRARIES} spdlog::spdlog_header_only ${OPENGL_LIBRARIES} ${EIGEN_LIBRARIES})
-set(EXT_INCLUDES ${EXT_INCLUDES} ${Eigen3_DIR} ${Assimp_DIR} ${spdlog_DIR})
+set(EXT_LIBS ${EXT_LIBS} spdlog::spdlog)
+set(EXT_INCLUDES ${EXT_INCLUDES} ${Assimp_DIR} ${spdlog_DIR})
 
 ###################################################################
 
@@ -34,7 +48,7 @@ target_include_directories(${api_target} PUBLIC
         ${ENGINE_INCLUDES} PARENT_SCOPE)
 
 target_compile_definitions(${api_target} PUBLIC "-DDYNAMIC_LINK")
-target_compile_definitions(${api_target} PUBLIC "-D${CMAKE_BUILD_TYPE}")
+target_compile_definitions(${api_target} PUBLIC "-Ddaft_${CMAKE_BUILD_TYPE}")
 if (TRACE)
 target_compile_definitions(${api_target} PUBLIC "-DTRACE")
 endif(TRACE)

@@ -17,10 +17,10 @@
 #error Unsupported compiler.
 #endif
 
-#if defined(Debug) || defined(DEBUG) || defined(_DEBUG)
+#if defined(daft_Debug) || defined(daft_DEBUG) || defined(_DEBUG)
 #define DEBUG
 #endif
-#if defined(Release) || defined(RELEASE) || defined(_RELEASE)
+#if defined(daft_Release) || defined(daft_RELEASE) || defined(_RELEASE)
 #define RELEASE
 #endif
 
@@ -29,6 +29,7 @@
 /// --------------------------------------------------
 #if defined(_WIN32) || defined(_WIN64)          /// Windows
 #define WIN_OS
+#include <Windows.h>
 #   if defined(_M_X64)
 #   define X64_ARCH
 #   elif defined(_M_IX86)

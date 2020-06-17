@@ -4,6 +4,7 @@
 #pragma once
 
 #include <eigen3/Eigen/Eigen>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -35,11 +36,11 @@ using Vector2f = Eigen::Vector2f;
 using Vector2d = Eigen::Vector2d;
 using Vector2i = Eigen::Vector2i;
 
-using VectorNui = Eigen::Matrix<uint, Eigen::Dynamic, 1>;
-using Vector1ui = Eigen::Matrix<uint, 1, 1>;
-using Vector2ui = Eigen::Matrix<uint, 2, 1>;
-using Vector3ui = Eigen::Matrix<uint, 3, 1>;
-using Vector4ui = Eigen::Matrix<uint, 4, 1>;
+using VectorNui = Eigen::Matrix<unsigned int, Eigen::Dynamic, 1>;
+using Vector1ui = Eigen::Matrix<unsigned int, 1, 1>;
+using Vector2ui = Eigen::Matrix<unsigned int, 2, 1>;
+using Vector3ui = Eigen::Matrix<unsigned int, 3, 1>;
+using Vector4ui = Eigen::Matrix<unsigned int, 4, 1>;
 
 /**
  * Ray.
@@ -66,7 +67,7 @@ using Matrix4d = Eigen::Matrix4d;
 using Matrix3d = Eigen::Matrix3d;
 using Matrix2d = Eigen::Matrix2d;
 
-using MatrixNui = Eigen::Matrix<uint, Eigen::Dynamic, Eigen::Dynamic>;
+using MatrixNui = Eigen::Matrix<unsigned int, Eigen::Dynamic, Eigen::Dynamic>;
 
 using Diagonal = Eigen::DiagonalMatrix<float, Eigen::Dynamic>;
 using Sparse = Eigen::SparseMatrix<float>;

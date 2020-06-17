@@ -20,12 +20,12 @@ void GLFWExample::loadExampleScene() {
     std::vector<Mesh::Vertex> vertices;
     std::vector<GLuint> indices{0, 2, 3, 0, 1, 2};
     Mesh::Vertex vertex{};
-    vertex.texCoords = ProjName::Core::Utils::toGlm(ProjName::Core::Utils::Vector2f{0.f, 0.f});
+    vertex.texCoords = glm::vec2{0.f, 0.f};
     vertex.normal = {1.f, 1.f, 1.f};
     vertex.position = {-0.5f, -0.5f, 0.5f};
     vertices.push_back(vertex);
     vertex.texCoords = {1.f, 0.f};
-    vertex.normal = ProjName::Core::Utils::toGlm(ProjName::Core::Utils::Vector3f{1.f, 0.f, 0.f});
+    vertex.normal = glm::vec3{1.f, 0.f, 0.f};
     vertex.position = {0.5f, -0.5f, 0.f};
     vertices.push_back(vertex);
     vertex.texCoords = {1.f, 1.f};

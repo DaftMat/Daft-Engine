@@ -7,7 +7,7 @@
 #include <GLFW/glfw3.h>
 #include <functional>
 
-class GLFWWindow {
+class ENGINE_API GLFWWindow {
 public:
     GLFWWindow(int width, int height);
     ~GLFWWindow() { terminate(); }
