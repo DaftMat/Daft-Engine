@@ -6,6 +6,8 @@ file(GLOB_RECURSE headers ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/gl45core/*.h ${C
 file(GLOB_RECURSE inlines ${CMAKE_CURRENT_SOURCE_DIR}/*.inl)
 
 #TODO: set up all the dependencies of your engine api down here
+find_package(GLM CONFIG REQUIRED)
+
 find_package(Eigen3 CONFIG REQUIRED)
 
 find_package(Assimp CONFIG REQUIRED)
@@ -14,7 +16,8 @@ find_package(spdlog 1 CONFIG REQUIRED)
 
 find_package(OpenGL REQUIRED)
 
-set(EXT_LIBS ${EXT_LIBS} ${ASSIMP_LIBRARIES} spdlog::spdlog_header_only ${OPENGL_LIBRARIES})
+set(EXT_LIBS ${EXT_LIBS} ${ASSIMP_LIBRARIES} spdlog::spdlog_header_only ${OPENGL_LIBRARIES} ${EIGEN_LIBRARIES} ${GLM_LIBRARIES})
+set(EXT_INCLUDES ${EXT_INCLUDES} ${Eigen3_DIR} ${GLM_DIR} ${Assimp_DIR} ${spdlog_DIR})
 
 ###################################################################
 
@@ -23,6 +26,7 @@ add_library(${api_target} SHARED ${headers} ${sources} ${inlines})
 target_include_directories(${api_target} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_SOURCE_DIR}/3rdPartyLibs
+        ${EXT_INCLUDES}
         ${ENGINE_INCLUDES} PARENT_SCOPE)
 
 target_compile_definitions(${api_target} PUBLIC "-DDYNAMIC_LINK")
@@ -31,7 +35,7 @@ if (TRACE)
 target_compile_definitions(${api_target} PUBLIC "-DTRACE")
 endif(TRACE)
 
-target_link_libraries(${api_target} DEPENDS ${EXT_LIBS})
+target_link_libraries(${api_target} PUBLIC ${EXT_LIBS})
 
 set_target_properties(${api_target} PROPERTIES LINKER_LANGUAGE CXX)
 set_property(TARGET ${api_target} PROPERTY POSITION_INDEPENDENT_CODE ON)
