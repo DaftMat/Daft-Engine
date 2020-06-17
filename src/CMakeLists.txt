@@ -1,8 +1,8 @@
 #TODO: replace engineApi with your own engine api name
 set(api_target engineApi)
 
-file(GLOB_RECURSE sources ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/gl45core/glad.c)
-file(GLOB_RECURSE headers ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
+file(GLOB_RECURSE sources ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/gl45core/*.c ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE headers ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/gl45core/*.h ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
 file(GLOB_RECURSE inlines ${CMAKE_CURRENT_SOURCE_DIR}/*.inl)
 
 #TODO: set up all the dependencies of your engine api down here
@@ -12,10 +12,13 @@ find_package(Assimp CONFIG REQUIRED)
 
 find_package(spdlog 1 CONFIG REQUIRED)
 
-set(EXT_LIBS ${ASSIMP_LIBRARIES} spdlog::spdlog_header_only)
+find_package(OpenGL REQUIRED)
+
+set(EXT_LIBS ${EXT_LIBS} ${ASSIMP_LIBRARIES} spdlog::spdlog_header_only ${OPENGL_LIBRARIES})
+
 ###################################################################
 
-add_library(${api_target} SHARED ${sources} ${headers} ${inlines})
+add_library(${api_target} SHARED ${headers} ${sources} ${inlines})
 
 target_include_directories(${api_target} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
@@ -28,7 +31,7 @@ if (TRACE)
 target_compile_definitions(${api_target} PUBLIC "-DTRACE")
 endif(TRACE)
 
-target_link_libraries(${api_target} PUBLIC ${EXT_LIBS})
+target_link_libraries(${api_target} DEPENDS ${EXT_LIBS})
 
 set_target_properties(${api_target} PROPERTIES LINKER_LANGUAGE CXX)
 set_property(TARGET ${api_target} PROPERTY POSITION_INDEPENDENT_CODE ON)

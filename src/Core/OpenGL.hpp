@@ -3,6 +3,12 @@
 //
 #pragma once
 
-#include <GLAD/gl45core/glad.h>
+#ifdef WIN_OS
+#	include <Windows.h>
+#	include <glad/gl45core/glad.h>
+#else
+#	include <GLAD/gl45core/glad.h>
+#endif
+
 
 #include <Core/MathUtils/Adapters.hpp>

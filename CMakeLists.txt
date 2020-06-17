@@ -45,14 +45,12 @@ if (MSVC OR MSVC_IDE)
             set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
         endforeach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
     endif()
+    add_compile_options(/W3 )
 else(MSVC OR MSVC_IDE)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -pedantic -Wextra -g -O3")
-<<<<<<< HEAD
-=======
     if (NOT APPLE)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
     endif()
->>>>>>> fb79936d095ee89d95d2cff8fa6bbb0bf143d315
 endif(MSVC OR MSVC_IDE)
 
 ##################################

@@ -94,7 +94,7 @@ Make sure you don't delete the `src/Core` folder, it provides useful include hea
 ### Start drawing !
 
 Now, you just have to jump into the code. Use:
- ```cpp
+```cpp
 #include <Core/OpenGL.hpp>
 ```
 wherever you want to use OpenGL, and:
