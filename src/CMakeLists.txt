@@ -27,7 +27,7 @@ endif(WIN32)
 
 find_package(spdlog 1 CONFIG REQUIRED)
 if(WIN32)
-set(EXT_LIBS ${EXT_LIBS} spdlog::spdlog)
+set(EXT_LIBS ${EXT_LIBS} spdlog::spdlog spdlog::spdlog_header_only)
 else(WIN32)
 set(EXT_LIBS ${EXT_LIBS} ${SPDLOG_LIBRARIES})
 endif(WIN32)
@@ -39,7 +39,6 @@ else(WIN32)
 set(EXT_LIBS ${EXT_LIBS} ${OPENGL_LIBRARIES})
 endif(WIN32)
 
-set(EXT_LIBS ${EXT_LIBS} spdlog::spdlog)
 set(EXT_INCLUDES ${EXT_INCLUDES} ${Assimp_DIR} ${spdlog_DIR})
 
 ###################################################################
