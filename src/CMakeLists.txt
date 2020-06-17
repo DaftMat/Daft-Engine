@@ -6,7 +6,11 @@ file(GLOB_RECURSE headers ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/gl45core/*.h ${C
 file(GLOB_RECURSE inlines ${CMAKE_CURRENT_SOURCE_DIR}/*.inl)
 
 #TODO: set up all the dependencies of your engine api down here
+if(WIN32)
 find_package(GLM CONFIG REQUIRED)
+set(EXT_LIBS ${EXT_LIBS} ${GLM_LIBRARIES})
+set(EXT_INCLUDES ${EXT_INCLUDES} ${GLM_DIR})
+endif(WIN32)
 
 find_package(Eigen3 CONFIG REQUIRED)
 
@@ -16,8 +20,8 @@ find_package(spdlog 1 CONFIG REQUIRED)
 
 find_package(OpenGL REQUIRED)
 
-set(EXT_LIBS ${EXT_LIBS} ${ASSIMP_LIBRARIES} spdlog::spdlog_header_only ${OPENGL_LIBRARIES} ${EIGEN_LIBRARIES} ${GLM_LIBRARIES})
-set(EXT_INCLUDES ${EXT_INCLUDES} ${Eigen3_DIR} ${GLM_DIR} ${Assimp_DIR} ${spdlog_DIR})
+set(EXT_LIBS ${EXT_LIBS} ${ASSIMP_LIBRARIES} spdlog::spdlog_header_only ${OPENGL_LIBRARIES} ${EIGEN_LIBRARIES})
+set(EXT_INCLUDES ${EXT_INCLUDES} ${Eigen3_DIR} ${Assimp_DIR} ${spdlog_DIR})
 
 ###################################################################
 
