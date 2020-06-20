@@ -1,7 +1,3 @@
-[![Build Status](https://travis-ci.com/Stardust-Softwares/Engine-Template.svg?branch=master)](https://travis-ci.com/Stardust-Softwares/Engine-Template)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/cd80344d5a064693bd3bc9e05692b60f)](https://www.codacy.com/gh/Stardust-Softwares/Engine-Template?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Stardust-Softwares/Engine-Template&amp;utm_campaign=Badge_Grade)
-[![Build status](https://ci.appveyor.com/api/projects/status/h6di0wgr2grw75ll?svg=true)](https://ci.appveyor.com/project/DaftMat/engine-template)
-
 # Engine-Template
 Template repository for any C++/OpenGL project. Uses GLFW for the context.
 To download this template, make sure you download the submodules as well :
@@ -38,17 +34,27 @@ $ brew install libomp glm eigen assimp spdlog glfw
 On windows using vcpkg (make sure vcpkg is [updated](https://vcpkg.readthedocs.io/en/latest/about/faq/#how-do-i-update-libraries)) :
 ```txt
 $ vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows spdlog:x64-windows glfw3:x64-windows
+$ vcpkg integrate install
 ```
+**Note:** the command vcpkg integrate install will give you a path to the vcpkg toolset, copy this path.
 
 ## Compiling & Executing
-To compile with this project configuration, run:
+### Compiling on Linux/MacOSX
 ```txt
 $ mkdir build
 $ cd build
 $ cmake ..
 $ make
 ```
-Then you can go and run the project from the `bin` folder:
+### Compiling on Windows (from powershell)
+```txt
+$ mkdir build
+$ cd build
+$ cmake -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -G "Visual Studio 16 2019" -A x64 ..
+$ cmake --build .
+```
+### Executing
+Then you can go and run the project from the `bin/Release` (or `bin/Debug`) folder:
 ```txt 
 $ ./<Your_Project_Name>
 ```
@@ -71,6 +77,14 @@ $ cd spdlog && mkdir build && cd build
 & cmake .. && make install
 ```
 This will install `spdlog` last version in `/usr/local/`, you'll then be able to compile the engine.
+
+## Continuous Integration
+Continuous Integration and automated code review is active on this project :
+¦ Application ¦ Status ¦
+¦ --- ¦ --- ¦
+¦ Travis ¦ [![Build Status](https://travis-ci.com/Stardust-Softwares/Engine-Template.svg?branch=master)](https://travis-ci.com/Stardust-Softwares/Engine-Template) ¦
+¦ Appveyor ¦ [![Build status](https://ci.appveyor.com/api/projects/status/h6di0wgr2grw75ll?svg=true)](https://ci.appveyor.com/project/DaftMat/engine-template) ¦
+¦ Codacy ¦ [![Build status](https://ci.appveyor.com/api/projects/status/h6di0wgr2grw75ll?svg=true)](https://ci.appveyor.com/project/DaftMat/engine-template) ¦
 ##
 
 
