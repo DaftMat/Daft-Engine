@@ -16,6 +16,7 @@ install:
 before_build:
   - vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows spdlog:x64-windows glfw3:x64-windows
   - vcpkg integrate install
+  - git submodule update --init --recursive
   - cmd: md build
   - cmd: cd build
 
