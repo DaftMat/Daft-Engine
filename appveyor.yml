@@ -1,12 +1,9 @@
 configuration: Release
 
+image: Visual Studio 2019
+
 environment:
   REPO_ROOT: C:\projects\Engine
-
-  matrix:
-    - APPVEYOT_BUILD_WORKER_IMAGE: Visual Studio 2019
-      MSVC_SETUP_PATH: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
-      MSVC_SETUP_ARGS: x64
 
 clone_folder: C:\projects\Engine
 
@@ -19,7 +16,6 @@ install:
 before_build:
   - vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows spdlog:x64-windows glfw3:x64-windows
   - vcpkg integrate install
-  - call "%MSVC_SETUP_PATH%" %MSVC_SETUP_ARGS%
   - cmd: md build
   - cmd: cd build
 
