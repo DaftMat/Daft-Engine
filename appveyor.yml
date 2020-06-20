@@ -1,6 +1,3 @@
-build:
-	verbosity: detailed
-
 configuration:
 	- Release
 
