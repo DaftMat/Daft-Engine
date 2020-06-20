@@ -14,8 +14,6 @@ GLFWExample::GLFWExample() {
 }
 
 void GLFWExample::loadExampleScene() {
-    auto dummy = ProjName::Core::Utils::Vector2(0.f, 0.f);
-
     APP_INFO("Loading example scene...");
     m_renderer->setShader(new ShaderProgram("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
 
