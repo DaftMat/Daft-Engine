@@ -1,5 +1,4 @@
-configuration:
-	- Release
+configuration: Release
 
 environment:
 	REPO_ROOT: C:\projects\Engine
