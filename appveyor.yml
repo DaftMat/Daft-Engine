@@ -5,8 +5,8 @@ environment:
 
   matrix:
     - APPVEYOT_BUILD_WORKER_IMAGE: Visual Studio 2019
-	  MSVC_SETUP_PATH: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
-	  MSVC_SETUP_ARGS: x64
+      MSVC_SETUP_PATH: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
+      MSVC_SETUP_ARGS: x64
 
 clone_floder: C:\projects\Engine
 
