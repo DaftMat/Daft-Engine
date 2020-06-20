@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.com/Stardust-Softwares/Engine-Template.svg?branch=master)](https://travis-ci.com/Stardust-Softwares/Engine-Template)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/cd80344d5a064693bd3bc9e05692b60f)](https://www.codacy.com/gh/Stardust-Softwares/Engine-Template?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Stardust-Softwares/Engine-Template&amp;utm_campaign=Badge_Grade)
+[![Build status](https://ci.appveyor.com/api/projects/status/h6di0wgr2grw75ll?svg=true)](https://ci.appveyor.com/project/DaftMat/engine-template)
 
 # Engine-Template
 Template repository for any C++/OpenGL project. Uses GLFW for the context.
