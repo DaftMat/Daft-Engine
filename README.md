@@ -53,6 +53,7 @@ $ cd build
 $ cmake -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -G "Visual Studio 16 2019" -A x64 ..
 $ cmake --build .
 ```
+**Note:** you can use the path you copied before, but make sure the *format* is the same as before.
 ### Executing
 Then you can go and run the project from the `bin/Release` (or `bin/Debug`) folder:
 ```txt 
