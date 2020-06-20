@@ -80,11 +80,12 @@ This will install `spdlog` last version in `/usr/local/`, you'll then be able to
 
 ## Continuous Integration
 Continuous Integration and automated code review is active on this project :
-¦ Application ¦ Status ¦
-¦ --- ¦ --- ¦
-¦ Travis ¦ [![Build Status](https://travis-ci.com/Stardust-Softwares/Engine-Template.svg?branch=master)](https://travis-ci.com/Stardust-Softwares/Engine-Template) ¦
-¦ Appveyor ¦ [![Build status](https://ci.appveyor.com/api/projects/status/h6di0wgr2grw75ll?svg=true)](https://ci.appveyor.com/project/DaftMat/engine-template) ¦
-¦ Codacy ¦ [![Build status](https://ci.appveyor.com/api/projects/status/h6di0wgr2grw75ll?svg=true)](https://ci.appveyor.com/project/DaftMat/engine-template) ¦
+
+| Application | Status |
+| --- | --- |
+| Travis | [![Build Status](https://travis-ci.com/Stardust-Softwares/Engine-Template.svg?branch=master)](https://travis-ci.com/Stardust-Softwares/Engine-Template) |
+| Appveyor | [![Build status](https://ci.appveyor.com/api/projects/status/h6di0wgr2grw75ll?svg=true)](https://ci.appveyor.com/project/DaftMat/engine-template) |
+| Codacy | [![Build status](https://ci.appveyor.com/api/projects/status/h6di0wgr2grw75ll?svg=true)](https://ci.appveyor.com/project/DaftMat/engine-template) |
 ##
 
 
