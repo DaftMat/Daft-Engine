@@ -1,7 +1,7 @@
 namespace ProjName::Core::Utils {
 
 template <int M, int N, typename T>
-constexpr glm::mat<M, N, T> toGlm(const Eigen::Matrix<T, M, N> &mat) noexcept {
+constexpr glm::mat<M, N, T> toGlm(const Eigen::Matrix<T, M, N, 0, M, N> &mat) noexcept {
     glm::mat<M, N, T> ret;
     for (int i = 0; i < M; ++i) {
         for (int j = 0; j < N; ++j) {
@@ -12,7 +12,7 @@ constexpr glm::mat<M, N, T> toGlm(const Eigen::Matrix<T, M, N> &mat) noexcept {
 }
 
 template <int M, typename T>
-constexpr glm::vec<M, T> toGlm(const Eigen::Matrix<T, M, 1> &vec) noexcept {
+constexpr glm::vec<M, T> toGlm(const Eigen::Matrix<T, M, 1, 0, M, 1> &vec) noexcept {
     glm::vec<M, T> ret;
     for (int i = 0; i < M; ++i) {
         ret[i] = vec(i);

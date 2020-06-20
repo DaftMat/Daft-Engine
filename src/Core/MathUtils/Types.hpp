@@ -13,61 +13,61 @@
  * This file gives a list of aliases to the engine programmer to use Eigen library with more comfort.
  */
 namespace ProjName::Core::Utils {
-/**
- * Vectors.
- */
-using VectorN = Eigen::Matrix<float, Eigen::Dynamic, 1>;
-using VectorNf = Eigen::VectorXf;
-using VectorNd = Eigen::VectorXd;
-using VectorNi = Eigen::VectorXi;
 
-using Vector4 = Eigen::Matrix<float, 4, 1>;
-using Vector4f = Eigen::Vector4f;
-using Vector4d = Eigen::Vector4d;
-using Vector4i = Eigen::Vector4i;
+	//
+	// Common vector types
+	//
+	using VectorN = Eigen::Matrix<float, Eigen::Dynamic, 1>;
+	using VectorNf = Eigen::VectorXf;
+	using VectorNd = Eigen::VectorXd;
 
-using Vector3 = Eigen::Matrix<float, 3, 1>;
-using Vector3f = Eigen::Vector3f;
-using Vector3d = Eigen::Vector3d;
-using Vector3i = Eigen::Vector3i;
+	using Vector4 = Eigen::Matrix<float, 4, 1>;
+	using Vector4f = Eigen::Vector4f;
+	using Vector4d = Eigen::Vector4d;
 
-using Vector2 = Eigen::Matrix<float, 2, 1>;
-using Vector2f = Eigen::Vector2f;
-using Vector2d = Eigen::Vector2d;
-using Vector2i = Eigen::Vector2i;
+	using Vector3 = Eigen::Matrix<float, 3, 1>;
+	using Vector3f = Eigen::Vector3f;
+	using Vector3d = Eigen::Vector3d;
 
-using VectorNui = Eigen::Matrix<unsigned int, Eigen::Dynamic, 1>;
-using Vector1ui = Eigen::Matrix<unsigned int, 1, 1>;
-using Vector2ui = Eigen::Matrix<unsigned int, 2, 1>;
-using Vector3ui = Eigen::Matrix<unsigned int, 3, 1>;
-using Vector4ui = Eigen::Matrix<unsigned int, 4, 1>;
+	using Vector2 = Eigen::Matrix<float, 2, 1>;
+	using Vector2f = Eigen::Vector2f;
+	using Vector2d = Eigen::Vector2d;
 
-/**
- * Ray.
- */
-using Ray = Eigen::ParametrizedLine<float, 3>;
-using Rayf = Eigen::ParametrizedLine<float, 3>;
-using Rayd = Eigen::ParametrizedLine<double, 3>;
+	using VectorNi = Eigen::VectorXi;
+	using Vector2i = Eigen::Vector2i;
+	using Vector3i = Eigen::Vector3i;
+	using Vector4i = Eigen::Vector4i;
 
-/**
- * Matrices.
- */
-using MatrixN = Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>;
-using Matrix4 = Eigen::Matrix<float, 4, 4>;
-using Matrix3 = Eigen::Matrix<float, 3, 3>;
-using Matrix2 = Eigen::Matrix<float, 2, 2>;
+	using VectorNui = Eigen::Matrix<unsigned int, Eigen::Dynamic, 1>;
+	using Vector1ui = Eigen::Matrix<unsigned int, 1, 1>;
+	using Vector2ui = Eigen::Matrix<unsigned int, 2, 1>;
+	using Vector3ui = Eigen::Matrix<unsigned int, 3, 1>;
+	using Vector4ui = Eigen::Matrix<unsigned int, 4, 1>;
 
-using MatrixNf = Eigen::MatrixXf;
-using Matrix4f = Eigen::Matrix4f;
-using Matrix3f = Eigen::Matrix3f;
-using Matrix2f = Eigen::Matrix2f;
+	using Ray = Eigen::ParametrizedLine<float, 3>;
+	using Rayf = Eigen::ParametrizedLine<float, 3>;
+	using Rayd = Eigen::ParametrizedLine<double, 3>;
 
-using MatrixNd = Eigen::MatrixXd;
-using Matrix4d = Eigen::Matrix4d;
-using Matrix3d = Eigen::Matrix3d;
-using Matrix2d = Eigen::Matrix2d;
+	//
+	// Common matrix types
+	//
 
-using MatrixNui = Eigen::Matrix<unsigned int, Eigen::Dynamic, Eigen::Dynamic>;
+	using MatrixN = Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>;
+	using Matrix4 = Eigen::Matrix<float, 4, 4>;
+	using Matrix3 = Eigen::Matrix<float, 3, 3>;
+	using Matrix2 = Eigen::Matrix<float, 2, 2>;
+
+	using MatrixNf = Eigen::MatrixXf;
+	using Matrix4f = Eigen::Matrix4f;
+	using Matrix3f = Eigen::Matrix3f;
+	using Matrix2f = Eigen::Matrix2f;
+
+	using MatrixNd = Eigen::MatrixXd;
+	using Matrix4d = Eigen::Matrix4d;
+	using Matrix3d = Eigen::Matrix3d;
+	using Matrix2d = Eigen::Matrix2d;
+
+	using MatrixNui = Eigen::Matrix<unsigned int, Eigen::Dynamic, Eigen::Dynamic>;
 
 using Diagonal = Eigen::DiagonalMatrix<float, Eigen::Dynamic>;
 using Sparse = Eigen::SparseMatrix<float>;

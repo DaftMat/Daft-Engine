@@ -20,7 +20,7 @@ namespace ProjName::Core::Utils {
  * @return matrix as a glm::mat.
  */
 template <int M, int N, typename T>
-constexpr glm::mat<M, N, T> toGlm(const Eigen::Matrix<T, M, N> &mat) noexcept;
+constexpr glm::mat<M, N, T> toGlm(const Eigen::Matrix<T, M, N, 0, M, N> &mat) noexcept;
 
 /**
  * Casts from Eigen::Vector to glm::vec.
@@ -30,7 +30,7 @@ constexpr glm::mat<M, N, T> toGlm(const Eigen::Matrix<T, M, N> &mat) noexcept;
  * @return vector as a glm::vec.
  */
 template <int M, typename T>
-constexpr glm::vec<M, T> toGlm(const Eigen::Matrix<T, M, 1> &vec) noexcept;
+constexpr glm::vec<M, T> toGlm(const Eigen::Matrix<T, M, 1, 0, M, 1> &vec) noexcept;
 
 /**
  * Casts from glm::mat to Eigen::Matrix.
