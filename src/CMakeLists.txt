@@ -43,7 +43,11 @@ set(EXT_INCLUDES ${EXT_INCLUDES} ${Assimp_DIR} ${spdlog_DIR})
 
 ###################################################################
 
+if(WIN32)
 add_library(${api_target} STATIC ${headers} ${sources} ${inlines})
+else(WIN32)
+add_library(${api_target} SHARED ${headers} ${sources} ${inlines})
+endif(WIN32)
 target_link_libraries(${api_target} PUBLIC ${EXT_LIBS})
 
 target_include_directories(${api_target} PUBLIC
