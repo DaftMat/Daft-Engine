@@ -34,7 +34,7 @@ endif(WIN32)
 
 find_package(OpenGL REQUIRED)
 if(WIN32)
-set(EXT_LIBS ${EXT_LIBS} opengl32)
+set(EXT_LIBS ${EXT_LIBS} opengl32 glu32)
 else(WIN32)
 set(EXT_LIBS ${EXT_LIBS} ${OPENGL_LIBRARIES})
 endif(WIN32)
@@ -43,7 +43,8 @@ set(EXT_INCLUDES ${EXT_INCLUDES} ${Assimp_DIR} ${spdlog_DIR})
 
 ###################################################################
 
-add_library(${api_target} SHARED ${headers} ${sources} ${inlines})
+add_library(${api_target} STATIC ${headers} ${sources} ${inlines})
+target_link_libraries(${api_target} PUBLIC ${EXT_LIBS})
 
 target_include_directories(${api_target} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
@@ -57,7 +58,6 @@ if (TRACE)
 target_compile_definitions(${api_target} PUBLIC "-DTRACE")
 endif(TRACE)
 
-target_link_libraries(${api_target} PUBLIC ${EXT_LIBS})
 
 set_target_properties(${api_target} PROPERTIES LINKER_LANGUAGE CXX)
 set_property(TARGET ${api_target} PROPERTY POSITION_INDEPENDENT_CODE ON)
