@@ -9,13 +9,11 @@ file(GLOB_RECURSE inlines ${CMAKE_CURRENT_SOURCE_DIR}/*.inl)
 if(WIN32)
 find_package(GLM CONFIG REQUIRED)
 set(EXT_LIBS ${EXT_LIBS} ${GLM_LIBRARIES})
-set(EXT_INCLUDES ${EXT_INCLUDES} ${GLM_DIR})
 endif(WIN32)
 
 find_package(Eigen3 CONFIG REQUIRED)
 if(WIN32)
 set(EXT_LIBS ${EXT_LIBS} Eigen3::Eigen)
-set(EXT_INCLUDES ${EXT_INCLUDES} ${Eigen3_DIR})
 endif(WIN32)
 
 find_package(assimp CONFIG REQUIRED)
@@ -39,8 +37,6 @@ else(WIN32)
 set(EXT_LIBS ${EXT_LIBS} ${OPENGL_LIBRARIES})
 endif(WIN32)
 
-set(EXT_INCLUDES ${EXT_INCLUDES} ${Assimp_DIR} ${spdlog_DIR})
-
 ###################################################################
 
 if(WIN32)
@@ -53,7 +49,6 @@ target_link_libraries(${api_target} PUBLIC ${EXT_LIBS})
 target_include_directories(${api_target} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_SOURCE_DIR}/3rdPartyLibs
-        ${EXT_INCLUDES}
         ${ENGINE_INCLUDES} PARENT_SCOPE)
 
 target_compile_definitions(${api_target} PUBLIC "-DDYNAMIC_LINK")
