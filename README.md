@@ -36,7 +36,7 @@ On windows using vcpkg (make sure vcpkg is [updated](https://vcpkg.readthedocs.i
 $ vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows spdlog:x64-windows glfw3:x64-windows
 $ vcpkg integrate install
 ```
-**Note:** the command vcpkg integrate install will give you a path to the vcpkg toolset, copy this path.
+**Note:** the command vcpkg integrate install will give you a path to the vcpkg toolchain, copy this path.
 
 ## Compiling & Executing
 ### Compiling on Linux/MacOSX
