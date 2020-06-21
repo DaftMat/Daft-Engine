@@ -3,7 +3,7 @@
 #include "GLFWExample.hpp"
 
 int main() {
-    ProjName::Core::Log::init();
+    stardust::core::Log::init();
 
     GLFWExample app;
     app.run();

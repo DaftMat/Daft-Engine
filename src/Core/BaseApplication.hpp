@@ -7,7 +7,7 @@
 #include <Minimal-Engine/Renderer.hpp>
 #include <memory>
 
-namespace ProjName::Core {
+namespace stardust::core {
 /**
  * This class is a base class for any application abstraction of the engine
  * @tparam WindowType - type of window to to create - see the examples
@@ -36,8 +36,8 @@ class ENGINE_API BaseApplication : public NonCopyable {
     virtual void draw(double deltatime) = 0;
 
    protected:
-    std::unique_ptr<Renderer> m_renderer;
-    std::unique_ptr<WindowType> m_window;
+    std::unique_ptr<Renderer> m_renderer;   ///< template renderer, replace with yours
+    std::unique_ptr<WindowType> m_window;   ///< your implementation of a windows context
 
     double m_lastTime{0};
 
@@ -47,4 +47,4 @@ class ENGINE_API BaseApplication : public NonCopyable {
     }
 };
 
-}  // namespace ProjName::Core
+}  // namespace stardust::core

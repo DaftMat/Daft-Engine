@@ -9,7 +9,7 @@
 #include "Mesh.hpp"
 #include "ShaderProgram.hpp"
 
-class ENGINE_API Renderer : public ProjName::Core::NonCopyable {
+class ENGINE_API Renderer : public stardust::core::NonCopyable {
    public:
     Renderer(int width, int height);
 

@@ -11,7 +11,7 @@
 /** Shader object base class.
  *
  */
-class ENGINE_API ShaderProgram : public ProjName::Core::NonCopyable {
+class ENGINE_API ShaderProgram : public stardust::core::NonCopyable {
    public:
     /**
      * Constructor.

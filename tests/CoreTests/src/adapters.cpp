@@ -6,10 +6,10 @@
 #include <Test.hpp>
 #include <algorithm>
 
-namespace ProjName::Testing {
+namespace stardust::testing {
 
 void run() {
-    using namespace Core::Utils;
+    using namespace core::utils;
     /// toGlm
     /// Vector2
     UNIT_VERIFY(toGlm(Vector2f(1.f, 5.f)) == glm::vec2(1.f, 5.f), "toGlm fails with Vector2f");
@@ -41,17 +41,17 @@ void run() {
     UNIT_VERIFY(Vector4i(-7, 2, -4, 6) == toEigen(glm::ivec4(-7, 2, -4, 6)), "toEigen fails with Vector4i");
 }
 
-}  // namespace ProjName::Testing
+}  // namespace stardust::testing
 
 int main(int argc, const char **argv) {
-    using namespace ProjName;
-    if (!Testing::init_testing(1, argv)) {
+    using namespace stardust;
+    if (!testing::init_testing(1, argv)) {
         return EXIT_FAILURE;
     }
 
 #pragma omp parallel for
-    for (int i = 0; i < Testing::g_repeat; ++i) {
-        CALL_SUBTEST((Testing::run()));
+    for (int i = 0; i < testing::g_repeat; ++i) {
+        CALL_SUBTEST((testing::run()));
     }
 
     return EXIT_SUCCESS;

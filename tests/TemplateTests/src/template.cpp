@@ -11,7 +11,7 @@
  * Just write the unit test you need and add the name of the file in the CMakeLists.txt of the testing dir by
  * calling the cmake function : add_test_file(fileName) (don't put the ".cpp").
  */
-namespace ProjName::Testing {
+namespace stardust::testing {
 /**
  * The run function : will be call by the test's main function a certain number of times (in parallel).
  *
@@ -32,17 +32,17 @@ void run() {
     UNIT_VERIFY(true, "dumpy test");
     /// ...
 }
-}  // namespace ProjName::Testing
+}  // namespace stardust::testing
 
 int main(int argc, const char **argv) {
-    using namespace ProjName;
-    if (!Testing::init_testing(1, argv)) {
+    using namespace stardust;
+    if (!testing::init_testing(1, argv)) {
         return EXIT_FAILURE;
     }
 
 #pragma omp parallel for
-    for (int i = 0; i < Testing::g_repeat; ++i) {
-        CALL_SUBTEST((Testing::run()));
+    for (int i = 0; i < testing::g_repeat; ++i) {
+        CALL_SUBTEST((testing::run()));
     }
 
     return EXIT_SUCCESS;

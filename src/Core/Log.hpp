@@ -7,7 +7,7 @@
 #include <API.hpp>
 #include <memory>
 
-namespace ProjName::Core {
+namespace stardust::core {
 
 /**
  * Logger class.
@@ -55,39 +55,39 @@ class ENGINE_API Log {
     static std::shared_ptr<spdlog::logger> m_appConsole;
 };
 
-}  // namespace ProjName::Core
+}  // namespace stardust::core
 
 /**
  * Macros using the Logger.
  */
 #define ENGINE_ERROR(...)                              \
-    ProjName::Core::Log::engine()->error(__VA_ARGS__); \
-    ProjName::Core::Log::engineConsole()->error(__VA_ARGS__)
+    stardust::core::Log::engine()->error(__VA_ARGS__); \
+    stardust::core::Log::engineConsole()->error(__VA_ARGS__)
 #define ENGINE_INFO(...)                              \
-    ProjName::Core::Log::engine()->info(__VA_ARGS__); \
-    ProjName::Core::Log::engineConsole()->info(__VA_ARGS__)
+    stardust::core::Log::engine()->info(__VA_ARGS__); \
+    stardust::core::Log::engineConsole()->info(__VA_ARGS__)
 #define ENGINE_WARN(...)                              \
-    ProjName::Core::Log::engine()->warn(__VA_ARGS__); \
-    ProjName::Core::Log::engineConsole()->warn(__VA_ARGS__)
+    stardust::core::Log::engine()->warn(__VA_ARGS__); \
+    stardust::core::Log::engineConsole()->warn(__VA_ARGS__)
 #define ENGINE_TRACE(...)                              \
-    ProjName::Core::Log::engine()->trace(__VA_ARGS__); \
-    ProjName::Core::Log::engineConsole()->trace(__VA_ARGS__)
+    stardust::core::Log::engine()->trace(__VA_ARGS__); \
+    stardust::core::Log::engineConsole()->trace(__VA_ARGS__)
 #define ENGINE_DEBUG(...)                              \
-    ProjName::Core::Log::engine()->debug(__VA_ARGS__); \
-    ProjName::Core::Log::engineConsole()->debug(__VA_ARGS__)
+    stardust::core::Log::engine()->debug(__VA_ARGS__); \
+    stardust::core::Log::engineConsole()->debug(__VA_ARGS__)
 
 #define APP_ERROR(...)                              \
-    ProjName::Core::Log::app()->error(__VA_ARGS__); \
-    ProjName::Core::Log::appConsole()->error(__VA_ARGS__)
+    stardust::core::Log::app()->error(__VA_ARGS__); \
+    stardust::core::Log::appConsole()->error(__VA_ARGS__)
 #define APP_INFO(...)                              \
-    ProjName::Core::Log::app()->info(__VA_ARGS__); \
-    ProjName::Core::Log::appConsole()->info(__VA_ARGS__)
+    stardust::core::Log::app()->info(__VA_ARGS__); \
+    stardust::core::Log::appConsole()->info(__VA_ARGS__)
 #define APP_WARN(...)                              \
-    ProjName::Core::Log::app()->warn(__VA_ARGS__); \
-    ProjName::Core::Log::appConsole()->warn(__VA_ARGS__)
+    stardust::core::Log::app()->warn(__VA_ARGS__); \
+    stardust::core::Log::appConsole()->warn(__VA_ARGS__)
 #define APP_TRACE(...)                              \
-    ProjName::Core::Log::app()->trace(__VA_ARGS__); \
-    ProjName::Core::Log::appConsole()->trace(__VA_ARGS__)
+    stardust::core::Log::app()->trace(__VA_ARGS__); \
+    stardust::core::Log::appConsole()->trace(__VA_ARGS__)
 #define APP_DEBUG(...)                              \
-    ProjName::Core::Log::app()->debug(__VA_ARGS__); \
-    ProjName::Core::Log::appConsole()->debug(__VA_ARGS__)
+    stardust::core::Log::app()->debug(__VA_ARGS__); \
+    stardust::core::Log::appConsole()->debug(__VA_ARGS__)

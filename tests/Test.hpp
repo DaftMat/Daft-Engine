@@ -17,7 +17,7 @@
 #define PP_MAKE_STRING2(S) #S
 #define PP_MAKE_STRING(S) PP_MAKE_STRING2(S)
 
-namespace ProjName::Testing {
+namespace stardust::testing {
 
 static std::vector<std::string> g_test_stack;
 static int g_repeat;
@@ -38,7 +38,7 @@ inline bool isApprox(const S& lhs, const S& rhs) {
 }
 
 #define UNIT_VERIFY(a, DESC)                                                                              \
-    ProjName::Testing::verify_impl(a, ProjName::Testing::g_test_stack.back().c_str(), __FILE__, __LINE__, \
+    stardust::testing::verify_impl(a, stardust::testing::g_test_stack.back().c_str(), __FILE__, __LINE__, \
                                    DESC)  // PP_MAKE_STRING(a))
 
 #if defined(_MSC_VER) && !defined(__INTEL_COMPILER)
@@ -49,9 +49,9 @@ inline bool isApprox(const S& lhs, const S& rhs) {
 
 #define CALL_SUBTEST(FUNC)                                                                               \
     do {                                                                                                 \
-        MYPRAGMA("omp critical") { ProjName::Testing::g_test_stack.emplace_back(PP_MAKE_STRING(FUNC)); } \
+        MYPRAGMA("omp critical") { stardust::testing::g_test_stack.emplace_back(PP_MAKE_STRING(FUNC)); } \
         FUNC;                                                                                            \
-        MYPRAGMA("omp critical") { ProjName::Testing::g_test_stack.pop_back(); }                         \
+        MYPRAGMA("omp critical") { stardust::testing::g_test_stack.pop_back(); }                         \
     } while (0)
 
 inline void set_repeat_from_string(const char* str) {
@@ -125,4 +125,4 @@ static bool init_testing(int argc, const char* argv[]) {
     return true;
 }
 
-}  // namespace ProjName::Testing
+}  // namespace stardust::testing

@@ -12,7 +12,7 @@
 /**
  * This file gives a list of aliases to the engine programmer to use Eigen library with more comfort.
  */
-namespace ProjName::Core::Utils {
+namespace stardust::core::utils {
 
 	//
 	// Common vector types
@@ -94,4 +94,4 @@ using AngleAxisd = Eigen::AngleAxisd;
 using Translation = Eigen::Translation<float, 3>;
 using Translationf = Eigen::Translation3f;
 using Translationd = Eigen::Translation3d;
-}  // namespace ProjName::Core::Utils
+}  // namespace stardust::core::utils
