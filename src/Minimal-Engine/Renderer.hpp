@@ -8,7 +8,7 @@
 #include <memory>
 #include <vector>
 
-class ENGINE_API Renderer : public stardust::core::NonCopyable {
+class ENGINE_API Renderer : public stardust::core::utils::NonCopyable {
    public:
     Renderer(int width, int height);
 

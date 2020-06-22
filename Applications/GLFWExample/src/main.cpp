@@ -4,7 +4,7 @@
 #include "GLFWExample.hpp"
 
 int main() {
-    stardust::core::Log::init();
+    stardust::core::utils::Log::init();
 
     GLFWExample app;
     app.run();

@@ -8,7 +8,7 @@
 
 #include "GLFWWindow.hpp"
 
-class ENGINE_API GLFWExample : public stardust::core::BaseApplication<GLFWWindow> {
+class ENGINE_API GLFWExample : public stardust::core::utils::BaseApplication<GLFWWindow> {
    public:
     GLFWExample();
     ~GLFWExample() override { APP_INFO("Application closed. Closing window..."); }
