@@ -3,11 +3,10 @@
 //
 #pragma once
 #include <API.hpp>
+#include <Core/Geometry/Mesh.hpp>
+#include <Core/Geometry/ShaderProgram.hpp>
 #include <memory>
 #include <vector>
-
-#include "Mesh.hpp"
-#include "ShaderProgram.hpp"
 
 class ENGINE_API Renderer : public stardust::core::NonCopyable {
    public:
@@ -29,16 +28,16 @@ class ENGINE_API Renderer : public stardust::core::NonCopyable {
 
     void resize(int width, int height);
 
-    void addMesh(std::vector<Mesh::Vertex> vertices, std::vector<GLuint> indices) noexcept {
+    void addMesh(std::vector<stardust::core::geometry::Mesh::Vertex> vertices, std::vector<GLuint> indices) noexcept {
         m_meshes.emplace_back(std::move_if_noexcept(vertices), std::move_if_noexcept(indices));
     }
 
-    void setShader(ShaderProgram *shaderProgram) { m_shader.reset(shaderProgram); }
+    void setShader(stardust::core::geometry::ShaderProgram *shaderProgram) { m_shader.reset(shaderProgram); }
 
    private:
     static bool GLinitialized;
     int m_width, m_height;
 
-    std::unique_ptr<ShaderProgram> m_shader{nullptr};
-    std::vector<Mesh> m_meshes;
+    std::unique_ptr<stardust::core::geometry::ShaderProgram> m_shader{nullptr};
+    std::vector<stardust::core::geometry::Mesh> m_meshes;
 };

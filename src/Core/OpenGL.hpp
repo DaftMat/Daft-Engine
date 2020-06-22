@@ -5,5 +5,4 @@
 
 #include <GLAD/gl45core/glad.h>
 
-
-#include <Core/MathUtils/Adapters.hpp>
+#include <Core/Utils/Adapters.hpp>

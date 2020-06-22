@@ -3,7 +3,7 @@
 //
 #include "Renderer.hpp"
 
-#include <Core/Log.hpp>
+#include <Core/Utils/Log.hpp>
 #include <iostream>
 
 Renderer &Renderer::operator=(Renderer &&other) noexcept {

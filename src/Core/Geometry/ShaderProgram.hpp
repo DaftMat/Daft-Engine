@@ -4,10 +4,11 @@
 #pragma once
 
 #include <API.hpp>
-#include <Core/NonCopyable.hpp>
 #include <Core/OpenGL.hpp>
+#include <Core/Utils/NonCopyable.hpp>
 #include <string>
 
+namespace stardust::core::geometry {
 /** Shader object base class.
  *
  */
@@ -125,3 +126,4 @@ class ENGINE_API ShaderProgram : public stardust::core::NonCopyable {
 
     GLuint m_id;
 };
+}  // namespace stardust::core::geometry

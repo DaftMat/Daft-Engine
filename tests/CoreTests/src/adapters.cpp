@@ -2,7 +2,7 @@
 // Created by mathis on 12/06/2020.
 //
 
-#include <Core/MathUtils/Adapters.hpp>
+#include <Core/Utils/Adapters.hpp>
 #include <Test.hpp>
 #include <algorithm>
 

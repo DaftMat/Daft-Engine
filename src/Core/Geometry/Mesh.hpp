@@ -4,10 +4,11 @@
 #pragma once
 
 #include <API.hpp>
-#include <Core/NonCopyable.hpp>
 #include <Core/OpenGL.hpp>
+#include <Core/Utils/NonCopyable.hpp>
 #include <vector>
 
+namespace stardust::core::geometry {
 /** mesh class.
  * a triangle based mesh that associates geometry and topology
  */
@@ -73,3 +74,4 @@ class ENGINE_API Mesh : public stardust::core::NonCopyable {
    private:
     GLuint m_vao, m_vbo, m_ebo, m_numVertex;
 };
+}  // namespace stardust::core::geometry

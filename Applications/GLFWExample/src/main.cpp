@@ -1,5 +1,6 @@
 
-#include <Core/Log.hpp>
+#include <Core/Utils/Log.hpp>
+
 #include "GLFWExample.hpp"
 
 int main() {

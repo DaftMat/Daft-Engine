@@ -4,10 +4,11 @@
 
 #include "ShaderProgram.hpp"
 
-#include <Core/Log.hpp>
+#include <Core/Utils/Log.hpp>
 #include <fstream>
 #include <iostream>
 
+namespace stardust::core::geometry {
 ShaderProgram::ShaderProgram(const char *vertexPath, const char *fragmentPath) {
     std::string vertexCode;
     std::string fragmentCode;
@@ -113,3 +114,4 @@ void ShaderProgram::checkLinkError(GLuint program) {
         ENGINE_ERROR("ERROR:PROGRAM_LINKING\n{0}", infoLog);
     }
 }
+}  // namespace stardust::core::geometry

@@ -3,7 +3,7 @@
 //
 #include "GLFWExample.hpp"
 
-#include <Core/Log.hpp>
+#include <Core/Utils/Log.hpp>
 
 GLFWExample::GLFWExample() {
     init(1600, 900);
@@ -15,11 +15,12 @@ GLFWExample::GLFWExample() {
 
 void GLFWExample::loadExampleScene() {
     APP_INFO("Loading example scene...");
-    m_renderer->setShader(new ShaderProgram("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
+    m_renderer->setShader(
+        new stardust::core::geometry::ShaderProgram("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
 
-    std::vector<Mesh::Vertex> vertices;
+    std::vector<stardust::core::geometry::Mesh::Vertex> vertices;
     std::vector<GLuint> indices{0, 2, 3, 0, 1, 2};
-    Mesh::Vertex vertex{};
+    stardust::core::geometry::Mesh::Vertex vertex{};
     vertex.texCoords = glm::vec2{0.f, 0.f};
     vertex.normal = {1.f, 1.f, 1.f};
     vertex.position = {-0.5f, -0.5f, 0.5f};

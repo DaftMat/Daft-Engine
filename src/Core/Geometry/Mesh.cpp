@@ -4,6 +4,7 @@
 
 #include "Mesh.hpp"
 
+namespace stardust::core::geometry {
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices) {
     m_numVertex = indices.size();
     int numVertices = vertices.size();
@@ -45,3 +46,4 @@ void Mesh::unbind() const {
     glDisableVertexAttribArray(2);
     glBindVertexArray(0);
 }
+}  // namespace stardust::core::geometry

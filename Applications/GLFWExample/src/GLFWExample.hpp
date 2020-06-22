@@ -3,8 +3,8 @@
 //
 #pragma once
 
-#include <Core/BaseApplication.hpp>
-#include <Core/Log.hpp>
+#include <Core/Utils/BaseApplication.hpp>
+#include <Core/Utils/Log.hpp>
 
 #include "GLFWWindow.hpp"
 
