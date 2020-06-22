@@ -6,6 +6,7 @@
 
 #include <Core/OpenGL.hpp>
 #include <Core/Utils/NonCopyable.hpp>
+#include <array>
 #include <string>
 
 namespace stardust::core::mat {
