@@ -4,7 +4,7 @@
 #pragma once
 #include <API.hpp>
 
-namespace stardust::core {
+namespace stardust::core::utils {
 
 /** base class for any non-copyable object.
  *
@@ -45,4 +45,4 @@ class ENGINE_API NonCopyable {
     NonCopyable &operator=(const NonCopyable &) noexcept = delete;
 };
 
-}  // namespace stardust::core
+}  // namespace stardust::core::utils

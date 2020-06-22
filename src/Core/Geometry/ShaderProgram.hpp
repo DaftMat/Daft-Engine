@@ -12,7 +12,7 @@ namespace stardust::core::geometry {
 /** Shader object base class.
  *
  */
-class ENGINE_API ShaderProgram : public stardust::core::NonCopyable {
+class ENGINE_API ShaderProgram : public utils::NonCopyable {
    public:
     /**
      * Constructor.

@@ -12,14 +12,14 @@ namespace stardust::core::mat {
  * A class which holds all the non-texture settings of a Material.
  * Such as diffuse color, specular color, roughness, ...
  */
-class SettingManager : public NonCopyable {
+class SettingManager : public utils::NonCopyable {
    public:
     /**
      * One non-texture material settings.
      * e.g. diffuse color, procedural textures, ...
      */
     template <typename T>
-    struct Setting : public NonCopyable {
+    struct Setting : public utils::NonCopyable {
         /**
          * Base constructor.
          * Creates an empty setting with a specific name.

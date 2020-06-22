@@ -12,7 +12,7 @@ namespace stardust::core::mat {
 /** texture class.
  * loads an image into an opengl texture.
  */
-class Texture : public NonCopyable {
+class Texture : public utils::NonCopyable {
    public:
     /**
      * Base constructor.

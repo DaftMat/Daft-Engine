@@ -7,7 +7,7 @@
 #include <Minimal-Engine/Renderer.hpp>
 #include <memory>
 
-namespace stardust::core {
+namespace stardust::core::utils {
 /**
  * This class is a base class for any application abstraction of the engine
  * @tparam WindowType - type of window to to create - see the examples
@@ -47,4 +47,4 @@ class ENGINE_API BaseApplication : public NonCopyable {
     }
 };
 
-}  // namespace stardust::core
+}  // namespace stardust::core::utils

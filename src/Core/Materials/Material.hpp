@@ -9,7 +9,7 @@
 #include "Texture.hpp"
 
 namespace stardust::core::mat {
-class Material : public NonCopyable {
+class Material : public utils::NonCopyable {
    public:
     /**
      * default constructor.

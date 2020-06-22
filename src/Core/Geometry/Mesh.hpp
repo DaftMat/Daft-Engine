@@ -12,7 +12,7 @@ namespace stardust::core::geometry {
 /** mesh class.
  * a triangle based mesh that associates geometry and topology
  */
-class ENGINE_API Mesh : public stardust::core::NonCopyable {
+class ENGINE_API Mesh : public utils::NonCopyable {
    public:
     /**
      * Intern structure of a vertex.

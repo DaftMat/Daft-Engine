@@ -7,7 +7,7 @@
 #include <API.hpp>
 #include <memory>
 
-namespace stardust::core {
+namespace stardust::core::utils {
 
 /**
  * Logger class.
@@ -55,39 +55,39 @@ class ENGINE_API Log {
     static std::shared_ptr<spdlog::logger> m_appConsole;
 };
 
-}  // namespace stardust::core
+}  // namespace stardust::core::utils
 
 /**
  * Macros using the Logger.
  */
-#define ENGINE_ERROR(...)                              \
-    stardust::core::Log::engine()->error(__VA_ARGS__); \
-    stardust::core::Log::engineConsole()->error(__VA_ARGS__)
-#define ENGINE_INFO(...)                              \
-    stardust::core::Log::engine()->info(__VA_ARGS__); \
-    stardust::core::Log::engineConsole()->info(__VA_ARGS__)
-#define ENGINE_WARN(...)                              \
-    stardust::core::Log::engine()->warn(__VA_ARGS__); \
-    stardust::core::Log::engineConsole()->warn(__VA_ARGS__)
-#define ENGINE_TRACE(...)                              \
-    stardust::core::Log::engine()->trace(__VA_ARGS__); \
-    stardust::core::Log::engineConsole()->trace(__VA_ARGS__)
-#define ENGINE_DEBUG(...)                              \
-    stardust::core::Log::engine()->debug(__VA_ARGS__); \
-    stardust::core::Log::engineConsole()->debug(__VA_ARGS__)
+#define ENGINE_ERROR(...)                                     \
+    stardust::core::utils::Log::engine()->error(__VA_ARGS__); \
+    stardust::core::utils::Log::engineConsole()->error(__VA_ARGS__)
+#define ENGINE_INFO(...)                                     \
+    stardust::core::utils::Log::engine()->info(__VA_ARGS__); \
+    stardust::core::utils::Log::engineConsole()->info(__VA_ARGS__)
+#define ENGINE_WARN(...)                                     \
+    stardust::core::utils::Log::engine()->warn(__VA_ARGS__); \
+    stardust::core::utils::Log::engineConsole()->warn(__VA_ARGS__)
+#define ENGINE_TRACE(...)                                     \
+    stardust::core::utils::Log::engine()->trace(__VA_ARGS__); \
+    stardust::core::utils::Log::engineConsole()->trace(__VA_ARGS__)
+#define ENGINE_DEBUG(...)                                     \
+    stardust::core::utils::Log::engine()->debug(__VA_ARGS__); \
+    stardust::core::utils::Log::engineConsole()->debug(__VA_ARGS__)
 
-#define APP_ERROR(...)                              \
-    stardust::core::Log::app()->error(__VA_ARGS__); \
-    stardust::core::Log::appConsole()->error(__VA_ARGS__)
-#define APP_INFO(...)                              \
-    stardust::core::Log::app()->info(__VA_ARGS__); \
-    stardust::core::Log::appConsole()->info(__VA_ARGS__)
-#define APP_WARN(...)                              \
-    stardust::core::Log::app()->warn(__VA_ARGS__); \
-    stardust::core::Log::appConsole()->warn(__VA_ARGS__)
-#define APP_TRACE(...)                              \
-    stardust::core::Log::app()->trace(__VA_ARGS__); \
-    stardust::core::Log::appConsole()->trace(__VA_ARGS__)
-#define APP_DEBUG(...)                              \
-    stardust::core::Log::app()->debug(__VA_ARGS__); \
-    stardust::core::Log::appConsole()->debug(__VA_ARGS__)
+#define APP_ERROR(...)                                     \
+    stardust::core::utils::Log::app()->error(__VA_ARGS__); \
+    stardust::core::utils::Log::appConsole()->error(__VA_ARGS__)
+#define APP_INFO(...)                                     \
+    stardust::core::utils::Log::app()->info(__VA_ARGS__); \
+    stardust::core::utils::Log::appConsole()->info(__VA_ARGS__)
+#define APP_WARN(...)                                     \
+    stardust::core::utils::Log::app()->warn(__VA_ARGS__); \
+    stardust::core::utils::Log::appConsole()->warn(__VA_ARGS__)
+#define APP_TRACE(...)                                     \
+    stardust::core::utils::Log::app()->trace(__VA_ARGS__); \
+    stardust::core::utils::Log::appConsole()->trace(__VA_ARGS__)
+#define APP_DEBUG(...)                                     \
+    stardust::core::utils::Log::app()->debug(__VA_ARGS__); \
+    stardust::core::utils::Log::appConsole()->debug(__VA_ARGS__)
