@@ -48,13 +48,13 @@ Texture::Texture(std::string name, const std::array<std::string, 6> &paths) : m_
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_id);
     int width, height, numChannels;
     for (int i = 0; i < 6; ++i) {
-        unsigned char *data = stbi_load(paths[(std::size_t)i].c_str(), &width, &height, &numChannels, 0);
+        unsigned char *data = stbi_load(paths.at(i).c_str(), &width, &height, &numChannels, 0);
         if (data) {
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE,
                          data);
             stbi_image_free(data);
         } else {
-            ENGINE_ERROR("Failed to load texture {0}", paths[(std::size_t)i]);
+            ENGINE_ERROR("Failed to load texture {0}", paths.at(i));
         }
     }
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
