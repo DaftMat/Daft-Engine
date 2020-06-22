@@ -47,9 +47,8 @@ Texture::Texture(std::string name, const std::array<std::string, 6> &paths) : m_
     glGenTextures(1, &m_id);
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_id);
     int width, height, numChannels;
-    unsigned char *data;
     for (int i = 0; i < 6; ++i) {
-        data = stbi_load(paths[i].c_str(), &width, &height, &numChannels, 0);
+        unsigned char *data = stbi_load(paths[i].c_str(), &width, &height, &numChannels, 0);
         if (data) {
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE,
                          data);
