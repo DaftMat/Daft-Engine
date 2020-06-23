@@ -12,14 +12,14 @@ namespace stardust::core::mat {
  * A class which holds all the non-texture settings of a Material.
  * Such as diffuse color, specular color, roughness, ...
  */
-class SettingManager : public utils::NonCopyable {
+class SettingManager {
    public:
     /**
      * One non-texture material settings.
      * e.g. diffuse color, procedural textures, ...
      */
     template <typename T>
-    struct Setting : public utils::NonCopyable {
+    struct Setting {
         /**
          * Base constructor.
          * Creates an empty setting with a specific name.
@@ -33,17 +33,6 @@ class SettingManager : public utils::NonCopyable {
          * @param pdata - data of the setting.
          */
         Setting(std::string pname, T pdata) : name(std::move(pname)), data{pdata} {}
-
-        /**
-         * Move constructor.
-         */
-        Setting(Setting<T> &&) noexcept = default;
-
-        /**
-         * Move assignment operator.
-         * @return reference to this.
-         */
-        Setting &operator=(Setting<T> &&) noexcept = default;
 
         /**
          * Equality rvalue operator.
@@ -79,17 +68,6 @@ class SettingManager : public utils::NonCopyable {
      * Default constructor.
      */
     SettingManager() noexcept = default;
-
-    /**
-     * Default move constructor.
-     */
-    SettingManager(SettingManager &&) noexcept = default;
-
-    /**
-     * Default move assignment operator.
-     * @return reference to this.
-     */
-    SettingManager &operator=(SettingManager &&) noexcept = default;
 
     /**
      * list of settings of type T.

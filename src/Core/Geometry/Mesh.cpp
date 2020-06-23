@@ -32,8 +32,8 @@ Mesh& Mesh::operator=(Mesh&& o) noexcept {
 void Mesh::prepare() const {
     if (!m_isVisible) return;
     glBindVertexArray(m_vao);
-    // for (auto i = 0ul ; i < m_attribManager.size() ; ++i)
-    // glEnableVertexAttribArray(i);
+    for (auto i = 0ul ; i < m_attribManager.size() ; ++i)
+        glEnableVertexAttribArray(i);
 }
 
 void Mesh::render(GLuint type) const {
@@ -43,14 +43,14 @@ void Mesh::render(GLuint type) const {
 
 void Mesh::unbind() const {
     if (!m_isVisible) return;
-    // for (auto i = 0ul ; i < m_attribManager.size() ; ++i)
-    // glDisableVertexAttribArray(i);
+    for (auto i = 0ul ; i < m_attribManager.size() ; ++i)
+        glDisableVertexAttribArray(i);
     glBindVertexArray(0);
 }
 
-void Mesh::reset(AttribManager attribManager, std::vector<GLuint> indices) {
-    m_attribManager = std::move(attribManager);
-    m_indices = std::move(indices);
+void Mesh::reset(const AttribManager &attribManager, const std::vector<GLuint> &indices) {
+    m_attribManager = attribManager;
+    m_indices = indices;
     m_numVertex = m_indices.size();
     m_vbos = std::vector<GLuint>(m_attribManager.size(), 0);
     m_isVisible = true;

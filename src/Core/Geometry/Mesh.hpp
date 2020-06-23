@@ -27,8 +27,8 @@ class ENGINE_API Mesh : public utils::NonCopyable {
      * @param attribManager - geometry of the mesh.
      * @param indices - topology of the mesh.
      */
-    Mesh(AttribManager attribManager, std::vector<GLuint> indices) {
-        reset(std::move(attribManager), std::move(indices));
+    Mesh(const AttribManager &attribManager, const std::vector<GLuint> &indices) {
+        reset(attribManager, indices);
     };
 
     /**
@@ -71,7 +71,7 @@ class ENGINE_API Mesh : public utils::NonCopyable {
      * @param attribManager - geometry
      * @param indices - topology
      */
-    void reset(AttribManager attribManager, std::vector<GLuint> indices);
+    void reset(const AttribManager &attribManager, const std::vector<GLuint> &indices);
 
     /**
      * Clears the mesh.
@@ -95,7 +95,7 @@ class ENGINE_API Mesh : public utils::NonCopyable {
     GLuint m_vao, m_ebo, m_numVertex;
     std::vector<GLuint> m_vbos;
     bool m_isVisible;
-    AttribManager m_attribManager{};
+    AttribManager m_attribManager;
     std::vector<GLuint> m_indices;
 };
 }  // namespace stardust::core::geometry
