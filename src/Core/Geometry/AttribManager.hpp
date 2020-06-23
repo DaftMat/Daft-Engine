@@ -25,7 +25,7 @@ class AttribManager : public utils::NonCopyable {
         /**
          * Default constructor.
          */
-        constexpr AttribHandler() = default;
+        AttribHandler() = default;
 
         /**
          * Standard constructor.
@@ -69,7 +69,7 @@ class AttribManager : public utils::NonCopyable {
     /**
      * Default constructor.
      */
-    AttribManager() noexcept = default;
+    AttribManager() noexcept : m_numAttribs{0} {}
 
     /**
      * Default move constructor.
@@ -126,7 +126,7 @@ class AttribManager : public utils::NonCopyable {
     template <typename T>
     inline void setAttrib(GLuint index, AttribHandler<T> *attrib);
 
-    GLuint m_numAttribs{0};
+    GLuint m_numAttribs;
 
     std::unordered_map<GLuint, AttribHandler<float>> m_floatAttribs;
     std::unordered_map<GLuint, AttribHandler<glm::vec2>> m_vec2Attribs;
