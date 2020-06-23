@@ -28,8 +28,8 @@ class ENGINE_API Renderer : public stardust::core::utils::NonCopyable {
 
     void resize(int width, int height);
 
-    void addMesh(std::vector<stardust::core::geometry::Mesh::Vertex> vertices, std::vector<GLuint> indices) noexcept {
-        m_meshes.emplace_back(std::move_if_noexcept(vertices), std::move_if_noexcept(indices));
+    void addMesh(stardust::core::geometry::AttribManager attribManager, std::vector<GLuint> indices) noexcept {
+        m_meshes.emplace_back(std::move_if_noexcept(attribManager), std::move_if_noexcept(indices));
     }
 
     void setShader(stardust::core::geometry::ShaderProgram *shaderProgram) { m_shader.reset(shaderProgram); }

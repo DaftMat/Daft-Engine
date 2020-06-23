@@ -18,26 +18,33 @@ void GLFWExample::loadExampleScene() {
     m_renderer->setShader(
         new stardust::core::geometry::ShaderProgram("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
 
-    std::vector<stardust::core::geometry::Mesh::Vertex> vertices;
+    stardust::core::geometry::AttribManager attribManager;
     std::vector<GLuint> indices{0, 2, 3, 0, 1, 2};
-    stardust::core::geometry::Mesh::Vertex vertex{};
-    vertex.texCoords = glm::vec2{0.f, 0.f};
-    vertex.normal = {1.f, 1.f, 1.f};
-    vertex.position = {-0.5f, -0.5f, 0.5f};
-    vertices.push_back(vertex);
-    vertex.texCoords = {1.f, 0.f};
-    vertex.normal = glm::vec3{1.f, 0.f, 0.f};
-    vertex.position = {0.5f, -0.5f, 0.f};
-    vertices.push_back(vertex);
-    vertex.texCoords = {1.f, 1.f};
-    vertex.normal = {0.f, 1.f, 0.f};
-    vertex.position = {0.5f, 0.5f, 0.f};
-    vertices.push_back(vertex);
-    vertex.texCoords = {0.f, 1.f};
-    vertex.normal = {0.f, 0.f, 1.f};
-    vertex.position = {-0.5f, 0.5f, 0.f};
-    vertices.push_back(vertex);
-    m_renderer->addMesh(vertices, indices);
+    std::vector<glm::vec3> positions;
+    std::vector<glm::vec3> normals;
+    std::vector<glm::vec2> texCoords;
+
+    texCoords.emplace_back(0.f, 0.f);
+    normals.emplace_back(1.f, 1.f, 1.f);
+    positions.emplace_back(-0.5f, -0.5f, 0.5f);
+
+    texCoords.emplace_back(1.f, 0.f);
+    normals.emplace_back(1.f, 0.f, 0.f);
+    positions.emplace_back(0.5f, -0.5f, 0.f);
+
+    texCoords.emplace_back(1.f, 1.f);
+    normals.emplace_back(0.f, 1.f, 0.f);
+    positions.emplace_back(0.5f, 0.5f, 0.f);
+
+    texCoords.emplace_back(0.f, 1.f);
+    normals.emplace_back(0.f, 0.f, 1.f);
+    positions.emplace_back(-0.5f, 0.5f, 0.f);
+
+    attribManager.addAttrib(positions);
+    attribManager.addAttrib(normals);
+    attribManager.addAttrib(texCoords);
+
+    m_renderer->addMesh(std::move(attribManager), std::move(indices));
     APP_INFO("Example scene loaded");
 }
 

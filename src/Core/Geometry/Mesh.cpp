@@ -5,45 +5,76 @@
 #include "Mesh.hpp"
 
 namespace stardust::core::geometry {
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices) {
-    m_numVertex = indices.size();
-    int numVertices = vertices.size();
-    glGenVertexArrays(1, &m_vao);
-    glGenBuffers(1, &m_vbo);
-    glGenBuffers(1, &m_ebo);
 
-    glBindVertexArray(m_vao);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Mesh::Vertex), std::move(vertices).data(), GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_numVertex * sizeof(GLuint), std::move(indices).data(), GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::Vertex), (void *)nullptr);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::Vertex), (void *)offsetof(Mesh::Vertex, normal));
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Mesh::Vertex), (void *)offsetof(Mesh::Vertex, texCoords));
-    glBindVertexArray(0);
+Mesh::Mesh(Mesh&& o) noexcept
+    : m_vao{o.m_vao},
+      m_ebo{o.m_ebo},
+      m_numVertex{o.m_numVertex},
+      m_vbos{std::move_if_noexcept(o.m_vbos)},
+      m_isVisible{o.m_isVisible},
+      m_attribManager{std::move_if_noexcept(o.m_attribManager)},
+      m_indices{std::move_if_noexcept(o.m_indices)} {
+    o.m_isVisible = false;
 }
 
-Mesh::~Mesh() {
-    glDeleteBuffers(1, &m_vbo);
-    glDeleteBuffers(1, &m_ebo);
-    glDeleteVertexArrays(1, &m_vao);
+Mesh& Mesh::operator=(Mesh&& o) noexcept {
+    m_vao = o.m_vao;
+    m_ebo = o.m_ebo;
+    m_numVertex = o.m_numVertex;
+    m_vbos = std::move_if_noexcept(o.m_vbos);
+    m_isVisible = o.m_isVisible;
+    m_attribManager = std::move_if_noexcept(o.m_attribManager);
+    m_indices = std::move_if_noexcept(o.m_indices);
+    o.m_isVisible = false;
+    return *this;
 }
 
 void Mesh::prepare() const {
+    if (!m_isVisible) return;
     glBindVertexArray(m_vao);
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
+    // for (auto i = 0ul ; i < m_attribManager.size() ; ++i)
+    // glEnableVertexAttribArray(i);
 }
 
-void Mesh::render(GLuint type) const { glDrawElements(type, m_numVertex, GL_UNSIGNED_INT, nullptr); }
+void Mesh::render(GLuint type) const {
+    if (!m_isVisible) return;
+    glDrawElements(type, m_numVertex, GL_UNSIGNED_INT, nullptr);
+}
 
 void Mesh::unbind() const {
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(2);
+    if (!m_isVisible) return;
+    // for (auto i = 0ul ; i < m_attribManager.size() ; ++i)
+    // glDisableVertexAttribArray(i);
     glBindVertexArray(0);
 }
+
+void Mesh::reset(AttribManager attribManager, std::vector<GLuint> indices) {
+    m_attribManager = std::move(attribManager);
+    m_indices = std::move(indices);
+    m_numVertex = m_indices.size();
+    m_vbos = std::vector<GLuint>(m_attribManager.size(), 0);
+    m_isVisible = true;
+
+    glGenVertexArrays(1, &m_vao);
+    glGenBuffers(m_attribManager.size(), m_vbos.data());
+    glGenBuffers(1, &m_ebo);
+
+    glBindVertexArray(m_vao);
+
+    m_attribManager.setAttribs(m_vbos);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_numVertex * sizeof(GLuint), m_indices.data(), GL_STATIC_DRAW);
+
+    glBindVertexArray(0);
+}
+void Mesh::clear() {
+    if (!m_isVisible) return;
+    m_isVisible = false;
+    glDeleteBuffers(m_attribManager.size(), m_vbos.data());
+    glDeleteBuffers(1, &m_ebo);
+    glDeleteVertexArrays(1, &m_vao);
+    m_attribManager.clear();
+}
+
 }  // namespace stardust::core::geometry

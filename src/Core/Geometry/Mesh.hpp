@@ -8,6 +8,8 @@
 #include <Core/Utils/NonCopyable.hpp>
 #include <vector>
 
+#include "AttribManager.hpp"
+
 namespace stardust::core::geometry {
 /** mesh class.
  * a triangle based mesh that associates geometry and topology
@@ -15,45 +17,38 @@ namespace stardust::core::geometry {
 class ENGINE_API Mesh : public utils::NonCopyable {
    public:
     /**
-     * Intern structure of a vertex.
-     */
-    struct Vertex {
-        glm::vec3 position;   ///< World position of the vertex.
-        glm::vec3 normal;     ///< Normal of the surface on the vertex.
-        glm::vec2 texCoords;  ///< Texture coordinates on the vertex.
-    };
-
-    /**
      * Default constructor.
      * Creates an non-existing mesh.
      */
-    constexpr Mesh() noexcept : m_vao{0}, m_vbo{0}, m_ebo{0}, m_numVertex{0} {}
+    Mesh() noexcept : m_vao{0}, m_ebo{0}, m_numVertex{0}, m_isVisible{false} {}
 
     /**
      * standard constructor.
-     * @param vertices - geometry of the mesh.
+     * @param attribManager - geometry of the mesh.
      * @param indices - topology of the mesh.
      */
-    Mesh(std::vector<Mesh::Vertex> vertices, std::vector<GLuint> indices);
+    Mesh(AttribManager attribManager, std::vector<GLuint> indices) {
+        reset(std::move(attribManager), std::move(indices));
+    };
 
     /**
      * destructor.
      * deletes OpenGL objects related to this mesh.
      */
-    ~Mesh();
+    ~Mesh() { clear(); }
 
     /**
      * Move constructor.
-     * @param other - mesh to move into this mesh.
+     * @param o - mesh to move into this mesh.
      */
-    Mesh(Mesh &&other) noexcept = default;
+    Mesh(Mesh &&o) noexcept;
 
     /**
      * Move assignment operator.
-     * @param other - mesh to move into this mesh.
-     * @return this mesh after it was assigned to the other.
+     * @param o - mesh to move into this mesh.
+     * @return reference to this.
      */
-    Mesh &operator=(Mesh &&other) noexcept = default;
+    Mesh &operator=(Mesh &&o) noexcept;
 
     /**
      * Prepares the mesh to be rendered.
@@ -71,7 +66,36 @@ class ENGINE_API Mesh : public utils::NonCopyable {
      */
     void unbind() const;
 
+    /**
+     * Resets the geometry of the mesh
+     * @param attribManager - geometry
+     * @param indices - topology
+     */
+    void reset(AttribManager attribManager, std::vector<GLuint> indices);
+
+    /**
+     * Clears the mesh.
+     * deletes all opengl objects.
+     */
+    void clear();
+
+    /**
+     * AttribManager const ref getter.
+     * @return const reference to the AttribManager.
+     */
+    const AttribManager &attribManager() const { return m_attribManager; }
+
+    /**
+     * AttribManager ref getter.
+     * @return reference to the AttribManager.
+     */
+    AttribManager &attribManager() { return m_attribManager; }
+
    private:
-    GLuint m_vao, m_vbo, m_ebo, m_numVertex;
+    GLuint m_vao, m_ebo, m_numVertex;
+    std::vector<GLuint> m_vbos;
+    bool m_isVisible;
+    AttribManager m_attribManager{};
+    std::vector<GLuint> m_indices;
 };
 }  // namespace stardust::core::geometry
