@@ -69,6 +69,7 @@ jobs:
   include:
     # mac clang Release
     - env:
+        - PREFIX_PATH="/usr/local/opt/qt/lib/cmake"
         - BUILD_TYPE=Release
         - BUILD_DOC=Off
         - MATRIX_EVAL=""
@@ -77,6 +78,7 @@ jobs:
 
     # linx clang Release
     - env:
+        - PREFIX_PATH="~/Qt/5.11.0/gcc_64/lib/cmake"
         - BUILD_TYPE=Release
         - CLANG_VERSION=9
         - BUILD_DOC=Off
@@ -87,6 +89,7 @@ jobs:
 
     # linx gcc Release
     - env:
+        - PREFIX_PATH="~/Qt/5.11.0/gcc_64/lib/cmake"
         - BUILD_TYPE=Release
         - GCC_VERSION=9
         - BUILD_DOC=Off
@@ -99,4 +102,4 @@ install:
   - cd $CHECKOUT_PATH
   - mkdir -p build
   - cd build
-  - cmake .. -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
+  - cmake .. -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_PREFIX_PATH=${PREFIX_PATH}
