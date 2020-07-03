@@ -16,8 +16,8 @@ addons:
     update: true
     packages:
       - util-linux
-      - clang-5.0
-      - g++-7
+      - clang-9.0
+      - g++-9
       - cmake
       - libomp-dev
       - libgl1-mesa-dev
@@ -34,7 +34,7 @@ addons:
       - libglfw3-dev
     sources:
       - ubuntu-toolchain-r-test
-      - llvm-toolchain-bionic-5.0
+      - llvm-toolchain-bionic-9.0
   homebrew:
     update: true
     packages:
@@ -44,6 +44,7 @@ addons:
       - assimp
       - spdlog
       - glfw
+      - qt
 
 before_install:
   - export CHECKOUT_PATH=`pwd`;
@@ -57,6 +58,11 @@ before_install:
       git clone --recurse-submodules https://github.com/gabime/spdlog.git
       cd spdlog && mkdir build && cd build
       cmake .. && sudo make -j16 install
+
+      sudo add-apt-repository --yes ppa:beineri/opt-qt-5.11.0-bionic
+      sudo apt --yes update
+      sudo apt --yes install qt511-meta-minimal qt511svg
+      source /opt/qt511/bin/qt511-env.sh
     fi;
 
 jobs:
@@ -72,7 +78,7 @@ jobs:
     # linx clang Release
     - env:
         - BUILD_TYPE=Release
-        - CLANG_VERSION=5.0
+        - CLANG_VERSION=9.0
         - BUILD_DOC=Off
         - MATRIX_EVAL=""
       os: linux
@@ -82,7 +88,7 @@ jobs:
     # linx gcc Release
     - env:
         - BUILD_TYPE=Release
-        - GCC_VERSION=7
+        - GCC_VERSION=9
         - BUILD_DOC=Off
         - MATRIX_EVAL=""
       os: linux
