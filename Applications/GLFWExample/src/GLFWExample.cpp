@@ -44,7 +44,7 @@ void GLFWExample::loadExampleScene() {
     attribManager.addAttrib(normals);
     attribManager.addAttrib(texCoords);
 
-    m_renderer->addMesh(std::move(attribManager), std::move(indices));
+    m_renderer->addMesh(attribManager, indices);
     APP_INFO("Example scene loaded");
 }
 

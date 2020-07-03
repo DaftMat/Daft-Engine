@@ -70,7 +70,6 @@ template <typename T>
 void AttribManager::setAttrib(GLuint index, AttribManager::AttribHandler<T>* attrib) {
     glBufferData(GL_ARRAY_BUFFER, attrib->size(), attrib->attribs.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(index, attrib->dataSize(), GL_FLOAT, GL_FALSE, attrib->stride(), (void*)nullptr);
-    glEnableVertexAttribArray(index);
 }
 
 void AttribManager::clear() noexcept {

@@ -14,14 +14,14 @@ namespace stardust::core::geometry {
 /**
  * A class that holds a list for each attributes of a Mesh
  */
-class AttribManager : public utils::NonCopyable {
+class AttribManager {
    public:
     /**
      * The list wrapper for one attribute buffer.
      * @tparam T - type of the attributes.
      */
     template <typename T>
-    struct AttribHandler : public utils::NonCopyable {
+    struct AttribHandler {
         /**
          * Default constructor.
          */
@@ -32,17 +32,6 @@ class AttribManager : public utils::NonCopyable {
          * @param pattribs - list of attributes.
          */
         explicit AttribHandler(std::vector<T> pattribs) noexcept : attribs{std::move_if_noexcept(pattribs)} {}
-
-        /**
-         * Move constructor.
-         */
-        AttribHandler(AttribHandler &&) noexcept = default;
-
-        /**
-         * Move assignment operator.
-         * @return reference to this.
-         */
-        AttribHandler &operator=(AttribHandler &&) noexcept = default;
 
         /**
          * Stride of the attributes (i.e. size of one attribute).
@@ -70,16 +59,6 @@ class AttribManager : public utils::NonCopyable {
      * Default constructor.
      */
     AttribManager() noexcept : m_numAttribs{0} {}
-
-    /**
-     * Default move constructor.
-     */
-    AttribManager(AttribManager &&) noexcept = default;
-
-    /**
-     * Default move assignment operator.
-     */
-    AttribManager &operator=(AttribManager &&) noexcept = default;
 
     /**
      * Adds an empty attribute buffer to the manager.
