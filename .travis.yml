@@ -16,7 +16,7 @@ addons:
     update: true
     packages:
       - util-linux
-      - clang-9.0
+      - clang-9
       - g++-9
       - cmake
       - libomp-dev
@@ -34,7 +34,7 @@ addons:
       - libglfw3-dev
     sources:
       - ubuntu-toolchain-r-test
-      - llvm-toolchain-bionic-9.0
+      - llvm-toolchain-bionic-9
   homebrew:
     update: true
     packages:
@@ -78,7 +78,7 @@ jobs:
     # linx clang Release
     - env:
         - BUILD_TYPE=Release
-        - CLANG_VERSION=9.0
+        - CLANG_VERSION=9
         - BUILD_DOC=Off
         - MATRIX_EVAL=""
       os: linux
