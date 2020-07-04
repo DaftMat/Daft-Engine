@@ -13,7 +13,7 @@ namespace stardust::core::utils {
  * @tparam WindowType - type of window to to create - see the examples
  * GLFWExample and GLFWWindow
  */
-template <typename WindowType>
+template <typename WindowType, typename RendererType>
 class ENGINE_API BaseApplication : public NonCopyable {
    public:
     /**
@@ -36,14 +36,14 @@ class ENGINE_API BaseApplication : public NonCopyable {
     virtual void draw(double deltatime) = 0;
 
    protected:
-    std::unique_ptr<Renderer> m_renderer;  ///< template renderer, replace with yours
-    std::unique_ptr<WindowType> m_window;  ///< your implementation of a windows context
+    std::unique_ptr<RendererType> m_renderer;  ///< your implementation of a renderer
+    std::unique_ptr<WindowType> m_window;      ///< your implementation of a windows context
 
     double m_lastTime{0};
 
     void init(int width, int height) {
         m_window = std::make_unique<WindowType>(width, height);
-        m_renderer = std::make_unique<Renderer>(width, height);
+        m_renderer = std::make_unique<RendererType>(width, height);
     }
 };
 
