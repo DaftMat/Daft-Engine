@@ -34,6 +34,8 @@ class ENGINE_API Renderer : public stardust::core::utils::NonCopyable {
 
     void setShader(stardust::core::geometry::ShaderProgram *shaderProgram) { m_shader.reset(shaderProgram); }
 
+    [[nodiscard]] const stardust::core::geometry::ShaderProgram &shader() const { return *m_shader; }
+
    private:
     static bool GLinitialized;
     int m_width, m_height;

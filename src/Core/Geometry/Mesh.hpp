@@ -11,7 +11,8 @@
 #include "AttribManager.hpp"
 
 namespace stardust::core::geometry {
-/** mesh class.
+/**
+ * mesh class.
  * a triangle based mesh that associates geometry and topology
  */
 class ENGINE_API Mesh : public utils::NonCopyable {
@@ -27,9 +28,7 @@ class ENGINE_API Mesh : public utils::NonCopyable {
      * @param attribManager - geometry of the mesh.
      * @param indices - topology of the mesh.
      */
-    Mesh(const AttribManager &attribManager, const std::vector<GLuint> &indices) {
-        reset(attribManager, indices);
-    };
+    Mesh(const AttribManager &attribManager, const std::vector<GLuint> &indices) { reset(attribManager, indices); };
 
     /**
      * destructor.

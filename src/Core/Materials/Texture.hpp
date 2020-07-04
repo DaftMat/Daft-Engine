@@ -10,7 +10,8 @@
 #include <string>
 
 namespace stardust::core::mat {
-/** texture class.
+/**
+ * texture class.
  * loads an image into an opengl texture.
  */
 class Texture : public utils::NonCopyable {

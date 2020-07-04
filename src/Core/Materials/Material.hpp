@@ -9,6 +9,9 @@
 #include "Texture.hpp"
 
 namespace stardust::core::mat {
+/**
+ * surface appearance data of an object.
+ */
 class Material : public utils::NonCopyable {
    public:
     /**

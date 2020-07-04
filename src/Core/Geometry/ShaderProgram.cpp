@@ -9,7 +9,7 @@
 #include <iostream>
 
 namespace stardust::core::geometry {
-ShaderProgram::ShaderProgram(const char *vertexPath, const char *fragmentPath) {
+ShaderProgram::ShaderProgram(const char *vertexPath, const char *fragmentPath) : m_isValid{true} {
     std::string vertexCode;
     std::string fragmentCode;
 
@@ -59,39 +59,71 @@ ShaderProgram::ShaderProgram(const char *vertexPath, const char *fragmentPath) {
     glDeleteShader(fragment);
 }
 
-void ShaderProgram::setBool(const std::string &name, bool value) const {
+ShaderProgram::ShaderProgram(ShaderProgram &&other) noexcept : m_id{other.m_id}, m_isValid{other.m_isValid} {
+    other.m_isValid = false;
+}
+
+ShaderProgram &ShaderProgram::operator=(ShaderProgram &&other) noexcept {
+    m_id = other.m_id;
+    m_isValid = other.m_isValid;
+    other.m_isValid = false;
+    return *this;
+}
+
+ShaderProgram::~ShaderProgram() noexcept {
+    if (!m_isValid) return;
+    glDeleteProgram(m_id);
+}
+
+void ShaderProgram::use() const noexcept {
+    if (!m_isValid) return;
+    glUseProgram(m_id);
+}
+
+void ShaderProgram::stop() const noexcept { glUseProgram(0); }
+
+void ShaderProgram::setBool(const std::string &name, bool value) const noexcept {
+    if (!m_isValid) return;
     glUniform1i(glGetUniformLocation(m_id, name.c_str()), (GLuint)value);
 }
 
-void ShaderProgram::setInt(const std::string &name, int value) const {
+void ShaderProgram::setInt(const std::string &name, int value) const noexcept {
+    if (!m_isValid) return;
     glUniform1i(glGetUniformLocation(m_id, name.c_str()), value);
 }
 
-void ShaderProgram::setFloat(const std::string &name, float value) const {
+void ShaderProgram::setFloat(const std::string &name, float value) const noexcept {
+    if (!m_isValid) return;
     glUniform1f(glGetUniformLocation(m_id, name.c_str()), value);
 }
 
-void ShaderProgram::setVec2(const std::string &name, const glm::vec2 &value) const {
+void ShaderProgram::setVec2(const std::string &name, const glm::vec2 &value) const noexcept {
+    if (!m_isValid) return;
     glUniform2fv(glGetUniformLocation(m_id, name.c_str()), 1, glm::value_ptr(value));
 }
 
-void ShaderProgram::setVec3(const std::string &name, const glm::vec3 &value) const {
+void ShaderProgram::setVec3(const std::string &name, const glm::vec3 &value) const noexcept {
+    if (!m_isValid) return;
     glUniform3fv(glGetUniformLocation(m_id, name.c_str()), 1, glm::value_ptr(value));
 }
 
-void ShaderProgram::setVec4(const std::string &name, const glm::vec4 &value) const {
+void ShaderProgram::setVec4(const std::string &name, const glm::vec4 &value) const noexcept {
+    if (!m_isValid) return;
     glUniform4fv(glGetUniformLocation(m_id, name.c_str()), 1, glm::value_ptr(value));
 }
 
-void ShaderProgram::setMat2(const std::string &name, const glm::mat2 &value) const {
+void ShaderProgram::setMat2(const std::string &name, const glm::mat2 &value) const noexcept {
+    if (!m_isValid) return;
     glUniformMatrix2fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
-void ShaderProgram::setMat3(const std::string &name, const glm::mat3 &value) const {
+void ShaderProgram::setMat3(const std::string &name, const glm::mat3 &value) const noexcept {
+    if (!m_isValid) return;
     glUniformMatrix3fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
-void ShaderProgram::setMat4(const std::string &name, const glm::mat4 &value) const {
+void ShaderProgram::setMat4(const std::string &name, const glm::mat4 &value) const noexcept {
+    if (!m_isValid) return;
     glUniformMatrix4fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
