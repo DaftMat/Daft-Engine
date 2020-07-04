@@ -47,7 +47,7 @@ $ vcpkg integrate install
 **Note:** the command vcpkg integrate install will give you a path to the vcpkg toolchain, copy this path.
 
 ## Compiling & Executing
-You can chose the OpenGL version you want to use by setting the variable `GLAD_VERSION` to it (from `gl33core` to `gl46core`).
+You can choose the OpenGL version you want to use by setting the variable `GLAD_VERSION` to it (from `gl33core` to `gl46core`).
 If you chose to not specify a version, it's on `gl46core` by default.
 ### Compiling on Linux/MacOSX
 ```txt
