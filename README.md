@@ -19,18 +19,26 @@ $ git clone --recurse-submodules https://github.com/Stardust-Softwares/Engine-Te
  - [Assimp](https://github.com/assimp/assimp)
  - [spdlog](https://github.com/gabime/spdlog)
  - [GLFW3](https://github.com/glfw/glfw)
+ - [Qt5](https://www.qt.io/download-open-source?hsCtaTracking=9f6a2170-a938-42df-a8e2-a9f0b1d6cdce%7C6cb0de4f-9bb5-4778-ab02-bfb62735f3e5)
  
 #### How to install deps
+**Note:** Use the Qt5 link to install it on windows or linux.
+
+###
 On linux using apt package manager :
 ```txt
 $ sudo apt update
 $ sudo apt install libomp-dev libgl1-mesa-dev libglu1-mesa-dev xorg-dev libxrandr-dev libxcb-randr0-dev libxinerama-dev libglm-dev libassimp-dev libeigen3-dev libglew-dev libglfw3-dev
 ```
+
+##
 On mac using homebrew :
 ```txt
 $ brew update
-$ brew install libomp glm eigen assimp spdlog glfw
+$ brew install libomp glm eigen assimp spdlog glfw qt
 ```
+
+##
 On windows using vcpkg (make sure vcpkg is [updated](https://vcpkg.readthedocs.io/en/latest/about/faq/#how-do-i-update-libraries)) :
 ```txt
 $ vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows spdlog:x64-windows glfw3:x64-windows
@@ -61,6 +69,8 @@ $ ./<Your_Project_Name>
 ```
 
 ### Troubleshooting
+#### spdlog not found
+
 On some distrib, the apt package `libspdlog-dev` will be outdated. 
 
 The `cmake ..` command will then output something like that :
@@ -78,6 +88,37 @@ $ cd spdlog && mkdir build && cd build
 & cmake .. && make install
 ```
 This will install `spdlog` last version in `/usr/local/`, you'll then be able to compile the engine.
+
+#### Qt5 not found:
+
+For some reasons, Qt5 could be not found by cmake, which will output the following error:
+```txt
+Could not find a package configuration file provided by "Qt5" with any of
+the following names:
+    Qt5Config.cmake
+    qt5-config.cmake
+Add the installation prefix of "Qt5" to CMAKE_PREFIX_PATH or set "Qt5_DIR"
+to a directory containing one of the above files.  If "Qt5" provides a
+separate development package or SDK, be sure it has been installed.
+```
+The problem is solved by setting the cmake variable `Qt5_DIR` to the installation directory of Qt5.
+
+The cmake command will then look like this:
+
+- On **linux**:
+```txt
+$ cmake -DQt5_DIR="/path/to/Qt/5.x.y/gcc_64/" ..
+```
+
+- On **macos**:
+```txt
+$ cmake -DQt5_DIR="/path/to/Qt/" ..
+```
+
+- On **windows**:
+```txt
+$ cmake -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -DQt5_DIR="C:/path/to/Qt/5.x.y/msvc2019_64"
+```
 
 ## Continuous Integration
 Continuous Integration and automated code review is active on this project :
