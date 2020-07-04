@@ -21,6 +21,7 @@ GLFWWindow::GLFWWindow(int width, int height) {
     glfwMakeContextCurrent(m_window);
     glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
     APP_INFO("Window created.");
+    m_renderer = std::make_unique<Renderer>(width, height);
 }
 
 void GLFWWindow::finish() {
@@ -31,6 +32,7 @@ void GLFWWindow::finish() {
 std::function<void(int, int)> GLFWWindow::m_framebufferCallback{[](int, int) {}};
 
 void GLFWWindow::terminate() {
+    m_renderer.reset();
     glfwDestroyWindow(m_window);
     glfwTerminate();
     APP_INFO("Window closed. Leaving now.");

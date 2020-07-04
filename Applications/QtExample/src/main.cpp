@@ -1,12 +1,15 @@
 
 #include <Core/Utils/Log.hpp>
-//#include <Minimal-Engine/Renderer.hpp>
+#include <QApplication>
 
-int main() {
+#include "mainwindow.h"
+
+int main(int argc, char **argv) {
     stardust::core::utils::Log::init();
 
-    // Renderer renderer(1200, 600);
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
 
-    APP_INFO("Hello Qt world!");
-    return 0;
+    return a.exec();
 }

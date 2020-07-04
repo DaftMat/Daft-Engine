@@ -10,9 +10,11 @@
 
 class ENGINE_API Renderer : public stardust::core::utils::NonCopyable {
    public:
+    Renderer() = default;
+
     Renderer(int width, int height);
 
-    ~Renderer() { m_shader.reset(); }
+    ~Renderer() = default;
 
     Renderer(Renderer &&other) noexcept
         : m_width{other.m_width},
@@ -38,7 +40,7 @@ class ENGINE_API Renderer : public stardust::core::utils::NonCopyable {
 
    private:
     static bool GLinitialized;
-    int m_width, m_height;
+    int m_width{0}, m_height{0};
 
     std::unique_ptr<stardust::core::geometry::ShaderProgram> m_shader{nullptr};
     std::vector<stardust::core::geometry::Mesh> m_meshes;
