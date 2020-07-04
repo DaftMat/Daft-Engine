@@ -2,12 +2,12 @@
 // Created by mathis on 24/05/2020.
 //
 #pragma once
-
-#include <GLFW/glfw3.h>
-
+// clang-format off
 #include <API.hpp>
 #include <Minimal-Engine/Renderer.hpp>
+#include <GLFW/glfw3.h>
 #include <functional>
+// clang-format on
 
 class ENGINE_API GLFWWindow {
    public:
