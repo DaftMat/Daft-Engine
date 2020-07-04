@@ -13,7 +13,7 @@ GLFWWindow::GLFWWindow(int width, int height) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, GL_MINOR);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    m_window = glfwCreateWindow(width, height, "Engine Example Works !", nullptr, nullptr);
+    m_window = glfwCreateWindow(width, height, "GLFW Example Works !", nullptr, nullptr);
     if (m_window == nullptr) {
         APP_ERROR("Failed to create GLFW window.");
         glfwTerminate();

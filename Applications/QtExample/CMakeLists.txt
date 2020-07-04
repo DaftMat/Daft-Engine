@@ -1,16 +1,21 @@
-#TODO: replace exampleApp with your application name
-set(app_target glfwExample)
+set(app_target qtExample)
 
-#TODO: load the library you need in addition to your engine (Qt, GLFW, ...)
-#GLFW
-find_package(glfw3 CONFIG REQUIRED)
+#Qt5
+find_package(Qt5 COMPONENTS OpenGL CONFIG REQUIRED)
 
-set(EXT_LIBS glfw)
+set(EXT_LIBS Qt5::OpenGL)
+if(WIN32)
+    set(EXT_LIBS ${EXT_LIBS} libdl)
+else(WIN32)
+    set(EXT_LIBS ${EXT_LIBS} libdl.so)
+endif(WIN32)
 
 file(GLOB sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
 file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 
 add_executable(${app_target} ${sources} ${headers})
+
+#include_directories(${Qt5_DIR})
 
 target_link_libraries(${app_target} ${ENGINE_LIBRARIES} ${EXT_LIBS})
 add_dependencies(${app_target} ${ENGINE_API})
