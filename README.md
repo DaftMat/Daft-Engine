@@ -112,12 +112,13 @@ $ cmake -DQt5_DIR="/path/to/Qt/5.x.y/gcc_64/" ..
 
 - On **macos**:
 ```txt
-$ cmake -DQt5_DIR="/path/to/Qt/lib/cmake" ..
+$ cmake -DCMAKE_PREFIX_PATH="/usr/local/otp/qt/lib/cmake" ..
 ```
 
 - On **windows**:
 ```txt
-$ cmake -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -DQt5_DIR="C:/path/to/Qt/5.x.y/msvc2019_64" -G "Visual Studio 16 2019" -A x64 ..
+$ set Qt5_DIR="C:\path\to\qt\5.x.y\msvc2019_64"
+$ cmake -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -G "Visual Studio 16 2019" -A x64 ..
 ```
 
 ## Continuous Integration
