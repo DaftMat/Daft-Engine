@@ -8,7 +8,7 @@ environment:
 clone_folder: C:\projects\Engine
 
 install:
-  - set QTDIR=C:\Qt\5.10.1\msvc2019_64
+  - set Qt5_DIR=C:\Qt\5.15.0\msvc2019_64
   - cd C:\Tools\vcpkg
   - git pull
   - .\bootstrap-vcpkg.bat
@@ -22,6 +22,6 @@ before_build:
   - cmd: cd build
 
 build_script:
-  - cmake -DCMAKE_TOOLCHAIN_FILE="C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_PREFIX_PATH="%QTDIR%" -G "Visual Studio 16 2019" -A x64 ..
+  - cmake -DCMAKE_TOOLCHAIN_FILE="C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake" -G "Visual Studio 16 2019" -A x64 ..
   - cmake --build . --target buildtests
   - ctest -C %configuration%
