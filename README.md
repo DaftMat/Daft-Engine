@@ -48,7 +48,7 @@ $ vcpkg integrate install
 
 ## Compiling & Executing
 You can choose the OpenGL version you want to use by setting the variable `GLAD_VERSION` to it (from `gl33core` to `gl46core`).
-If you chose to not specify a version, it's on `gl46core` by default.
+If you don't specify a version, it's on `gl46core` by default.
 ### Compiling on Linux/MacOSX
 ```txt
 $ mkdir build
