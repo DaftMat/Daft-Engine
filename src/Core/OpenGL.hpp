@@ -3,6 +3,6 @@
 //
 #pragma once
 
-#include <GLAD/gl45core/glad.h>
+#include <glad.h>
 
 #include <Core/Utils/Adapters.hpp>

@@ -8,8 +8,9 @@
 GLFWWindow::GLFWWindow(int width, int height) {
     APP_INFO("Creating window...");
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+    APP_INFO("Creating GLFW context using OpenGL {0}.{1}", GL_MAJOR, GL_MINOR);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, GL_MAJOR);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, GL_MINOR);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     m_window = glfwCreateWindow(width, height, "Engine Example Works !", nullptr, nullptr);

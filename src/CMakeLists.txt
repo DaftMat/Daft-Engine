@@ -1,8 +1,8 @@
 #TODO: replace engineApi with your own engine api name
 set(api_target engineApi)
 
-file(GLOB_RECURSE sources ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/gl45core/*.c ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
-file(GLOB_RECURSE headers ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/gl45core/*.h ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
+file(GLOB_RECURSE sources ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/${GLAD_VERSION}/*.c ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE headers ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/${GLAD_VERSION}/*.h ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
 file(GLOB_RECURSE inlines ${CMAKE_CURRENT_SOURCE_DIR}/*.inl)
 
 #TODO: set up all the dependencies of your engine api down here
@@ -49,10 +49,12 @@ target_link_libraries(${api_target} PUBLIC ${EXT_LIBS})
 target_include_directories(${api_target} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_SOURCE_DIR}/3rdPartyLibs
+        ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/${GLAD_VERSION}
         ${ENGINE_INCLUDES} PARENT_SCOPE)
 
 target_compile_definitions(${api_target} PUBLIC "-DDYNAMIC_LINK")
 target_compile_definitions(${api_target} PUBLIC "-Ddaft_${CMAKE_BUILD_TYPE}")
+define_glad_version()
 if (TRACE)
 target_compile_definitions(${api_target} PUBLIC "-DTRACE")
 endif(TRACE)

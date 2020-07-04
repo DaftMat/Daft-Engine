@@ -18,6 +18,11 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif()
 
+if(NOT GLAD_VERSION)
+    message(STATUS "No GLAD_VERSION, using default GLAD_VERSION=gl46core")
+    set(GLAD_VERSION "gl46core")
+endif()
+
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${EXECUTABLE_OUTPUT_PATH})
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -62,6 +67,7 @@ set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)
 set(APP_DIR ${CMAKE_SOURCE_DIR}/Applications)
 set(TEST_DIR ${CMAKE_SOURCE_DIR}/tests)
 
+include(ConfigGLVersion)
 add_subdirectory(${SOURCE_DIR})
 add_subdirectory(${APP_DIR})
 
