@@ -10,8 +10,8 @@
 namespace stardust::core::utils {
 /**
  * This class is a base class for any application abstraction of the engine
- * @tparam WindowType - type of window to to create - see the examples
- * GLFWExample and GLFWWindow
+ * @tparam WindowType - type of window to to create - see the example GLFWExample with GLFWWindow
+ * @tparam RendererType - type of renderer to hold - use your final engine
  */
 template <typename WindowType, typename RendererType>
 class ENGINE_API BaseApplication : public NonCopyable {
