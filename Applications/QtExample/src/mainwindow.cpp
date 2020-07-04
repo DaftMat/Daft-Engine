@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 
-#include <Core/OpenGL.hpp>
 #include <QtGui/QSurfaceFormat>
 #include <QtWidgets/QMessageBox>
 #include <sstream>
@@ -30,4 +29,8 @@ void MainWindow::on_actionOpenGL_triggered() {
     message << "GLSL\t: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
     message << "Qt\t: " << qVersion() << std::endl;
     QMessageBox::information(this, "OpenGL Information", message.str().c_str());
+}
+
+void MainWindow::on_MainWindow_iconSizeChanged(const QSize &iconSize) {
+    ui->openGLWidget->resize(iconSize.width(), iconSize.height());
 }

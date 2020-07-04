@@ -1,3 +1,6 @@
+#ifdef __APPLE__
+#define __gl3_h_
+#endif
 
 #include <Core/Utils/Log.hpp>
 #include <QApplication>

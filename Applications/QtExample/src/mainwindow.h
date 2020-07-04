@@ -1,6 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
+#pragma once
 #include <QMainWindow>
 
 namespace Ui {
@@ -14,11 +12,10 @@ class MainWindow : public QMainWindow {
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-   public slots:
+   private slots:
     void on_actionOpenGL_triggered();
+    void on_MainWindow_iconSizeChanged(const QSize &iconSize);
 
    private:
     Ui::MainWindow *ui;
 };
-
-#endif  // MAINWINDOW_H
