@@ -19,8 +19,8 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 if(NOT GLAD_VERSION)
-    message(STATUS "No GLAD_VERSION, using default GLAD_VERSION=gl45core")
-    set(GLAD_VERSION "gl45core")
+    message(STATUS "No GLAD_VERSION, using default GLAD_VERSION=gl46core")
+    set(GLAD_VERSION "gl46core")
 endif()
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})

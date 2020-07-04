@@ -4,18 +4,12 @@
 #include "OpenGLWidget.hpp"
 
 #include <Core/Utils/Log.hpp>
+#include <QOpenGLContext>
 
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 
 void OpenGLWidget::initializeGL() {
     connect(context(), &QOpenGLContext::aboutToBeDestroyed, this, &OpenGLWidget::cleanup);
-
-    if (m_glInitialized) return;
-    if (!initializeOpenGLFunctions()) {
-        APP_ERROR("OpenGL initialization error from OpenGLWidget::initializeGL()");
-        std::exit(1);
-    }
-    m_glInitialized = true;
 
     m_renderer = std::make_unique<Renderer>(1600, 900);
     prepareScene();

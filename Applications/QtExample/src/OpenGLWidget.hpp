@@ -2,14 +2,10 @@
 // Created by mathis on 04/07/2020.
 //
 #pragma once
-// clang-format off
 #include <Minimal-Engine/Renderer.hpp>
-
 #include <QOpenGLWidget>
-#include <QOpenGLFunctions_4_5_Core>
-// clang-format on
 
-class OpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_4_5_Core {
+class OpenGLWidget : public QOpenGLWidget {
     Q_OBJECT
 
    public:
