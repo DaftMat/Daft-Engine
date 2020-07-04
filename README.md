@@ -13,7 +13,7 @@ $ git clone --recurse-submodules https://github.com/Stardust-Softwares/Engine-Te
  - [stb](https://github.com/nothings/stb)
 
 ### To install
- - [OpenGL/GLSL 4.4+](https://www.opengl.org/)
+ - [OpenGL/GLSL](https://www.opengl.org/)
  - [GLM](https://github.com/g-truc/glm)
  - [Eigen3](https://eigen.tuxfamily.org/dox/)
  - [Assimp](https://github.com/assimp/assimp)
@@ -22,7 +22,7 @@ $ git clone --recurse-submodules https://github.com/Stardust-Softwares/Engine-Te
  - [Qt5](https://www.qt.io/download-open-source?hsCtaTracking=9f6a2170-a938-42df-a8e2-a9f0b1d6cdce%7C6cb0de4f-9bb5-4778-ab02-bfb62735f3e5)
  
 #### How to install deps
-**Note:** Use the Qt5 link to install it on windows or linux.
+**Note:** For Qt5, use the link above to install it on windows or linux.
 
 ###
 On linux using apt package manager :
@@ -47,18 +47,20 @@ $ vcpkg integrate install
 **Note:** the command vcpkg integrate install will give you a path to the vcpkg toolchain, copy this path.
 
 ## Compiling & Executing
+You can chose the OpenGL version you want to use by setting the variable `GLAD_VERSION` to it (from `gl33core` to `gl46core`).
+If you chose to not specify a version, it's on `gl46core` by default.
 ### Compiling on Linux/MacOSX
 ```txt
 $ mkdir build
 $ cd build
-$ cmake ..
+$ cmake [-DGLAD_VERSION="glXYcore"] ..
 $ make
 ```
 ### Compiling on Windows (from powershell)
 ```txt
 $ mkdir build
 $ cd build
-$ cmake -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -G "Visual Studio 16 2019" -A x64 ..
+$ cmake -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" [-DGLAD_VERSION="glXYcore"] -G "Visual Studio 16 2019" -A x64 ..
 $ cmake --build .
 ```
 **Note:** you can use the path you copied before, but make sure the *format* is the same as before.
