@@ -11,7 +11,8 @@ OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 void OpenGLWidget::initializeGL() {
     connect(context(), &QOpenGLContext::aboutToBeDestroyed, this, &OpenGLWidget::cleanup);
 
-    m_renderer = std::make_unique<Renderer>(1600, 900);
+    resize(1600, 900);
+    m_renderer = std::make_unique<Renderer>(width(), height());
     prepareScene();
 }
 void OpenGLWidget::paintGL() {
@@ -20,6 +21,7 @@ void OpenGLWidget::paintGL() {
 }
 
 void OpenGLWidget::resizeGL(int width, int height) { m_renderer->resize(width, height); }
+
 void OpenGLWidget::prepareScene() {
     APP_INFO("Loading example scene...");
     m_renderer->setShader(

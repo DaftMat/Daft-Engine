@@ -14,7 +14,7 @@ class MainWindow : public QMainWindow {
 
    private slots:
     void on_actionOpenGL_triggered();
-    void on_MainWindow_iconSizeChanged(const QSize &iconSize);
+    void on_openGLWidget_resized();
 
    private:
     Ui::MainWindow *ui;

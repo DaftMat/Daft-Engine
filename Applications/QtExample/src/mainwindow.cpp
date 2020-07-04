@@ -31,6 +31,4 @@ void MainWindow::on_actionOpenGL_triggered() {
     QMessageBox::information(this, "OpenGL Information", message.str().c_str());
 }
 
-void MainWindow::on_MainWindow_iconSizeChanged(const QSize &iconSize) {
-    ui->openGLWidget->resize(iconSize.width(), iconSize.height());
-}
+void MainWindow::on_openGLWidget_resized() { ui->openGLWidget->resize(width(), height()); }

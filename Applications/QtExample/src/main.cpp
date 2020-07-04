@@ -1,4 +1,6 @@
-#ifdef __APPLE__
+#include <Core/Macros.hpp>
+
+#ifdef MAC_OS
 #define __gl3_h_
 #endif
 

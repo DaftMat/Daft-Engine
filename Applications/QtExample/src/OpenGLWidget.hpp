@@ -14,7 +14,7 @@ class OpenGLWidget : public QOpenGLWidget {
 
     [[nodiscard]] QSize minimumSizeHint() const override { return {50, 50}; }
 
-    [[nodiscard]] QSize sizeHint() const override { return {1600, 900}; }
+    [[nodiscard]] QSize sizeHint() const override { return {width(), height()}; }
 
    public slots:
     void cleanup() { m_renderer.reset(); }
