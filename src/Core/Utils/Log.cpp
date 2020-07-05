@@ -9,7 +9,7 @@
 namespace stardust::core::utils {
 
 void Log::init(const std::string &engineLoggerName, const std::string &appLoggerName) {
-    spdlog::set_pattern("%^[%D][%T] %n:<%l> %v%$");
+    spdlog::set_pattern("%^> [%D][%T] -- %n::%l -- %v%$");
 #if defined(DEBUG) && defined(TRACE)
     spdlog::set_level(spdlog::level::trace);
 #elif defined(DEBUG)
@@ -23,7 +23,7 @@ void Log::init(const std::string &engineLoggerName, const std::string &appLogger
     m_appConsole = spdlog::stdout_color_mt("APP");
     ENGINE_INFO("Engine logger initialized.");
     APP_INFO("App logger initialized.");
-    spdlog::set_pattern("%^[%T] %n:<%l> %v%$");
+    spdlog::set_pattern("%^> [%T] -- %n::%l -- %v%$");
 }
 
 std::shared_ptr<spdlog::logger> Log::m_engineLogger{nullptr};

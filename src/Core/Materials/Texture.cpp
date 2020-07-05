@@ -37,8 +37,10 @@ Texture::Texture(std::string name, std::string path) : m_name{std::move(name)} {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        ENGINE_INFO("2D Texture created: {0}.", m_name);
     } else {
-        ENGINE_ERROR("Failed to load texture {0}", filePath);
+        ENGINE_ERROR("Failed to load texture {0}.", filePath);
     }
     m_isValid = true;
 }
@@ -53,8 +55,10 @@ Texture::Texture(std::string name, const std::array<std::string, 6> &paths) : m_
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE,
                          data);
             stbi_image_free(data);
+
+            ENGINE_INFO("3D Texture created: {0}.", m_name);
         } else {
-            ENGINE_ERROR("Failed to load texture {0}", paths.at(i));
+            ENGINE_ERROR("Failed to load texture {0}.", paths.at(i));
         }
     }
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

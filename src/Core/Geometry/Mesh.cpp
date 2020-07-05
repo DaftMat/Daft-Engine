@@ -67,6 +67,7 @@ void Mesh::reset(const AttribManager &attribManager, const std::vector<GLuint> &
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_numVertex * sizeof(GLuint), m_indices.data(), GL_STATIC_DRAW);
 
     glBindVertexArray(0);
+    ENGINE_INFO("Mesh created. VAO: {0}.", m_vao);
 }
 void Mesh::clear() {
     if (!m_isVisible) return;
@@ -75,6 +76,7 @@ void Mesh::clear() {
     glDeleteBuffers(1, &m_ebo);
     glDeleteVertexArrays(1, &m_vao);
     m_attribManager.clear();
+    ENGINE_INFO("Mesh of VAO: {0} deleted.", m_vao);
 }
 
 }  // namespace stardust::core::geometry

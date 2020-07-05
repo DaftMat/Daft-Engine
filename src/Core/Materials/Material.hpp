@@ -56,6 +56,7 @@ class Material : public utils::NonCopyable {
      */
     template <typename T>
     void addSetting(std::string name, T data) {
+        ENGINE_INFO("Setting of type {0} added to Material : {1}.", typeid(data).name(), name);
         m_settings.add(std::move(name), data);
     }
 
@@ -77,6 +78,7 @@ class Material : public utils::NonCopyable {
      */
     template <typename T>
     void deleteSetting(std::string name) {
+        ENGINE_INFO("Setting {0} deleted from Material.", name);
         m_settings.remove<T>(std::move(name));
     }
 

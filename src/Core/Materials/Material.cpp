@@ -15,12 +15,16 @@ void Material::prepare() const {
     glActiveTexture(GL_TEXTURE0);
 }
 
-void Material::addTexture(Texture texture) { m_textures.emplace_back(std::move(texture)); }
+void Material::addTexture(Texture texture) {
+    m_textures.emplace_back(std::move(texture));
+    ENGINE_INFO("Texture added to Material.");
+}
 
 void Material::deleteTexture(const std::string &name) {
     m_textures.erase(std::remove_if(m_textures.begin(), m_textures.end(),
                                     [name](const Texture &texture) { return texture.name() == name; }),
                      m_textures.end());
+    ENGINE_INFO("Texture deleted from Material.");
 }
 
 Texture &Material::texture(const std::string &name) {

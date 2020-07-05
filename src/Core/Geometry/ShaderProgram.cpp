@@ -57,6 +57,8 @@ ShaderProgram::ShaderProgram(const char *vertexPath, const char *fragmentPath) :
     /// Release shader
     glDeleteShader(vertex);
     glDeleteShader(fragment);
+
+    ENGINE_INFO("ShadeProgram created. ID: {0}.", m_id);
 }
 
 ShaderProgram::ShaderProgram(ShaderProgram &&other) noexcept : m_id{other.m_id}, m_isValid{other.m_isValid} {
@@ -73,6 +75,7 @@ ShaderProgram &ShaderProgram::operator=(ShaderProgram &&other) noexcept {
 ShaderProgram::~ShaderProgram() noexcept {
     if (!m_isValid) return;
     glDeleteProgram(m_id);
+    ENGINE_INFO("ShaderProgram of ID: {0} deleted.", m_id);
 }
 
 void ShaderProgram::use() const noexcept {
@@ -133,7 +136,7 @@ void ShaderProgram::checkCompileError(GLuint shader, const std::string &type) {
     if (!success) {
         char *infoLog = nullptr;
         glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
-        ENGINE_ERROR("ERROR:SHADER_COMPILATION of type : {0}{1}{2}", type, "\n", infoLog);
+        ENGINE_ERROR("ERROR:SHADER_COMPILATION of type : {0}{1}{2}.", type, "\n", infoLog);
     }
 }
 
@@ -143,7 +146,7 @@ void ShaderProgram::checkLinkError(GLuint program) {
     if (!success) {
         char *infoLog = nullptr;
         glGetProgramInfoLog(program, 1024, nullptr, infoLog);
-        ENGINE_ERROR("ERROR:PROGRAM_LINKING\n{0}", infoLog);
+        ENGINE_ERROR("ERROR:PROGRAM_LINKING\n{0}.", infoLog);
     }
 }
 }  // namespace stardust::core::geometry
