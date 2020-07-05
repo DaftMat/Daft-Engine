@@ -31,4 +31,7 @@ void MainWindow::on_actionOpenGL_triggered() {
     QMessageBox::information(this, "OpenGL Information", message.str().c_str());
 }
 
-void MainWindow::on_openGLWidget_resized() { ui->openGLWidget->resize(width(), height()); }
+void MainWindow::resizeEvent(QResizeEvent *event) {
+    QMainWindow::resizeEvent(event);
+    ui->openGLWidget->resize(width() - 20, height());
+}

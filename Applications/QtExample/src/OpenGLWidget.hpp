@@ -5,6 +5,7 @@
 #include <Core/OpenGL.hpp>
 #include <Minimal-Engine/Renderer.hpp>
 #include <QOpenGLWidget>
+#include <QtGui/QResizeEvent>
 
 class OpenGLWidget : public QOpenGLWidget {
     Q_OBJECT

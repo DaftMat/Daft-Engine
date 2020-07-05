@@ -11,7 +11,6 @@ OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 void OpenGLWidget::initializeGL() {
     connect(context(), &QOpenGLContext::aboutToBeDestroyed, this, &OpenGLWidget::cleanup);
 
-    resize(1600, 900);
     m_renderer = std::make_unique<Renderer>(width(), height());
     prepareScene();
 }

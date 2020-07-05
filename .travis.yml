@@ -1,6 +1,6 @@
 language: cpp
 os: linux
-dist: bionic
+dist: focal
 
 script:
   - make -j 8
@@ -59,10 +59,10 @@ before_install:
       cd spdlog && mkdir build && cd build
       cmake .. && sudo make -j16 install
 
-      sudo add-apt-repository --yes ppa:beineri/opt-qt-5.11.0-bionic
+      sudo add-apt-repository --yes ppa:beineri/opt-qt-5.15.0-focal
       sudo apt --yes update
-      sudo apt --yes install qt511-meta-minimal qt511svg
-      source /opt/qt511/bin/qt511-env.sh
+      sudo apt --yes install qt515base qt515svg qt515multimedia
+      source /opt/qt515/bin/qt515-env.sh
     fi;
 
 jobs:
@@ -78,24 +78,24 @@ jobs:
 
     # linx clang Release
     - env:
-        - QT5_PATH="~/Qt/5.11.0/gcc_64"
+        - QT5_PATH="~/Qt/5.15.0/gcc_64"
         - BUILD_TYPE=Release
         - CLANG_VERSION=9
         - BUILD_DOC=Off
         - MATRIX_EVAL=""
       os: linux
-      dist: bionic
+      dist: focal
       compiler: clang
 
     # linx gcc Release
     - env:
-        - QT5_PATH="~/Qt/5.11.0/gcc_64"
+        - QT5_PATH="~/Qt/5.15.0/gcc_64"
         - BUILD_TYPE=Release
         - GCC_VERSION=9
         - BUILD_DOC=Off
         - MATRIX_EVAL=""
       os: linux
-      dist: bionic
+      dist: focal
       compiler: gcc
 
 install:
