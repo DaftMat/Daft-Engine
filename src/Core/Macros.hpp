@@ -37,8 +37,10 @@
 #   else
 #   error Unsupported Operating System.
 #   endif
-#elif defined(__APPLE__) || defined(__MACH__)   /// Mac OS
+#elif defined(__APPLE__) || defined(__MACH__) || defined(__MACOSX__)   /// Mac OS
 #define MAC_OS
+#define __gl3_h_
+#define __glext_h_
 #   if defined(__i386__)
 #   define X86_ARCH
 #   elif defined(__x86_64__) || defined(__x86_64)
@@ -71,4 +73,4 @@
 #else
 #   error Unsupported platform.
 #endif
-    // clang-format on
+// clang-format on
