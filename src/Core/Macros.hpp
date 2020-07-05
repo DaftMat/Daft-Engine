@@ -29,6 +29,7 @@
 /// --------------------------------------------------
 #if defined(_WIN32) || defined(_WIN64)          /// Windows
 #define WIN_OS
+#define __glext_h_  /// in case Qt tries to load OpenGL/glext.h
 #include <Windows.h>
 #   if defined(_M_X64)
 #   define X64_ARCH
@@ -39,8 +40,8 @@
 #   endif
 #elif defined(__APPLE__) || defined(__MACH__) || defined(__MACOSX__)   /// Mac OS
 #define MAC_OS
-#define __gl3_h_
-#define __glext_h_
+#define __gl3_h_    /// Qt (or other) may include OpenGL/gl3.h and
+#define __glext_h_  /// OpenGL/glext.h which causes problems as glad already loads everything.
 #   if defined(__i386__)
 #   define X86_ARCH
 #   elif defined(__x86_64__) || defined(__x86_64)
@@ -50,6 +51,7 @@
 #   endif
 #elif defined(__linux__) || defined(__CYGWIN__) /// Linux
 #define LINUX_OS
+#define __glext_h_ /// in case Qt tries to load gl/glext.h
 #   if defined(__i386)
 #   define X86_ARCH
 #   elif defined(__x86_64__) || defined(__x86_64)
