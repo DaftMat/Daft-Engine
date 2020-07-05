@@ -2,6 +2,7 @@
 // Created by mathis on 04/07/2020.
 //
 #pragma once
+#include <Core/OpenGL.hpp>
 #include <Minimal-Engine/Renderer.hpp>
 #include <QOpenGLWidget>
 

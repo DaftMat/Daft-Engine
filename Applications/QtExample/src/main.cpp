@@ -1,5 +1,3 @@
-#define __gl3_h_
-
 #include <Core/Utils/Log.hpp>
 #include <QApplication>
 
