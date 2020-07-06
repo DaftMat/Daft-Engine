@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->openGLWidget->setFormat(format);
 }
 
-MainWindow::~MainWindow() { delete ui; }
+MainWindow::~MainWindow() {}  // delete ui; }
 
 void MainWindow::on_actionOpenGL_triggered() {
     std::stringstream message;
