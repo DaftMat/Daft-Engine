@@ -65,7 +65,7 @@ $ cmake --build .
 ### Executing
 Then you can go and run the project from the `bin/Release` (or `bin/Debug`) folder:
 ```txt 
-$ ./<Your_Project_Name>
+$ ./DaftEngineApp
 ```
 
 ### Troubleshooting
