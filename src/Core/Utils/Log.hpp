@@ -60,34 +60,34 @@ class ENGINE_API Log {
 /**
  * Macros using the Logger.
  */
-#define ENGINE_ERROR(...)                                     \
+#define ENGINE_ERROR(...)                                 \
     daft::core::utils::Log::engine()->error(__VA_ARGS__); \
     daft::core::utils::Log::engineConsole()->error(__VA_ARGS__)
-#define ENGINE_INFO(...)                                     \
+#define ENGINE_INFO(...)                                 \
     daft::core::utils::Log::engine()->info(__VA_ARGS__); \
     daft::core::utils::Log::engineConsole()->info(__VA_ARGS__)
-#define ENGINE_WARN(...)                                     \
+#define ENGINE_WARN(...)                                 \
     daft::core::utils::Log::engine()->warn(__VA_ARGS__); \
     daft::core::utils::Log::engineConsole()->warn(__VA_ARGS__)
-#define ENGINE_TRACE(...)                                     \
-    stardust::core::utils::Log::engine()->trace(__VA_ARGS__); \
-    stardust::core::utils::Log::engineConsole()->trace(__VA_ARGS__)
-#define ENGINE_DEBUG(...)                                     \
-    stardust::core::utils::Log::engine()->debug(__VA_ARGS__); \
-    stardust::core::utils::Log::engineConsole()->debug(__VA_ARGS__)
+#define ENGINE_TRACE(...)                                 \
+    daft::core::utils::Log::engine()->trace(__VA_ARGS__); \
+    daft::core::utils::Log::engineConsole()->trace(__VA_ARGS__)
+#define ENGINE_DEBUG(...)                                 \
+    daft::core::utils::Log::engine()->debug(__VA_ARGS__); \
+    daft::core::utils::Log::engineConsole()->debug(__VA_ARGS__)
 
-#define APP_ERROR(...)                                     \
-    stardust::core::utils::Log::app()->error(__VA_ARGS__); \
-    stardust::core::utils::Log::appConsole()->error(__VA_ARGS__)
-#define APP_INFO(...)                                     \
+#define APP_ERROR(...)                                 \
+    daft::core::utils::Log::app()->error(__VA_ARGS__); \
+    daft::core::utils::Log::appConsole()->error(__VA_ARGS__)
+#define APP_INFO(...)                                 \
     daft::core::utils::Log::app()->info(__VA_ARGS__); \
     daft::core::utils::Log::appConsole()->info(__VA_ARGS__)
-#define APP_WARN(...)                                     \
-    stardust::core::utils::Log::app()->warn(__VA_ARGS__); \
-    stardust::core::utils::Log::appConsole()->warn(__VA_ARGS__)
-#define APP_TRACE(...)                                     \
-    stardust::core::utils::Log::app()->trace(__VA_ARGS__); \
-    stardust::core::utils::Log::appConsole()->trace(__VA_ARGS__)
-#define APP_DEBUG(...)                                     \
-    stardust::core::utils::Log::app()->debug(__VA_ARGS__); \
-    stardust::core::utils::Log::appConsole()->debug(__VA_ARGS__)
+#define APP_WARN(...)                                 \
+    daft::core::utils::Log::app()->warn(__VA_ARGS__); \
+    daft::core::utils::Log::appConsole()->warn(__VA_ARGS__)
+#define APP_TRACE(...)                                 \
+    daft::core::utils::Log::app()->trace(__VA_ARGS__); \
+    daft::core::utils::Log::appConsole()->trace(__VA_ARGS__)
+#define APP_DEBUG(...)                                 \
+    daft::core::utils::Log::app()->debug(__VA_ARGS__); \
+    daft::core::utils::Log::appConsole()->debug(__VA_ARGS__)

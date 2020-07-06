@@ -55,3 +55,13 @@ void OpenGLWidget::prepareScene() {
     m_renderer->addMesh(attribManager, indices);
     APP_INFO("Example scene loaded");
 }
+
+void OpenGLWidget::mousePressEvent(QMouseEvent *e) {
+    APP_DEBUG("Mouse pressed on OpenGL viewer at coordinates ({0},{1}).", e->pos().x(), e->pos().y());
+}
+
+void OpenGLWidget::mouseReleaseEvent(QMouseEvent *e) {
+    APP_DEBUG("Mouse released on OpenGL viewer at coordinates ({0},{1}).", e->pos().x(), e->pos().y());
+}
+
+void OpenGLWidget::mouseMoveEvent(QMouseEvent *e) { APP_TRACE("Mouse moved."); }

@@ -18,6 +18,10 @@ class OpenGLWidget : public QOpenGLWidget {
 
     [[nodiscard]] QSize sizeHint() const override { return {width(), height()}; }
 
+    void mousePressEvent(QMouseEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent *e) override;
+    void mouseMoveEvent(QMouseEvent *e) override;
+
    public slots:
     void cleanup() { m_renderer.reset(); }
 
