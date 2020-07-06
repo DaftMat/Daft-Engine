@@ -9,7 +9,7 @@ set(ENGINE_LIBRARIES)
 set(ENGINE_API)
 set(ENGINE_INCLUDES)
 
-project(EngineProject) #TODO: Change the project name (not mandatory)
+project(DaftEngineProject)
 
 set(CMAKE_CXX_STANDARD 17)
 

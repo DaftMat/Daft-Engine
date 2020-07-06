@@ -1,8 +1,9 @@
-# Engine-Template
-Template repository for any C++/OpenGL project. Uses GLFW for the context.
+# Daft-Engine
+Cross platform 3D Engine-Editor made in C++/OpenGL/Qt.
+
 To download this template, make sure you download the submodules as well :
 ```txt
-$ git clone --recurse-submodules https://github.com/Stardust-Softwares/Engine-Template.git
+$ git clone --recurse-submodules https://github.com/DaftMat/Daft-Engine.git
 ```
 
 ## Dependencies
@@ -18,28 +19,25 @@ $ git clone --recurse-submodules https://github.com/Stardust-Softwares/Engine-Te
  - [Eigen3](https://eigen.tuxfamily.org/dox/)
  - [Assimp](https://github.com/assimp/assimp)
  - [spdlog](https://github.com/gabime/spdlog)
- - [GLFW3](https://github.com/glfw/glfw)
  - [Qt5](https://www.qt.io/download-open-source?hsCtaTracking=9f6a2170-a938-42df-a8e2-a9f0b1d6cdce%7C6cb0de4f-9bb5-4778-ab02-bfb62735f3e5)
  
 #### How to install deps
 **Note:** For Qt5, use the link above to install it on windows or linux.
 
 ###
-On linux using apt package manager :
+On **linux** using apt package manager :
 ```txt
 $ sudo apt update
 $ sudo apt install libomp-dev libgl1-mesa-dev libglu1-mesa-dev xorg-dev libxrandr-dev libxcb-randr0-dev libxinerama-dev libglm-dev libassimp-dev libeigen3-dev libglew-dev libglfw3-dev
 ```
 
-##
-On mac using homebrew :
+On **mac** using homebrew :
 ```txt
 $ brew update
 $ brew install libomp glm eigen assimp spdlog glfw qt
 ```
 
-##
-On windows using vcpkg (make sure vcpkg is [updated](https://vcpkg.readthedocs.io/en/latest/about/faq/#how-do-i-update-libraries)) :
+On **windows** using vcpkg (make sure vcpkg is [updated](https://vcpkg.readthedocs.io/en/latest/about/faq/#how-do-i-update-libraries)) :
 ```txt
 $ vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows spdlog:x64-windows glfw3:x64-windows
 $ vcpkg integrate install
@@ -128,44 +126,6 @@ Continuous Integration and automated code review is active on this project :
 
 | Application | Status |
 | --- | --- |
-| Travis | [![Build Status](https://travis-ci.com/Stardust-Softwares/Engine-Template.svg?branch=master)](https://travis-ci.com/Stardust-Softwares/Engine-Template) |
-| Appveyor | [![Build status](https://ci.appveyor.com/api/projects/status/h6di0wgr2grw75ll?svg=true)](https://ci.appveyor.com/project/DaftMat/engine-template) |
-| Codacy | [![Codacy Badge](https://app.codacy.com/project/badge/Grade/cd80344d5a064693bd3bc9e05692b60f)](https://www.codacy.com/gh/Stardust-Softwares/Engine-Template?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Stardust-Softwares/Engine-Template&amp;utm_campaign=Badge_Grade) |
-##
-
-
-(the rest of this README can be deleted after the project has been setup with this template)
-## List of features:
- - 3rdPartyLibs *>* dependencies management.
- - doc
-   - run `./generate.sh` from /doc/ to generate any documentation.
- - scripts
-   - pre-commit-hook code formatting scripts, don't forget to set them up.
- - resources/shaders
-   - your engine's assets
- - src
-   - your engine's sources
-   
-## Setting up
-
-### Before anything else
-
-Open the project in an IDE, then find the `TODO` list. Don't pay attention to those in `3rdPartyLibs` and `docs` the others will give you the locations where you can set your own settings. Make sure you don't forget any.
-
-Go in the`src` folder, delete the `Minimal-Engine` and start your own !
-
-Make sure you don't delete the `src/Core` folder, it provides useful include headers.
-
-### Start drawing !
-
-Now, you just have to jump into the code. Use:
-```cpp
-#include <Core/OpenGL.hpp>
-```
-wherever you want to use OpenGL, and:
-```cpp
-#include <Core/Random.hpp>
-```
-wherever you want to generate random numbers.
-
-As well, you can inherit from `BaseApplication` and use the engine api you made to build your own windowed abstraction. Follow the guidelines described by `AppExamples`
+| Travis | [![Build Status](https://travis-ci.com/DaftMat/Daft-Engine.svg?branch=master)](https://travis-ci.com/github/DaftMat/Daft-Engine) |
+| Appveyor | [![Build status](https://ci.appveyor.com/api/projects/status/3owhtorag4mh6ox4?svg=true)](https://ci.appveyor.com/project/DaftMat/daft-engine) |
+| Codacy | [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b3aff8818ac34bb3a9c6a7b90fff2b9c)](https://www.codacy.com/manual/DaftMat/Daft-Engine?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DaftMat/Daft-Engine&amp;utm_campaign=Badge_Grade) |

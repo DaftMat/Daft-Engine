@@ -1,11 +1,9 @@
-#TODO: replace engineApi with your own engine api name
-set(api_target engineApi)
+set(api_target DaftEngineAPI)
 
 file(GLOB_RECURSE sources ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/${GLAD_VERSION}/*.c ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE headers ${CMAKE_SOURCE_DIR}/3rdPartyLibs/GLAD/${GLAD_VERSION}/*.h ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
 file(GLOB_RECURSE inlines ${CMAKE_CURRENT_SOURCE_DIR}/*.inl)
 
-#TODO: set up all the dependencies of your engine api down here
 if(WIN32)
 find_package(GLM CONFIG REQUIRED)
 set(EXT_LIBS ${EXT_LIBS} ${GLM_LIBRARIES})
@@ -86,18 +84,3 @@ add_custom_target(
 )
 
 add_dependencies(${api_target} ${api_target}_shaders)
-
-###################################
-#   Resources
-###################################
-set(RESOURCE_DIR ${CMAKE_SOURCE_DIR}/resources)
-file(GLOB_RECURSE RESOURCE_FILES ${RESOURCE_DIR}/*)
-
-add_custom_target(
-        ${api_target}_resources
-        COMMAND ${CMAKE_COMMAND} -E ${COPY_COMMAND} ${RESOURCE_DIR} ${EXECUTABLE_OUTPUT_PATH}/resources
-        SOURCES ${RESOURCE_FILES}
-        COMMENT "Create symlink/copy for resources" VERBATIM
-)
-
-add_dependencies(${api_target} ${api_target}_resources)

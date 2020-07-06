@@ -1,21 +1,29 @@
 //
-// Created by mathis on 24/05/2020.
+// Created by mathis on 04/07/2020.
 //
-#include "GLFWExample.hpp"
+#include "OpenGLWidget.hpp"
 
 #include <Core/Utils/Log.hpp>
+#include <QOpenGLContext>
 
-GLFWExample::GLFWExample() {
-    init(1600, 900);
-    auto &renderer = m_window->renderer();
-    GLFWWindow::setFramebufferCallback([&renderer](int width, int height) { renderer.resize(width, height); });
-    loadExampleScene();
-    APP_INFO("Application created.");
+OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
+
+void OpenGLWidget::initializeGL() {
+    connect(context(), &QOpenGLContext::aboutToBeDestroyed, this, &OpenGLWidget::cleanup);
+
+    m_renderer = std::make_unique<Renderer>(width(), height());
+    prepareScene();
+}
+void OpenGLWidget::paintGL() {
+    m_renderer->prepare();
+    m_renderer->render();
 }
 
-void GLFWExample::loadExampleScene() {
+void OpenGLWidget::resizeGL(int width, int height) { m_renderer->resize(width, height); }
+
+void OpenGLWidget::prepareScene() {
     APP_INFO("Loading example scene...");
-    m_window->renderer().setShader(
+    m_renderer->setShader(
         new stardust::core::geometry::ShaderProgram("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
 
     stardust::core::geometry::AttribManager attribManager;
@@ -44,17 +52,6 @@ void GLFWExample::loadExampleScene() {
     attribManager.addAttrib(normals);
     attribManager.addAttrib(texCoords);
 
-    m_window->renderer().addMesh(attribManager, indices);
+    m_renderer->addMesh(attribManager, indices);
     APP_INFO("Example scene loaded");
-}
-
-void GLFWExample::draw(double deltatime) { m_window->draw(); }
-
-void GLFWExample::run() {
-    APP_INFO("launching application...");
-    while (!m_window->shouldClose()) {
-        draw(0.0);
-        m_window->finish();
-    }
-    APP_INFO("application got out of main loop");
 }

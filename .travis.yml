@@ -31,7 +31,6 @@ addons:
       - libeigen3-dev
       - libspdlog-dev
       - libglew-dev
-      - libglfw3-dev
     sources:
       - ubuntu-toolchain-r-test
       - llvm-toolchain-bionic-9
@@ -43,7 +42,6 @@ addons:
       - eigen
       - assimp
       - spdlog
-      - glfw
       - qt
 
 before_install:
