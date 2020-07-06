@@ -3,7 +3,7 @@
 //
 #include "SettingManager.hpp"
 
-namespace stardust::core::mat {
+namespace daft::core::mat {
 void SettingManager::clear() noexcept {
     m_ints.clear();
     m_bools.clear();
@@ -15,4 +15,4 @@ void SettingManager::clear() noexcept {
     m_mat3s.clear();
     m_mat4s.clear();
 }
-}  // namespace stardust::core::mat
+}  // namespace daft::core::mat

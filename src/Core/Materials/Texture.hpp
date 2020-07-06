@@ -9,7 +9,7 @@
 #include <array>
 #include <string>
 
-namespace stardust::core::mat {
+namespace daft::core::mat {
 /**
  * texture class.
  * loads an image into an opengl texture.
@@ -84,4 +84,4 @@ class Texture : public utils::NonCopyable {
     std::string m_name;
     bool m_isValid{false};
 };
-}  // namespace stardust::core::mat
+}  // namespace daft::core::mat

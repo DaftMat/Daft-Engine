@@ -7,7 +7,7 @@
 #include <API.hpp>
 #include <memory>
 
-namespace stardust::core::utils {
+namespace daft::core::utils {
 
 /**
  * Logger class.
@@ -55,20 +55,20 @@ class ENGINE_API Log {
     static std::shared_ptr<spdlog::logger> m_appConsole;
 };
 
-}  // namespace stardust::core::utils
+}  // namespace daft::core::utils
 
 /**
  * Macros using the Logger.
  */
 #define ENGINE_ERROR(...)                                     \
-    stardust::core::utils::Log::engine()->error(__VA_ARGS__); \
-    stardust::core::utils::Log::engineConsole()->error(__VA_ARGS__)
+    daft::core::utils::Log::engine()->error(__VA_ARGS__); \
+    daft::core::utils::Log::engineConsole()->error(__VA_ARGS__)
 #define ENGINE_INFO(...)                                     \
-    stardust::core::utils::Log::engine()->info(__VA_ARGS__); \
-    stardust::core::utils::Log::engineConsole()->info(__VA_ARGS__)
+    daft::core::utils::Log::engine()->info(__VA_ARGS__); \
+    daft::core::utils::Log::engineConsole()->info(__VA_ARGS__)
 #define ENGINE_WARN(...)                                     \
-    stardust::core::utils::Log::engine()->warn(__VA_ARGS__); \
-    stardust::core::utils::Log::engineConsole()->warn(__VA_ARGS__)
+    daft::core::utils::Log::engine()->warn(__VA_ARGS__); \
+    daft::core::utils::Log::engineConsole()->warn(__VA_ARGS__)
 #define ENGINE_TRACE(...)                                     \
     stardust::core::utils::Log::engine()->trace(__VA_ARGS__); \
     stardust::core::utils::Log::engineConsole()->trace(__VA_ARGS__)
@@ -80,8 +80,8 @@ class ENGINE_API Log {
     stardust::core::utils::Log::app()->error(__VA_ARGS__); \
     stardust::core::utils::Log::appConsole()->error(__VA_ARGS__)
 #define APP_INFO(...)                                     \
-    stardust::core::utils::Log::app()->info(__VA_ARGS__); \
-    stardust::core::utils::Log::appConsole()->info(__VA_ARGS__)
+    daft::core::utils::Log::app()->info(__VA_ARGS__); \
+    daft::core::utils::Log::appConsole()->info(__VA_ARGS__)
 #define APP_WARN(...)                                     \
     stardust::core::utils::Log::app()->warn(__VA_ARGS__); \
     stardust::core::utils::Log::appConsole()->warn(__VA_ARGS__)

@@ -6,7 +6,7 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 
-namespace stardust::core::utils {
+namespace daft::core::utils {
 
 void Log::init(const std::string &engineLoggerName, const std::string &appLoggerName) {
     spdlog::set_pattern("%^> [%D][%T] -- %n::%l -- %v%$");
@@ -31,4 +31,4 @@ std::shared_ptr<spdlog::logger> Log::m_appLogger{nullptr};
 std::shared_ptr<spdlog::logger> Log::m_engineConsole{nullptr};
 std::shared_ptr<spdlog::logger> Log::m_appConsole{nullptr};
 
-}  // namespace stardust::core::utils
+}  // namespace daft::core::utils

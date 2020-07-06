@@ -7,4 +7,4 @@
 
 namespace sdt::core {
 using Random = effolkronium::random_static;
-}  // namespace stardust::core
+}  // namespace daft::core

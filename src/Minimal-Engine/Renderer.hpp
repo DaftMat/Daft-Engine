@@ -8,7 +8,7 @@
 #include <memory>
 #include <vector>
 
-class ENGINE_API Renderer : public stardust::core::utils::NonCopyable {
+class ENGINE_API Renderer : public daft::core::utils::NonCopyable {
    public:
     Renderer() = default;
 
@@ -30,18 +30,18 @@ class ENGINE_API Renderer : public stardust::core::utils::NonCopyable {
 
     void resize(int width, int height);
 
-    void addMesh(stardust::core::geometry::AttribManager attribManager, std::vector<GLuint> indices) noexcept {
+    void addMesh(daft::core::geometry::AttribManager attribManager, std::vector<GLuint> indices) noexcept {
         m_meshes.emplace_back(std::move_if_noexcept(attribManager), std::move_if_noexcept(indices));
     }
 
-    void setShader(stardust::core::geometry::ShaderProgram *shaderProgram) { m_shader.reset(shaderProgram); }
+    void setShader(daft::core::geometry::ShaderProgram *shaderProgram) { m_shader.reset(shaderProgram); }
 
-    [[nodiscard]] const stardust::core::geometry::ShaderProgram &shader() const { return *m_shader; }
+    [[nodiscard]] const daft::core::geometry::ShaderProgram &shader() const { return *m_shader; }
 
    private:
     static bool GLinitialized;
     int m_width{0}, m_height{0};
 
-    std::unique_ptr<stardust::core::geometry::ShaderProgram> m_shader{nullptr};
-    std::vector<stardust::core::geometry::Mesh> m_meshes;
+    std::unique_ptr<daft::core::geometry::ShaderProgram> m_shader{nullptr};
+    std::vector<daft::core::geometry::Mesh> m_meshes;
 };

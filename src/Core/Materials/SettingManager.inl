@@ -1,6 +1,6 @@
 #include <Core/Utils/Log.hpp>
 
-namespace stardust::core::mat {
+namespace daft::core::mat {
 template <typename T>
 const std::vector<SettingManager::Setting<T>>& SettingManager::settings() const {
     if constexpr (std::is_same_v<T, int>)
@@ -70,4 +70,4 @@ template <typename T>
 T& SettingManager::get(std::string name) {
     return const_cast<T&>(static_cast<const SettingManager&>(*this).get<T>(std::move(name)));
 }
-}  // namespace stardust::core::mat
+}  // namespace daft::core::mat

@@ -7,7 +7,7 @@
 #include <Core/Utils/NonCopyable.hpp>
 #include <string>
 
-namespace stardust::core::mat {
+namespace daft::core::mat {
 /**
  * A class which holds all the non-texture settings of a Material.
  * Such as diffuse color, specular color, roughness, ...
@@ -145,5 +145,5 @@ class SettingManager {
     std::vector<mat3Setting> m_mat3s;
     std::vector<mat4Setting> m_mat4s;
 };
-}  // namespace stardust::core::mat
+}  // namespace daft::core::mat
 #include <Core/Materials/SettingManager.inl>

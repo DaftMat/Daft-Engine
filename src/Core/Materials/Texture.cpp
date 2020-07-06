@@ -10,7 +10,7 @@
 #include <Core/Utils/Log.hpp>
 #include <string>
 
-namespace stardust::core::mat {
+namespace daft::core::mat {
 void Texture::bind(GLenum textureType) const { glBindTexture(textureType, m_id); }
 
 Texture::Texture(std::string name, std::string path) : m_name{std::move(name)} {
@@ -81,4 +81,4 @@ Texture &Texture::operator=(Texture &&other) noexcept {
     other.m_isValid = false;
     return *this;
 }
-}  // namespace stardust::core::mat
+}  // namespace daft::core::mat

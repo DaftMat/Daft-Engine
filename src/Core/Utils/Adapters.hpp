@@ -9,7 +9,7 @@
 /**
  * This files provides casting function between glm and Eigen.
  */
-namespace stardust::core::utils {
+namespace daft::core::utils {
 
 /**
  * Casts from Eigen::Matrix to glm::mat.
@@ -62,6 +62,6 @@ constexpr Eigen::Matrix<T, M, 1> toEigen(const glm::vec<M, T> &vec) noexcept;
 template <typename T>
 constexpr auto toUType(T e) noexcept;
 
-}  // namespace stardust::core::utils
+}  // namespace daft::core::utils
 
 #include "Adapters.inl"

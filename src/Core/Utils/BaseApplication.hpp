@@ -6,7 +6,7 @@
 #include <Core/Utils/NonCopyable.hpp>
 #include <memory>
 
-namespace stardust::core::utils {
+namespace daft::core::utils {
 /**
  * This class is a base class for any application abstraction of the engine
  * @tparam WindowType - type of window to to create - see the example GLFWExample with GLFWWindow
@@ -38,4 +38,4 @@ class ENGINE_API BaseApplication : public NonCopyable {
     void init(int width, int height) { m_window = std::make_unique<WindowType>(width, height); }
 };
 
-}  // namespace stardust::core::utils
+}  // namespace daft::core::utils

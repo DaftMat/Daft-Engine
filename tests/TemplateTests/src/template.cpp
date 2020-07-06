@@ -11,7 +11,7 @@
  * Just write the unit test you need and add the name of the file in the CMakeLists.txt of the testing dir by
  * calling the cmake function : add_test_file(fileName) (don't put the ".cpp").
  */
-namespace stardust::testing {
+namespace daft::testing {
 /**
  * The run function : will be call by the test's main function a certain number of times (in parallel).
  *
@@ -32,10 +32,10 @@ void run() {
     UNIT_VERIFY(true, "dumpy test");
     /// ...
 }
-}  // namespace stardust::testing
+}  // namespace daft::testing
 
 int main(int argc, const char **argv) {
-    using namespace stardust;
+    using namespace daft;
     if (!testing::init_testing(1, argv)) {
         return EXIT_FAILURE;
     }

@@ -4,7 +4,7 @@
 #include "mainwindow.h"
 
 int main(int argc, char **argv) {
-    stardust::core::utils::Log::init();
+    daft::core::utils::Log::init();
 
     QApplication a(argc, argv);
     MainWindow w;

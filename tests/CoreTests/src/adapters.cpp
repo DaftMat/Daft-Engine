@@ -6,7 +6,7 @@
 #include <Test.hpp>
 #include <algorithm>
 
-namespace stardust::testing {
+namespace daft::testing {
 
 void run() {
     using namespace core::utils;
@@ -41,10 +41,10 @@ void run() {
     UNIT_VERIFY(Vector4i(-7, 2, -4, 6) == toEigen(glm::ivec4(-7, 2, -4, 6)), "toEigen fails with Vector4i");
 }
 
-}  // namespace stardust::testing
+}  // namespace daft::testing
 
 int main(int argc, const char **argv) {
-    using namespace stardust;
+    using namespace daft;
     if (!testing::init_testing(1, argv)) {
         return EXIT_FAILURE;
     }

@@ -8,7 +8,7 @@
 #include <Core/Utils/NonCopyable.hpp>
 #include <string>
 
-namespace stardust::core::geometry {
+namespace daft::core::geometry {
 /**
  * Shader object base class.
  */
@@ -127,4 +127,4 @@ class ENGINE_API ShaderProgram : public utils::NonCopyable {
     GLuint m_id;
     bool m_isValid;
 };
-}  // namespace stardust::core::geometry
+}  // namespace daft::core::geometry

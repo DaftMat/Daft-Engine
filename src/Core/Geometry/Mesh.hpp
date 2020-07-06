@@ -10,7 +10,7 @@
 
 #include "AttribManager.hpp"
 
-namespace stardust::core::geometry {
+namespace daft::core::geometry {
 /**
  * mesh class.
  * a triangle based mesh that associates geometry and topology
@@ -97,4 +97,4 @@ class ENGINE_API Mesh : public utils::NonCopyable {
     AttribManager m_attribManager;
     std::vector<GLuint> m_indices;
 };
-}  // namespace stardust::core::geometry
+}  // namespace daft::core::geometry

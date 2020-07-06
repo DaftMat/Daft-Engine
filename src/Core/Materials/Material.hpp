@@ -8,7 +8,7 @@
 #include "SettingManager.hpp"
 #include "Texture.hpp"
 
-namespace stardust::core::mat {
+namespace daft::core::mat {
 /**
  * surface appearance data of an object.
  */
@@ -113,4 +113,4 @@ class Material : public utils::NonCopyable {
     std::vector<Texture> m_textures;
     SettingManager m_settings{};
 };
-}  // namespace stardust::core::mat
+}  // namespace daft::core::mat

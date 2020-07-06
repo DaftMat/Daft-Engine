@@ -1,6 +1,6 @@
 #include <Core/Utils/Log.hpp>
 
-namespace stardust::core::geometry {
+namespace daft::core::geometry {
 
 template <typename T>
 void AttribManager::addAttrib() {
@@ -79,4 +79,4 @@ void AttribManager::clear() noexcept {
     m_vec4Attribs.clear();
 }
 
-}  // namespace stardust::core::geometry
+}  // namespace daft::core::geometry

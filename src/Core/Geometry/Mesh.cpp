@@ -4,7 +4,7 @@
 
 #include "Mesh.hpp"
 
-namespace stardust::core::geometry {
+namespace daft::core::geometry {
 
 Mesh::Mesh(Mesh&& o) noexcept
     : m_vao{o.m_vao},
@@ -79,4 +79,4 @@ void Mesh::clear() {
     ENGINE_INFO("Mesh of VAO: {0} deleted.", m_vao);
 }
 
-}  // namespace stardust::core::geometry
+}  // namespace daft::core::geometry

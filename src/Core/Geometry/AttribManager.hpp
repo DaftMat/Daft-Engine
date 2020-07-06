@@ -10,7 +10,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace stardust::core::geometry {
+namespace daft::core::geometry {
 /**
  * A class that holds a list for each attributes of a Mesh
  */
@@ -112,6 +112,6 @@ class AttribManager {
     std::unordered_map<GLuint, AttribHandler<glm::vec3>> m_vec3Attribs;
     std::unordered_map<GLuint, AttribHandler<glm::vec4>> m_vec4Attribs;
 };
-}  // namespace stardust::core::geometry
+}  // namespace daft::core::geometry
 
 #include "AttribManager.inl"

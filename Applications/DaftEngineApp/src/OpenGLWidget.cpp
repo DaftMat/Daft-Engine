@@ -24,9 +24,9 @@ void OpenGLWidget::resizeGL(int width, int height) { m_renderer->resize(width, h
 void OpenGLWidget::prepareScene() {
     APP_INFO("Loading example scene...");
     m_renderer->setShader(
-        new stardust::core::geometry::ShaderProgram("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
+        new daft::core::geometry::ShaderProgram("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
 
-    stardust::core::geometry::AttribManager attribManager;
+    daft::core::geometry::AttribManager attribManager;
     std::vector<GLuint> indices{0, 2, 3, 0, 1, 2};
     std::vector<glm::vec3> positions;
     std::vector<glm::vec3> normals;

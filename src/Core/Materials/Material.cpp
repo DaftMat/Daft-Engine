@@ -6,7 +6,7 @@
 
 #include <algorithm>
 
-namespace stardust::core::mat {
+namespace daft::core::mat {
 void Material::prepare() const {
     for (int i = 0; i < m_textures.size(); ++i) {
         glActiveTexture(GL_TEXTURE0 + i);
@@ -36,4 +36,4 @@ void Material::reset() {
     m_textures.clear();
     m_settings.clear();
 }
-}  // namespace stardust::core::mat
+}  // namespace daft::core::mat
