@@ -19,7 +19,7 @@ class ENGINE_API ShaderProgram : public utils::NonCopyable {
      * @param vertexPath - file path of the vertex shader.
      * @param fragmentPath - file path of the fragment shader.
      */
-    ShaderProgram(const char *vertexPath, const char *fragmentPath);
+    ShaderProgram(const std::string &vertexPath, const std::string &fragmentPath);
 
     /**
      * Destructor.

@@ -30,7 +30,7 @@ class MainWidget : public QWidget {
     std::unique_ptr<OpenGLWidget> m_glWidget{nullptr};
     std::unique_ptr<BorderLayout> m_layout{nullptr};
 
-    [[nodiscard]] QLabel *createLabel(const QString &text) const;
-    [[nodiscard]] QSpacerItem *createHSpacer(int vsize = 20) const;
-    [[nodiscard]] QSpacerItem *createVSpacer(int hsize = 20) const;
+    [[nodiscard]] static QLabel *createLabel(const QString &text);
+    [[nodiscard]] static QSpacerItem *createHSpacer(int vsize = 20);
+    [[nodiscard]] static QSpacerItem *createVSpacer(int hsize = 20);
 };

@@ -22,6 +22,8 @@ add_dependencies(${app_target} ${ENGINE_API})
 
 set(IMAGE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/img)
 file(GLOB_RECURSE IMAGE_FILES ${IMAGE_DIR}/*)
+set(STYLE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/stylesheets)
+file(GLOB_RECURSE STYLE_FILES ${STYLE_DIR}/*.css)
 
 if(WIN32)
     set(COPY_COMMAND copy_directory)
@@ -36,4 +38,12 @@ add_custom_target(
         COMMENT "Create symlink/copy for application's images" VERBATIM
 )
 
+add_custom_target(
+        ${app_target}_stylesheets
+        COMMAND ${CMAKE_COMMAND} -E ${COPY_COMMAND} ${STYLE_DIR} ${EXECUTABLE_OUTPUT_PATH}/stylesheets
+        SOURCES ${STYLE_FILES}
+        COMMENT "Create symlink/copy for application's images" VERBATIM
+)
+
 add_dependencies(${app_target} ${app_target}_images)
+add_dependencies(${app_target} ${app_target}_stylesheets)
