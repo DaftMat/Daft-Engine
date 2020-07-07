@@ -4,10 +4,14 @@
 #pragma once
 
 #include <Layouts/BorderLayout.hpp>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QWidget>
 
 #include "OpenGLWidget.hpp"
+
+QT_BEGIN_NAMESPACE
+class QLabel;
+class QSpacerItem;
+QT_END_NAMESPACE
 
 class MainWidget : public QWidget {
     Q_OBJECT
@@ -27,4 +31,6 @@ class MainWidget : public QWidget {
     std::unique_ptr<BorderLayout> m_layout{nullptr};
 
     [[nodiscard]] QLabel *createLabel(const QString &text) const;
+    [[nodiscard]] QSpacerItem *createHSpacer(int vsize = 20) const;
+    [[nodiscard]] QSpacerItem *createVSpacer(int hsize = 20) const;
 };

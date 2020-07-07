@@ -19,3 +19,21 @@ add_executable(${app_target} ${sources} ${headers} ${uis})
 
 target_link_libraries(${app_target} ${ENGINE_LIBRARIES} ${EXT_LIBS})
 add_dependencies(${app_target} ${ENGINE_API})
+
+set(IMAGE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/img)
+file(GLOB_RECURSE IMAGE_FILES ${IMAGE_DIR}/*)
+
+if(WIN32)
+    set(COPY_COMMAND copy_directory)
+else(WIN32)
+    set(COPY_COMMAND create_symlink)
+endif(WIN32)
+
+add_custom_target(
+        ${app_target}_images
+        COMMAND ${CMAKE_COMMAND} -E ${COPY_COMMAND} ${IMAGE_DIR} ${EXECUTABLE_OUTPUT_PATH}/img
+        SOURCES ${IMAGE_FILES}
+        COMMENT "Create symlink/copy for application's images" VERBATIM
+)
+
+add_dependencies(${app_target} ${app_target}_images)
