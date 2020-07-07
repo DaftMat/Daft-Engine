@@ -51,8 +51,9 @@ void OpenGLWidget::prepareScene() {
     attribManager.addAttrib(positions);
     attribManager.addAttrib(normals);
     attribManager.addAttrib(texCoords);
+    attribManager.setIndices(indices);
 
-    m_renderer->addMesh(attribManager, indices);
+    m_renderer->addMesh(attribManager);
     APP_INFO("Example scene loaded");
 }
 

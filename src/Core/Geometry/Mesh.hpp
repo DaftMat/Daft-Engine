@@ -28,7 +28,7 @@ class ENGINE_API Mesh : public utils::NonCopyable {
      * @param attribManager - geometry of the mesh.
      * @param indices - topology of the mesh.
      */
-    Mesh(const AttribManager &attribManager, const std::vector<GLuint> &indices) { reset(attribManager, indices); };
+    Mesh(const AttribManager &attribManager) { reset(attribManager); };
 
     /**
      * destructor.
@@ -70,7 +70,7 @@ class ENGINE_API Mesh : public utils::NonCopyable {
      * @param attribManager - geometry
      * @param indices - topology
      */
-    void reset(const AttribManager &attribManager, const std::vector<GLuint> &indices);
+    void reset(const AttribManager &attribManager);
 
     /**
      * Clears the mesh.
@@ -95,6 +95,5 @@ class ENGINE_API Mesh : public utils::NonCopyable {
     std::vector<GLuint> m_vbos;
     bool m_isVisible;
     AttribManager m_attribManager;
-    std::vector<GLuint> m_indices;
 };
 }  // namespace daft::core::geometry

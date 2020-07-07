@@ -12,8 +12,7 @@ Mesh::Mesh(Mesh&& o) noexcept
       m_numVertex{o.m_numVertex},
       m_vbos{std::move_if_noexcept(o.m_vbos)},
       m_isVisible{o.m_isVisible},
-      m_attribManager{std::move_if_noexcept(o.m_attribManager)},
-      m_indices{std::move_if_noexcept(o.m_indices)} {
+      m_attribManager{std::move_if_noexcept(o.m_attribManager)} {
     o.m_isVisible = false;
 }
 
@@ -24,7 +23,6 @@ Mesh& Mesh::operator=(Mesh&& o) noexcept {
     m_vbos = std::move_if_noexcept(o.m_vbos);
     m_isVisible = o.m_isVisible;
     m_attribManager = std::move_if_noexcept(o.m_attribManager);
-    m_indices = std::move_if_noexcept(o.m_indices);
     o.m_isVisible = false;
     return *this;
 }
@@ -32,8 +30,7 @@ Mesh& Mesh::operator=(Mesh&& o) noexcept {
 void Mesh::prepare() const {
     if (!m_isVisible) return;
     glBindVertexArray(m_vao);
-    for (auto i = 0ul ; i < m_attribManager.size() ; ++i)
-        glEnableVertexAttribArray(i);
+    for (auto i = 0ul; i < m_attribManager.size(); ++i) glEnableVertexAttribArray(i);
 }
 
 void Mesh::render(GLuint type) const {
@@ -43,15 +40,13 @@ void Mesh::render(GLuint type) const {
 
 void Mesh::unbind() const {
     if (!m_isVisible) return;
-    for (auto i = 0ul ; i < m_attribManager.size() ; ++i)
-        glDisableVertexAttribArray(i);
+    for (auto i = 0ul; i < m_attribManager.size(); ++i) glDisableVertexAttribArray(i);
     glBindVertexArray(0);
 }
 
-void Mesh::reset(const AttribManager &attribManager, const std::vector<GLuint> &indices) {
+void Mesh::reset(const AttribManager& attribManager) {
     m_attribManager = attribManager;
-    m_indices = indices;
-    m_numVertex = m_indices.size();
+    m_numVertex = m_attribManager.indices().size();
     m_vbos = std::vector<GLuint>(m_attribManager.size(), 0);
     m_isVisible = true;
 
@@ -64,7 +59,8 @@ void Mesh::reset(const AttribManager &attribManager, const std::vector<GLuint> &
     m_attribManager.setAttribs(m_vbos);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_numVertex * sizeof(GLuint), m_indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_numVertex * sizeof(GLuint), m_attribManager.indices().data(),
+                 GL_STATIC_DRAW);
 
     glBindVertexArray(0);
     ENGINE_INFO("Mesh created. VAO: {0}.", m_vao);

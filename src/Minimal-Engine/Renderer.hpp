@@ -30,8 +30,8 @@ class ENGINE_API Renderer : public daft::core::utils::NonCopyable {
 
     void resize(int width, int height);
 
-    void addMesh(daft::core::geometry::AttribManager attribManager, std::vector<GLuint> indices) noexcept {
-        m_meshes.emplace_back(std::move_if_noexcept(attribManager), std::move_if_noexcept(indices));
+    void addMesh(daft::core::geometry::AttribManager attribManager) noexcept {
+        m_meshes.emplace_back(std::move_if_noexcept(attribManager));
     }
 
     void setShader(daft::core::geometry::ShaderProgram *shaderProgram) { m_shader.reset(shaderProgram); }
