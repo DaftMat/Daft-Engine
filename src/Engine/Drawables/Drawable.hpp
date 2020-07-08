@@ -3,30 +3,22 @@
 //
 #pragma once
 #include <API.hpp>
-#include <Core/OpenGL.hpp>
 #include <Core/Utils/NonCopyable.hpp>
+#include <Core/Utils/Types.hpp>
 
-namespace daft::engine::objects {
+namespace daft {
+/// forward declarations
+namespace core::utils {
+class DrawableVisitor;
+}  // namespace core::utils
+
+namespace engine::objects {
 /**
  * Base class for any drawable object that will be rendered on the scene.
  */
 class Drawable : public core::utils::NonCopyable {
    public:
-    /**
-     * Default constructor.
-     */
-    Drawable() noexcept = default;
-
-    /**
-     * Default move constructor.
-     */
-    Drawable(Drawable &&) noexcept = default;
-
-    /**
-     * Default move assignment operator.
-     * @return reference to this.
-     */
-    Drawable &operator=(Drawable &&) noexcept = default;
+    using DrawableVisitor = core::utils::DrawableVisitor;
 
     /**
      * prepares the inner geometry to be rendered.
@@ -46,7 +38,7 @@ class Drawable : public core::utils::NonCopyable {
     /**
      * Accepts a DrawableVisitor .
      */
-    virtual void accept(/*DrawableVisitor **/) = 0;
+    virtual void accept(DrawableVisitor *) = 0;
 
     /**
      * Calculates the transformation model matrix of the drawable.
@@ -110,11 +102,14 @@ class Drawable : public core::utils::NonCopyable {
 
    private:
     [[nodiscard]] inline glm::mat4 calculateScaleMat() const;
+
     [[nodiscard]] inline glm::mat4 calculateRotationMat() const;
+
     [[nodiscard]] inline glm::mat4 calculateTranslationMat() const;
 
-    glm::vec3 m_position;
-    glm::vec3 m_rotations;
-    glm::vec3 m_scale;
+    glm::vec3 m_position{0.f};
+    glm::vec3 m_rotations{0.f};
+    glm::vec3 m_scale{1.f};
 };
-}  // namespace daft::engine::objects
+}  // namespace engine::objects
+}  // namespace daft

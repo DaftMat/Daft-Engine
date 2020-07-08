@@ -3,6 +3,8 @@
 //
 #include "MeshObject.hpp"
 
+#include <Core/Materials/Material.hpp>
+
 namespace daft::engine::objects {
 
 MeshObject::MeshObject(Mesh mesh, const std::shared_ptr<Material> &material)
