@@ -11,11 +11,6 @@ namespace daft::engine::objects {
 class Composite : public Drawable {
    public:
     /**
-     * Default constructor.
-     */
-    Composite() noexcept = default;
-
-    /**
      * Default move constructor.
      */
     Composite(Composite &&) noexcept = default;
