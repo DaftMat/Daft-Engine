@@ -37,19 +37,9 @@ class ENGINE_API Object : public Drawable {
     Object &operator=(Object &&) noexcept = default;
 
     /**
-     * Prepares the mesh objects to be rendered.
-     */
-    void prepare() override;
-
-    /**
      * Renders the mesh objects.
      */
     void render() override;
-
-    /**
-     * unbind the mesh objects from the rendering context.
-     */
-    void unbind() override;
 
     /**
      * Accepts a DrawableVisitor.

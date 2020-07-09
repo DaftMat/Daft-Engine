@@ -22,20 +22,12 @@ class Light : public Drawable {
     explicit Light(Mesh mesh = Mesh{}, const glm::vec3 &color = glm::vec3{1.f}) noexcept
         : m_mesh{std::move_if_noexcept(mesh)}, m_color{color} {}
 
-    /**
-     * Prepares the mesh representation of the light to be rendered.
-     */
-    void prepare() override = 0;
+    virtual ~Light() = 0;
 
     /**
      * Renders the mesh representation of the light.
      */
-    void render() override = 0;
-
-    /**
-     * Unbinds the mesh representation of the light from the rendering context.
-     */
-    void unbind() override = 0;
+    void render() override;
 
     /**
      * Translates the light.

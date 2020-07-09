@@ -21,19 +21,9 @@ class Drawable : public core::utils::NonCopyable {
     using DrawableVisitor = core::utils::DrawableVisitor;
 
     /**
-     * prepares the inner geometry to be rendered.
-     */
-    virtual void prepare() = 0;
-
-    /**
      * renders the inner geometry.
      */
     virtual void render() = 0;
-
-    /**
-     * unbinds the inner geometry from the rendering context.
-     */
-    virtual void unbind() = 0;
 
     /**
      * Accepts a DrawableVisitor .
