@@ -5,6 +5,7 @@
 #include <API.hpp>
 #include <Core/Utils/NonCopyable.hpp>
 #include <Core/Utils/Types.hpp>
+#include <memory>
 
 namespace daft {
 /// forward declarations
@@ -13,12 +14,19 @@ class DrawableVisitor;
 }  // namespace core::utils
 
 namespace engine::objects {
+class Composite;
+
 /**
  * Base class for any drawable object that will be rendered on the scene.
  */
 class Drawable : public core::utils::NonCopyable {
    public:
     using DrawableVisitor = core::utils::DrawableVisitor;
+    /**
+     * Standard constructor.
+     * @param parent
+     */
+    explicit Drawable(Composite *parent = nullptr) noexcept;
 
     /**
      * renders the inner geometry.
@@ -90,7 +98,21 @@ class Drawable : public core::utils::NonCopyable {
      */
     inline glm::vec3 &scale() { return m_scale; }
 
+    /**
+     * Parent getter.
+     * @return parent Composite .
+     */
+    [[nodiscard]] inline const Composite *getParent() const;
+
+    /**
+     * Parent setter.
+     * @param composite - new parent.
+     */
+    inline void setParent(Composite *composite);
+
    private:
+    [[nodiscard]] inline glm::mat4 calculateModel() const;
+
     [[nodiscard]] inline glm::mat4 calculateScaleMat() const;
 
     [[nodiscard]] inline glm::mat4 calculateRotationMat() const;
@@ -100,6 +122,8 @@ class Drawable : public core::utils::NonCopyable {
     glm::vec3 m_position{0.f};
     glm::vec3 m_rotations{0.f};
     glm::vec3 m_scale{1.f};
+
+    std::shared_ptr<Composite> m_parent;
 };
 }  // namespace engine::objects
 }  // namespace daft

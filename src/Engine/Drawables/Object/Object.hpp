@@ -17,13 +17,13 @@ class ENGINE_API Object : public Drawable {
      * Standard constructor.
      * @param mos - list of mesh objects.
      */
-    explicit Object(std::vector<MeshObject> mos = {}) noexcept;
+    explicit Object(Composite *parent, std::vector<MeshObject> mos = {}) noexcept;
 
     /**
      * One mesh constructor.
      * @param mo - mesh object.
      */
-    explicit Object(MeshObject mo) noexcept;
+    explicit Object(Composite *parent, MeshObject mo) noexcept;
 
     /**
      * Default move constructor.

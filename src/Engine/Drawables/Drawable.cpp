@@ -3,9 +3,27 @@
 //
 #include "Drawable.hpp"
 
+#include <Engine/Drawables/Composite.hpp>
+
 namespace daft::engine::objects {
 
-glm::mat4 Drawable::model() const { return calculateScaleMat() * calculateRotationMat() * calculateTranslationMat(); }
+Drawable::Drawable(Composite *parent) noexcept : m_parent{parent} {}
+
+glm::mat4 Drawable::model() const {
+    glm::mat4 parentModel{1.f};
+    if (getParent() != nullptr) {
+        parentModel = getParent()->model();
+    }
+    return parentModel * calculateModel();
+}
+
+const Composite *Drawable::getParent() const { return m_parent.get(); }
+
+void Drawable::setParent(Composite *composite) { m_parent.reset(composite); }
+
+glm::mat4 Drawable::calculateModel() const {
+    return calculateScaleMat() * calculateRotationMat() * calculateTranslationMat();
+}
 
 glm::mat4 Drawable::calculateScaleMat() const { return glm::scale(glm::mat4{1.f}, m_scale); }
 

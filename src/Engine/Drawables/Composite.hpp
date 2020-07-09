@@ -7,9 +7,19 @@
 
 #include "Drawable.hpp"
 
+namespace daft::core::geometry {
+class ShaderProgram;
+}
+
 namespace daft::engine::objects {
 class Composite : public Drawable {
    public:
+    /**
+     * Standard constructor
+     * @param composite - parent.
+     */
+    explicit Composite(Composite *parent = nullptr) noexcept : Drawable(parent) {}
+
     /**
      * Default move constructor.
      */
