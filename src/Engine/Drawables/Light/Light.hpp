@@ -56,6 +56,18 @@ class Light : public Drawable {
      */
     void rescale(const glm::vec3 &s) override {}
 
+    /**
+     * Emitted color constant reference.
+     * @return color const ref.
+     */
+    const glm::vec3 &color() const { return m_color; }
+
+    /**
+     * Emitted color reference.
+     * @return color ref.
+     */
+    glm::vec3 &color() { return m_color; }
+
    private:
     Mesh m_mesh;
     glm::vec3 m_color;
