@@ -20,6 +20,6 @@ void Object::render() {
     }
 }
 
-void Object::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
+void Object::accept(const Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
 
 }  // namespace daft::engine::objects

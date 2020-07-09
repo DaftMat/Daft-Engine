@@ -31,6 +31,24 @@ class Composite : public Drawable {
      */
     void render() override;
 
+    /**
+     * Accepts a drawable visitor.
+     * @param visitor - DrawableVisitor .
+     */
+    inline void accept(const DrawableVisitor *visitor) override;
+
+    /**
+     * Drawables reference
+     * @return drawables ref.
+     */
+    auto &drawables() { return m_drawables; }
+
+    /**
+     * Drawables constant reference.
+     * @return drawables const ref.
+     */
+    [[nodiscard]] const auto &drawbles() const { return m_drawables; }
+
    private:
     using DrawablePtr = std::shared_ptr<Drawable>;
 

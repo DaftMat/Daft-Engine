@@ -8,6 +8,7 @@ namespace daft {
 /// forward declarations
 namespace engine::objects {
 class Object;
+class Composite;
 }  // namespace engine::objects
 
 namespace core::utils {
@@ -22,6 +23,11 @@ class ENGINE_API DrawableVisitor {
      * Visits an Object .
      */
     virtual void visit(Object *) const = 0;
+
+    /**
+     * Visits a Composite .
+     */
+    virtual void visit(Composite *) const;
 };
 
 }  // namespace core::utils

@@ -45,7 +45,7 @@ class ENGINE_API Object : public Drawable {
      * Accepts a DrawableVisitor.
      * @param visitor - visitor.
      */
-    inline void accept(DrawableVisitor *visitor) override;
+    inline void accept(const DrawableVisitor *visitor) override;
 
    private:
     std::vector<MeshObject> m_meshObjects;

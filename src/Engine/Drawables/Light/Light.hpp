@@ -22,8 +22,6 @@ class Light : public Drawable {
     explicit Light(Mesh mesh = Mesh{}, const glm::vec3 &color = glm::vec3{1.f}) noexcept
         : m_mesh{std::move_if_noexcept(mesh)}, m_color{color} {}
 
-    virtual ~Light() = 0;
-
     /**
      * Renders the mesh representation of the light.
      */
@@ -47,6 +45,11 @@ class Light : public Drawable {
      * @param s - new scale (won't be applied).
      */
     void rescale(const glm::vec3 &s) override {}
+
+    /**
+     * Accepts a DrawableVisitor .
+     */
+    void accept(const DrawableVisitor *) override = 0;
 
     /**
      * Emitted color constant reference.
