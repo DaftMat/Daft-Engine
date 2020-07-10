@@ -28,7 +28,7 @@ class ENGINE_API Mesh : public utils::NonCopyable {
      * @param attribManager - geometry of the mesh.
      * @param indices - topology of the mesh.
      */
-    Mesh(const AttribManager &attribManager) { reset(attribManager); };
+    explicit Mesh(const AttribManager &attribManager) { reset(attribManager); };
 
     /**
      * destructor.

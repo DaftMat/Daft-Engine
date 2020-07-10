@@ -9,9 +9,8 @@
 #include <QSpacerItem>
 #include <QtWidgets/QLabel>
 
-MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
+MainWidget::MainWidget(QWidget *parent) : QWidget(parent), m_layout{std::make_unique<BorderLayout>(0)} {
     m_glWidget = std::make_unique<OpenGLWidget>(this);
-    m_layout = std::make_unique<BorderLayout>(0);
 
     m_layout->addWidget(m_glWidget.get(), BorderLayout::Position::Center);
     auto button = new QPushButton(this);
