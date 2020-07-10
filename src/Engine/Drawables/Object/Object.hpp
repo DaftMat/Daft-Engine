@@ -17,7 +17,8 @@ class ENGINE_API Object : public Drawable {
      * Standard constructor.
      * @param mos - list of mesh objects.
      */
-    explicit Object(Composite *parent, std::vector<MeshObject> mos = {}) noexcept;
+    explicit Object(Composite *parent, std::string name = "Object" + std::to_string(m_nrObject++),
+                    std::vector<MeshObject> mos = {}) noexcept;
 
     /**
      * One mesh constructor.
@@ -49,5 +50,7 @@ class ENGINE_API Object : public Drawable {
 
    private:
     std::vector<MeshObject> m_meshObjects;
+
+    static int m_nrObject;
 };
 }  // namespace daft::engine::objects

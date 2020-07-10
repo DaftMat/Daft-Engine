@@ -7,7 +7,10 @@
 
 namespace daft::engine::objects {
 
-Drawable::Drawable(Composite *parent) noexcept : m_parent{parent} {}
+int Drawable::m_nrDrawables{0};
+
+Drawable::Drawable(Composite *parent, std::string name) noexcept
+    : m_parent{parent}, m_name{std::move_if_noexcept(name)} {}
 
 glm::mat4 Drawable::model() const {
     glm::mat4 parentModel{1.f};
@@ -17,13 +20,21 @@ glm::mat4 Drawable::model() const {
     return parentModel * calculateModel();
 }
 
+glm::mat4 Drawable::normalizedModel() const {
+    glm::mat4 parentModel{1.f};
+    if (getParent() != nullptr) {
+        parentModel = getParent()->normalizedModel();
+    }
+    return parentModel * calculateNormalizedModel();
+}
+
 const Composite *Drawable::getParent() const { return m_parent.get(); }
 
 void Drawable::setParent(Composite *composite) { m_parent.reset(composite); }
 
-glm::mat4 Drawable::calculateModel() const {
-    return calculateScaleMat() * calculateRotationMat() * calculateTranslationMat();
-}
+glm::mat4 Drawable::calculateModel() const { return calculateNormalizedModel() * calculateTranslationMat(); }
+
+glm::mat4 Drawable::calculateNormalizedModel() const { return calculateScaleMat() * calculateRotationMat(); }
 
 glm::mat4 Drawable::calculateScaleMat() const { return glm::scale(glm::mat4{1.f}, m_scale); }
 

@@ -22,11 +22,13 @@ class Composite;
 class Drawable : public core::utils::NonCopyable {
    public:
     using DrawableVisitor = core::utils::DrawableVisitor;
+
     /**
      * Standard constructor.
      * @param parent
      */
-    explicit Drawable(Composite *parent = nullptr) noexcept;
+    explicit Drawable(Composite *parent = nullptr,
+                      std::string name = "Drawable" + std::to_string(m_nrDrawables++)) noexcept;
 
     /**
      * renders the inner geometry.
@@ -42,7 +44,32 @@ class Drawable : public core::utils::NonCopyable {
      * Calculates the transformation model matrix of the drawable.
      * @return transformation matrix.
      */
-    [[nodiscard]] inline glm::mat4 model() const;
+    [[nodiscard]] glm::mat4 model() const;
+
+    /**
+     * Calculates the normalized transformation model matrix of the drawable.
+     * Will be used by the Gizmo s.
+     * @return the transformation model matrix with a scale of 1.
+     */
+    [[nodiscard]] glm::mat4 normalizedModel() const;
+
+    /**
+     * Is the object selected by the user ?
+     * @return true if the drawable is selected.
+     */
+    [[nodiscard]] inline bool selected() const { return m_selected; }
+
+    /**
+     * Selects the drawable.
+     * selected() becomes true.
+     */
+    inline void select() { m_selected = true; }
+
+    /**
+     * Deselects the drawable.
+     * selected() becomes false.
+     */
+    inline void deselect() { m_selected = false; }
 
     /**
      * Applies a translation to the drawable.
@@ -99,6 +126,18 @@ class Drawable : public core::utils::NonCopyable {
     inline glm::vec3 &scale() { return m_scale; }
 
     /**
+     * Name constant reference.
+     * @return const ref to name.
+     */
+    [[nodiscard]] inline const std::string &name() const { return m_name; }
+
+    /**
+     * Name reference.
+     * @return ref to name.
+     */
+    inline std::string &name() { return m_name; }
+
+    /**
      * Parent getter.
      * @return parent Composite .
      */
@@ -113,6 +152,8 @@ class Drawable : public core::utils::NonCopyable {
    private:
     [[nodiscard]] inline glm::mat4 calculateModel() const;
 
+    [[nodiscard]] inline glm::mat4 calculateNormalizedModel() const;
+
     [[nodiscard]] inline glm::mat4 calculateScaleMat() const;
 
     [[nodiscard]] inline glm::mat4 calculateRotationMat() const;
@@ -123,7 +164,12 @@ class Drawable : public core::utils::NonCopyable {
     glm::vec3 m_rotations{0.f};
     glm::vec3 m_scale{1.f};
 
+    bool m_selected{false};
+
     std::shared_ptr<Composite> m_parent;
+    std::string m_name;
+
+    static int m_nrDrawables;
 };
 }  // namespace engine::objects
 }  // namespace daft

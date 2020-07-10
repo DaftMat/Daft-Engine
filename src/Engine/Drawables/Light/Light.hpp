@@ -19,8 +19,9 @@ class Light : public Drawable {
      * @param mesh - line mesh that represents the light.
      * @param color - color emitted by the light.
      */
-    explicit Light(Mesh mesh = Mesh{}, const glm::vec3 &color = glm::vec3{1.f}) noexcept
-        : m_mesh{std::move_if_noexcept(mesh)}, m_color{color} {}
+    explicit Light(Composite *parent = nullptr, std::string name = "Light" + std::to_string(m_nrLight++),
+                   Mesh mesh = Mesh{}, const glm::vec3 &color = glm::vec3{1.f}) noexcept
+        : Drawable(parent, std::move_if_noexcept(name)), m_mesh{std::move_if_noexcept(mesh)}, m_color{color} {}
 
     /**
      * Renders the mesh representation of the light.
@@ -66,5 +67,7 @@ class Light : public Drawable {
    private:
     Mesh m_mesh;
     glm::vec3 m_color;
+
+    static int m_nrLight;
 };
 }  // namespace daft::engine::objects
