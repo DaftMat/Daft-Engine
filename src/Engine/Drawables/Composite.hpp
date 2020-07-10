@@ -35,7 +35,7 @@ class Composite : public Drawable {
     /**
      * Renders all the Drawable within the composite.
      */
-    void render() override;
+    void render(const Shader &shader) override;
 
     /**
      * Accepts a drawable visitor.

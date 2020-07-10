@@ -3,6 +3,7 @@
 //
 #include "Object.hpp"
 
+#include <Core/Geometry/ShaderProgram.hpp>
 #include <Core/Utils/DrawableVisitor.hpp>
 #include <Engine/Drawables/MeshObject.hpp>
 
@@ -15,7 +16,9 @@ Object::Object(Composite *parent, MeshObject mo) noexcept : Drawable(parent), m_
     m_meshObjects.emplace_back(std::move_if_noexcept(mo));
 }
 
-void Object::render() {
+void Object::render(const Shader &shader) {
+    /// pre-cond: the shader is being used.
+    shader.setMat4("model", model());
     for (auto &mo : m_meshObjects) {
         mo.prepare();
         mo.render(GL_TRIANGLES);
