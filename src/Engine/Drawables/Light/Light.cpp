@@ -3,12 +3,8 @@
 //
 #include "Light.hpp"
 
-#include <Core/Geometry/ShaderProgram.hpp>
-
 namespace daft::engine::objects {
-void Light::render(const Shader &shader) {
-    /// pre-cond: the shader is being used
-    shader.setMat4("model", model());
+void Light::render() {
     m_mesh.prepare();
     m_mesh.render(GL_LINES);
     m_mesh.unbind();

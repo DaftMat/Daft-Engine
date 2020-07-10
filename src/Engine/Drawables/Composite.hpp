@@ -33,9 +33,10 @@ class Composite : public Drawable {
     Composite &operator=(Composite &&) noexcept = default;
 
     /**
-     * Renders all the Drawable within the composite.
+     * Does nothing. Have to pass through a RendererVisitor that will render all the objects within.
+     * Because of the variation of shaders.
      */
-    void render(const Shader &shader) override;
+    void render() override{};
 
     /**
      * Accepts a drawable visitor.
@@ -45,7 +46,7 @@ class Composite : public Drawable {
 
     /**
      * Adds a drawable to the composite.
-     * @param drawable
+     * @param drawable - drawable to add.
      */
     inline void add(Drawable *drawable);
 

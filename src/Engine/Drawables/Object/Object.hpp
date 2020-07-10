@@ -40,7 +40,7 @@ class ENGINE_API Object : public Drawable {
     /**
      * Renders the mesh objects.
      */
-    void render(const Shader &shader) override;
+    void render() override;
 
     /**
      * Accepts a DrawableVisitor.

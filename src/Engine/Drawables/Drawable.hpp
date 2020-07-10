@@ -13,10 +13,6 @@ namespace core::utils {
 class DrawableVisitor;
 }  // namespace core::utils
 
-namespace core::geometry {
-class ShaderProgram;
-}
-
 namespace engine::objects {
 class Composite;
 
@@ -26,7 +22,6 @@ class Composite;
 class Drawable : public core::utils::NonCopyable {
    public:
     using DrawableVisitor = core::utils::DrawableVisitor;
-    using Shader = core::geometry::ShaderProgram;
 
     /**
      * Standard constructor.
@@ -38,7 +33,7 @@ class Drawable : public core::utils::NonCopyable {
     /**
      * renders the inner geometry.
      */
-    virtual void render(const Shader &) = 0;
+    virtual void render() = 0;
 
     /**
      * Accepts a DrawableVisitor .
