@@ -6,6 +6,7 @@
 #include <Core/Utils/Log.hpp>
 #include <QOpenGLContext>
 
+namespace daft::app {
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 
 void OpenGLWidget::initializeGL() {
@@ -14,6 +15,7 @@ void OpenGLWidget::initializeGL() {
     m_renderer = std::make_unique<Renderer>(width(), height());
     prepareScene();
 }
+
 void OpenGLWidget::paintGL() {
     m_renderer->prepare();
     m_renderer->render();
@@ -23,8 +25,6 @@ void OpenGLWidget::resizeGL(int width, int height) { m_renderer->resize(width, h
 
 void OpenGLWidget::prepareScene() {
     APP_INFO("Loading example scene...");
-    m_renderer->setShader(
-        new daft::core::geometry::ShaderProgram("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
 
     daft::core::geometry::AttribManager attribManager;
     std::vector<GLuint> indices{0, 2, 3, 0, 1, 2};
@@ -66,3 +66,4 @@ void OpenGLWidget::mouseReleaseEvent(QMouseEvent *e) {
 }
 
 void OpenGLWidget::mouseMoveEvent(QMouseEvent *e) { APP_TRACE("Mouse moved."); }
+}  // namespace daft::app

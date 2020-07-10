@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Qt Example Works !</string>
   </property>
-  <widget class="MainWidget" name="centralwidget"/>
+  <widget class="daft::app::MainWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -46,7 +46,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>MainWidget</class>
+   <class>daft::app::MainWidget</class>
    <extends>QWidget</extends>
    <header>Widgets/MainWidget.hpp</header>
    <container>1</container>

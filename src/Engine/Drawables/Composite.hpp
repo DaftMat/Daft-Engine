@@ -12,7 +12,7 @@ class ShaderProgram;
 }
 
 namespace daft::engine::objects {
-class Composite : public Drawable {
+class ENGINE_API Composite : public Drawable {
    public:
     /**
      * Standard constructor
@@ -20,6 +20,8 @@ class Composite : public Drawable {
      */
     explicit Composite(Composite *parent = nullptr,
                        std::string name = "Group" + std::to_string(m_nrComposite++)) noexcept;
+
+    ~Composite() noexcept { m_drawables.clear(); }
 
     /**
      * Default move constructor.
@@ -42,13 +44,13 @@ class Composite : public Drawable {
      * Accepts a drawable visitor.
      * @param visitor - DrawableVisitor .
      */
-    inline void accept(const DrawableVisitor *visitor) override;
+    void accept(const DrawableVisitor *visitor) override;
 
     /**
      * Adds a drawable to the composite.
      * @param drawable - drawable to add.
      */
-    inline void add(Drawable *drawable);
+    void add(Drawable *drawable);
 
     /**
      * Drawables reference
@@ -60,7 +62,9 @@ class Composite : public Drawable {
      * Drawables constant reference.
      * @return drawables const ref.
      */
-    [[nodiscard]] const auto &drawbles() const { return m_drawables; }
+    [[nodiscard]] const auto &drawables() const { return m_drawables; }
+
+    void reset() override {}
 
    private:
     using DrawablePtr = std::shared_ptr<Drawable>;

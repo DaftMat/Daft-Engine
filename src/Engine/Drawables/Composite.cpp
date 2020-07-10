@@ -17,4 +17,5 @@ void Composite::add(Drawable *drawable) {
     drawable->setParent(this);
     m_drawables.emplace_back(drawable);
 }
+
 }  // namespace daft::engine::objects

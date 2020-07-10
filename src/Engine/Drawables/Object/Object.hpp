@@ -17,7 +17,7 @@ class ENGINE_API Object : public Drawable {
      * Standard constructor.
      * @param mos - list of mesh objects.
      */
-    explicit Object(Composite *parent, std::string name = "Object" + std::to_string(m_nrObject++),
+    explicit Object(Composite *parent = nullptr, std::string name = "Object" + std::to_string(m_nrObject++),
                     std::vector<MeshObject> mos = {}) noexcept;
 
     /**
@@ -25,6 +25,8 @@ class ENGINE_API Object : public Drawable {
      * @param mo - mesh object.
      */
     explicit Object(Composite *parent, MeshObject mo) noexcept;
+
+    ~Object() noexcept;
 
     /**
      * Default move constructor.
@@ -46,7 +48,9 @@ class ENGINE_API Object : public Drawable {
      * Accepts a DrawableVisitor.
      * @param visitor - visitor.
      */
-    inline void accept(const DrawableVisitor *visitor) override;
+    void accept(const DrawableVisitor *visitor) override;
+
+    void reset() override;
 
    private:
     std::vector<MeshObject> m_meshObjects;

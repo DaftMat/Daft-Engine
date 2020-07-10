@@ -7,7 +7,8 @@
 
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+namespace daft::app {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new ::Ui::MainWindow) {
     ui->setupUi(this);
 
     QSurfaceFormat format;
@@ -37,3 +38,4 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
     auto size = ui->centralwidget->borderLayout().regionSize(BorderLayout::Position::Center);
     ui->centralwidget->glWidget().resize(size.width(), size.height());
 }
+}  // namespace daft::app

@@ -7,11 +7,13 @@
 #include <QOpenGLWidget>
 #include <QtGui/QResizeEvent>
 
+namespace daft::app {
 class OpenGLWidget : public QOpenGLWidget {
     Q_OBJECT
 
    public:
     explicit OpenGLWidget(QWidget *parent = nullptr);
+
     ~OpenGLWidget() override { cleanup(); }
 
     [[nodiscard]] QSize minimumSizeHint() const override { return {50, 50}; }
@@ -19,15 +21,20 @@ class OpenGLWidget : public QOpenGLWidget {
     [[nodiscard]] QSize sizeHint() const override { return {width(), height()}; }
 
     void mousePressEvent(QMouseEvent *e) override;
+
     void mouseReleaseEvent(QMouseEvent *e) override;
+
     void mouseMoveEvent(QMouseEvent *e) override;
 
    public slots:
+
     void cleanup() { m_renderer.reset(); }
 
    protected:
     void initializeGL() override;
+
     void paintGL() override;
+
     void resizeGL(int width, int height) override;
 
     void prepareScene();
@@ -37,3 +44,4 @@ class OpenGLWidget : public QOpenGLWidget {
 
     bool m_glInitialized{false};
 };
+}  // namespace daft::app

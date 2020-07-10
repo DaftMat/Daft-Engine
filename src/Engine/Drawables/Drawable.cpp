@@ -28,9 +28,9 @@ glm::mat4 Drawable::normalizedModel() const {
     return parentModel * calculateNormalizedModel();
 }
 
-const Composite *Drawable::getParent() const { return m_parent.get(); }
+const Composite *Drawable::getParent() const { return m_parent; }
 
-void Drawable::setParent(Composite *composite) { m_parent.reset(composite); }
+void Drawable::setParent(Composite *composite) { m_parent = composite; }
 
 glm::mat4 Drawable::calculateModel() const { return calculateNormalizedModel() * calculateTranslationMat(); }
 

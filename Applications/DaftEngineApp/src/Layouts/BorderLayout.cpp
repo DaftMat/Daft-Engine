@@ -3,6 +3,7 @@
 //
 #include "BorderLayout.hpp"
 
+namespace daft::app {
 BorderLayout::BorderLayout(QWidget *parent, const QMargins &margins, int spacing) : QLayout(parent) {
     setContentsMargins(margins);
     setSpacing(spacing);
@@ -149,3 +150,4 @@ QSize BorderLayout::regionSize(BorderLayout::Position position) const {
     });
     return size;
 }
+}  // namespace daft::app

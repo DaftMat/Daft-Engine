@@ -13,17 +13,21 @@ class QLabel;
 class QSpacerItem;
 QT_END_NAMESPACE
 
+namespace daft::app {
 class MainWidget : public QWidget {
     Q_OBJECT
 
    public:
     explicit MainWidget(QWidget *parent = nullptr);
+
     ~MainWidget() override;
 
     OpenGLWidget &glWidget() { return *m_glWidget; }
+
     [[nodiscard]] const OpenGLWidget &glWidget() const { return *m_glWidget; }
 
     BorderLayout &borderLayout() { return *m_layout; }
+
     [[nodiscard]] const BorderLayout &borderLayout() const { return *m_layout; }
 
    private:
@@ -31,6 +35,9 @@ class MainWidget : public QWidget {
     std::unique_ptr<BorderLayout> m_layout{nullptr};
 
     [[nodiscard]] static QLabel *createLabel(const QString &text);
+
     [[nodiscard]] static QSpacerItem *createHSpacer(int vsize = 20);
+
     [[nodiscard]] static QSpacerItem *createVSpacer(int hsize = 20);
 };
+}  // namespace daft::app

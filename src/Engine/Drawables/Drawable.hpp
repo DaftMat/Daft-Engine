@@ -30,6 +30,12 @@ class Drawable : public core::utils::NonCopyable {
     explicit Drawable(Composite *parent = nullptr,
                       std::string name = "Drawable" + std::to_string(m_nrDrawables++)) noexcept;
 
+    ~Drawable() noexcept = default;
+
+    Drawable(Drawable &&) noexcept = default;
+
+    Drawable &operator=(Drawable &&) noexcept = default;
+
     /**
      * renders the inner geometry.
      */
@@ -57,108 +63,110 @@ class Drawable : public core::utils::NonCopyable {
      * Is the object selected by the user ?
      * @return true if the drawable is selected.
      */
-    [[nodiscard]] inline bool selected() const { return m_selected; }
+    [[nodiscard]] bool selected() const { return m_selected; }
 
     /**
      * Selects the drawable.
      * selected() becomes true.
      */
-    inline void select() { m_selected = true; }
+    void select() { m_selected = true; }
 
     /**
      * Deselects the drawable.
      * selected() becomes false.
      */
-    inline void deselect() { m_selected = false; }
+    void deselect() { m_selected = false; }
 
     /**
      * Applies a translation to the drawable.
      * @param t - translation to apply.
      */
-    virtual inline void translate(const glm::vec3 &t) { m_position += t; }
+    virtual void translate(const glm::vec3 &t) { m_position += t; }
 
     /**
      * Applies a rotation to the drawable.
      * @param r - rotation to apply.
      */
-    virtual inline void rotate(const glm::vec3 &r) { m_rotations += r; }
+    virtual void rotate(const glm::vec3 &r) { m_rotations += r; }
 
     /**
      * Re-scales the drawable.
      * @param s - new scale of the drawble.
      */
-    virtual inline void rescale(const glm::vec3 &s) { m_scale = s; }
+    virtual void rescale(const glm::vec3 &s) { m_scale = s; }
 
     /**
      * Position constant reference.
      * @return const ref to position.
      */
-    [[nodiscard]] inline const glm::vec3 &position() const { return m_position; }
+    [[nodiscard]] const glm::vec3 &position() const { return m_position; }
 
     /**
      * Position reference.
      * @return ref to position.
      */
-    inline glm::vec3 &position() { return m_position; }
+    glm::vec3 &position() { return m_position; }
 
     /**
      * Rotations constant reference.
      * @return const ref to rotations.
      */
-    [[nodiscard]] inline const glm::vec3 &rotations() const { return m_rotations; }
+    [[nodiscard]] const glm::vec3 &rotations() const { return m_rotations; }
 
     /**
      * Rotations reference.
      * @return ref to rotations.
      */
-    inline glm::vec3 &rotations() { return m_rotations; }
+    glm::vec3 &rotations() { return m_rotations; }
 
     /**
      * Scale constant reference.
      * @return const ref to scale.
      */
-    [[nodiscard]] inline const glm::vec3 &scale() const { return m_scale; }
+    [[nodiscard]] const glm::vec3 &scale() const { return m_scale; }
 
     /**
      * Scale reference.
      * @return ref to scale.
      */
-    inline glm::vec3 &scale() { return m_scale; }
+    glm::vec3 &scale() { return m_scale; }
 
     /**
      * Name constant reference.
      * @return const ref to name.
      */
-    [[nodiscard]] inline const std::string &name() const { return m_name; }
+    [[nodiscard]] const std::string &name() const { return m_name; }
 
     /**
      * Name reference.
      * @return ref to name.
      */
-    inline std::string &name() { return m_name; }
+    std::string &name() { return m_name; }
 
     /**
      * Parent getter.
      * @return parent Composite .
      */
-    [[nodiscard]] inline const Composite *getParent() const;
+    [[nodiscard]] const Composite *getParent() const;
 
     /**
      * Parent setter.
      * @param composite - new parent.
      */
-    inline void setParent(Composite *composite);
+    void setParent(Composite *composite);
+
+    virtual void reset() = 0;
 
    private:
-    [[nodiscard]] inline glm::mat4 calculateModel() const;
+    [[nodiscard]] glm::mat4 calculateModel() const;
 
-    [[nodiscard]] inline glm::mat4 calculateNormalizedModel() const;
+    [[nodiscard]] glm::mat4 calculateNormalizedModel() const;
 
-    [[nodiscard]] inline glm::mat4 calculateScaleMat() const;
+    [[nodiscard]] glm::mat4 calculateScaleMat() const;
 
-    [[nodiscard]] inline glm::mat4 calculateRotationMat() const;
+    [[nodiscard]] glm::mat4 calculateRotationMat() const;
 
-    [[nodiscard]] inline glm::mat4 calculateTranslationMat() const;
+    [[nodiscard]] glm::mat4 calculateTranslationMat() const;
 
     glm::vec3 m_position{0.f};
     glm::vec3 m_rotations{0.f};
@@ -166,7 +174,7 @@ class Drawable : public core::utils::NonCopyable {
 
     bool m_selected{false};
 
-    std::shared_ptr<Composite> m_parent;
+    Composite *m_parent;
     std::string m_name;
 
     static int m_nrDrawables;

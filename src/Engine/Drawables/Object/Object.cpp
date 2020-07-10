@@ -15,6 +15,8 @@ Object::Object(Composite *parent, MeshObject mo) noexcept : Drawable(parent), m_
     m_meshObjects.emplace_back(std::move_if_noexcept(mo));
 }
 
+Object::~Object() noexcept { Object::reset(); }
+
 void Object::render() {
     for (auto &mo : m_meshObjects) {
         mo.prepare();
@@ -24,5 +26,7 @@ void Object::render() {
 }
 
 void Object::accept(const Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
+
+void Object::reset() { m_meshObjects.clear(); }
 
 }  // namespace daft::engine::objects

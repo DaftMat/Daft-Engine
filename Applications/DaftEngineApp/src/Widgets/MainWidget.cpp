@@ -9,6 +9,7 @@
 #include <QSpacerItem>
 #include <QtWidgets/QLabel>
 
+namespace daft::app {
 MainWidget::MainWidget(QWidget *parent) : QWidget(parent), m_layout{std::make_unique<BorderLayout>(0)} {
     m_glWidget = std::make_unique<OpenGLWidget>(this);
 
@@ -52,3 +53,4 @@ QSpacerItem *MainWidget::createHSpacer(int vsize) {
 QSpacerItem *MainWidget::createVSpacer(int hsize) {
     return new QSpacerItem(hsize, hsize * 2, QSizePolicy::Minimum, QSizePolicy::Expanding);
 }
+}  // namespace daft::app

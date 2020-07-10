@@ -27,8 +27,7 @@ class ENGINE_API MeshObject : public core::utils::NonCopyable {
      * @param mesh - mesh wrapped.
      * @param material - material wrapped.
      */
-    explicit MeshObject(Mesh mesh = Mesh{},
-                        const std::shared_ptr<Material> &material = std::shared_ptr<Material>{nullptr});
+    explicit MeshObject(Mesh mesh = Mesh{}, Material *material = nullptr);
 
     /**
      * Move constructor.
@@ -60,7 +59,7 @@ class ENGINE_API MeshObject : public core::utils::NonCopyable {
 
    private:
     Mesh m_mesh;
-    std::weak_ptr<Material> m_material;
+    std::shared_ptr<Material> m_material;
 };
 }  // namespace engine::objects
 }  // namespace daft

@@ -19,10 +19,16 @@ using namespace engine::objects;
  */
 class ENGINE_API DrawableVisitor {
    public:
+    DrawableVisitor() = default;
+
+    DrawableVisitor(DrawableVisitor &&) = default;
+
+    DrawableVisitor &operator=(DrawableVisitor &&) = default;
+
     /**
      * Visits an Object .
      */
-    virtual void visit(Object *) const = 0;
+    virtual void visit(Object *) const {}
 
     /**
      * Visits a Composite .
