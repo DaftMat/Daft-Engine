@@ -66,7 +66,7 @@ class Light : public Drawable {
      */
     glm::vec3 &color() { return m_color; }
 
-    void reset() override { m_mesh.clear(); };
+    void reset() override;
 
    private:
     Mesh m_mesh;

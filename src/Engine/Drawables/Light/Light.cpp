@@ -9,4 +9,9 @@ void Light::render() {
     m_mesh.render(GL_LINES);
     m_mesh.unbind();
 }
+
+void Light::reset() {
+    Drawable::reset();
+    m_mesh.clear();
+}
 }  // namespace daft::engine::objects

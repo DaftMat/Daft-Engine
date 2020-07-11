@@ -18,4 +18,9 @@ void Composite::add(Drawable *drawable) {
     m_drawables.emplace_back(drawable);
 }
 
+void Composite::reset() {
+    Drawable::reset();
+    m_drawables.clear();
+}
+
 }  // namespace daft::engine::objects

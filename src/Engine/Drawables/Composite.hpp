@@ -21,7 +21,7 @@ class ENGINE_API Composite : public Drawable {
     explicit Composite(Composite *parent = nullptr,
                        std::string name = "Group" + std::to_string(m_nrComposite++)) noexcept;
 
-    ~Composite() noexcept { m_drawables.clear(); }
+    ~Composite() noexcept = default;
 
     /**
      * Default move constructor.
@@ -64,7 +64,7 @@ class ENGINE_API Composite : public Drawable {
      */
     [[nodiscard]] const auto &drawables() const { return m_drawables; }
 
-    void reset() override {}
+    void reset() override;
 
    private:
     using DrawablePtr = std::shared_ptr<Drawable>;

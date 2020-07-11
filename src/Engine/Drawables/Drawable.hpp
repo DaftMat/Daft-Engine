@@ -5,7 +5,6 @@
 #include <API.hpp>
 #include <Core/Utils/NonCopyable.hpp>
 #include <Core/Utils/Types.hpp>
-#include <memory>
 
 namespace daft {
 /// forward declarations
@@ -155,7 +154,7 @@ class Drawable : public core::utils::NonCopyable {
      */
     void setParent(Composite *composite);
 
-    virtual void reset() = 0;
+    virtual void reset() { m_parent = nullptr; }
 
    private:
     [[nodiscard]] glm::mat4 calculateModel() const;

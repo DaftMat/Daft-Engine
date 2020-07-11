@@ -26,6 +26,9 @@ void Object::render() {
 
 void Object::accept(const Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
 
-void Object::reset() { m_meshObjects.clear(); }
+void Object::reset() {
+    Drawable::reset();
+    m_meshObjects.clear();
+}
 
 }  // namespace daft::engine::objects
