@@ -1,23 +1,26 @@
-QWidget {
+*, daft--app--BorderWidget {
     background-color: #404040;
     color: #f2f2f2;
 }
 
+QFrame {
+    color: #202020;
+}
+
 QPushButton {
+    qproperty-minimumSize: 75px 30px;
+    qproperty-maximumSize: 128px 64px;
     background-color: #202020;
-    color: #f2f2f2;
     border: 1px solid #505050;
     border-radius: 1px;
 }
 
 QPushButton:hover:!pressed{
     background-color: #502020;
-    color: #f2f2f2;
     border: 1px solid #505050;
 }
 
 QPushButton:pressed{
     background-color: #302020;
-    color: #f2f2f2;
     border: 1px solid #505050;
 }

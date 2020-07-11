@@ -9,29 +9,35 @@
 #include <QSpacerItem>
 #include <QtWidgets/QLabel>
 
+#include "BorderWidget.hpp"
+
 namespace daft::app {
 MainWidget::MainWidget(QWidget *parent) : QWidget(parent), m_layout{std::make_unique<BorderLayout>(0)} {
     m_glWidget = std::make_unique<OpenGLWidget>(this);
 
     m_layout->addWidget(m_glWidget.get(), BorderLayout::Position::Center);
     auto button = new QPushButton(this);
-    button->setMinimumHeight(64);
-    button->setMaximumHeight(64);
-    button->setMaximumWidth(128);
     button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     button->setText("Button");
     // button->setStyleSheet("background-image: url(\"img/icon.png\")");
-    auto northLayout = new QHBoxLayout();
-    northLayout->addWidget(button);
-    northLayout->addSpacerItem(createHSpacer());
-    auto northWidget = new QWidget(this);
-    northWidget->setLayout(northLayout);
+    auto northWidget = new BorderWidget(BorderWidget::Orientation::HORIZONTAL, 70, this);
+    northWidget->addWidget(button);
+    northWidget->addSeparator();
+    northWidget->addSpacer();
     m_layout->addWidget(northWidget, BorderLayout::Position::North);
-    m_layout->addWidget(createLabel("South"), BorderLayout::Position::South);
-    m_layout->addWidget(createLabel("East"), BorderLayout::Position::East);
-    m_layout->addWidget(createLabel("West"), BorderLayout::Position::West);
 
-    setStyleSheet(daft::core::utils::IO::getStringFromFile("stylesheets/main.qss").c_str());
+    auto southWidget = new BorderWidget(BorderWidget::Orientation::HORIZONTAL, 170, this);
+    southWidget->addWidget(createLabel("South"));
+    m_layout->addWidget(southWidget, BorderLayout::Position::South);
+
+    auto eastWidget = new BorderWidget(BorderWidget::Orientation::VERTICAL, 150, this);
+    eastWidget->addWidget(createLabel("East"));
+    m_layout->addWidget(eastWidget, BorderLayout::Position::East);
+
+    auto westWidget = new BorderWidget(BorderWidget::Orientation::VERTICAL, 0, this);
+    westWidget->addWidget(createLabel("West"));
+    m_layout->addWidget(westWidget, BorderLayout::Position::West);
+
     setLayout(m_layout.get());
 }
 

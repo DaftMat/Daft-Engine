@@ -42,7 +42,7 @@ add_custom_target(
         ${app_target}_stylesheets
         COMMAND ${CMAKE_COMMAND} -E ${COPY_COMMAND} ${STYLE_DIR} ${EXECUTABLE_OUTPUT_PATH}/stylesheets
         SOURCES ${STYLE_FILES}
-        COMMENT "Create symlink/copy for application's images" VERBATIM
+        COMMENT "Create symlink/copy for application's stylesheets" VERBATIM
 )
 
 add_dependencies(${app_target} ${app_target}_images)
