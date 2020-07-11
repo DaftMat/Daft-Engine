@@ -4,10 +4,9 @@
 #pragma once
 #include <API.hpp>
 #include <Engine/Drawables/Drawable.hpp>
+#include <Engine/Drawables/MeshObject.hpp>
 
 namespace daft::engine::objects {
-class MeshObject;
-
 /**
  * Base 3D object.
  */

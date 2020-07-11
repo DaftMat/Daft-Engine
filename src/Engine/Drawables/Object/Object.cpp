@@ -4,7 +4,6 @@
 #include "Object.hpp"
 
 #include <Core/Utils/DrawableVisitor.hpp>
-#include <Engine/Drawables/MeshObject.hpp>
 
 namespace daft::engine::objects {
 
