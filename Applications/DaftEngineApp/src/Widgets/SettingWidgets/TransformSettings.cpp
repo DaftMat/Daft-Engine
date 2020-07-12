@@ -13,11 +13,14 @@ namespace daft::app {
 TransformSettings::TransformSettings(daft::core::mat::SettingManager *settings, QWidget *parent)
     : QWidget(parent), m_settings{settings} {
     auto mainLayout = new QVBoxLayout();
+    mainLayout->setMargin(0);
+
     mainLayout->addWidget(new QLabel("Transformations"));
     mainLayout->addWidget(MainWidget::createLine(QFrame::Shape::HLine));
 
     auto centreWidget = new QWidget();
     auto centreLayout = new QHBoxLayout();
+    centreLayout->setMargin(0);
 
     centreLayout->addWidget(createTransformWidget(Type::POSITION));
     centreLayout->addWidget(createTransformWidget(Type::ROTATION));
@@ -50,9 +53,11 @@ void TransformSettings::onTransformChanged(double val) {
 QWidget *TransformSettings::createTransformWidget(Type type) {
     auto widget = new QWidget();
     auto layout = new QVBoxLayout();
+    layout->setMargin(0);
 
     auto coordsWidget = new QWidget();
     auto coordsLayout = new QFormLayout();
+    coordsLayout->setMargin(0);
 
     std::vector<std::string> labels{"x ", "y ", "z "};
 

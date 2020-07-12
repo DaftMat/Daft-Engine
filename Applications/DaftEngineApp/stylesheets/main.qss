@@ -5,6 +5,10 @@
     color: #f2f2f2;
 }
 
+QLayout {
+    qproperty-margin: 0;
+}
+
 QFrame {
     color: #202020;
 }
