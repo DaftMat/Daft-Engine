@@ -1,4 +1,6 @@
 *, daft--app--BorderWidget {
+    margin: 0;
+    padding: 0;
     background-color: #404040;
     color: #f2f2f2;
 }
@@ -7,7 +9,11 @@ QFrame {
     color: #202020;
 }
 
-QPushButton {
+QLabel {
+    color: #f2f2f2;
+}
+
+QAbstractButton, QAbstractSpinBox, QComboBox {
     qproperty-minimumSize: 75px 30px;
     qproperty-maximumSize: 128px 64px;
     background-color: #202020;
@@ -15,12 +21,12 @@ QPushButton {
     border-radius: 1px;
 }
 
-QPushButton:hover:!pressed{
+QAbstractButton:hover:!pressed, QAbstractSpinBox:hover:!pressed, QComboBox:hover:!pressed {
     background-color: #502020;
     border: 1px solid #505050;
 }
 
-QPushButton:pressed{
+QAbstractButton:pressed , QAbstractSpinBox:pressed, QComboBox:pressed {
     background-color: #302020;
     border: 1px solid #505050;
 }

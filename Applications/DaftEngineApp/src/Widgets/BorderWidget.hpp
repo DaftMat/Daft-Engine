@@ -23,7 +23,7 @@ class ENGINE_API BorderWidget : public QWidget {
         HORIZONTAL  ///< for north and south regions.
     };
 
-    explicit BorderWidget(Orientation orientation, int minSize = 70, QWidget *parent = nullptr);
+    explicit BorderWidget(Orientation orientation, int minSize = 30, int maxSize = 70, QWidget *parent = nullptr);
 
     void addWidget(QWidget *w) { m_layout->addWidget(w); }
 
@@ -32,11 +32,6 @@ class ENGINE_API BorderWidget : public QWidget {
     void addSpacer();
 
    private:
-    [[nodiscard]] static QFrame *createLine(QFrame::Shape shape);
-
-    [[nodiscard]] static QSpacerItem *createHSpacer(int size = 20);
-    [[nodiscard]] static QSpacerItem *createVSpacer(int size = 20);
-
     Orientation m_orientation;
     std::unique_ptr<QLayout> m_layout{nullptr};
 };

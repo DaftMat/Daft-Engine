@@ -5,8 +5,10 @@
 
 #include <QtWidgets/QHBoxLayout>
 
+#include "MainWidget.hpp"
+
 namespace daft::app {
-BorderWidget::BorderWidget(Orientation orientation, int minSize, QWidget *parent)
+BorderWidget::BorderWidget(Orientation orientation, int minSize, int maxSize, QWidget *parent)
     : QWidget(parent), m_orientation{orientation} {
     switch (m_orientation) {
         case Orientation::HORIZONTAL:
@@ -24,10 +26,10 @@ BorderWidget::BorderWidget(Orientation orientation, int minSize, QWidget *parent
 void BorderWidget::addSeparator() {
     switch (m_orientation) {
         case Orientation::HORIZONTAL:
-            m_layout->addWidget(createLine(QFrame::VLine));
+            m_layout->addWidget(MainWidget::createLine(QFrame::VLine));
             break;
         case Orientation::VERTICAL:
-            m_layout->addWidget(createLine(QFrame::HLine));
+            m_layout->addWidget(MainWidget::createLine(QFrame::HLine));
             break;
     }
 }
@@ -35,26 +37,11 @@ void BorderWidget::addSeparator() {
 void BorderWidget::addSpacer() {
     switch (m_orientation) {
         case Orientation::HORIZONTAL:
-            m_layout->addItem(createHSpacer());
+            m_layout->addItem(MainWidget::createHSpacer());
             break;
         case Orientation::VERTICAL:
-            m_layout->addItem(createVSpacer());
+            m_layout->addItem(MainWidget::createVSpacer());
             break;
     }
-}
-
-QFrame *BorderWidget::createLine(QFrame::Shape shape) {
-    auto frame = new QFrame();
-    frame->setFrameShape(shape);
-    frame->setFrameShadow(QFrame::Plain);
-    return frame;
-}
-
-QSpacerItem *BorderWidget::createHSpacer(int size) {
-    return new QSpacerItem(size * 2, size, QSizePolicy::Expanding, QSizePolicy::Minimum);
-}
-
-QSpacerItem *BorderWidget::createVSpacer(int size) {
-    return new QSpacerItem(size, size * 2, QSizePolicy::Minimum, QSizePolicy::Expanding);
 }
 }  // namespace daft::app

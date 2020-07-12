@@ -120,13 +120,6 @@ class SettingManager {
      */
     void clear() noexcept;
 
-   private:
-    template <typename T>
-    inline auto getIt(std::string name) const;
-
-    template <typename T>
-    inline auto getIt(std::string name);
-
     template <typename T>
     inline const T &get(std::string name) const {
         return getIt<T>(std::move(name))->data;
@@ -134,6 +127,13 @@ class SettingManager {
 
     template <typename T>
     inline T &get(std::string name);
+
+   private:
+    template <typename T>
+    inline auto getIt(std::string name) const;
+
+    template <typename T>
+    inline auto getIt(std::string name);
 
     std::vector<intSetting> m_ints;
     std::vector<boolSetting> m_bools;
