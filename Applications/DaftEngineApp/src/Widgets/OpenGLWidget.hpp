@@ -8,12 +8,22 @@
 #include <QtGui/QResizeEvent>
 
 namespace daft::app {
+/**
+ * Widget holding the OpenGL context.
+ */
 class OpenGLWidget : public QOpenGLWidget {
     Q_OBJECT
 
    public:
+    /**
+     * Standard constructor
+     * @param parent - parent widget.
+     */
     explicit OpenGLWidget(QWidget *parent = nullptr);
 
+    /**
+     * Destructor.
+     */
     ~OpenGLWidget() override { cleanup(); }
 
     [[nodiscard]] QSize minimumSizeHint() const override { return {50, 50}; }

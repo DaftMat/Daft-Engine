@@ -16,6 +16,6 @@ class ENGINE_API SettingWidget : public QWidget {
     static void settingChanged() {}
 
    private:
-    std::unique_ptr<TransformSettings> m_transforms;
+    std::unique_ptr<TransformSettings> m_transforms{nullptr};
 };
 }  // namespace daft::app

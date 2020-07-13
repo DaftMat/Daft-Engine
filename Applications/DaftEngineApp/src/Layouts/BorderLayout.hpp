@@ -1,5 +1,6 @@
 //
-// Created by mathis on 06/07/2020.
+// from this Qt tutorial :
+// https://doc.qt.io/qt-5/qtwidgets-layouts-borderlayout-example.html
 //
 #pragma once
 
