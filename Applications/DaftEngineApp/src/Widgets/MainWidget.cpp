@@ -15,9 +15,8 @@
 #include "BorderWidget.hpp"
 
 namespace daft::app {
-MainWidget::MainWidget(QWidget *parent) : QWidget(parent), m_layout{std::make_unique<BorderLayout>(0)} {
-    m_glWidget = std::make_unique<OpenGLWidget>();
-
+MainWidget::MainWidget(QWidget *parent)
+    : QWidget(parent), m_glWidget{std::make_unique<OpenGLWidget>()}, m_layout{std::make_unique<BorderLayout>(0)} {
     m_layout->addWidget(m_glWidget.get(), BorderLayout::Position::Center);
     auto button0 = new QPushButton();
     button0->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
