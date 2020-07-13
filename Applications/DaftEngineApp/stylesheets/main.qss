@@ -5,8 +5,20 @@
     color: #f2f2f2;
 }
 
-QLayout {
-    qproperty-margin: 0;
+QWidget#westWidget {
+    border-right: 1px solid #202020;
+}
+
+QWidget#eastWidget {
+    border-left: 1px solid #202020;
+}
+
+QWidget#northWidget {
+    border-bottom: 1px solid #202020;
+}
+
+QWidget#southWidget {
+    border-top: 1px solid #202020;
 }
 
 QFrame {
@@ -25,12 +37,14 @@ QAbstractButton, QAbstractSpinBox, QComboBox {
     border-radius: 1px;
 }
 
-QAbstractButton:hover:!pressed, QAbstractSpinBox:hover:!pressed, QComboBox:hover:!pressed {
-    background-color: #502020;
-    border: 1px solid #505050;
+QAbstractButton:hover:!pressed,
+QAbstractSpinBox:hover:!pressed,
+QComboBox:hover:!pressed {
+    background-color: #202020;
+    border: 1px solid #302020;
 }
 
 QAbstractButton:pressed , QAbstractSpinBox:pressed, QComboBox:pressed {
     background-color: #302020;
-    border: 1px solid #505050;
+    border: 1px solid #302020;
 }

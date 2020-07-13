@@ -17,6 +17,7 @@
 namespace daft::app {
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent), m_glWidget{std::make_unique<OpenGLWidget>()}, m_layout{std::make_unique<BorderLayout>(0)} {
+    m_layout->setMargin(0);
     m_layout->addWidget(m_glWidget.get(), BorderLayout::Position::Center);
     auto button0 = new QPushButton();
     button0->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -34,6 +35,7 @@ MainWidget::MainWidget(QWidget *parent)
     northWidget->addSeparator();
     northWidget->addWidget(button2);
     northWidget->addSpacer();
+    northWidget->setObjectName("northWidget");
     m_layout->addWidget(northWidget, BorderLayout::Position::North);
 
     auto screenHeight = float(QApplication::desktop()->screenGeometry().height());
@@ -45,14 +47,17 @@ MainWidget::MainWidget(QWidget *parent)
     settings->add("rotations", glm::vec3{0.f, 0.f, 0.f});
     settings->add("scale", glm::vec3{1.f, 1.f, 1.f});
     southWidget->addWidget(new TransformSettings(settings));
+    southWidget->setObjectName("southWidget");
     m_layout->addWidget(southWidget, BorderLayout::Position::South);
 
     auto eastWidget = new BorderWidget(BorderWidget::Orientation::VERTICAL, 150, 350);
     eastWidget->addWidget(createLabel("East"));
+    eastWidget->setObjectName("eastWidget");
     m_layout->addWidget(eastWidget, BorderLayout::Position::East);
 
     auto westWidget = new BorderWidget(BorderWidget::Orientation::VERTICAL, 0, 150);
     westWidget->addWidget(createLabel("West"));
+    westWidget->setObjectName("westWidget");
     m_layout->addWidget(westWidget, BorderLayout::Position::West);
 
     setLayout(m_layout.get());
@@ -65,7 +70,7 @@ MainWidget::~MainWidget() {
 
 QLabel *MainWidget::createLabel(const QString &text) {
     auto label = new QLabel(text);
-    label->setFrameStyle(QFrame::Box | QFrame::Raised);
+    // label->setFrameStyle(QFrame::Box | QFrame::Raised);
     return label;
 }
 
