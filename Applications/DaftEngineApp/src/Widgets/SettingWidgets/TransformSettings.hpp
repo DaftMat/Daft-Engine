@@ -17,7 +17,7 @@ class ENGINE_API TransformSettings : public QWidget {
     ~TransformSettings() override;
 
    public slots:
-    void onTransformChanged(double val);
+    void onTransformChanged();
 
    private:
     enum class Type { POSITION, ROTATION, SCALE };

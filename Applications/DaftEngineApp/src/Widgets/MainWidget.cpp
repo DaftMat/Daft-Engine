@@ -10,6 +10,8 @@
 #include <QPushButton>
 #include <QSpacerItem>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QScrollArea>
+#include <src/Widgets/SettingWidgets/DrawableSettings/ObjectSettings.hpp>
 #include <src/Widgets/SettingWidgets/TransformSettings.hpp>
 
 #include "BorderWidget.hpp"
@@ -17,7 +19,7 @@
 namespace daft::app {
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent), m_glWidget{std::make_unique<OpenGLWidget>()}, m_layout{std::make_unique<BorderLayout>(0)} {
-    m_layout->setMargin(0);
+    m_layout->setMargin(2);
     m_layout->addWidget(m_glWidget.get(), BorderLayout::Position::Center);
     auto button0 = new QPushButton();
     button0->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -39,14 +41,24 @@ MainWidget::MainWidget(QWidget *parent)
     m_layout->addWidget(northWidget, BorderLayout::Position::North);
 
     auto screenHeight = float(QApplication::desktop()->screenGeometry().height());
-    auto southWidget = new BorderWidget(BorderWidget::Orientation::HORIZONTAL, 70, int(screenHeight / 4.f));
+    auto southWidget = new BorderWidget(BorderWidget::Orientation::HORIZONTAL, 70, int(screenHeight / 6.f));
     southWidget->addSpacer();
     southWidget->addSeparator();
     auto settings = new core::mat::SettingManager();
     settings->add("position", glm::vec3{0.f, 0.f, 0.f});
     settings->add("rotations", glm::vec3{0.f, 0.f, 0.f});
     settings->add("scale", glm::vec3{1.f, 1.f, 1.f});
-    southWidget->addWidget(new TransformSettings(settings));
+    auto settingScrollArea = new QScrollArea();
+    auto settingWidget = new QWidget();
+    auto settingLayout = new QVBoxLayout();
+    settingLayout->addWidget(new ObjectSettings(new core::mat::SettingManager()));
+    settingLayout->addWidget(new ObjectSettings(new core::mat::SettingManager()));
+    settingLayout->addWidget(new ObjectSettings(new core::mat::SettingManager()));
+    settingLayout->addWidget(new TransformSettings(settings));
+    settingWidget->setLayout(settingLayout);
+    settingScrollArea->setWidget(settingWidget);
+    settingScrollArea->setSizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
+    southWidget->addWidget(settingScrollArea);
     southWidget->setObjectName("southWidget");
     m_layout->addWidget(southWidget, BorderLayout::Position::South);
 

@@ -14,10 +14,12 @@ BorderWidget::BorderWidget(Orientation orientation, int minSize, int maxSize, QW
         case Orientation::HORIZONTAL:
             m_layout = std::make_unique<QHBoxLayout>();
             setMinimumHeight(minSize);
+            setMaximumHeight(maxSize);
             break;
         case Orientation::VERTICAL:
             m_layout = std::make_unique<QVBoxLayout>();
             setMinimumWidth(minSize);
+            setMaximumWidth(maxSize);
             break;
     }
     setLayout(m_layout.get());
