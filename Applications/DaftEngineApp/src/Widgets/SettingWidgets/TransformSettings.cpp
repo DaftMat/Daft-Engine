@@ -8,6 +8,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <Widgets/MainWidget.hpp>
 #include <Widgets/SettingWidgets/SettingWidget.hpp>
+#include <src/Commands/TransformCommand.hpp>
 
 namespace daft::app {
 TransformSettings::TransformSettings(daft::core::mat::SettingManager *settings, QWidget *parent)
@@ -41,11 +42,14 @@ TransformSettings::~TransformSettings() {
 }
 
 void TransformSettings::onTransformChanged() {
+    glm::vec3 pos, rot, scale;
     for (int i = 0; i < 3; ++i) {
-        m_settings->get<glm::vec3>("position")[i] = m_position[i]->value();
-        m_settings->get<glm::vec3>("rotations")[i] = m_rotations[i]->value();
-        m_settings->get<glm::vec3>("scale")[i] = m_scale[i]->value();
+        pos[i] = m_position[i]->value();
+        rot[i] = m_rotations[i]->value();
+        scale[i] = m_scale[i]->value();
     }
+    TransformCommand command{m_settings.get(), pos, rot, scale};
+    command.execute();
     APP_DEBUG("Transformation changed.");
     emit SettingWidget::settingChanged();
 }

@@ -10,7 +10,7 @@
 #include <memory>
 
 namespace daft::app {
-class DrawableSettings : public QWidget {
+class ENGINE_API DrawableSettings : public QWidget {
    public:
     explicit DrawableSettings(daft::core::mat::SettingManager *settings, QWidget *parent = nullptr)
         : QWidget(parent), m_settings{settings}, m_layout{new QFormLayout()} {

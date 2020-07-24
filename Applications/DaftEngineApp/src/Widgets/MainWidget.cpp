@@ -57,6 +57,7 @@ MainWidget::MainWidget(QWidget *parent)
     settingLayout->addWidget(new TransformSettings(settings));
     settingWidget->setLayout(settingLayout);
     settingScrollArea->setWidget(settingWidget);
+    settingScrollArea->setMinimumWidth(settingWidget->width() + 16);
     settingScrollArea->setSizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
     southWidget->addWidget(settingScrollArea);
     southWidget->setObjectName("southWidget");

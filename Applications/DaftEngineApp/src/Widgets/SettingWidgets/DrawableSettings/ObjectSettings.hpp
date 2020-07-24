@@ -7,7 +7,7 @@
 #include "DrawableSettings.hpp"
 
 namespace daft::app {
-class ObjectSettings : public DrawableSettings {
+class ENGINE_API ObjectSettings : public DrawableSettings {
    public:
     explicit ObjectSettings(daft::core::mat::SettingManager *settings, QWidget *parent = nullptr);
 

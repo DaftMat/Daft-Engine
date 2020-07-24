@@ -16,7 +16,7 @@ class QDoubleSpinBox;
 QT_END_NAMESPACE
 
 namespace daft::app {
-class MainWidget : public QWidget {
+class ENGINE_API MainWidget : public QWidget {
     Q_OBJECT
 
    public:

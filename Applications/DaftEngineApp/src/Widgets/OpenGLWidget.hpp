@@ -11,7 +11,7 @@ namespace daft::app {
 /**
  * Widget holding the OpenGL context.
  */
-class OpenGLWidget : public QOpenGLWidget {
+class ENGINE_API OpenGLWidget : public QOpenGLWidget {
     Q_OBJECT
 
    public:
