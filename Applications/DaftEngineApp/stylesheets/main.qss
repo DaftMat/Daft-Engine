@@ -5,6 +5,10 @@
     color: #f2f2f2;
 }
 
+QScrollArea {
+    border: none;
+}
+
 QWidget#westWidget {
     border-right: 1px solid #202020;
 }

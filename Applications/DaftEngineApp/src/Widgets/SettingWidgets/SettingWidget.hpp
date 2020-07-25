@@ -13,7 +13,8 @@
 namespace daft::app {
 class ENGINE_API SettingWidget : public QScrollArea {
    public:
-    explicit SettingWidget(DrawableSettings *settings, TransformSettings *transforms, QWidget *parent = nullptr);
+    explicit SettingWidget(DrawableSettings *settings, TransformSettings *transforms, std::string name = "Drawable",
+                           QWidget *parent = nullptr);
 
    signals:
     static void settingChanged() {}
