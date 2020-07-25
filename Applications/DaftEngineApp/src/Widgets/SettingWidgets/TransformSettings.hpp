@@ -12,9 +12,7 @@ namespace daft::app {
 class ENGINE_API TransformSettings : public QWidget {
     Q_OBJECT
    public:
-    explicit TransformSettings(daft::core::mat::SettingManager *settings, QWidget *parent = nullptr);
-
-    ~TransformSettings() override;
+    explicit TransformSettings(daft::core::mat::SettingManager settings, QWidget *parent = nullptr);
 
    public slots:
     void onTransformChanged();
@@ -30,6 +28,6 @@ class ENGINE_API TransformSettings : public QWidget {
     std::array<QDoubleSpinBoxPtr, 3> m_rotations{nullptr, nullptr, nullptr};
     std::array<QDoubleSpinBoxPtr, 3> m_scale{nullptr, nullptr, nullptr};
 
-    std::shared_ptr<daft::core::mat::SettingManager> m_settings{nullptr};
+    daft::core::mat::SettingManager m_settings;
 };
 }  // namespace daft::app

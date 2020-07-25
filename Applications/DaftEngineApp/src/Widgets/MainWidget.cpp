@@ -10,9 +10,9 @@
 #include <QPushButton>
 #include <QSpacerItem>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QScrollArea>
-#include <src/Widgets/SettingWidgets/DrawableSettings/ObjectSettings.hpp>
-#include <src/Widgets/SettingWidgets/TransformSettings.hpp>
+#include <Widgets/SettingWidgets/DrawableSettings.hpp>
+#include <Widgets/SettingWidgets/TransformSettings.hpp>
+#include <src/Widgets/SettingWidgets/SettingWidget.hpp>
 
 #include "BorderWidget.hpp"
 
@@ -30,7 +30,6 @@ MainWidget::MainWidget(QWidget *parent)
     auto button2 = new QPushButton();
     button2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     button2->setText("Button2");
-    // button->setStyleSheet("background-image: url(\"img/icon.png\")");
     auto northWidget = new BorderWidget(BorderWidget::Orientation::HORIZONTAL, 70, 70);
     northWidget->addWidget(button0);
     northWidget->addWidget(button1);
@@ -41,25 +40,20 @@ MainWidget::MainWidget(QWidget *parent)
     m_layout->addWidget(northWidget, BorderLayout::Position::North);
 
     auto screenHeight = float(QApplication::desktop()->screenGeometry().height());
-    auto southWidget = new BorderWidget(BorderWidget::Orientation::HORIZONTAL, 70, int(screenHeight / 6.f));
+    auto southWidget = new BorderWidget(BorderWidget::Orientation::HORIZONTAL, 70, int(screenHeight / 4.5f));
     southWidget->addSpacer();
     southWidget->addSeparator();
-    auto settings = new core::mat::SettingManager();
-    settings->add("position", glm::vec3{0.f, 0.f, 0.f});
-    settings->add("rotations", glm::vec3{0.f, 0.f, 0.f});
-    settings->add("scale", glm::vec3{1.f, 1.f, 1.f});
-    auto settingScrollArea = new QScrollArea();
-    auto settingWidget = new QWidget();
-    auto settingLayout = new QVBoxLayout();
-    settingLayout->addWidget(new ObjectSettings(new core::mat::SettingManager()));
-    settingLayout->addWidget(new ObjectSettings(new core::mat::SettingManager()));
-    settingLayout->addWidget(new ObjectSettings(new core::mat::SettingManager()));
-    settingLayout->addWidget(new TransformSettings(settings));
-    settingWidget->setLayout(settingLayout);
-    settingScrollArea->setWidget(settingWidget);
-    settingScrollArea->setMinimumWidth(settingWidget->width() + 16);
-    settingScrollArea->setSizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
-    southWidget->addWidget(settingScrollArea);
+    core::mat::SettingManager settingsTransform;
+    settingsTransform.add("Position", glm::vec3{0.f, 0.f, 0.f});
+    settingsTransform.add("Rotations", glm::vec3{0.f, 0.f, 0.f});
+    settingsTransform.add("Scale", glm::vec3{1.f, 1.f, 1.f});
+    core::mat::SettingManager settings;
+    settings.add("test", glm::vec3{1.f, 2.f, 3.f});
+    auto drawSettings = new DrawableSettings(settings);
+    drawSettings->addDoubleSpinBoxVector("test");
+    auto transformSettings = new TransformSettings(settingsTransform);
+    auto settingWidget = new SettingWidget(drawSettings, transformSettings);
+    southWidget->addWidget(settingWidget);
     southWidget->setObjectName("southWidget");
     m_layout->addWidget(southWidget, BorderLayout::Position::South);
 

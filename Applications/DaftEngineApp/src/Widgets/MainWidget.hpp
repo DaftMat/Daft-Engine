@@ -93,8 +93,8 @@ class ENGINE_API MainWidget : public QWidget {
      * @param decs - number of printed decimals in the spin box.
      * @return created QDoubleSpinBox .
      */
-    [[nodiscard]] static QDoubleSpinBox *createDoubleSpinBox(double val = 1.0, double min = 0.0, double max = 9999.0,
-                                                             double step = 1.0, int decs = 2);
+    [[nodiscard]] static QDoubleSpinBox *createDoubleSpinBox(double val = 1.0, double min = -9999.0,
+                                                             double max = 9999.0, double step = 1.0, int decs = 2);
 
    private:
     std::unique_ptr<OpenGLWidget> m_glWidget{nullptr};

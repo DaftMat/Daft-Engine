@@ -8,11 +8,10 @@
 #include <QtWidgets/QVBoxLayout>
 #include <Widgets/MainWidget.hpp>
 #include <Widgets/SettingWidgets/SettingWidget.hpp>
-#include <src/Commands/TransformCommand.hpp>
 
 namespace daft::app {
-TransformSettings::TransformSettings(daft::core::mat::SettingManager *settings, QWidget *parent)
-    : QWidget(parent), m_settings{settings} {
+TransformSettings::TransformSettings(daft::core::mat::SettingManager settings, QWidget *parent)
+    : QWidget(parent), m_settings{std::move(settings)} {
     auto mainLayout = new QVBoxLayout();
     mainLayout->setMargin(2);
 
@@ -33,23 +32,12 @@ TransformSettings::TransformSettings(daft::core::mat::SettingManager *settings, 
     setLayout(mainLayout);
 }
 
-TransformSettings::~TransformSettings() {
-    for (int i = 0; i < 3; ++i) {
-        delete m_position[i];
-        delete m_rotations[i];
-        delete m_scale[i];
-    }
-}
-
 void TransformSettings::onTransformChanged() {
-    glm::vec3 pos, rot, scale;
     for (int i = 0; i < 3; ++i) {
-        pos[i] = m_position[i]->value();
-        rot[i] = m_rotations[i]->value();
-        scale[i] = m_scale[i]->value();
+        m_settings.get<glm::vec3>("Position")[i] = m_position[i]->value();
+        m_settings.get<glm::vec3>("Rotations")[i] = m_rotations[i]->value();
+        m_settings.get<glm::vec3>("Scale")[i] = m_scale[i]->value();
     }
-    TransformCommand command{m_settings.get(), pos, rot, scale};
-    command.execute();
     APP_DEBUG("Transformation changed.");
     emit SettingWidget::settingChanged();
 }
@@ -70,7 +58,7 @@ QWidget *TransformSettings::createTransformWidget(Type type) {
         case Type::POSITION:
             layout->addWidget(new QLabel("Position"));
             for (int i = 0; i < 3; ++i) {
-                m_position[i] = MainWidget::createDoubleSpinBox(m_settings->get<glm::vec3>("position")[i]);
+                m_position[i] = MainWidget::createDoubleSpinBox(m_settings.get<glm::vec3>("Position")[i]);
                 connect(m_position[i], SIGNAL(valueChanged(double)), this, SLOT(onTransformChanged()));
                 coordsLayout->addRow(new QLabel(labels[i].c_str()), m_position[i]);
             }
@@ -78,7 +66,7 @@ QWidget *TransformSettings::createTransformWidget(Type type) {
         case Type::ROTATION:
             layout->addWidget(new QLabel("Rotations"));
             for (int i = 0; i < 3; ++i) {
-                m_rotations[i] = MainWidget::createDoubleSpinBox(m_settings->get<glm::vec3>("rotations")[i]);
+                m_rotations[i] = MainWidget::createDoubleSpinBox(m_settings.get<glm::vec3>("Rotations")[i]);
                 connect(m_rotations[i], SIGNAL(valueChanged(double)), this, SLOT(onTransformChanged()));
                 coordsLayout->addRow(new QLabel(labels[i].c_str()), m_rotations[i]);
             }
@@ -86,7 +74,7 @@ QWidget *TransformSettings::createTransformWidget(Type type) {
         case Type::SCALE:
             layout->addWidget(new QLabel("Scale"));
             for (int i = 0; i < 3; ++i) {
-                m_scale[i] = MainWidget::createDoubleSpinBox(m_settings->get<glm::vec3>("scale")[i]);
+                m_scale[i] = MainWidget::createDoubleSpinBox(m_settings.get<glm::vec3>("Scale")[i]);
                 connect(m_scale[i], SIGNAL(valueChanged(double)), this, SLOT(onTransformChanged()));
                 coordsLayout->addRow(new QLabel(labels[i].c_str()), m_scale[i]);
             }
