@@ -22,6 +22,7 @@ BorderWidget::BorderWidget(Orientation orientation, int minSize, int maxSize, QW
             setMaximumWidth(maxSize);
             break;
     }
+    m_layout->setMargin(2);
     setLayout(m_layout.get());
 }
 

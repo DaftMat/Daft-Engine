@@ -19,9 +19,11 @@ QWidget#eastWidget {
 
 QWidget#northWidget {
     border-bottom: 1px solid #202020;
+    border-top: 1px solid #202020;
 }
 
 QWidget#southWidget {
+    border-bottom: 1px solid #202020;
     border-top: 1px solid #202020;
 }
 
