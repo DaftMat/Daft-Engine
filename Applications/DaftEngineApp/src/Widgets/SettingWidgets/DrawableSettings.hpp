@@ -13,22 +13,67 @@
 #include <utility>
 
 namespace daft::app {
+/**
+ * A class that is used to edit the selected object's special settings.
+ * e.g. for an UV Sphere : meridians and parallels.
+ */
 class ENGINE_API DrawableSettings : public QWidget {
     Q_OBJECT
 
    public:
+    /**
+     * Constructor.
+     * @param settings - library of the object's settings.
+     * @param parent - parent of the widget.
+     */
     explicit DrawableSettings(daft::core::mat::SettingManager settings, QWidget* parent = nullptr);
 
+    /**
+     * Destructor.
+     */
     ~DrawableSettings() override { m_layout.reset(); }
 
+    /**
+     * Adds a QSpinBox to the form.
+     * @param label - label of the form.
+     * @param min - minimum value of the spin box.
+     * @param max - maximum value of the spin box.
+     * @param step - single step of the spin box.
+     */
     void addIntSpinBox(std::string label, int min = 0, int max = 255, int step = 1);
 
+    /**
+     * Adds a QDoubleSpinBox to the form.
+     * @param label - label of the form.
+     * @param min - minimum value of the spin box.
+     * @param max - maximum value of the spin box.
+     * @param step - single step of the spin box.
+     */
     void addDoubleSpinBox(std::string label, double min = -99, double max = 99, double step = 0.1);
 
+    /**
+     * Adds a row of 3 QSpinBox to the form.
+     * @param label - label of the form.
+     * @param min - minimum value of the spin boxes.
+     * @param max - maximum value of the spin boxes.
+     * @param step - single step of the spin boxes.
+     */
     void addIntSpinBoxVector(std::string label, int min = 0, int max = 255, int step = 1);
 
+    /**
+     * Adds a row of 3 QDoubleSpinBox to the form.
+     * @param label - label of the form.
+     * @param min - minimum value of the spin boxes.
+     * @param max - maximum value of the spin boxes.
+     * @param step - single step of the spin boxes.
+     */
     void addDoubleSpinBoxVector(std::string label, double min = -99, double max = 99, double step = 0.1);
 
+    /**
+     * Adds a QComboBox to the form.
+     * @param label - label of the form.
+     * @param args - text of each category of the combo box.
+     */
     void addComboBox(std::string label, const std::vector<std::string>& args);
 
    public slots:

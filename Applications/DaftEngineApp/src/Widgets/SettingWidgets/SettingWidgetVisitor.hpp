@@ -9,12 +9,27 @@
 #include "SettingWidget.hpp"
 
 namespace daft::app {
+/**
+ * A visitor that creates the right SettingWidget according to the selected object.
+ */
 class SettingWidgetVisitor : public core::utils::DrawableVisitor {
    public:
+    /**
+     * visits an Object .
+     * @param object - object to visit.
+     */
     void visit(engine::objects::Object *object) override;
 
+    /**
+     * visits a Composite .
+     * @param composite - composite to visit.
+     */
     void visit(engine::objects::Composite *composite) override;
 
+    /**
+     * Created widget getter.
+     * @return pointer to the created widget.
+     */
     SettingWidget *widget() { return m_widget; }
 
    private:

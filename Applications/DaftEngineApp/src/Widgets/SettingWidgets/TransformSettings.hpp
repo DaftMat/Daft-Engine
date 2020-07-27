@@ -9,10 +9,18 @@
 #include <QtWidgets/QWidget>
 
 namespace daft::app {
+/**
+ * A class to edit the transformations of the selected object.
+ */
 class ENGINE_API TransformSettings : public QWidget {
     Q_OBJECT
 
    public:
+    /**
+     * Constructor.
+     * @param settings - library of the selected object's settings.
+     * @param parent - parent of the widget.
+     */
     explicit TransformSettings(daft::core::mat::SettingManager settings, QWidget *parent = nullptr);
 
    public slots:

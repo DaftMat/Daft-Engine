@@ -10,8 +10,6 @@
 #include <QPushButton>
 #include <QSpacerItem>
 #include <QtWidgets/QLabel>
-#include <Widgets/SettingWidgets/DrawableSettings.hpp>
-#include <Widgets/SettingWidgets/TransformSettings.hpp>
 #include <src/Widgets/SettingWidgets/SettingWidget.hpp>
 #include <src/Widgets/SettingWidgets/SettingWidgetVisitor.hpp>
 
