@@ -72,8 +72,8 @@ void OpenGLWidget::mouseReleaseEvent(QMouseEvent *e) {
 void OpenGLWidget::mouseMoveEvent(QMouseEvent *e) { APP_TRACE("Mouse moved."); }
 
 void OpenGLWidget::keyPressEvent(QKeyEvent *e) {
-    static int selection = -1;
     if (e->key() == Qt::Key::Key_S) {
+        static int selection = -1;
         m_renderer->setSelection(selection);
         selection == 0 ? selection = -1 : selection = 0;
     }
