@@ -9,11 +9,13 @@ clone_folder: C:\projects\Engine
 
 install:
   - set Qt5_DIR=C:\Qt\5.15.0\msvc2019_64
-  - update-core
-  - pacman --sync --noconfirm VCS
-  - pacman --sync --noconfirm base-devel
-  - pacman --sync --noconfirm mingw-w64-i686-toolchain
-  - pacman --sync --noconfirm mingw-w64-x86_64-toolchain
+  - appveyor DownloadFile http://repo.msys2.org/distrib/msys2-i686-latest.exe
+  - appveyor DownloadFile https://raw.githubusercontent.com/Alexpux/MSYS2-packages/master/msys2-installer/auto-install.js
+  - msys2-i686-latest.exe --platform minimal --script auto-install.js -v
+  - C:\msys32\usr\bin\bash --login -c "pacman -Sy --noconfirm pacman"
+  - C:\msys32\usr\bin\bash --login -c "pacman -Syu --noconfirm"
+  - C:\msys32\usr\bin\bash --login -c "pacman -Su --noconfirm"
+  - C:\msys32\usr\bin\bash --login -c "pacman -S --noconfirm mingw-w64-{x86_64,i686}-toolchain"
   - cd C:\Tools\vcpkg
   - git pull
   - .\bootstrap-vcpkg.bat
