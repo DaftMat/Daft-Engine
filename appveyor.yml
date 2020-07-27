@@ -10,7 +10,7 @@ clone_folder: C:\projects\Engine
 install:
   - set Qt5_DIR=C:\Qt\5.15.0\msvc2019_64
   - cd %REPO_ROOT%\.ci
-  - ./msys_install.ps
+  - msys_install.ps
   - cd C:\Tools\vcpkg
   - git pull
   - .\bootstrap-vcpkg.bat
