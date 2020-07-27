@@ -9,8 +9,8 @@ clone_folder: C:\projects\Engine
 
 install:
   - set Qt5_DIR=C:\Qt\5.15.0\msvc2019_64
-  - appveyor DownloadFile https://sourceforge.net/projects/msys2/files/Base/x86_64/msys2-x86_64-20200602.exe
-  - msys2-x86_64-20200602.exe
+  #- appveyor DownloadFile https://sourceforge.net/projects/msys2/files/Base/x86_64/msys2-x86_64-20200602.exe
+  #- msys2-x86_64-20200602.exe
   - C:\msys32\usr\bin\bash --login -c "pacman -Sy --noconfirm pacman"
   - C:\msys32\usr\bin\bash --login -c "pacman -Syu --noconfirm"
   - C:\msys32\usr\bin\bash --login -c "pacman -Su --noconfirm"
