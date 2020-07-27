@@ -120,12 +120,11 @@ class SettingManager {
      */
     void clear() noexcept;
 
-   private:
-    template <typename T>
-    inline auto getIt(std::string name) const;
-
-    template <typename T>
-    inline auto getIt(std::string name);
+    /**
+     * Checks if the manager is empty.
+     * @return true if the manager is empty.
+     */
+    inline bool empty() noexcept;
 
     template <typename T>
     inline const T &get(std::string name) const {
@@ -134,6 +133,13 @@ class SettingManager {
 
     template <typename T>
     inline T &get(std::string name);
+
+   private:
+    template <typename T>
+    inline auto getIt(std::string name) const;
+
+    template <typename T>
+    inline auto getIt(std::string name);
 
     std::vector<intSetting> m_ints;
     std::vector<boolSetting> m_bools;

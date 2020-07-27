@@ -4,38 +4,17 @@
 
 #include "ShaderProgram.hpp"
 
+#include <Core/Utils/IO.hpp>
 #include <Core/Utils/Log.hpp>
 #include <fstream>
 #include <iostream>
 
 namespace daft::core::geometry {
-ShaderProgram::ShaderProgram(const char *vertexPath, const char *fragmentPath) : m_isValid{true} {
-    std::string vertexCode;
-    std::string fragmentCode;
-
-    std::ifstream vShaderFile;
-    std::ifstream fShaderFile;
-    vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-    fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-
-    try {
-        /// Open files
-        vShaderFile.open(vertexPath);
-        fShaderFile.open(fragmentPath);
-        std::stringstream vShaderStream, fShaderStream;
-        vShaderStream << vShaderFile.rdbuf();
-        fShaderStream << fShaderFile.rdbuf();
-        vertexCode = vShaderStream.str();
-        fragmentCode = fShaderStream.str();
-        /// close files
-        vShaderFile.close();
-        fShaderFile.close();
-    } catch (std::ifstream::failure &e) {
-        ENGINE_ERROR("ERROR:SHADER:FILE_NOT_SUCCESSFULLY_READ");
-    }
-
-    const char *vShaderCode = vertexCode.c_str();
-    const char *fShaderCode = fragmentCode.c_str();
+ShaderProgram::ShaderProgram(const std::string &vertexPath, const std::string &fragmentPath) : m_isValid{true} {
+    std::string vShaderCodeStr = utils::IO::getStringFromFile(vertexPath);
+    std::string fShaderCodeStr = utils::IO::getStringFromFile(fragmentPath);
+    const char *vShaderCode = vShaderCodeStr.c_str();
+    const char *fShaderCode = fShaderCodeStr.c_str();
 
     GLuint vertex, fragment;
     /// Vertex

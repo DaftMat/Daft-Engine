@@ -1,2 +1,1 @@
-add_subdirectory(QtExample)
 add_subdirectory(DaftEngineApp)

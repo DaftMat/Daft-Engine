@@ -9,8 +9,8 @@
 Renderer &Renderer::operator=(Renderer &&other) noexcept {
     m_width = other.m_width;
     m_height = other.m_height;
-    m_shader = std::move(other.m_shader);
-    m_meshes = std::move(other.m_meshes);
+    m_root = std::move_if_noexcept(other.m_root);
+    m_visitor = std::move_if_noexcept(other.m_visitor);
     return *this;
 }
 
@@ -23,6 +23,10 @@ Renderer::Renderer(int width, int height) : m_width{width}, m_height{height} {
         GLinitialized = true;
     }
 
+    m_root = std::make_shared<daft::engine::objects::Composite>();
+    m_visitor = std::make_unique<RendererVisitor>();
+    m_deleter = std::make_unique<DeleterVisitor>();
+
     glViewport(0, 0, m_width, m_height);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
@@ -34,15 +38,7 @@ void Renderer::prepare() {
     glClearColor(0.5f, 0.5f, 0.5f, 1.f);
 }
 
-void Renderer::render() {
-    m_shader->use();
-    for (const auto &mesh : m_meshes) {
-        mesh.prepare();
-        mesh.render(GL_TRIANGLES);
-        mesh.unbind();
-    }
-    m_shader->stop();
-}
+void Renderer::render() { m_visitor->visit(m_root.get()); }
 
 void Renderer::resize(int width, int height) {
     m_width = width;

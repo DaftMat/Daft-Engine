@@ -6,14 +6,19 @@
 #include <Core/Utils/Log.hpp>
 #include <QOpenGLContext>
 
+namespace daft::app {
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 
 void OpenGLWidget::initializeGL() {
-    connect(context(), &QOpenGLContext::aboutToBeDestroyed, this, &OpenGLWidget::cleanup);
+    if (!m_glInitialized) {
+        connect(context(), &QOpenGLContext::aboutToBeDestroyed, this, &OpenGLWidget::cleanup);
 
-    m_renderer = std::make_unique<Renderer>(width(), height());
-    prepareScene();
+        m_renderer = std::make_unique<Renderer>(width(), height());
+        prepareScene();
+        m_glInitialized = false;
+    }
 }
+
 void OpenGLWidget::paintGL() {
     m_renderer->prepare();
     m_renderer->render();
@@ -23,8 +28,6 @@ void OpenGLWidget::resizeGL(int width, int height) { m_renderer->resize(width, h
 
 void OpenGLWidget::prepareScene() {
     APP_INFO("Loading example scene...");
-    m_renderer->setShader(
-        new daft::core::geometry::ShaderProgram("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
 
     daft::core::geometry::AttribManager attribManager;
     std::vector<GLuint> indices{0, 2, 3, 0, 1, 2};
@@ -51,7 +54,29 @@ void OpenGLWidget::prepareScene() {
     attribManager.addAttrib(positions);
     attribManager.addAttrib(normals);
     attribManager.addAttrib(texCoords);
+    attribManager.setIndices(indices);
 
-    m_renderer->addMesh(attribManager, indices);
+    m_renderer->addMesh(attribManager);
     APP_INFO("Example scene loaded");
+    emit selectionChanged();
 }
+
+void OpenGLWidget::mousePressEvent(QMouseEvent *e) {
+    APP_DEBUG("Mouse pressed on OpenGL viewer at coordinates ({0},{1}).", e->pos().x(), e->pos().y());
+}
+
+void OpenGLWidget::mouseReleaseEvent(QMouseEvent *e) {
+    APP_DEBUG("Mouse released on OpenGL viewer at coordinates ({0},{1}).", e->pos().x(), e->pos().y());
+}
+
+void OpenGLWidget::mouseMoveEvent(QMouseEvent *e) { APP_TRACE("Mouse moved."); }
+
+void OpenGLWidget::keyPressEvent(QKeyEvent *e) {
+    if (e->key() == Qt::Key::Key_S) {
+        static int selection = -1;
+        m_renderer->setSelection(selection);
+        selection == 0 ? selection = -1 : selection = 0;
+    }
+    emit selectionChanged();
+}
+}  // namespace daft::app

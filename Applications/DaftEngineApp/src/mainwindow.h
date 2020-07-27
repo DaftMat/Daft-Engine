@@ -6,14 +6,17 @@ namespace Ui {
 class MainWindow;
 }
 
+namespace daft::app {
 class MainWindow : public QMainWindow {
     Q_OBJECT
 
    public:
     explicit MainWindow(QWidget *parent = nullptr);
+
     ~MainWindow() override;
 
    private slots:
+
     void on_actionOpenGL_triggered();
 
    private:
@@ -22,3 +25,4 @@ class MainWindow : public QMainWindow {
    private:
     Ui::MainWindow *ui;
 };
+}  // namespace daft::app

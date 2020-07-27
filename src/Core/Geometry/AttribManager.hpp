@@ -88,6 +88,24 @@ class AttribManager {
     inline void setAttribs(const std::vector<GLuint> &vbos);
 
     /**
+     * Set indices (topology) of the mesh that will be built using this class.
+     * @param indices - topology.
+     */
+    inline void setIndices(std::vector<GLuint> indices) { m_indices = std::move(indices); }
+
+    /**
+     * Indices constant reference.
+     * @return indices const ref.
+     */
+    inline const std::vector<GLuint> &indices() const { return m_indices; }
+
+    /**
+     * Indices reference.
+     * @return indices ref.
+     */
+    inline std::vector<GLuint> &indices() { return m_indices; }
+
+    /**
      * Clears all the attrib handlers.
      */
     inline void clear() noexcept;
@@ -111,6 +129,8 @@ class AttribManager {
     std::unordered_map<GLuint, AttribHandler<glm::vec2>> m_vec2Attribs;
     std::unordered_map<GLuint, AttribHandler<glm::vec3>> m_vec3Attribs;
     std::unordered_map<GLuint, AttribHandler<glm::vec4>> m_vec4Attribs;
+
+    std::vector<GLuint> m_indices;
 };
 }  // namespace daft::core::geometry
 

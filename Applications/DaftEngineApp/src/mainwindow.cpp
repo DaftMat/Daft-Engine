@@ -1,12 +1,14 @@
 #include "mainwindow.h"
 
+#include <Layouts/BorderLayout.hpp>
 #include <QtGui/QSurfaceFormat>
 #include <QtWidgets/QMessageBox>
 #include <sstream>
 
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+namespace daft::app {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new ::Ui::MainWindow) {
     ui->setupUi(this);
 
     QSurfaceFormat format;
@@ -15,8 +17,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     format.setDepthBufferSize(24);
     QSurfaceFormat::setDefaultFormat(format);
 
-    ui->openGLWidget->setFocus();
-    ui->openGLWidget->setFormat(format);
+    ui->centralwidget->glWidget().setFocus();
+    ui->centralwidget->glWidget().setFormat(format);
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -33,5 +35,7 @@ void MainWindow::on_actionOpenGL_triggered() {
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
     QMainWindow::resizeEvent(event);
-    ui->openGLWidget->resize(width() - 20, height());
+    auto size = ui->centralwidget->borderLayout().regionSize(BorderLayout::Position::Center);
+    ui->centralwidget->glWidget().resize(size.width(), size.height());
 }
+}  // namespace daft::app

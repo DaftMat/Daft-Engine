@@ -13,33 +13,7 @@
   <property name="windowTitle">
    <string>Qt Example Works !</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="OpenGLWidget" name="openGLWidget">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>1612</width>
-      <height>850</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="baseSize">
-     <size>
-      <width>1612</width>
-      <height>900</height>
-     </size>
-    </property>
-   </widget>
-  </widget>
+  <widget class="daft::app::MainWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -72,9 +46,10 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>OpenGLWidget</class>
-   <extends>QOpenGLWidget</extends>
-   <header location="global">OpenGLWidget.hpp</header>
+   <class>daft::app::MainWidget</class>
+   <extends>QWidget</extends>
+   <header>Widgets/MainWidget.hpp</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
