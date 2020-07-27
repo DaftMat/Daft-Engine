@@ -28,18 +28,18 @@ $ git clone --recurse-submodules https://github.com/DaftMat/Daft-Engine.git
 On **linux** using apt package manager :
 ```txt
 $ sudo apt update
-$ sudo apt install libomp-dev libgl1-mesa-dev libglu1-mesa-dev xorg-dev libxrandr-dev libxcb-randr0-dev libxinerama-dev libglm-dev libassimp-dev libeigen3-dev libglew-dev libglfw3-dev
+$ sudo apt install libomp-dev libgl1-mesa-dev libglu1-mesa-dev xorg-dev libxrandr-dev libxcb-randr0-dev libxinerama-dev libglm-dev libassimp-dev libeigen3-dev libglew-dev
 ```
 
 On **mac** using homebrew :
 ```txt
 $ brew update
-$ brew install libomp glm eigen assimp spdlog glfw qt
+$ brew install libomp glm eigen assimp spdlog qt
 ```
 
 On **windows** using vcpkg (make sure vcpkg is [updated](https://vcpkg.readthedocs.io/en/latest/about/faq/#how-do-i-update-libraries)) :
 ```txt
-$ vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows spdlog:x64-windows glfw3:x64-windows
+$ vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows spdlog:x64-windows
 $ vcpkg integrate install
 ```
 **Note:** the command vcpkg integrate install will give you a path to the vcpkg toolchain, copy this path.
