@@ -14,7 +14,7 @@ class ENGINE_API DeleterVisitor : public daft::core::utils::DrawableVisitor {
 
     DeleterVisitor &operator=(DeleterVisitor &&) = default;
 
-    void visit(daft::engine::objects::Object *object) const override;
+    void visit(daft::engine::objects::Object *object) override;
 
-    void visit(daft::engine::objects::Composite *composite) const override;
+    void visit(daft::engine::objects::Composite *composite) override;
 };

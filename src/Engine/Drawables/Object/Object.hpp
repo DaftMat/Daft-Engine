@@ -47,7 +47,7 @@ class ENGINE_API Object : public Drawable {
      * Accepts a DrawableVisitor.
      * @param visitor - visitor.
      */
-    void accept(const DrawableVisitor *visitor) override;
+    void accept(DrawableVisitor *visitor) override;
 
     void reset() override;
 

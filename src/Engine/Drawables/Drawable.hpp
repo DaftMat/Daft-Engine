@@ -43,7 +43,7 @@ class Drawable : public core::utils::NonCopyable {
     /**
      * Accepts a DrawableVisitor .
      */
-    virtual void accept(const DrawableVisitor *) = 0;
+    virtual void accept(DrawableVisitor *) = 0;
 
     /**
      * Calculates the transformation model matrix of the drawable.

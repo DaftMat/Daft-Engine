@@ -120,6 +120,12 @@ class SettingManager {
      */
     void clear() noexcept;
 
+    /**
+     * Checks if the manager is empty.
+     * @return true if the manager is empty.
+     */
+    inline bool empty() noexcept;
+
     template <typename T>
     inline const T &get(std::string name) const {
         return getIt<T>(std::move(name))->data;

@@ -28,12 +28,12 @@ class ENGINE_API DrawableVisitor {
     /**
      * Visits an Object .
      */
-    virtual void visit(Object *) const {}
+    virtual void visit(Object *) {}
 
     /**
      * Visits a Composite .
      */
-    virtual void visit(Composite *) const;
+    virtual void visit(Composite *);
 };
 
 }  // namespace core::utils

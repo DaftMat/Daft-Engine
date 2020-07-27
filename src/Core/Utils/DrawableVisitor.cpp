@@ -6,7 +6,7 @@
 #include <Engine/Drawables/Composite.hpp>
 
 namespace daft::core::utils {
-void DrawableVisitor::visit(Composite *composite) const {
+void DrawableVisitor::visit(Composite *composite) {
     for (auto &d : composite->drawables()) {
         d->accept(this);
     }

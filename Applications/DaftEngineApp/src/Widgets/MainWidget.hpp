@@ -6,7 +6,9 @@
 #include <Layouts/BorderLayout.hpp>
 #include <QFrame>
 #include <QtWidgets/QWidget>
+#include <src/Widgets/SettingWidgets/SettingWidget.hpp>
 
+#include "BorderWidget.hpp"
 #include "OpenGLWidget.hpp"
 
 QT_BEGIN_NAMESPACE
@@ -96,8 +98,14 @@ class ENGINE_API MainWidget : public QWidget {
     [[nodiscard]] static QDoubleSpinBox *createDoubleSpinBox(double val = 1.0, double min = -9999.0,
                                                              double max = 9999.0, double step = 1.0, int decs = 2);
 
+   public slots:
+    void on_selectionChanged();
+
    private:
     std::unique_ptr<OpenGLWidget> m_glWidget{nullptr};
+    std::unique_ptr<BorderWidget> m_southWidget{nullptr};
+    std::unique_ptr<SettingWidget> m_settingWidget{nullptr};
+
     std::unique_ptr<BorderLayout> m_layout{nullptr};
 };
 }  // namespace daft::app

@@ -6,9 +6,9 @@
 #include <Engine/Drawables/Composite.hpp>
 #include <Engine/Drawables/Object/Object.hpp>
 
-void DeleterVisitor::visit(daft::engine::objects::Object *object) const { object->reset(); }
+void DeleterVisitor::visit(daft::engine::objects::Object *object) { object->reset(); }
 
-void DeleterVisitor::visit(daft::engine::objects::Composite *composite) const {
+void DeleterVisitor::visit(daft::engine::objects::Composite *composite) {
     DrawableVisitor::visit(composite);
     composite->reset();
 }

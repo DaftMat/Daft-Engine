@@ -13,6 +13,7 @@
 #include <Widgets/SettingWidgets/DrawableSettings.hpp>
 #include <Widgets/SettingWidgets/TransformSettings.hpp>
 #include <src/Widgets/SettingWidgets/SettingWidget.hpp>
+#include <src/Widgets/SettingWidgets/SettingWidgetVisitor.hpp>
 
 #include "BorderWidget.hpp"
 
@@ -40,22 +41,23 @@ MainWidget::MainWidget(QWidget *parent)
     m_layout->addWidget(northWidget, BorderLayout::Position::North);
 
     auto screenHeight = float(QApplication::desktop()->screenGeometry().height());
-    auto southWidget = new BorderWidget(BorderWidget::Orientation::HORIZONTAL, 70, int(screenHeight / 4.5f));
-    southWidget->addSpacer();
-    southWidget->addSeparator();
-    core::mat::SettingManager settingsTransform;
-    settingsTransform.add("Position", glm::vec3{0.f, 0.f, 0.f});
-    settingsTransform.add("Rotations", glm::vec3{0.f, 0.f, 0.f});
-    settingsTransform.add("Scale", glm::vec3{1.f, 1.f, 1.f});
-    core::mat::SettingManager settings;
-    settings.add("test", glm::vec3{1.f, 2.f, 3.f});
-    auto drawSettings = new DrawableSettings(settings);
-    drawSettings->addDoubleSpinBoxVector("test");
-    auto transformSettings = new TransformSettings(settingsTransform);
-    auto settingWidget = new SettingWidget(drawSettings, transformSettings);
-    southWidget->addWidget(settingWidget);
-    southWidget->setObjectName("southWidget");
-    m_layout->addWidget(southWidget, BorderLayout::Position::South);
+    m_southWidget = std::make_unique<BorderWidget>(BorderWidget::Orientation::HORIZONTAL, int(screenHeight / 4.5f),
+                                                   int(screenHeight / 4.5f));
+    m_southWidget->addSpacer();
+    m_southWidget->addSeparator();
+    // core::mat::SettingManager settingsTransform;
+    // settingsTransform.add("Position", glm::vec3{0.f, 0.f, 0.f});
+    // settingsTransform.add("Rotations", glm::vec3{0.f, 0.f, 0.f});
+    // settingsTransform.add("Scale", glm::vec3{1.f, 1.f, 1.f});
+    // core::mat::SettingManager settings;
+    // settings.add("test", glm::vec3{1.f, 2.f, 3.f});
+    // auto drawSettings = new DrawableSettings(settings);
+    // drawSettings->addDoubleSpinBoxVector("test");
+    // auto transformSettings = new TransformSettings(settingsTransform);
+    // auto settingWidget = new SettingWidget(drawSettings, transformSettings);
+    // southWidget->addWidget(settingWidget);
+    m_southWidget->setObjectName("southWidget");
+    m_layout->addWidget(m_southWidget.get(), BorderLayout::Position::South);
 
     auto eastWidget = new BorderWidget(BorderWidget::Orientation::VERTICAL, 150, 350);
     eastWidget->addWidget(createLabel("East"));
@@ -68,6 +70,8 @@ MainWidget::MainWidget(QWidget *parent)
     m_layout->addWidget(westWidget, BorderLayout::Position::West);
 
     setLayout(m_layout.get());
+
+    connect(m_glWidget.get(), SIGNAL(selectionChanged()), this, SLOT(on_selectionChanged()));
 }
 
 MainWidget::~MainWidget() {
@@ -104,5 +108,20 @@ QDoubleSpinBox *MainWidget::createDoubleSpinBox(double val, double min, double m
     spinbox->setSingleStep(step);
     spinbox->setDecimals(decs);
     return spinbox;
+}
+
+void MainWidget::on_selectionChanged() {
+    auto selection = m_glWidget->renderer().getSelection();
+    if (m_settingWidget != nullptr) m_southWidget->layout()->removeWidget(m_settingWidget.get());
+    SettingWidget *widget;
+    if (selection == nullptr) {
+        widget = new SettingWidget(nullptr, nullptr);
+    } else {
+        auto visitor = new SettingWidgetVisitor();
+        selection->accept(visitor);
+        widget = visitor->widget();
+    }
+    m_settingWidget.reset(widget);
+    m_southWidget->addWidget(m_settingWidget.get());
 }
 }  // namespace daft::app

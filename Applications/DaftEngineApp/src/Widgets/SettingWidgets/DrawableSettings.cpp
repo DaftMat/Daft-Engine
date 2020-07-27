@@ -14,8 +14,11 @@ DrawableSettings::DrawableSettings(daft::core::mat::SettingManager settings, QWi
     : QWidget(parent), m_settings{std::move(settings)}, m_layout{new QFormLayout()} {
     auto mainLayout = new QVBoxLayout;
     mainLayout->setMargin(2);
-    mainLayout->addWidget(new QLabel("Settings"));
-    mainLayout->addWidget(MainWidget::createLine(QFrame::Shape::HLine));
+
+    if (!settings.empty()) {
+        mainLayout->addWidget(new QLabel("Settings"));
+        mainLayout->addWidget(MainWidget::createLine(QFrame::Shape::HLine));
+    }
 
     auto formWidget = new QWidget;
     m_layout->setMargin(2);
@@ -119,8 +122,8 @@ void DrawableSettings::onDrawableChanged() {
     for (const auto& elem : m_comboBoxes) {
         m_settings.get<int>(elem.first) = elem.second->currentIndex();
     }
-    APP_INFO("Drawable changed.");
-    emit SettingWidget::settingChanged();
+    APP_DEBUG("Drawable changed.");
+    emit settingChanged();
 }
 
 }  // namespace daft::app

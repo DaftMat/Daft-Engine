@@ -52,7 +52,7 @@ class Light : public Drawable {
     /**
      * Accepts a DrawableVisitor .
      */
-    void accept(const DrawableVisitor *) override = 0;
+    void accept(DrawableVisitor *) override = 0;
 
     /**
      * Emitted color constant reference.

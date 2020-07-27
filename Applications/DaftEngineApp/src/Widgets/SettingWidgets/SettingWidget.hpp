@@ -12,12 +12,14 @@
 
 namespace daft::app {
 class ENGINE_API SettingWidget : public QScrollArea {
+    Q_OBJECT
+
    public:
     explicit SettingWidget(DrawableSettings *settings, TransformSettings *transforms, std::string name = "Drawable",
                            QWidget *parent = nullptr);
 
-   signals:
-    static void settingChanged() {}
+   public slots:
+    void on_settingChanged() { APP_DEBUG("Setting changed."); }
 
    private:
     std::unique_ptr<DrawableSettings> m_settings{nullptr};

@@ -44,7 +44,7 @@ class ENGINE_API Composite : public Drawable {
      * Accepts a drawable visitor.
      * @param visitor - DrawableVisitor .
      */
-    void accept(const DrawableVisitor *visitor) override;
+    void accept(DrawableVisitor *visitor) override;
 
     /**
      * Adds a drawable to the composite.

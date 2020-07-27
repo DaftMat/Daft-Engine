@@ -10,10 +10,13 @@ namespace daft::app {
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 
 void OpenGLWidget::initializeGL() {
-    connect(context(), &QOpenGLContext::aboutToBeDestroyed, this, &OpenGLWidget::cleanup);
+    if (!m_glInitialized) {
+        connect(context(), &QOpenGLContext::aboutToBeDestroyed, this, &OpenGLWidget::cleanup);
 
-    m_renderer = std::make_unique<Renderer>(width(), height());
-    prepareScene();
+        m_renderer = std::make_unique<Renderer>(width(), height());
+        prepareScene();
+        m_glInitialized = false;
+    }
 }
 
 void OpenGLWidget::paintGL() {
@@ -55,6 +58,7 @@ void OpenGLWidget::prepareScene() {
 
     m_renderer->addMesh(attribManager);
     APP_INFO("Example scene loaded");
+    emit selectionChanged();
 }
 
 void OpenGLWidget::mousePressEvent(QMouseEvent *e) {
@@ -66,4 +70,13 @@ void OpenGLWidget::mouseReleaseEvent(QMouseEvent *e) {
 }
 
 void OpenGLWidget::mouseMoveEvent(QMouseEvent *e) { APP_TRACE("Mouse moved."); }
+
+void OpenGLWidget::keyPressEvent(QKeyEvent *e) {
+    static int selection = -1;
+    if (e->key() == Qt::Key::Key_S) {
+        m_renderer->setSelection(selection);
+        selection == 0 ? selection = -1 : selection = 0;
+    }
+    emit selectionChanged();
+}
 }  // namespace daft::app

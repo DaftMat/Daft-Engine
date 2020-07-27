@@ -18,9 +18,9 @@ class ENGINE_API RendererVisitor : public daft::core::utils::DrawableVisitor {
 
     RendererVisitor &operator=(RendererVisitor &&) = default;
 
-    void visit(daft::engine::objects::Object *object) const override;
+    void visit(daft::engine::objects::Object *object) override;
 
-    void visit(daft::engine::objects::Composite *composite) const override;
+    void visit(daft::engine::objects::Composite *composite) override;
 
    private:
     std::shared_ptr<daft::core::geometry::ShaderProgram> m_shader{nullptr};

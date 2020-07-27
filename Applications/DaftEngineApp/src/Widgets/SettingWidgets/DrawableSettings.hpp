@@ -32,7 +32,10 @@ class ENGINE_API DrawableSettings : public QWidget {
     void addComboBox(std::string label, const std::vector<std::string>& args);
 
    public slots:
-    virtual void onDrawableChanged();
+    void onDrawableChanged();
+
+   signals:
+    void settingChanged();
 
    private:
     void addField(std::string label, const std::vector<QWidget*>& widgets);

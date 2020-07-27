@@ -39,7 +39,7 @@ void TransformSettings::onTransformChanged() {
         m_settings.get<glm::vec3>("Scale")[i] = m_scale[i]->value();
     }
     APP_DEBUG("Transformation changed.");
-    emit SettingWidget::settingChanged();
+    emit settingChanged();
 }
 
 QWidget *TransformSettings::createTransformWidget(Type type) {

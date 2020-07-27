@@ -26,6 +26,18 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
      */
     ~OpenGLWidget() override { cleanup(); }
 
+    /**
+     * renderer constant reference.
+     * @return const ref to renderer.
+     */
+    [[nodiscard]] const Renderer &renderer() const { return *m_renderer; }
+
+    /**
+     * renderer reference.
+     * @return ref to renderer.
+     */
+    Renderer &renderer() { return *m_renderer; }
+
     [[nodiscard]] QSize minimumSizeHint() const override { return {50, 50}; }
 
     [[nodiscard]] QSize sizeHint() const override { return {width(), height()}; }
@@ -36,9 +48,15 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
 
     void mouseMoveEvent(QMouseEvent *e) override;
 
+    void keyPressEvent(QKeyEvent *e) override;
+
    public slots:
 
     void cleanup() { m_renderer.reset(); }
+
+   signals:
+
+    void selectionChanged();
 
    protected:
     void initializeGL() override;

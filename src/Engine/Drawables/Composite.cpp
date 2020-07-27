@@ -11,7 +11,7 @@ int Composite::m_nrComposite{0};
 
 Composite::Composite(Composite *parent, std::string name) noexcept : Drawable(parent, std::move_if_noexcept(name)) {}
 
-void Composite::accept(const Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
+void Composite::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
 
 void Composite::add(Drawable *drawable) {
     drawable->setParent(this);

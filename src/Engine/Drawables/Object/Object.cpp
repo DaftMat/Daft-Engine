@@ -24,7 +24,7 @@ void Object::render() {
     }
 }
 
-void Object::accept(const Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
+void Object::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
 
 void Object::reset() {
     Drawable::reset();

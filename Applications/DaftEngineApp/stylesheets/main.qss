@@ -35,6 +35,12 @@ QLabel {
     color: #f2f2f2;
 }
 
+QLabel#sectionTitle {
+    border-bottom: 2px solid #202020;
+    font-style: bold;
+    font-size: 13pt;
+}
+
 QAbstractButton, QAbstractSpinBox, QComboBox {
     qproperty-minimumSize: 75px 30px;
     qproperty-maximumSize: 128px 64px;

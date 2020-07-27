@@ -7,11 +7,11 @@ RendererVisitor::RendererVisitor()
     : m_shader{std::make_shared<daft::core::geometry::ShaderProgram>("shaders/color.vert.glsl",
                                                                      "shaders/color.frag.glsl")} {}
 
-void RendererVisitor::visit(daft::engine::objects::Object *object) const {
+void RendererVisitor::visit(daft::engine::objects::Object *object) {
     m_shader->use();
     m_shader->setMat4("model", object->model());
     object->render();
     m_shader->stop();
 }
 
-void RendererVisitor::visit(daft::engine::objects::Composite *composite) const { DrawableVisitor::visit(composite); }
+void RendererVisitor::visit(daft::engine::objects::Composite *composite) { DrawableVisitor::visit(composite); }

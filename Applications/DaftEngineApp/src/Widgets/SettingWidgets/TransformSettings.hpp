@@ -11,11 +11,15 @@
 namespace daft::app {
 class ENGINE_API TransformSettings : public QWidget {
     Q_OBJECT
+
    public:
     explicit TransformSettings(daft::core::mat::SettingManager settings, QWidget *parent = nullptr);
 
    public slots:
     void onTransformChanged();
+
+   signals:
+    void settingChanged();
 
    private:
     enum class Type { POSITION, ROTATION, SCALE };

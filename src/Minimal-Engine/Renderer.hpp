@@ -43,11 +43,20 @@ class ENGINE_API Renderer : public daft::core::utils::NonCopyable {
     void addMesh(daft::core::geometry::AttribManager attribManager) noexcept {
         using namespace daft::engine::objects;
         m_root->add(new Object(nullptr, MeshObject(daft::core::geometry::Mesh(std::move_if_noexcept(attribManager)))));
+        m_selection++;
     }
+
+    daft::engine::objects::Drawable *getSelection() {
+        if (m_selection < 0) return nullptr;
+        return m_root->drawables()[m_selection].get();
+    }
+
+    void setSelection(int s) { m_selection = s; }
 
    private:
     static bool GLinitialized;
     int m_width{0}, m_height{0};
+    int m_selection{-1};
 
     std::shared_ptr<daft::engine::objects::Composite> m_root{nullptr};
 
