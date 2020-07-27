@@ -9,10 +9,10 @@ clone_folder: C:\projects\Engine
 
 install:
   - set Qt5_DIR=C:\Qt\5.15.0\msvc2019_64
-  - cmd: C:\msys64\msys2_shell.bat
+  - start-process C:\msys64\msys2_shell.bat
   - pacman --sync pacman-mirrors
   - update-core
-  - pacman -Syu
+  - pacman -Su
   - cd C:\Tools\vcpkg
   - git pull
   - .\bootstrap-vcpkg.bat
