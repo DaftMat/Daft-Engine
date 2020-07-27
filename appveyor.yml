@@ -10,7 +10,7 @@ clone_folder: C:\projects\Engine
 install:
   - set Qt5_DIR=C:\Qt\5.15.0\msvc2019_64
   - appveyor DownloadFile http://repo.msys2.org/distrib/msys2-x86_64-latest.exe
-  - msys2-x86_64-latest.exe --platform minimal --script /metadata/com.msys2.root.base/installscript.js -v
+  - msys2-x86_64-latest.exe --platform minimal --script metadata/com.msys2.root.base/installscript.js -v
   - C:\msys64\usr\bin\bash --login -c "pacman -Sy --noconfirm pacman"
   - C:\msys64\usr\bin\bash --login -c "pacman -Syu --noconfirm"
   - C:\msys64\usr\bin\bash --login -c "pacman -Su --noconfirm"
