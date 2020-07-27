@@ -18,8 +18,8 @@ install:
   - C:\msys64\usr\bin\bash --login -c "pacman --sync --noconfirm mingw-w64-{x86_64,i686}-gtkmm"
   - C:\msys64\usr\bin\bash --login -c "pacman --sync --noconfirm mingw-w64-{x86_64,i686}-wxWidgets"
   - C:\msys64\usr\bin\bash --login -c "pacman --sync --noconfirm cmake"
-  - C:\msys64\usr\bin\bash --login -c "pacman -Syyuu"
-  - C:\msys64\usr\bin\bash --login -c "pacman -Su"
+  - C:\msys64\usr\bin\bash --login -c "pacman -Syyuu --nocinfirm"
+  - C:\msys64\usr\bin\bash --login -c "pacman -Su --noconfirm"
   - cd C:\Tools\vcpkg
   - git pull
   - .\bootstrap-vcpkg.bat
