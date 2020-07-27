@@ -9,7 +9,7 @@ clone_folder: C:\projects\Engine
 
 install:
   - set Qt5_DIR=C:\Qt\5.15.0\msvc2019_64
-  - C:\msys64\usr\bin\bash --login -c "pacman --sync pacman-mirrors"
+  - C:\msys64\usr\bin\bash --login -c "pacman --sync -Sy pacman-mirrors"
   - C:\msys64\usr\bin\bash --login -c "update-core"
   - C:\msys64\usr\bin\bash --login -c "pacman -Su"
   - cd C:\Tools\vcpkg
