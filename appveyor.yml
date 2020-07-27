@@ -12,11 +12,11 @@ install:
   - cd C:\Tools\vcpkg
   - git pull
   - .\bootstrap-vcpkg.bat
-  - cd %REPO_ROOT%
 
 before_build:
-  - vcpkg install --noconfirm glm:x64-windows eigen3:x64-windows assimp:x64-windows spdlog:x64-windows
+  - vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows spdlog:x64-windows
   - vcpkg integrate install
+  - cd %REPO_ROOT%
   - git submodule update --init --recursive
   - cmd: md build
   - cmd: cd build
