@@ -9,6 +9,7 @@ clone_folder: C:\projects\Engine
 
 install:
   - set Qt5_DIR=C:\Qt\5.15.0\msvc2019_64
+  - update-core
   - pacman --sync --noconfirm VCS
   - pacman --sync --noconfirm base-devel
   - pacman --sync --noconfirm mingw-w64-i686-toolchain
