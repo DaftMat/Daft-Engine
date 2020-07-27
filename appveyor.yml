@@ -8,20 +8,20 @@ environment:
 clone_folder: C:\projects\Engine
 
 install:
-  - set Qt5_DIR=C:\Qt\5.15.0\msvc2019_64
+  - set Qt5_DIR=C:\Qt\5.15.0\msvc2019_32
   - cd C:\Tools\vcpkg
   - git pull
   - .\bootstrap-vcpkg.bat
   - cd %REPO_ROOT%
 
 before_build:
-  - vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows spdlog:x64-windows
+  - vcpkg install glm eigen3 assimp spdlog
   - vcpkg integrate install
   - git submodule update --init --recursive
   - cmd: md build
   - cmd: cd build
 
 build_script:
-  - cmake -DCMAKE_TOOLCHAIN_FILE="C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake" -G "Visual Studio 16 2019" -A x64 ..
+  - cmake -DCMAKE_TOOLCHAIN_FILE="C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake" -G "Visual Studio 16 2019" ..
   - cmake --build . --target buildtests
   - ctest -C %configuration%
