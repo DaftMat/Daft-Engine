@@ -9,9 +9,17 @@ clone_folder: C:\projects\Engine
 
 install:
   - set Qt5_DIR=C:\Qt\5.15.0\msvc2019_64
-  - C:\msys64\usr\bin\bash --login -c "pacman --sync -Sy pacman-mirrors"
+  - C:\msys64\usr\bin\bash --login -c "pacman -Sy --noconfirm pacman-mirrors"
+  - C:\msys64\usr\bin\bash --login -c "pacman -S --noconfirm pacman"
+  - C:\msys64\usr\bin\bash --login -c "pacman --sync --noconfirm VCS"
+  - C:\msys64\usr\bin\bash --login -c "pacman --sync --noconfirm base-devel msys2-devel mingw-w64-{x86_64,i686}-toolchain"
+  - C:\msys64\usr\bin\bash --login -c "pacman --sync --noconfirm mingw-w64-{x86_64,i686}-cmake"
+  - C:\msys64\usr\bin\bash --login -c "pacman --sync --noconfirm mingw-w64-{x86_64,i686}-ninja"
+  - C:\msys64\usr\bin\bash --login -c "pacman --sync --noconfirm mingw-w64-{x86_64,i686}-gtkmm"
+  - C:\msys64\usr\bin\bash --login -c "pacman --sync --noconfirm mingw-w64-{x86_64,i686}-wxWidgets"
+  - C:\msys64\usr\bin\bash --login -c "pacman --sync --noconfirm cmake"
   - C:\msys64\usr\bin\bash --login -c "update-core"
-  - C:\msys64\usr\bin\bash --login -c "pacman -Su"
+  - C:\msys64\usr\bin\bash --login -c "pacman -Syu"
   - cd C:\Tools\vcpkg
   - git pull
   - .\bootstrap-vcpkg.bat
