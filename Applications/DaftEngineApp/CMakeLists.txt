@@ -24,7 +24,7 @@ add_dependencies(${app_target} ${ENGINE_API})
 set(IMAGE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/img)
 file(GLOB_RECURSE IMAGE_FILES ${IMAGE_DIR}/*)
 set(STYLE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/stylesheets)
-file(GLOB_RECURSE STYLE_FILES ${STYLE_DIR}/*.css)
+file(GLOB_RECURSE STYLE_FILES ${STYLE_DIR}/*.qss)
 
 if(WIN32)
     set(COPY_COMMAND copy_directory)
