@@ -110,14 +110,10 @@ void DrawableSettings::onDrawableChanged() {
         m_settings.get<double>(elem.first) = elem.second->value();
     }
     for (const auto& elem : m_intSpinBoxVectors) {
-        m_settings.get<glm::vec3>(elem.first).x = elem.second[0]->value();
-        m_settings.get<glm::vec3>(elem.first).y = elem.second[1]->value();
-        m_settings.get<glm::vec3>(elem.first).z = elem.second[2]->value();
+        setVector(elem);
     }
     for (const auto& elem : m_doubleSpinBoxVectors) {
-        m_settings.get<glm::vec3>(elem.first).x = elem.second[0]->value();
-        m_settings.get<glm::vec3>(elem.first).y = elem.second[1]->value();
-        m_settings.get<glm::vec3>(elem.first).z = elem.second[2]->value();
+        setVector(elem);
     }
     for (const auto& elem : m_comboBoxes) {
         m_settings.get<int>(elem.first) = elem.second->currentIndex();
