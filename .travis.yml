@@ -42,7 +42,7 @@ addons:
       - eigen
       - assimp
       - spdlog
-      - qt
+      - qt5
 
 before_install:
   - export CHECKOUT_PATH=`pwd`;
