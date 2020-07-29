@@ -86,7 +86,7 @@ class ENGINE_API DrawableSettings : public QWidget {
     void addField(std::string label, const std::vector<QWidget*>& widgets);
 
     template <typename T>
-    inline void setVector(const T& elem);
+    void setVector(const T& elem);
 
     std::unordered_map<std::string, QSpinBox*> m_intSpinBoxes;
     std::unordered_map<std::string, QDoubleSpinBox*> m_doubleSpinBoxes;
