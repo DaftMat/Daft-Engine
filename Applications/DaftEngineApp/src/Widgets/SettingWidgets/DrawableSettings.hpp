@@ -86,7 +86,9 @@ class ENGINE_API DrawableSettings : public QWidget {
     void addField(std::string label, const std::vector<QWidget*>& widgets);
 
     template <typename T>
-    void setVector(const T& elem);
+    inline void setVector(const T& elem) {
+        for (int i = 0; i < 3; ++i) m_settings.get<glm::vec3>(elem.first)[i] = elem.second[i]->value();
+    }
 
     std::unordered_map<std::string, QSpinBox*> m_intSpinBoxes;
     std::unordered_map<std::string, QDoubleSpinBox*> m_doubleSpinBoxes;
@@ -99,5 +101,3 @@ class ENGINE_API DrawableSettings : public QWidget {
     std::unique_ptr<QFormLayout> m_layout;
 };
 }  // namespace daft::app
-
-#include <Widgets/SettingWidgets/DrawableSettings.inl>
