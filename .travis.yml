@@ -41,8 +41,8 @@ addons:
       - glm
       - eigen
       - assimp
+      - fmt
       - spdlog
-      - qt5
 
 before_install:
   - export CHECKOUT_PATH=`pwd`;

@@ -16,7 +16,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set( CMAKE_INCLUDE_CURRENT_DIR ON )
 
-add_executable(${app_target} ${sources} ${inlines} ${headers} ${uis})
+add_executable(${app_target} ${sources} ${headers} ${inlines} ${uis})
 
 target_link_libraries(${app_target} ${ENGINE_LIBRARIES} ${EXT_LIBS})
 add_dependencies(${app_target} ${ENGINE_API})
