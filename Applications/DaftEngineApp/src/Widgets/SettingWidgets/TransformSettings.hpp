@@ -7,6 +7,7 @@
 #include <Core/OpenGL.hpp>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QWidget>
+#include <array>
 
 namespace daft::app {
 /**
