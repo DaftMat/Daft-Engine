@@ -29,5 +29,9 @@ Logger::Log &Logger::trace() {
     return m_log;
 }
 
-Logger::Log &Logger::error() { m_log << "> error -- "; }
+Logger::Log &Logger::error() {
+    m_log << "> error -- ";
+    return m_log;
+}
+
 }  // namespace daft::core::utils

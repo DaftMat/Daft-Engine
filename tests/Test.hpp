@@ -37,9 +37,9 @@ inline bool isApprox(const S& lhs, const S& rhs) {
     return almost_equals(lhs, rhs);
 }
 
-#define UNIT_VERIFY(a, DESC)                                                                              \
+#define UNIT_VERIFY(a, DESC)                                                                      \
     daft::testing::verify_impl(a, daft::testing::g_test_stack.back().c_str(), __FILE__, __LINE__, \
-                                   DESC)  // PP_MAKE_STRING(a))
+                               DESC)  // PP_MAKE_STRING(a))
 
 #if defined(_MSC_VER) && !defined(__INTEL_COMPILER)
 #define MYPRAGMA(X) __pragma(X)
@@ -47,10 +47,10 @@ inline bool isApprox(const S& lhs, const S& rhs) {
 #define MYPRAGMA(X) _Pragma(X)
 #endif
 
-#define CALL_SUBTEST(FUNC)                                                                               \
-    do {                                                                                                 \
+#define CALL_SUBTEST(FUNC)                                                                           \
+    do {                                                                                             \
         MYPRAGMA("omp critical") { daft::testing::g_test_stack.emplace_back(PP_MAKE_STRING(FUNC)); } \
-        FUNC;                                                                                            \
+        FUNC;                                                                                        \
         MYPRAGMA("omp critical") { daft::testing::g_test_stack.pop_back(); }                         \
     } while (0)
 
@@ -74,7 +74,7 @@ inline void set_seed_from_string(const char* str) {
     g_has_set_seed = true;
 }
 
-static bool init_testing(int argc, const char* argv[]) {
+static bool init_testing(int argc, const char** argv) {
     g_has_set_repeat = false;
     g_has_set_seed = false;
     bool need_help = false;
