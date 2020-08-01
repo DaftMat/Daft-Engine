@@ -1,4 +1,4 @@
-#include <Core/Utils/Log.hpp>
+#include <Core/Utils/Logger.hpp>
 
 namespace daft::core::geometry {
 
@@ -13,7 +13,7 @@ void AttribManager::addAttrib() {
     } else if constexpr (std::is_same_v<T, glm::vec4>) {
         m_vec4Attribs.insert(std::make_pair(m_numAttribs++, std::vector<glm::vec4>{}));
     } else {
-        ENGINE_WARN("Unknown attribute type. nothing has been done.");
+        core::utils::Logger::warn() << "Unknown attribute type. nothing has been done.\n";
     }
 }
 
@@ -28,7 +28,7 @@ void AttribManager::addAttrib(std::vector<T> attribs) {
     } else if constexpr (std::is_same_v<T, glm::vec4>) {
         m_vec4Attribs.insert(std::make_pair(m_numAttribs++, std::move(attribs)));
     } else {
-        ENGINE_WARN("Unknown attribute type. nothing has been done.");
+        core::utils::Logger::warn() << "Unknown attribute type. nothing has been done.\n";
     }
 }
 

@@ -1,4 +1,4 @@
-#include <Core/Utils/Log.hpp>
+#include <Core/Utils/Logger.hpp>
 
 #include "SettingManager.hpp"
 
@@ -23,7 +23,7 @@ const std::vector<SettingManager::Setting<T>>& SettingManager::settings() const 
         return m_mat3s;
     else if constexpr (std::is_same_v<T, glm::mat4>)
         return m_mat4s;
-    ENGINE_INFO("invalid setting type, returning empty list...");
+    core::utils::Logger::info() << "invalid setting type, returning empty list...\n";
     return std::vector<Setting<T>>{};
 }
 
@@ -53,7 +53,7 @@ void SettingManager::add(std::string name, T value) noexcept {
     else if constexpr (std::is_same_v<T, glm::mat4>)
         m_mat4s.emplace_back(std::move_if_noexcept(name), value);
     else {
-        ENGINE_INFO("invalid setting type, nothing has been done.");
+        core::utils::Logger::info() << "invalid setting type, nothing has been done.\n";
     }
 }
 

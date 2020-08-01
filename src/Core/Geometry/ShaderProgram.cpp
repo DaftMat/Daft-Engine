@@ -5,8 +5,7 @@
 #include "ShaderProgram.hpp"
 
 #include <Core/Utils/IO.hpp>
-#include <Core/Utils/Log.hpp>
-#include <fstream>
+#include <Core/Utils/Logger.hpp>
 #include <iostream>
 
 namespace daft::core::geometry {
@@ -37,7 +36,7 @@ ShaderProgram::ShaderProgram(const std::string &vertexPath, const std::string &f
     glDeleteShader(vertex);
     glDeleteShader(fragment);
 
-    ENGINE_INFO("ShadeProgram created. ID: {0}.", m_id);
+    core::utils::Logger::info() << "ShadeProgram created. ID: " << m_id << ".\n";
 }
 
 ShaderProgram::ShaderProgram(ShaderProgram &&other) noexcept : m_id{other.m_id}, m_isValid{other.m_isValid} {
@@ -54,7 +53,7 @@ ShaderProgram &ShaderProgram::operator=(ShaderProgram &&other) noexcept {
 ShaderProgram::~ShaderProgram() noexcept {
     if (!m_isValid) return;
     glDeleteProgram(m_id);
-    ENGINE_INFO("ShaderProgram of ID: {0} deleted.", m_id);
+    core::utils::Logger::info() << "ShaderProgram of ID: " << m_id << " deleted.\n";
 }
 
 void ShaderProgram::use() const noexcept {
@@ -115,7 +114,7 @@ void ShaderProgram::checkCompileError(GLuint shader, const std::string &type) {
     if (!success) {
         char *infoLog = nullptr;
         glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
-        ENGINE_ERROR("ERROR:SHADER_COMPILATION of type : {0}{1}{2}.", type, "\n", infoLog);
+        core::utils::Logger::error() << "SHADER_COMPILATION of type : " << type << "\n\t" << infoLog << "\n";
     }
 }
 
@@ -125,7 +124,7 @@ void ShaderProgram::checkLinkError(GLuint program) {
     if (!success) {
         char *infoLog = nullptr;
         glGetProgramInfoLog(program, 1024, nullptr, infoLog);
-        ENGINE_ERROR("ERROR:PROGRAM_LINKING\n{0}.", infoLog);
+        core::utils::Logger::error() << "PROGRAM_LINKING\n" << infoLog << ".\n";
     }
 }
 }  // namespace daft::core::geometry

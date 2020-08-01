@@ -38,7 +38,7 @@ void TransformSettings::onTransformChanged() {
         m_settings.get<glm::vec3>("Rotations")[i] = m_rotations[i]->value();
         m_settings.get<glm::vec3>("Scale")[i] = m_scale[i]->value();
     }
-    APP_DEBUG("Transformation changed.");
+    core::utils::Logger::debug() << "Transformation changed.\n";
     emit settingChanged();
 }
 

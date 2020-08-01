@@ -3,7 +3,7 @@
 //
 #include "Renderer.hpp"
 
-#include <Core/Utils/Log.hpp>
+#include <Core/Utils/Logger.hpp>
 #include <iostream>
 
 Renderer &Renderer::operator=(Renderer &&other) noexcept {
@@ -17,7 +17,7 @@ Renderer &Renderer::operator=(Renderer &&other) noexcept {
 Renderer::Renderer(int width, int height) : m_width{width}, m_height{height} {
     if (!GLinitialized) {
         if (!gladLoadGL()) {
-            ENGINE_ERROR("Failed to load OpenGL.");
+            daft::core::utils::Logger::error() << "Failed to load OpenGL.\n";
             exit(-1);
         }
         GLinitialized = true;

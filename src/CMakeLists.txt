@@ -21,13 +21,6 @@ else(WIN32)
 set(EXT_LIBS ${EXT_LIBS} ${ASSIMP_LIBRARIES})
 endif(WIN32)
 
-find_package(spdlog 1 CONFIG REQUIRED)
-if(WIN32)
-set(EXT_LIBS ${EXT_LIBS} spdlog::spdlog spdlog::spdlog_header_only)
-else(WIN32)
-set(EXT_LIBS ${EXT_LIBS} ${SPDLOG_LIBRARIES})
-endif(WIN32)
-
 find_package(OpenGL REQUIRED)
 if(WIN32)
 set(EXT_LIBS ${EXT_LIBS} opengl32 glu32)

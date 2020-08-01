@@ -3,7 +3,6 @@
 //
 #include "OpenGLWidget.hpp"
 
-#include <Core/Utils/Log.hpp>
 #include <QOpenGLContext>
 
 namespace daft::app {
@@ -27,7 +26,7 @@ void OpenGLWidget::paintGL() {
 void OpenGLWidget::resizeGL(int width, int height) { m_renderer->resize(width, height); }
 
 void OpenGLWidget::prepareScene() {
-    APP_INFO("Loading example scene...");
+    core::utils::Logger::info() << "Loading example scene...\n";
 
     daft::core::geometry::AttribManager attribManager;
     std::vector<GLuint> indices{0, 2, 3, 0, 1, 2};
@@ -57,19 +56,21 @@ void OpenGLWidget::prepareScene() {
     attribManager.setIndices(indices);
 
     m_renderer->addMesh(attribManager);
-    APP_INFO("Example scene loaded");
+    core::utils::Logger::info() << "Example scene loaded\n";
     emit selectionChanged();
 }
 
 void OpenGLWidget::mousePressEvent(QMouseEvent *e) {
-    APP_DEBUG("Mouse pressed on OpenGL viewer at coordinates ({0},{1}).", e->pos().x(), e->pos().y());
+    core::utils::Logger::debug() << "Mouse pressed on OpenGL viewer at coordinates (" << e->pos().x() << ","
+                                 << e->pos().y() << ")\n";
 }
 
 void OpenGLWidget::mouseReleaseEvent(QMouseEvent *e) {
-    APP_DEBUG("Mouse released on OpenGL viewer at coordinates ({0},{1}).", e->pos().x(), e->pos().y());
+    core::utils::Logger::debug() << "Mouse released on OpenGL viewer at coordinates (" << e->pos().x() << ","
+                                 << e->pos().y() << ").\n";
 }
 
-void OpenGLWidget::mouseMoveEvent(QMouseEvent *e) { APP_TRACE("Mouse moved."); }
+void OpenGLWidget::mouseMoveEvent(QMouseEvent *e) { core::utils::Logger::trace() << "Mouse moved.\n"; }
 
 void OpenGLWidget::keyPressEvent(QKeyEvent *e) {
     if (e->key() == Qt::Key::Key_S) {

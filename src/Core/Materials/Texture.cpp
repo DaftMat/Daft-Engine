@@ -7,7 +7,7 @@
 
 #include <stb/stb_image.h>
 
-#include <Core/Utils/Log.hpp>
+#include <Core/Utils/Logger.hpp>
 #include <string>
 
 namespace daft::core::mat {
@@ -38,9 +38,9 @@ Texture::Texture(std::string name, std::string path) : m_name{std::move(name)} {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        ENGINE_INFO("2D Texture created: {0}.", m_name);
+        core::utils::Logger::info() << "2D Texture created: " << m_name << ".\n";
     } else {
-        ENGINE_ERROR("Failed to load texture {0}.", filePath);
+        core::utils::Logger::error() << "Failed to load texture " << filePath << ".\n";
     }
     m_isValid = true;
 }
@@ -56,9 +56,9 @@ Texture::Texture(std::string name, const std::array<std::string, 6> &paths) : m_
                          data);
             stbi_image_free(data);
 
-            ENGINE_INFO("3D Texture created: {0}.", m_name);
+            core::utils::Logger::info() << "3D Texture created: " << m_name << ".\n";
         } else {
-            ENGINE_ERROR("Failed to load texture {0}.", paths.at(i));
+            core::utils::Logger::error() << "Failed to load texture" << paths.at(i) << ".\n";
         }
     }
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
