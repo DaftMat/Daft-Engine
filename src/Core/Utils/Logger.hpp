@@ -12,7 +12,7 @@ class ENGINE_API Logger {
    public:
     class Log : public std::ostream {
        public:
-        explicit Log(std::string filepath) : m_filepath{std::move(filepath)} {}
+        explicit Log(std::string filepath) : std::ostream(), m_filepath{std::move(filepath)} {}
 
         template <typename T>
         Log& operator<<(T value) {
