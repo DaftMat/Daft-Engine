@@ -2,6 +2,7 @@
 // Created by mathis on 26/05/2020.
 //
 #pragma once
+#include <spdlog/fmt/ostr.h>
 #include <spdlog/spdlog.h>
 
 #include <API.hpp>
