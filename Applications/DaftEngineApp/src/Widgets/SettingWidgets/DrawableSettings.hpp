@@ -10,6 +10,7 @@
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QWidget>
 #include <memory>
+#include <unordered_map>
 #include <utility>
 
 namespace daft::app {
