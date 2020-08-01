@@ -41,7 +41,6 @@ addons:
       - eigen
       - assimp
       - fmt
-      - spdlog
 
 before_install:
   - export CHECKOUT_PATH=`pwd`;
