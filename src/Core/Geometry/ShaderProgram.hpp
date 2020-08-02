@@ -31,14 +31,14 @@ class ENGINE_API ShaderProgram : public utils::NonCopyable {
      * Move constructor.
      * @param other - Shader to be moved into this.
      */
-    inline ShaderProgram(ShaderProgram &&other) noexcept;
+    ShaderProgram(ShaderProgram &&other) noexcept;
 
     /**
      * Move assignment operator.
      * @param other - Shader to be moved into this.
      * @return this shader after the other is moved.
      */
-    [[noreturn]] inline ShaderProgram &operator=(ShaderProgram &&other) noexcept;
+    ShaderProgram &operator=(ShaderProgram &&other) noexcept;
 
     /**
      * Activates the shaders.

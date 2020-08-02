@@ -45,11 +45,11 @@ ShaderProgram::ShaderProgram(ShaderProgram &&other) noexcept : m_id{other.m_id},
     other.m_isValid = false;
 }
 
-[[noreturn]] ShaderProgram &ShaderProgram::operator=(ShaderProgram &&other) noexcept {
+ShaderProgram &ShaderProgram::operator=(ShaderProgram &&other) noexcept {
     m_id = other.m_id;
     m_isValid = other.m_isValid;
     other.m_isValid = false;
-    // return *this;
+    return *this;
 }
 
 ShaderProgram::~ShaderProgram() noexcept {
