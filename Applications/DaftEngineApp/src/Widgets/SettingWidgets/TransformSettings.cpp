@@ -38,7 +38,9 @@ void TransformSettings::onTransformChanged() {
         m_settings.get<glm::vec3>("Rotations")[i] = m_rotations[i]->value();
         m_settings.get<glm::vec3>("Scale")[i] = m_scale[i]->value();
     }
-    core::utils::Logger::debug() << "Transformation changed.\n";
+    std::stringstream ss;
+    ss << "Transformation changed.";
+    core::utils::Logger::debug(std::move(ss));
     emit settingChanged();
 }
 

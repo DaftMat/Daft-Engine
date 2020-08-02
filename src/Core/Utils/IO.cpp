@@ -20,7 +20,9 @@ std::string IO::getStringFromFile(const std::string &path) {
         res = resStream.str();
         resFile.close();
     } catch (std::ifstream::failure &f) {
-        core::utils::Logger::error() << "failed to load file " << path << ".\n";
+        std::stringstream ss;
+        ss << "failed to load file " << path << ".";
+        core::utils::Logger::error(std::move(ss));
     }
     return res;
 }

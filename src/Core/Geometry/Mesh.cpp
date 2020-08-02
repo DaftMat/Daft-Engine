@@ -65,7 +65,9 @@ void Mesh::reset(const AttribManager& attribManager) {
                  GL_STATIC_DRAW);
 
     glBindVertexArray(0);
-    core::utils::Logger::info() << "Mesh created. VAO: " << m_vao << ".\n";
+    std::stringstream ss;
+    ss << "Mesh created. VAO: " << m_vao << ".";
+    core::utils::Logger::info(std::move(ss));
 }
 void Mesh::clear() {
     if (!m_isVisible) return;
@@ -74,7 +76,9 @@ void Mesh::clear() {
     glDeleteBuffers(1, &m_ebo);
     glDeleteVertexArrays(1, &m_vao);
     m_attribManager.clear();
-    core::utils::Logger::info() << "Mesh of VAO: " << m_vao << " deleted.\n";
+    std::stringstream ss;
+    ss << "Mesh of VAO: " << m_vao << " deleted.";
+    core::utils::Logger::info(std::move(ss));
 }
 
 }  // namespace daft::core::geometry

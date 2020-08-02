@@ -38,7 +38,7 @@ class ENGINE_API ShaderProgram : public utils::NonCopyable {
      * @param other - Shader to be moved into this.
      * @return this shader after the other is moved.
      */
-    inline ShaderProgram &operator=(ShaderProgram &&other) noexcept;
+    [[noreturn]] inline ShaderProgram &operator=(ShaderProgram &&other) noexcept;
 
     /**
      * Activates the shaders.

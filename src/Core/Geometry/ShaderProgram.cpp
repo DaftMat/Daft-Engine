@@ -36,24 +36,28 @@ ShaderProgram::ShaderProgram(const std::string &vertexPath, const std::string &f
     glDeleteShader(vertex);
     glDeleteShader(fragment);
 
-    core::utils::Logger::info() << "ShadeProgram created. ID: " << m_id << ".\n";
+    std::stringstream ss;
+    ss << "ShadeProgram created. ID: " << m_id << ".";
+    core::utils::Logger::info(std::move(ss));
 }
 
 ShaderProgram::ShaderProgram(ShaderProgram &&other) noexcept : m_id{other.m_id}, m_isValid{other.m_isValid} {
     other.m_isValid = false;
 }
 
-ShaderProgram &ShaderProgram::operator=(ShaderProgram &&other) noexcept {
+[[noreturn]] ShaderProgram &ShaderProgram::operator=(ShaderProgram &&other) noexcept {
     m_id = other.m_id;
     m_isValid = other.m_isValid;
     other.m_isValid = false;
-    return *this;
+    // return *this;
 }
 
 ShaderProgram::~ShaderProgram() noexcept {
     if (!m_isValid) return;
     glDeleteProgram(m_id);
-    core::utils::Logger::info() << "ShaderProgram of ID: " << m_id << " deleted.\n";
+    std::stringstream ss;
+    ss << "ShaderProgram of ID: " << m_id << " deleted.";
+    core::utils::Logger::info(std::move(ss));
 }
 
 void ShaderProgram::use() const noexcept {
@@ -114,7 +118,9 @@ void ShaderProgram::checkCompileError(GLuint shader, const std::string &type) {
     if (!success) {
         char *infoLog = nullptr;
         glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
-        core::utils::Logger::error() << "SHADER_COMPILATION of type : " << type << "\n\t" << infoLog << "\n";
+        std::stringstream ss;
+        ss << "SHADER_COMPILATION ERROR of type : " << type << "\n\t" << infoLog;
+        core::utils::Logger::error(std::move(ss));
     }
 }
 
@@ -124,7 +130,9 @@ void ShaderProgram::checkLinkError(GLuint program) {
     if (!success) {
         char *infoLog = nullptr;
         glGetProgramInfoLog(program, 1024, nullptr, infoLog);
-        core::utils::Logger::error() << "PROGRAM_LINKING\n" << infoLog << ".\n";
+        std::stringstream ss;
+        ss << "PROGRAM_LINKING ERROR \n\t" << infoLog;
+        core::utils::Logger::error(std::move(ss));
     }
 }
 }  // namespace daft::core::geometry

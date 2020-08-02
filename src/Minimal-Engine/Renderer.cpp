@@ -17,7 +17,9 @@ Renderer &Renderer::operator=(Renderer &&other) noexcept {
 Renderer::Renderer(int width, int height) : m_width{width}, m_height{height} {
     if (!GLinitialized) {
         if (!gladLoadGL()) {
-            daft::core::utils::Logger::error() << "Failed to load OpenGL.\n";
+            std::stringstream ss;
+            ss << "Failed to load OpenGL.";
+            daft::core::utils::Logger::error(std::move(ss));
             exit(-1);
         }
         GLinitialized = true;

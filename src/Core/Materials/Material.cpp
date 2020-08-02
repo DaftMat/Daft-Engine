@@ -18,14 +18,18 @@ void Material::prepare() const {
 
 void Material::addTexture(Texture texture) {
     m_textures.emplace_back(std::move(texture));
-    core::utils::Logger::info() << "Texture added to Material.\n";
+    std::stringstream ss;
+    ss << "Texture added to Material.";
+    core::utils::Logger::info(std::move(ss));
 }
 
 void Material::deleteTexture(const std::string &name) {
     m_textures.erase(std::remove_if(m_textures.begin(), m_textures.end(),
                                     [name](const Texture &texture) { return texture.name() == name; }),
                      m_textures.end());
-    core::utils::Logger::info() << "Texture deleted from Material.\n";
+    std::stringstream ss;
+    ss << "Texture deleted from Material.";
+    core::utils::Logger::info(std::move(ss));
 }
 
 Texture &Material::texture(const std::string &name) {

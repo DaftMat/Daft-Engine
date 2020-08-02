@@ -10,39 +10,19 @@
 namespace daft::core::utils {
 class ENGINE_API Logger {
    public:
-    class Log : public std::ostream {
-       public:
-        explicit Log(std::string filepath) : std::ostream(), m_filepath{std::move(filepath)} {}
+    static void debug(std::stringstream ss);
 
-        template <typename T>
-        Log& operator<<(T value) {
-            std::ofstream logFile;
-            try {
-                logFile.open(m_filepath, std::ios_base::app);
-                logFile << value;
-                logFile.close();
-            } catch (std::ifstream::failure& f) {
-                std::cerr << "Failed to open file : " << m_filepath << std::endl;
-            }
-            std::cout << value;
-            return *this;
-        }
+    static void info(std::stringstream ss);
 
-       private:
-        std::string m_filepath;
-    };
+    static void warn(std::stringstream ss);
 
-    static Log& debug();
+    static void trace(std::stringstream ss);
 
-    static Log& info();
-
-    static Log& warn();
-
-    static Log& trace();
-
-    static Log& error();
+    static void error(std::stringstream ss);
 
    private:
-    static Log m_log;
+    static void createLogEntry(std::string type, std::string msg);
+
+    static std::string getTimeStr();
 };
 }  // namespace daft::core::utils

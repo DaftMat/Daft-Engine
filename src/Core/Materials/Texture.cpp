@@ -38,9 +38,13 @@ Texture::Texture(std::string name, std::string path) : m_name{std::move(name)} {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        core::utils::Logger::info() << "2D Texture created: " << m_name << ".\n";
+        std::stringstream ss;
+        ss << "2D Texture created: " << m_name << ".";
+        core::utils::Logger::info(std::move(ss));
     } else {
-        core::utils::Logger::error() << "Failed to load texture " << filePath << ".\n";
+        std::stringstream ss;
+        ss << "Failed to load texture " << filePath << ".";
+        core::utils::Logger::error(std::move(ss));
     }
     m_isValid = true;
 }
@@ -56,9 +60,13 @@ Texture::Texture(std::string name, const std::array<std::string, 6> &paths) : m_
                          data);
             stbi_image_free(data);
 
-            core::utils::Logger::info() << "3D Texture created: " << m_name << ".\n";
+            std::stringstream ss;
+            ss << "3D Texture created: " << m_name << ".";
+            core::utils::Logger::error(std::move(ss));
         } else {
-            core::utils::Logger::error() << "Failed to load texture" << paths.at(i) << ".\n";
+            std::stringstream ss;
+            ss << "Failed to load texture" << paths.at(i) << ".";
+            core::utils::Logger::error(std::move(ss));
         }
     }
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

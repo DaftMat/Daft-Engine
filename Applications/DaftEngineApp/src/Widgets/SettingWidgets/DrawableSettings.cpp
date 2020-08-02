@@ -118,7 +118,9 @@ void DrawableSettings::onDrawableChanged() {
     for (const auto& elem : m_comboBoxes) {
         m_settings.get<int>(elem.first) = elem.second->currentIndex();
     }
-    core::utils::Logger::debug() << "Drawable changed.\n";
+    std::stringstream ss;
+    ss << "Drawable changed.";
+    core::utils::Logger::debug(std::move(ss));
     emit settingChanged();
 }
 

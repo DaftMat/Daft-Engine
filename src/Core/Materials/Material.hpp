@@ -57,8 +57,9 @@ class Material : public utils::NonCopyable {
      */
     template <typename T>
     void addSetting(std::string name, T data) {
-        core::utils::Logger::info() << "Setting of type" << typeid(data).name() << "added to Material : " << name
-                                    << ".\n";
+        std::stringstream ss;
+        ss << "Setting of type" << typeid(data).name() << "added to Material : " << name << ".";
+        core::utils::Logger::info(std::move(ss));
         m_settings.add(std::move(name), data);
     }
 
@@ -80,7 +81,9 @@ class Material : public utils::NonCopyable {
      */
     template <typename T>
     void deleteSetting(std::string name) {
-        core::utils::Logger::info() << "Setting " << name << " deleted from Material.\n";
+        std::stringstream ss;
+        ss << "Setting " << name << " deleted from Material.\n";
+        core::utils::Logger::info(std::move(ss));
         m_settings.remove<T>(std::move(name));
     }
 

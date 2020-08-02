@@ -29,7 +29,11 @@ class ENGINE_API SettingWidget : public QScrollArea {
                            QWidget *parent = nullptr);
 
    public slots:
-    void on_settingChanged() { core::utils::Logger::debug() << "Setting changed.\n"; /**TODO: implement.*/ }
+    void on_settingChanged() {
+        std::stringstream ss;
+        ss << "Setting changed."; /**TODO: implement.*/
+        core::utils::Logger::debug(std::move(ss));
+    }
 
    private:
     std::unique_ptr<DrawableSettings> m_settings{nullptr};
