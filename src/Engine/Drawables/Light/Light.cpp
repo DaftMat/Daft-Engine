@@ -3,7 +3,7 @@
 //
 #include "Light.hpp"
 
-namespace daft::engine::objects {
+namespace daft::engine {
 void Light::render() {
     m_mesh.prepare();
     m_mesh.render(GL_LINES);
@@ -14,4 +14,4 @@ void Light::reset() {
     Drawable::reset();
     m_mesh.clear();
 }
-}  // namespace daft::engine::objects
+}  // namespace daft::engine

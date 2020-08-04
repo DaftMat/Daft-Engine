@@ -6,13 +6,13 @@
 #include <Core/Geometry/Mesh.hpp>
 #include <Engine/Drawables/Drawable.hpp>
 
-namespace daft::engine::objects {
+namespace daft::engine {
 /**
  * Base class for any light in a 3D world.
  */
 class Light : public Drawable {
    public:
-    using Mesh = core::geometry::Mesh;
+    using Mesh = core::Mesh;
 
     /**
      * Default/standard constructor.
@@ -74,4 +74,4 @@ class Light : public Drawable {
 
     static int m_nrLight;
 };
-}  // namespace daft::engine::objects
+}  // namespace daft::engine

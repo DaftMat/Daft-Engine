@@ -32,7 +32,7 @@ class ENGINE_API SettingWidget : public QScrollArea {
     void on_settingChanged() {
         std::stringstream ss;
         ss << "Setting changed."; /**TODO: implement.*/
-        core::utils::Logger::debug(std::move(ss));
+        core::Logger::debug(std::move(ss));
     }
 
    private:

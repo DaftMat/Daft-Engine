@@ -5,7 +5,7 @@
 
 #include <Core/Materials/Material.hpp>
 
-namespace daft::engine::objects {
+namespace daft::engine {
 
 MeshObject::MeshObject(Mesh mesh, Material *material) : m_mesh{std::move(mesh)}, m_material{material} {}
 
@@ -28,4 +28,4 @@ void MeshObject::render(GLuint mode) const { m_mesh.render(mode); }
 
 void MeshObject::unbind() const { m_mesh.unbind(); }
 
-}  // namespace daft::engine::objects
+}  // namespace daft::engine

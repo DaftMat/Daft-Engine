@@ -5,9 +5,9 @@
 #include <API.hpp>
 #include <string>
 
-namespace daft::core::utils {
+namespace daft::core {
 class ENGINE_API IO {
    public:
     static std::string getStringFromFile(const std::string &path);
 };
-}  // namespace daft::core::utils
+}  // namespace daft::core

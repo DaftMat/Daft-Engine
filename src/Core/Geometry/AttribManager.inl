@@ -1,6 +1,6 @@
 #include <Core/Utils/Logger.hpp>
 
-namespace daft::core::geometry {
+namespace daft::core {
 
 template <typename T>
 void AttribManager::addAttrib() {
@@ -15,7 +15,7 @@ void AttribManager::addAttrib() {
     } else {
         std::stringstream ss;
         ss << "Unknown attribute type. nothing has been done.";
-        core::utils::Logger::warn(std::move(ss));
+        core::Logger::warn(std::move(ss));
     }
 }
 
@@ -32,7 +32,7 @@ void AttribManager::addAttrib(std::vector<T> attribs) {
     } else {
         std::stringstream ss;
         ss << "Unknown attribute type. nothing has been done.";
-        core::utils::Logger::warn(std::move(ss));
+        core::Logger::warn(std::move(ss));
     }
 }
 
@@ -83,4 +83,4 @@ void AttribManager::clear() noexcept {
     m_vec4Attribs.clear();
 }
 
-}  // namespace daft::core::geometry
+}  // namespace daft::core

@@ -8,19 +8,19 @@
 
 namespace daft {
 /// forward declarations
-namespace core::utils {
+namespace core {
 class DrawableVisitor;
-}  // namespace core::utils
+}  // namespace core
 
-namespace engine::objects {
+namespace engine {
 class Composite;
 
 /**
  * Base class for any drawable object that will be rendered on the scene.
  */
-class Drawable : public core::utils::NonCopyable {
+class Drawable : public core::NonCopyable {
    public:
-    using DrawableVisitor = core::utils::DrawableVisitor;
+    using DrawableVisitor = core::DrawableVisitor;
 
     /**
      * Standard constructor.
@@ -178,5 +178,5 @@ class Drawable : public core::utils::NonCopyable {
 
     static int m_nrDrawables;
 };
-}  // namespace engine::objects
+}  // namespace engine
 }  // namespace daft

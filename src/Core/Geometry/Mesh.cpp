@@ -6,7 +6,7 @@
 
 #include <Core/Utils/Logger.hpp>
 
-namespace daft::core::geometry {
+namespace daft::core {
 
 Mesh::Mesh(Mesh&& o) noexcept
     : m_vao{o.m_vao},
@@ -67,7 +67,7 @@ void Mesh::reset(const AttribManager& attribManager) {
     glBindVertexArray(0);
     std::stringstream ss;
     ss << "Mesh created. VAO: " << m_vao << ".";
-    core::utils::Logger::info(std::move(ss));
+    core::Logger::info(std::move(ss));
 }
 void Mesh::clear() {
     if (!m_isVisible) return;
@@ -78,7 +78,7 @@ void Mesh::clear() {
     m_attribManager.clear();
     std::stringstream ss;
     ss << "Mesh of VAO: " << m_vao << " deleted.";
-    core::utils::Logger::info(std::move(ss));
+    core::Logger::info(std::move(ss));
 }
 
-}  // namespace daft::core::geometry
+}  // namespace daft::core

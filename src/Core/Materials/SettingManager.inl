@@ -2,7 +2,7 @@
 
 #include "SettingManager.hpp"
 
-namespace daft::core::mat {
+namespace daft::core {
 template <typename T>
 const std::vector<SettingManager::Setting<T>>& SettingManager::settings() const {
     if constexpr (std::is_same_v<T, int>)
@@ -25,7 +25,7 @@ const std::vector<SettingManager::Setting<T>>& SettingManager::settings() const 
         return m_mat4s;
     std::stringstream ss;
     ss << "invalid setting type, returning empty list...";
-    core::utils::Logger::info(std::move(ss));
+    core::Logger::info(std::move(ss));
     return std::vector<Setting<T>>{};
 }
 
@@ -57,7 +57,7 @@ void SettingManager::add(std::string name, T value) noexcept {
     else {
         std::stringstream ss;
         ss << "invalid setting type, nothing has been done.";
-        core::utils::Logger::info(std::move(ss));
+        core::Logger::info(std::move(ss));
     }
 }
 
@@ -81,4 +81,4 @@ bool SettingManager::empty() noexcept {
     return m_bools.empty() && m_ints.empty() && m_floats.empty() && m_vec2s.empty() && m_vec3s.empty() &&
            m_vec4s.empty() && m_mat2s.empty() && m_mat3s.empty() && m_mat4s.empty();
 }
-}  // namespace daft::core::mat
+}  // namespace daft::core

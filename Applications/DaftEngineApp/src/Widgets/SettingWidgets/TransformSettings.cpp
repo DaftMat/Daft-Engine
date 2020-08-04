@@ -10,7 +10,7 @@
 #include <Widgets/SettingWidgets/SettingWidget.hpp>
 
 namespace daft::app {
-TransformSettings::TransformSettings(daft::core::mat::SettingManager settings, QWidget *parent)
+TransformSettings::TransformSettings(daft::core::SettingManager settings, QWidget *parent)
     : QWidget(parent), m_settings{std::move(settings)} {
     auto mainLayout = new QVBoxLayout();
     mainLayout->setMargin(2);
@@ -40,7 +40,7 @@ void TransformSettings::onTransformChanged() {
     }
     std::stringstream ss;
     ss << "Transformation changed.";
-    core::utils::Logger::debug(std::move(ss));
+    core::Logger::debug(std::move(ss));
     emit settingChanged();
 }
 

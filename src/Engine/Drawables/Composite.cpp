@@ -6,7 +6,7 @@
 #include <Core/Geometry/ShaderProgram.hpp>
 #include <Core/Utils/DrawableVisitor.hpp>
 
-namespace daft::engine::objects {
+namespace daft::engine {
 int Composite::m_nrComposite{0};
 
 Composite::Composite(Composite *parent, std::string name) noexcept : Drawable(parent, std::move_if_noexcept(name)) {}
@@ -23,4 +23,4 @@ void Composite::reset() {
     m_drawables.clear();
 }
 
-}  // namespace daft::engine::objects
+}  // namespace daft::engine

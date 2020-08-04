@@ -9,18 +9,18 @@
 
 namespace daft {
 /// forward declarations
-namespace core::mat {
+namespace core {
 class Material;
-}  // namespace core::mat
+}  // namespace core
 
-namespace engine::objects {
+namespace engine {
 /**
  * Wrapper for Mesh and a Material .
  */
-class ENGINE_API MeshObject : public core::utils::NonCopyable {
+class ENGINE_API MeshObject : public core::NonCopyable {
    public:
-    using Mesh = core::geometry::Mesh;
-    using Material = core::mat::Material;
+    using Mesh = core::Mesh;
+    using Material = core::Material;
 
     /**
      * Standard / default constructor.
@@ -61,5 +61,5 @@ class ENGINE_API MeshObject : public core::utils::NonCopyable {
     Mesh m_mesh;
     std::shared_ptr<Material> m_material;
 };
-}  // namespace engine::objects
+}  // namespace engine
 }  // namespace daft

@@ -6,7 +6,7 @@
 #include <API.hpp>
 #include <Core/Utils/DrawableVisitor.hpp>
 
-class ENGINE_API DeleterVisitor : public daft::core::utils::DrawableVisitor {
+class ENGINE_API DeleterVisitor : public daft::core::DrawableVisitor {
    public:
     DeleterVisitor() = default;
 
@@ -14,7 +14,7 @@ class ENGINE_API DeleterVisitor : public daft::core::utils::DrawableVisitor {
 
     DeleterVisitor &operator=(DeleterVisitor &&) = default;
 
-    void visit(daft::engine::objects::Object *object) override;
+    void visit(daft::engine::Object *object) override;
 
-    void visit(daft::engine::objects::Composite *composite) override;
+    void visit(daft::engine::Composite *composite) override;
 };

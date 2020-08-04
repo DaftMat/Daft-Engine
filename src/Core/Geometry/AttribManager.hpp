@@ -10,7 +10,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace daft::core::geometry {
+namespace daft::core {
 /**
  * A class that holds a list for each attributes of a Mesh
  */
@@ -132,6 +132,6 @@ class AttribManager {
 
     std::vector<GLuint> m_indices;
 };
-}  // namespace daft::core::geometry
+}  // namespace daft::core
 
 #include "AttribManager.inl"

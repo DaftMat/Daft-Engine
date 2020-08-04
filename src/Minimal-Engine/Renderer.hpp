@@ -14,7 +14,7 @@
 #include "DeleterVisitor.hpp"
 #include "RendererVisitor.hpp"
 
-class ENGINE_API Renderer : public daft::core::utils::NonCopyable {
+class ENGINE_API Renderer : public daft::core::NonCopyable {
    public:
     Renderer() = default;
 
@@ -40,13 +40,13 @@ class ENGINE_API Renderer : public daft::core::utils::NonCopyable {
 
     void resize(int width, int height);
 
-    void addMesh(daft::core::geometry::AttribManager attribManager) noexcept {
-        using namespace daft::engine::objects;
-        m_root->add(new Object(nullptr, MeshObject(daft::core::geometry::Mesh(std::move_if_noexcept(attribManager)))));
+    void addMesh(daft::core::AttribManager attribManager) noexcept {
+        using namespace daft::engine;
+        m_root->add(new Object(nullptr, MeshObject(daft::core::Mesh(std::move_if_noexcept(attribManager)))));
         m_selection++;
     }
 
-    daft::engine::objects::Drawable *getSelection() {
+    daft::engine::Drawable *getSelection() {
         if (m_selection < 0) return nullptr;
         return m_root->drawables()[m_selection].get();
     }
@@ -58,7 +58,7 @@ class ENGINE_API Renderer : public daft::core::utils::NonCopyable {
     int m_width{0}, m_height{0};
     int m_selection{-1};
 
-    std::shared_ptr<daft::engine::objects::Composite> m_root{nullptr};
+    std::shared_ptr<daft::engine::Composite> m_root{nullptr};
 
     std::unique_ptr<RendererVisitor> m_visitor{nullptr};
     std::unique_ptr<DeleterVisitor> m_deleter{nullptr};

@@ -19,13 +19,13 @@ Renderer::Renderer(int width, int height) : m_width{width}, m_height{height} {
         if (!gladLoadGL()) {
             std::stringstream ss;
             ss << "Failed to load OpenGL.";
-            daft::core::utils::Logger::error(std::move(ss));
+            daft::core::Logger::error(std::move(ss));
             exit(-1);
         }
         GLinitialized = true;
     }
 
-    m_root = std::make_shared<daft::engine::objects::Composite>();
+    m_root = std::make_shared<daft::engine::Composite>();
     m_visitor = std::make_unique<RendererVisitor>();
     m_deleter = std::make_unique<DeleterVisitor>();
 

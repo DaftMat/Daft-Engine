@@ -6,7 +6,7 @@
 #include <Engine/Drawables/Drawable.hpp>
 #include <Engine/Drawables/MeshObject.hpp>
 
-namespace daft::engine::objects {
+namespace daft::engine {
 /**
  * Base 3D object.
  */
@@ -56,4 +56,4 @@ class ENGINE_API Object : public Drawable {
 
     static int m_nrObject;
 };
-}  // namespace daft::engine::objects
+}  // namespace daft::engine

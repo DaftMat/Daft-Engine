@@ -8,10 +8,10 @@
 #include <Core/Utils/Logger.hpp>
 #include <iostream>
 
-namespace daft::core::geometry {
+namespace daft::core {
 ShaderProgram::ShaderProgram(const std::string &vertexPath, const std::string &fragmentPath) : m_isValid{true} {
-    std::string vShaderCodeStr = utils::IO::getStringFromFile(vertexPath);
-    std::string fShaderCodeStr = utils::IO::getStringFromFile(fragmentPath);
+    std::string vShaderCodeStr = IO::getStringFromFile(vertexPath);
+    std::string fShaderCodeStr = IO::getStringFromFile(fragmentPath);
     const char *vShaderCode = vShaderCodeStr.c_str();
     const char *fShaderCode = fShaderCodeStr.c_str();
 
@@ -38,7 +38,7 @@ ShaderProgram::ShaderProgram(const std::string &vertexPath, const std::string &f
 
     std::stringstream ss;
     ss << "ShadeProgram created. ID: " << m_id << ".";
-    core::utils::Logger::info(std::move(ss));
+    core::Logger::info(std::move(ss));
 }
 
 ShaderProgram::ShaderProgram(ShaderProgram &&other) noexcept : m_id{other.m_id}, m_isValid{other.m_isValid} {
@@ -57,7 +57,7 @@ ShaderProgram::~ShaderProgram() noexcept {
     glDeleteProgram(m_id);
     std::stringstream ss;
     ss << "ShaderProgram of ID: " << m_id << " deleted.";
-    core::utils::Logger::info(std::move(ss));
+    core::Logger::info(std::move(ss));
 }
 
 void ShaderProgram::use() const noexcept {
@@ -120,7 +120,7 @@ void ShaderProgram::checkCompileError(GLuint shader, const std::string &type) {
         glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
         std::stringstream ss;
         ss << "SHADER_COMPILATION ERROR of type : " << type << "\n\t" << infoLog;
-        core::utils::Logger::error(std::move(ss));
+        core::Logger::error(std::move(ss));
     }
 }
 
@@ -132,7 +132,7 @@ void ShaderProgram::checkLinkError(GLuint program) {
         glGetProgramInfoLog(program, 1024, nullptr, infoLog);
         std::stringstream ss;
         ss << "PROGRAM_LINKING ERROR \n\t" << infoLog;
-        core::utils::Logger::error(std::move(ss));
+        core::Logger::error(std::move(ss));
     }
 }
-}  // namespace daft::core::geometry
+}  // namespace daft::core

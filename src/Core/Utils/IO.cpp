@@ -8,7 +8,7 @@
 
 #include "Logger.hpp"
 
-namespace daft::core::utils {
+namespace daft::core {
 std::string IO::getStringFromFile(const std::string &path) {
     std::string res;
     std::ifstream resFile;
@@ -22,8 +22,8 @@ std::string IO::getStringFromFile(const std::string &path) {
     } catch (std::ifstream::failure &f) {
         std::stringstream ss;
         ss << "failed to load file " << path << ".";
-        core::utils::Logger::error(std::move(ss));
+        core::Logger::error(std::move(ss));
     }
     return res;
 }
-}  // namespace daft::core::utils
+}  // namespace daft::core

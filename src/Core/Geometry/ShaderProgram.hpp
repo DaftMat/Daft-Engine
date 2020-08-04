@@ -8,11 +8,11 @@
 #include <Core/Utils/NonCopyable.hpp>
 #include <string>
 
-namespace daft::core::geometry {
+namespace daft::core {
 /**
  * Shader object base class.
  */
-class ENGINE_API ShaderProgram : public utils::NonCopyable {
+class ENGINE_API ShaderProgram : public NonCopyable {
    public:
     /**
      * Constructor.
@@ -127,4 +127,4 @@ class ENGINE_API ShaderProgram : public utils::NonCopyable {
     GLuint m_id;
     bool m_isValid;
 };
-}  // namespace daft::core::geometry
+}  // namespace daft::core

@@ -10,12 +10,12 @@
 
 #include "AttribManager.hpp"
 
-namespace daft::core::geometry {
+namespace daft::core {
 /**
  * mesh class.
  * a triangle based mesh that associates geometry and topology
  */
-class ENGINE_API Mesh : public utils::NonCopyable {
+class ENGINE_API Mesh : public NonCopyable {
    public:
     /**
      * Default constructor.
@@ -96,4 +96,4 @@ class ENGINE_API Mesh : public utils::NonCopyable {
     bool m_isVisible;
     AttribManager m_attribManager;
 };
-}  // namespace daft::core::geometry
+}  // namespace daft::core

@@ -9,11 +9,11 @@
 #include "SettingManager.hpp"
 #include "Texture.hpp"
 
-namespace daft::core::mat {
+namespace daft::core {
 /**
  * surface appearance data of an object.
  */
-class Material : public utils::NonCopyable {
+class Material : public NonCopyable {
    public:
     /**
      * default constructor.
@@ -59,7 +59,7 @@ class Material : public utils::NonCopyable {
     void addSetting(std::string name, T data) {
         std::stringstream ss;
         ss << "Setting of type" << typeid(data).name() << "added to Material : " << name << ".";
-        core::utils::Logger::info(std::move(ss));
+        core::Logger::info(std::move(ss));
         m_settings.add(std::move(name), data);
     }
 
@@ -83,7 +83,7 @@ class Material : public utils::NonCopyable {
     void deleteSetting(std::string name) {
         std::stringstream ss;
         ss << "Setting " << name << " deleted from Material.\n";
-        core::utils::Logger::info(std::move(ss));
+        core::Logger::info(std::move(ss));
         m_settings.remove<T>(std::move(name));
     }
 
@@ -118,4 +118,4 @@ class Material : public utils::NonCopyable {
     std::vector<Texture> m_textures;
     SettingManager m_settings{};
 };
-}  // namespace daft::core::mat
+}  // namespace daft::core

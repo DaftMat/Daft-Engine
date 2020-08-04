@@ -8,7 +8,7 @@
 #include <iostream>
 #include <sstream>
 
-namespace daft::core::utils {
+namespace daft::core {
 
 void Logger::debug(std::stringstream ss) {
 #if defined(DEBUG) || defined(TRACE)
@@ -67,4 +67,4 @@ std::string Logger::getTimeStr() {
     return std::string(buffer);
 }
 
-}  // namespace daft::core::utils
+}  // namespace daft::core

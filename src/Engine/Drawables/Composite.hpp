@@ -7,11 +7,11 @@
 
 #include "Drawable.hpp"
 
-namespace daft::core::geometry {
+namespace daft::core {
 class ShaderProgram;
 }
 
-namespace daft::engine::objects {
+namespace daft::engine {
 class ENGINE_API Composite : public Drawable {
    public:
     /**
@@ -73,4 +73,4 @@ class ENGINE_API Composite : public Drawable {
 
     static int m_nrComposite;
 };
-}  // namespace daft::engine::objects
+}  // namespace daft::engine

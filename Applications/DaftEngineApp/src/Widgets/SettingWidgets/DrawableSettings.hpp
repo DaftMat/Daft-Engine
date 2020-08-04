@@ -27,7 +27,7 @@ class ENGINE_API DrawableSettings : public QWidget {
      * @param settings - library of the object's settings.
      * @param parent - parent of the widget.
      */
-    explicit DrawableSettings(daft::core::mat::SettingManager settings, QWidget* parent = nullptr);
+    explicit DrawableSettings(daft::core::SettingManager settings, QWidget* parent = nullptr);
 
     /**
      * Destructor.
@@ -97,7 +97,7 @@ class ENGINE_API DrawableSettings : public QWidget {
     std::unordered_map<std::string, std::array<QDoubleSpinBox*, 3>> m_doubleSpinBoxVectors;
     std::unordered_map<std::string, QComboBox*> m_comboBoxes;
 
-    daft::core::mat::SettingManager m_settings;
+    daft::core::SettingManager m_settings;
 
     std::unique_ptr<QFormLayout> m_layout;
 };

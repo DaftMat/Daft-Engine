@@ -6,13 +6,12 @@
 
 namespace daft {
 /// forward declarations
-namespace engine::objects {
+namespace engine {
 class Object;
 class Composite;
-}  // namespace engine::objects
+}  // namespace engine
 
-namespace core::utils {
-using namespace engine::objects;
+namespace core {
 
 /**
  * Base visitor class for all drawables
@@ -28,13 +27,13 @@ class ENGINE_API DrawableVisitor {
     /**
      * Visits an Object .
      */
-    virtual void visit(Object *) {}
+    virtual void visit(engine::Object *) {}
 
     /**
      * Visits a Composite .
      */
-    virtual void visit(Composite *);
+    virtual void visit(engine::Composite *);
 };
 
-}  // namespace core::utils
+}  // namespace core
 }  // namespace daft

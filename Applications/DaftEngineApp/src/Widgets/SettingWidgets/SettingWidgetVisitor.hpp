@@ -12,19 +12,19 @@ namespace daft::app {
 /**
  * A visitor that creates the right SettingWidget according to the selected object.
  */
-class SettingWidgetVisitor : public core::utils::DrawableVisitor {
+class SettingWidgetVisitor : public core::DrawableVisitor {
    public:
     /**
      * visits an Object .
      * @param object - object to visit.
      */
-    void visit(engine::objects::Object *object) override;
+    void visit(engine::Object *object) override;
 
     /**
      * visits a Composite .
      * @param composite - composite to visit.
      */
-    void visit(engine::objects::Composite *composite) override;
+    void visit(engine::Composite *composite) override;
 
     /**
      * Created widget getter.

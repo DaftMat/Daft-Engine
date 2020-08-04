@@ -7,7 +7,7 @@
 #include <iostream>
 #include <string>
 
-namespace daft::core::utils {
+namespace daft::core {
 class ENGINE_API Logger {
    public:
     static void debug(std::stringstream ss);
@@ -25,4 +25,4 @@ class ENGINE_API Logger {
 
     static std::string getTimeStr();
 };
-}  // namespace daft::core::utils
+}  // namespace daft::core

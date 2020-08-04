@@ -8,7 +8,7 @@
 #include <Engine/Drawables/Object/Object.hpp>
 #include <memory>
 
-class ENGINE_API RendererVisitor : public daft::core::utils::DrawableVisitor {
+class ENGINE_API RendererVisitor : public daft::core::DrawableVisitor {
    public:
     RendererVisitor();
 
@@ -18,10 +18,10 @@ class ENGINE_API RendererVisitor : public daft::core::utils::DrawableVisitor {
 
     RendererVisitor &operator=(RendererVisitor &&) = default;
 
-    void visit(daft::engine::objects::Object *object) override;
+    void visit(daft::engine::Object *object) override;
 
-    void visit(daft::engine::objects::Composite *composite) override;
+    void visit(daft::engine::Composite *composite) override;
 
    private:
-    std::shared_ptr<daft::core::geometry::ShaderProgram> m_shader{nullptr};
+    std::shared_ptr<daft::core::ShaderProgram> m_shader{nullptr};
 };

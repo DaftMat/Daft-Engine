@@ -10,7 +10,7 @@
 #include <Core/Utils/Logger.hpp>
 #include <string>
 
-namespace daft::core::mat {
+namespace daft::core {
 void Texture::bind(GLenum textureType) const { glBindTexture(textureType, m_id); }
 
 Texture::Texture(std::string name, std::string path) : m_name{std::move(name)} {
@@ -40,11 +40,11 @@ Texture::Texture(std::string name, std::string path) : m_name{std::move(name)} {
 
         std::stringstream ss;
         ss << "2D Texture created: " << m_name << ".";
-        core::utils::Logger::info(std::move(ss));
+        core::Logger::info(std::move(ss));
     } else {
         std::stringstream ss;
         ss << "Failed to load texture " << filePath << ".";
-        core::utils::Logger::error(std::move(ss));
+        core::Logger::error(std::move(ss));
     }
     m_isValid = true;
 }
@@ -62,11 +62,11 @@ Texture::Texture(std::string name, const std::array<std::string, 6> &paths) : m_
 
             std::stringstream ss;
             ss << "3D Texture created: " << m_name << ".";
-            core::utils::Logger::error(std::move(ss));
+            core::Logger::error(std::move(ss));
         } else {
             std::stringstream ss;
             ss << "Failed to load texture" << paths.at(i) << ".";
-            core::utils::Logger::error(std::move(ss));
+            core::Logger::error(std::move(ss));
         }
     }
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -89,4 +89,4 @@ Texture &Texture::operator=(Texture &&other) noexcept {
     other.m_isValid = false;
     return *this;
 }
-}  // namespace daft::core::mat
+}  // namespace daft::core

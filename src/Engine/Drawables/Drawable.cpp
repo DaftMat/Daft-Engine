@@ -5,7 +5,7 @@
 
 #include <Engine/Drawables/Composite.hpp>
 
-namespace daft::engine::objects {
+namespace daft::engine {
 
 int Drawable::m_nrDrawables{0};
 
@@ -47,4 +47,4 @@ glm::mat4 Drawable::calculateRotationMat() const {
 
 glm::mat4 Drawable::calculateTranslationMat() const { return glm::translate(glm::mat4{1.f}, m_position); }
 
-}  // namespace daft::engine::objects
+}  // namespace daft::engine

@@ -5,7 +5,7 @@
 
 int main(int argc, char **argv) {
     QApplication a(argc, argv);
-    a.setStyleSheet(daft::core::utils::IO::getStringFromFile("stylesheets/main.qss").c_str());
+    a.setStyleSheet(daft::core::IO::getStringFromFile("stylesheets/main.qss").c_str());
 
     daft::app::MainWindow w;
     w.show();

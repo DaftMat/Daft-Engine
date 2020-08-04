@@ -5,7 +5,7 @@
 
 #include <Core/Utils/DrawableVisitor.hpp>
 
-namespace daft::engine::objects {
+namespace daft::engine {
 
 Object::Object(Composite *parent, std::string name, std::vector<MeshObject> mos) noexcept
     : Drawable(parent, std::move_if_noexcept(name)), m_meshObjects{std::move_if_noexcept(mos)} {}
@@ -31,4 +31,4 @@ void Object::reset() {
     m_meshObjects.clear();
 }
 
-}  // namespace daft::engine::objects
+}  // namespace daft::engine
