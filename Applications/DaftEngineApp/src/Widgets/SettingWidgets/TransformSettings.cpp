@@ -7,7 +7,6 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 #include <Widgets/MainWidget.hpp>
-#include <Widgets/SettingWidgets/SettingWidget.hpp>
 
 namespace daft::app {
 TransformSettings::TransformSettings(daft::core::SettingManager settings, QWidget *parent)
