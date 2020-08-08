@@ -4,6 +4,8 @@
 #include "Light.hpp"
 
 namespace daft::engine {
+int Light::m_nrLight{0};
+
 void Light::render() {
     m_mesh.prepare();
     m_mesh.render(GL_LINES);

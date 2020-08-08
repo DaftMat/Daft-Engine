@@ -5,7 +5,10 @@
 
 namespace daft::engine {
 
-Sphere::Sphere(Sphere::Type type, const std::vector<int> &args) : m_type{type} {
+int Sphere::m_nrSphere{0};
+
+Sphere::Sphere(Sphere::Type type, const std::vector<int> &args, Composite *parent, std::string name)
+    : Object(parent, std::move(name)), m_type{type} {
     if (!args.empty()) {
         switch (m_type) {
             case Type::UV:

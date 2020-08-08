@@ -7,6 +7,8 @@
 
 namespace daft::engine {
 
+int Object::m_nrObject{0};
+
 Object::Object(Composite *parent, std::string name, std::vector<MeshObject> mos) noexcept
     : Drawable(parent, std::move_if_noexcept(name)), m_meshObjects{std::move_if_noexcept(mos)} {}
 
