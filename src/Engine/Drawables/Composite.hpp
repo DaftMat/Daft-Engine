@@ -21,7 +21,7 @@ class ENGINE_API Composite : public Drawable {
     explicit Composite(Composite *parent = nullptr,
                        std::string name = "Group" + std::to_string(m_nrComposite++)) noexcept;
 
-    ~Composite() noexcept = default;
+    ~Composite() noexcept override = default;
 
     /**
      * Default move constructor.

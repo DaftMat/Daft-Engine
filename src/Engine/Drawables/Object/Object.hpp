@@ -25,7 +25,7 @@ class ENGINE_API Object : public Drawable {
      */
     explicit Object(Composite *parent, MeshObject mo) noexcept;
 
-    ~Object() noexcept;
+    ~Object() noexcept override;
 
     /**
      * Default move constructor.
@@ -50,6 +50,8 @@ class ENGINE_API Object : public Drawable {
     void accept(DrawableVisitor *visitor) override;
 
     void reset() override;
+
+    virtual void update(){};
 
    private:
     std::vector<MeshObject> m_meshObjects;

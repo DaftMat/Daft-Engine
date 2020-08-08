@@ -23,7 +23,7 @@ class Light : public Drawable {
                    Mesh mesh = Mesh{}, const glm::vec3 &color = glm::vec3{1.f}) noexcept
         : Drawable(parent, std::move_if_noexcept(name)), m_mesh{std::move_if_noexcept(mesh)}, m_color{color} {}
 
-    ~Light() { Light::reset(); }
+    ~Light() override { Light::reset(); }
 
     /**
      * Renders the mesh representation of the light.

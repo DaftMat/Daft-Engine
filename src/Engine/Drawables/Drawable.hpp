@@ -29,7 +29,7 @@ class Drawable : public core::NonCopyable {
     explicit Drawable(Composite *parent = nullptr,
                       std::string name = "Drawable" + std::to_string(m_nrDrawables++)) noexcept;
 
-    ~Drawable() noexcept = default;
+    virtual ~Drawable() noexcept = default;
 
     Drawable(Drawable &&) noexcept = default;
 
@@ -74,7 +74,7 @@ class Drawable : public core::NonCopyable {
      * Deselects the drawable.
      * selected() becomes false.
      */
-    void deselect() { m_selected = false; }
+    void unselect() { m_selected = false; }
 
     /**
      * Applies a translation to the drawable.
