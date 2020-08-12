@@ -51,18 +51,16 @@ void Sphere::createUVSphere() {
     std::vector<glm::vec2> texCoords;
 
     /// geometry
-    float z, xy;
     float mStep = (2.f * glm::pi<float>()) / float(m_meridians);
     float pStep = glm::pi<float>() / float(m_parallels);
-    float mAngle, pAngle;
 
     for (int i = 0; i <= m_parallels; ++i) {
-        pAngle = glm::pi<float>() / 2.f - float(i) * pStep;
-        xy = glm::cos(pAngle);
-        z = glm::sin(pAngle);
+        float pAngle = glm::pi<float>() / 2.f - float(i) * pStep;
+        float xy = glm::cos(pAngle);
+        float z = glm::sin(pAngle);
 
         for (int j = 0; j <= m_meridians; ++j) {
-            mAngle = float(j) * mStep;
+            float mAngle = float(j) * mStep;
 
             glm::vec3 pn{xy * glm::cos(mAngle), z, xy * glm::sin(mAngle)};
             positions.push_back(pn);
