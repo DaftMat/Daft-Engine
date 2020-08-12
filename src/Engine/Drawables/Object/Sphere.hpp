@@ -11,8 +11,8 @@ class ENGINE_API Sphere : public Object {
    public:
     enum class Type { UV, Ico, Cube };
 
-    Sphere(Type type, const std::vector<int> &args, Composite *parent = nullptr,
-           std::string name = "Sphere" + std::to_string(m_nrSphere++));
+    explicit Sphere(Type type = Type::UV, const std::vector<int> &args = {}, Composite *parent = nullptr,
+                    std::string name = "Sphere" + std::to_string(m_nrSphere++));
 
     ~Sphere() noexcept override = default;
 
@@ -42,10 +42,12 @@ class ENGINE_API Sphere : public Object {
 
     void update() override;
 
+    void accept(DrawableVisitor *visitor) override;
+
    private:
-    void createUVSphere() {}
-    void createIcoSphere() {}
-    void createCubeSphere() {}
+    void createUVSphere();
+    void createIcoSphere();
+    void createCubeSphere();
 
     Type m_type;
     int m_meridians{32}, m_parallels{16};  ///< UV sphere settings.

@@ -18,10 +18,15 @@ class ENGINE_API RendererVisitor : public daft::core::DrawableVisitor {
 
     RendererVisitor &operator=(RendererVisitor &&) = default;
 
-    void visit(daft::engine::Object *object) override;
+    void visit(daft::engine::Object *object) override { render(object); }
+
+    void visit(daft::engine::Sphere *sphere) override { render(sphere); }
 
     void visit(daft::engine::Composite *composite) override;
 
    private:
+    template <typename T>
+    void render(T drawable);
+
     std::shared_ptr<daft::core::ShaderProgram> m_shader{nullptr};
 };

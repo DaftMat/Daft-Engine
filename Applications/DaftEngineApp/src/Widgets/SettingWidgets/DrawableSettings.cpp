@@ -87,7 +87,7 @@ void DrawableSettings::addComboBox(std::string label, const std::vector<std::str
     for (const auto& arg : args) {
         comboBox->addItem(arg.c_str());
     }
-    connect(comboBox, SIGNAL(selectionChanged(int)), this, SLOT(onDrawableChanged()));
+    connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onDrawableChanged()));
     m_comboBoxes.insert(std::make_pair(label, comboBox));
     addField(std::move(label), {comboBox});
 }

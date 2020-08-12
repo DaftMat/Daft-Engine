@@ -7,7 +7,12 @@
 namespace daft {
 /// forward declarations
 namespace engine {
+// objects
 class Object;
+class Sphere;
+// lights
+
+// composite
 class Composite;
 }  // namespace engine
 
@@ -28,6 +33,11 @@ class ENGINE_API DrawableVisitor {
      * Visits an Object .
      */
     virtual void visit(engine::Object *) {}
+
+    /**
+     * Visits a Sphere .
+     */
+    virtual void visit(engine::Sphere *) {}
 
     /**
      * Visits a Composite .

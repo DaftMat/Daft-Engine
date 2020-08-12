@@ -21,6 +21,12 @@ class SettingWidgetVisitor : public core::DrawableVisitor {
     void visit(engine::Object *object) override;
 
     /**
+     * Visits a Sphere .
+     * @param sphere - sphere to visit.
+     */
+    void visit(engine::Sphere *sphere) override;
+
+    /**
      * visits a Composite .
      * @param composite - composite to visit.
      */

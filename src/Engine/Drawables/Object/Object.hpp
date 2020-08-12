@@ -53,9 +53,10 @@ class ENGINE_API Object : public Drawable {
 
     virtual void update(){};
 
-   private:
+   protected:
     std::vector<MeshObject> m_meshObjects;
 
+   private:
     static int m_nrObject;
 };
 }  // namespace daft::engine

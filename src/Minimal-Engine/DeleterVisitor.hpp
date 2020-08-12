@@ -16,5 +16,7 @@ class ENGINE_API DeleterVisitor : public daft::core::DrawableVisitor {
 
     void visit(daft::engine::Object *object) override;
 
+    void visit(daft::engine::Sphere *sphere) override;
+
     void visit(daft::engine::Composite *composite) override;
 };

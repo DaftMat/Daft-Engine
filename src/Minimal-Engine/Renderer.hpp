@@ -8,6 +8,7 @@
 #include <Engine/Drawables/Composite.hpp>
 #include <Engine/Drawables/MeshObject.hpp>
 #include <Engine/Drawables/Object/Object.hpp>
+#include <Engine/Drawables/Object/Sphere.hpp>
 #include <memory>
 #include <vector>
 
@@ -43,6 +44,12 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     void addMesh(daft::core::AttribManager attribManager) noexcept {
         using namespace daft::engine;
         m_root->add(new Object(nullptr, MeshObject(daft::core::Mesh(std::move_if_noexcept(attribManager)))));
+        m_selection++;
+    }
+
+    void addSphere() {
+        using namespace daft;
+        m_root->add(new engine::Sphere());
         m_selection++;
     }
 
