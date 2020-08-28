@@ -18,12 +18,15 @@ Object::Object(Composite *parent, MeshObject mo) noexcept : Drawable(parent), m_
 
 Object::~Object() noexcept { Object::reset(); }
 
-void Object::render() {
+void Object::render(const core::ShaderProgram &shader) {
+    shader.use();
+    shader.setMat4("model", model());
     for (auto &mo : m_meshObjects) {
         mo.prepare();
         mo.render(GL_TRIANGLES);
         mo.unbind();
     }
+    shader.stop();
 }
 
 void Object::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }

@@ -3,6 +3,7 @@
 //
 #pragma once
 #include <API.hpp>
+#include <Core/Geometry/ShaderProgram.hpp>
 #include <Core/Utils/NonCopyable.hpp>
 #include <Core/Utils/Types.hpp>
 
@@ -38,7 +39,7 @@ class Drawable : public core::NonCopyable {
     /**
      * renders the inner geometry.
      */
-    virtual void render() = 0;
+    virtual void render(const core::ShaderProgram &shader) = 0;
 
     /**
      * Accepts a DrawableVisitor .

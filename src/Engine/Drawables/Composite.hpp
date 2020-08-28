@@ -38,7 +38,7 @@ class ENGINE_API Composite : public Drawable {
      * Does nothing. Have to pass through a RendererVisitor that will render all the objects within.
      * Because of the variation of shaders.
      */
-    void render() override{};
+    void render(const core::ShaderProgram &shader) override;
 
     /**
      * Accepts a drawable visitor.

@@ -43,8 +43,6 @@ void Sphere::update() {
 }
 
 void Sphere::createUVSphere() {
-    /// sectors = meridians
-    /// stacks = parallels
     core::AttribManager am;
     std::vector<glm::vec3> positions;
     std::vector<glm::vec3> normals;
@@ -68,13 +66,16 @@ void Sphere::createUVSphere() {
             texCoords.emplace_back(float(j) / float(m_meridians), float(i) / float(m_parallels));
         }
     }
+    am.addAttrib(positions);
+    am.addAttrib(normals);
+    am.addAttrib(texCoords);
 
     /// topology
     GLuint k1, k2;
     for (int i = 0; i < m_parallels; ++i) {
         k1 = i * (m_meridians + 1);
         k2 = k1 + m_meridians + 1;
-        for (int j = 0; j < m_meridians; ++j) {
+        for (int j = 0; j < m_meridians; ++j, ++k1, ++k2) {
             if (i) {
                 am.indices().push_back(k1 + 1);
                 am.indices().push_back(k2);

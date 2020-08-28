@@ -28,7 +28,7 @@ class Light : public Drawable {
     /**
      * Renders the mesh representation of the light.
      */
-    void render() override;
+    void render(const core::ShaderProgram &shader) override;
 
     /**
      * Translates the light.

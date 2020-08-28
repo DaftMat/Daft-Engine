@@ -10,7 +10,6 @@ Renderer &Renderer::operator=(Renderer &&other) noexcept {
     m_width = other.m_width;
     m_height = other.m_height;
     m_root = std::move_if_noexcept(other.m_root);
-    m_visitor = std::move_if_noexcept(other.m_visitor);
     return *this;
 }
 
@@ -26,8 +25,13 @@ Renderer::Renderer(int width, int height) : m_width{width}, m_height{height} {
     }
 
     m_root = std::make_shared<daft::engine::Composite>();
-    m_visitor = std::make_unique<RendererVisitor>();
+    m_shader = std::make_shared<daft::core::ShaderProgram>("shaders/color.vert.glsl", "shaders/color.frag.glsl");
     m_deleter = std::make_unique<DeleterVisitor>();
+
+    m_shader->use();
+    m_shader->setMat4("projection", glm::perspective(m_camera.fov(), float(m_width) / float(m_height), 0.1f, 500.f));
+    m_shader->setMat4("view", m_camera.getViewMatrix());
+    m_shader->stop();
 
     glViewport(0, 0, m_width, m_height);
     glEnable(GL_DEPTH_TEST);
@@ -40,12 +44,33 @@ void Renderer::prepare() {
     glClearColor(0.5f, 0.5f, 0.5f, 1.f);
 }
 
-void Renderer::render() { m_visitor->visit(m_root.get()); }
+void Renderer::render() { m_root->render(*m_shader); }
 
 void Renderer::resize(int width, int height) {
     m_width = width;
     m_height = height;
     glViewport(0, 0, m_width, m_height);
+    m_shader->use();
+    m_shader->setMat4("projection", glm::perspective(m_camera.fov(), float(m_width) / float(m_height), 0.1f, 500.f));
+    m_shader->stop();
 }
 
 bool Renderer::GLinitialized{false};
+
+void Renderer::processMouseScroll(float offset) {
+    m_camera.processMouseScroll(offset);
+    m_shader->use();
+    m_shader->setMat4("view", m_camera.getViewMatrix());
+    m_shader->stop();
+}
+
+void Renderer::processMousePress(glm::vec2 mousePos) { m_camera.processMousePress(mousePos); }
+
+void Renderer::processMouseRelease() { m_camera.processMouseRelease(); }
+
+void Renderer::processMouseMove(glm::vec2 mousePos) {
+    m_camera.processMouseMove(mousePos);
+    m_shader->use();
+    m_shader->setMat4("view", m_camera.getViewMatrix());
+    m_shader->stop();
+}

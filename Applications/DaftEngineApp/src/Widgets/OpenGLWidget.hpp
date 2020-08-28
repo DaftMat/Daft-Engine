@@ -50,6 +50,8 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
 
     void keyPressEvent(QKeyEvent *e) override;
 
+    void wheelEvent(QWheelEvent *e) override;
+
    public slots:
 
     void cleanup() { m_renderer.reset(); }

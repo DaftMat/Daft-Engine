@@ -9,11 +9,11 @@
 #include <Engine/Drawables/MeshObject.hpp>
 #include <Engine/Drawables/Object/Object.hpp>
 #include <Engine/Drawables/Object/Sphere.hpp>
+#include <Engine/Renderer/Cameras/Camera.hpp>
 #include <memory>
 #include <vector>
 
 #include "DeleterVisitor.hpp"
-#include "RendererVisitor.hpp"
 
 class ENGINE_API Renderer : public daft::core::NonCopyable {
    public:
@@ -24,14 +24,10 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     ~Renderer() noexcept {
         m_deleter->visit(m_root.get());
         m_root.reset();
-        m_visitor.reset();
     }
 
     Renderer(Renderer &&other) noexcept
-        : m_width{other.m_width},
-          m_height{other.m_height},
-          m_root{std::move_if_noexcept(other.m_root)},
-          m_visitor{std::move_if_noexcept(other.m_visitor)} {}
+        : m_width{other.m_width}, m_height{other.m_height}, m_root{std::move_if_noexcept(other.m_root)} {}
 
     Renderer &operator=(Renderer &&other) noexcept;
 
@@ -60,6 +56,14 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     void setSelection(int s) { m_selection = s; }
 
+    void processMouseScroll(float offset);
+
+    void processMousePress(glm::vec2 mousePos);
+
+    void processMouseRelease();
+
+    void processMouseMove(glm::vec2 mousePos);
+
    private:
     static bool GLinitialized;
     int m_width{0}, m_height{0};
@@ -67,6 +71,8 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     std::shared_ptr<daft::engine::Composite> m_root{nullptr};
 
-    std::unique_ptr<RendererVisitor> m_visitor{nullptr};
     std::unique_ptr<DeleterVisitor> m_deleter{nullptr};
+    std::shared_ptr<daft::core::ShaderProgram> m_shader{nullptr};
+
+    daft::engine::Camera m_camera;
 };
