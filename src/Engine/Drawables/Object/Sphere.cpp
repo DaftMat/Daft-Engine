@@ -25,10 +25,10 @@ Sphere::Sphere(Sphere::Type type, const std::vector<int> &args, Composite *paren
                 break;
         }
     }
-    Sphere::update();
+    Sphere::applyUpdate();
 }
 
-void Sphere::update() {
+void Sphere::applyUpdate() {
     switch (m_type) {
         case Type::UV:
             createUVSphere();

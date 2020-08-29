@@ -23,10 +23,20 @@ namespace core {
  */
 class ENGINE_API DrawableVisitor {
    public:
+    /**
+     * Default ctor.
+     */
     DrawableVisitor() = default;
 
+    /**
+     * Default move ctor.
+     */
     DrawableVisitor(DrawableVisitor &&) = default;
 
+    /**
+     * Default move assignment operator.
+     * @return ref to this.
+     */
     DrawableVisitor &operator=(DrawableVisitor &&) = default;
 
     /**

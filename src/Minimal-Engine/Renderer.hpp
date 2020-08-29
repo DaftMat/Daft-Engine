@@ -39,22 +39,24 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     void addMesh(daft::core::AttribManager attribManager) noexcept {
         using namespace daft::engine;
-        m_root->add(new Object(nullptr, MeshObject(daft::core::Mesh(std::move_if_noexcept(attribManager)))));
-        m_selection++;
+        auto toAdd = new Object(nullptr, MeshObject(daft::core::Mesh(std::move_if_noexcept(attribManager))));
+        m_root->add(toAdd);
+        m_selection = toAdd->name();
     }
 
     void addSphere() {
         using namespace daft;
-        m_root->add(new engine::Sphere());
-        m_selection++;
+        auto toAdd = new engine::Sphere;
+        m_root->add(toAdd);
+        m_selection = toAdd->name();
     }
 
     daft::engine::Drawable *getSelection() {
-        if (m_selection < 0) return nullptr;
-        return m_root->drawables()[m_selection].get();
+        if (m_selection.empty()) return nullptr;
+        return m_root->find(m_selection);
     }
 
-    void setSelection(int s) { m_selection = s; }
+    void setSelection(const std::string &s) { m_selection = s; }
 
     void processMouseScroll(float offset);
 
@@ -67,7 +69,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
    private:
     static bool GLinitialized;
     int m_width{0}, m_height{0};
-    int m_selection{-1};
+    std::string m_selection;
 
     std::shared_ptr<daft::engine::Composite> m_root{nullptr};
 

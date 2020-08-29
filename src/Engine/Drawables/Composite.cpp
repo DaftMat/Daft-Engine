@@ -29,4 +29,13 @@ void Composite::reset() {
     m_drawables.clear();
 }
 
+Drawable *Composite::find(const std::string &pname) {
+    if (pname == name()) return this;
+    Drawable *found;
+    for (auto &d : m_drawables) {
+        found = d->find(pname);
+        if (found) return found;
+    }
+}
+
 }  // namespace daft::engine

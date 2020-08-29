@@ -100,6 +100,7 @@ class ENGINE_API MainWidget : public QWidget {
 
    public slots:
     void on_selectionChanged();
+    void on_settingChanged();
 
    private:
     std::unique_ptr<OpenGLWidget> m_glWidget{nullptr};

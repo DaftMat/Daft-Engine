@@ -115,11 +115,20 @@ void MainWidget::on_selectionChanged() {
     if (selection == nullptr) {
         widget = new SettingWidget(nullptr, nullptr);
     } else {
-        auto visitor = new SettingWidgetVisitor();
-        selection->accept(visitor);
+        auto visitor = std::make_unique<SettingWidgetVisitor>();
+        selection->accept(visitor.get());
         widget = visitor->widget();
     }
     m_settingWidget.reset(widget);
+    connect(m_settingWidget.get(), SIGNAL(settingChanged()), this, SLOT(on_settingChanged()));
     m_southWidget->addWidget(m_settingWidget.get());
+}
+
+void MainWidget::on_settingChanged() {
+    auto selection = m_glWidget->renderer().getSelection();
+    if (!selection) return;
+    auto visitor = std::make_unique<SettingEditorVisitor>(m_settingWidget->settings(), m_settingWidget->transforms());
+    selection->accept(visitor.get());
+    m_glWidget->update();
 }
 }  // namespace daft::app

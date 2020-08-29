@@ -47,4 +47,9 @@ glm::mat4 Drawable::calculateRotationMat() const {
 
 glm::mat4 Drawable::calculateTranslationMat() const { return glm::translate(glm::mat4{1.f}, m_position); }
 
+Drawable *Drawable::find(const std::string &pname) {
+    if (pname == name()) return this;
+    return nullptr;
+}
+
 }  // namespace daft::engine

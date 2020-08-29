@@ -4,10 +4,12 @@
 #pragma once
 
 #include <API.hpp>
+#include <Engine/Drawables/Drawable.hpp>
 #include <QtWidgets/QScrollArea>
 #include <memory>
 
 #include "DrawableSettings.hpp"
+#include "SettingEditorVisitor.hpp"
 #include "TransformSettings.hpp"
 
 namespace daft::app {
@@ -28,11 +30,19 @@ class ENGINE_API SettingWidget : public QScrollArea {
     explicit SettingWidget(DrawableSettings *settings, TransformSettings *transforms, std::string name = "Drawable",
                            QWidget *parent = nullptr);
 
+    [[nodiscard]] const core::SettingManager &settings() { return m_settings->settings(); }
+
+    [[nodiscard]] const core::SettingManager &transforms() { return m_transforms->transforms(); }
+
+   signals:
+    void settingChanged();
+
    public slots:
     void on_settingChanged() {
         std::stringstream ss;
-        ss << "Setting changed."; /**TODO: implement.*/
+        ss << "Setting changed.";
         core::Logger::debug(std::move(ss));
+        emit settingChanged();
     }
 
    private:

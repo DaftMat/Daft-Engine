@@ -44,7 +44,10 @@ void Renderer::prepare() {
     glClearColor(0.5f, 0.5f, 0.5f, 1.f);
 }
 
-void Renderer::render() { m_root->render(*m_shader); }
+void Renderer::render() {
+    m_root->update();
+    m_root->render(*m_shader);
+}
 
 void Renderer::resize(int width, int height) {
     m_width = width;

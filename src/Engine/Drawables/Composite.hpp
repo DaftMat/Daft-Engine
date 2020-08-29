@@ -47,6 +47,14 @@ class ENGINE_API Composite : public Drawable {
     void accept(DrawableVisitor *visitor) override;
 
     /**
+     * Object accessor.
+     * This version is recursive.
+     * @param name - name of the object we're looking for.
+     * @return the object if it's the right name. nullptr otherwise.
+     */
+    Drawable *find(const std::string &name) override;
+
+    /**
      * Adds a drawable to the composite.
      * @param drawable - drawable to add.
      */
@@ -65,6 +73,12 @@ class ENGINE_API Composite : public Drawable {
     [[nodiscard]] const auto &drawables() const { return m_drawables; }
 
     void reset() override;
+
+    void update() override {
+        for (auto &d : m_drawables) {
+            d->update();
+        }
+    }
 
    private:
     using DrawablePtr = std::shared_ptr<Drawable>;

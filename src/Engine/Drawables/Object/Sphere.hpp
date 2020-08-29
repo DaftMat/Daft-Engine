@@ -40,9 +40,16 @@ class ENGINE_API Sphere : public Object {
 
     int &resolution() { return m_resolution; }
 
-    void update() override;
-
     void accept(DrawableVisitor *visitor) override;
+
+    // void update() override {
+    //    if (m_update) {
+    //        applyUpdate();
+    //    }
+    //}
+
+   protected:
+    void applyUpdate() override;
 
    private:
     void createUVSphere();

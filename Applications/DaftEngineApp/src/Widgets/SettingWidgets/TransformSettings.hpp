@@ -24,6 +24,12 @@ class ENGINE_API TransformSettings : public QWidget {
      */
     explicit TransformSettings(daft::core::SettingManager settings, QWidget *parent = nullptr);
 
+    /**
+     * Transformation settings constant reference getter.
+     * @return const ref to the transformation settings of the drawable.
+     */
+    [[nodiscard]] const core::SettingManager &transforms() const { return m_settings; }
+
    public slots:
     void onTransformChanged();
 

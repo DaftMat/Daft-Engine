@@ -47,6 +47,13 @@ class Drawable : public core::NonCopyable {
     virtual void accept(DrawableVisitor *) = 0;
 
     /**
+     * Object accessor.
+     * @param name - name of the object we're looking for.
+     * @return the object if it's the right name. nullptr otherwise.
+     */
+    virtual Drawable *find(const std::string &name);
+
+    /**
      * Calculates the transformation model matrix of the drawable.
      * @return transformation matrix.
      */
@@ -156,6 +163,8 @@ class Drawable : public core::NonCopyable {
     void setParent(Composite *composite);
 
     virtual void reset() { m_parent = nullptr; }
+
+    virtual void update() {}
 
    private:
     [[nodiscard]] glm::mat4 calculateModel() const;

@@ -36,4 +36,10 @@ void Object::reset() {
     m_meshObjects.clear();
 }
 
+void Object::update() {
+    if (m_update) {
+        applyUpdate();
+    }
+}
+
 }  // namespace daft::engine

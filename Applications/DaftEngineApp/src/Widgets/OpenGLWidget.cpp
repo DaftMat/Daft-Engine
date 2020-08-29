@@ -109,14 +109,7 @@ void OpenGLWidget::mouseMoveEvent(QMouseEvent *e) {
     setFocus();
 }
 
-void OpenGLWidget::keyPressEvent(QKeyEvent *e) {
-    if (e->key() == Qt::Key::Key_S) {
-        static int selection = -1;
-        m_renderer->setSelection(selection);
-        selection == 0 ? selection = -1 : selection = 0;
-    }
-    emit selectionChanged();
-}
+void OpenGLWidget::keyPressEvent(QKeyEvent *e) {}
 
 void OpenGLWidget::wheelEvent(QWheelEvent *e) {
     m_renderer->processMouseScroll(float(e->delta()) / 240.f);

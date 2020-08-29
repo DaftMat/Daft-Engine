@@ -77,6 +77,12 @@ class ENGINE_API DrawableSettings : public QWidget {
      */
     void addComboBox(std::string label, const std::vector<std::string>& args);
 
+    /**
+     * Settings constant reference getter.
+     * @return const ref to the settings of the drawable.
+     */
+    [[nodiscard]] const core::SettingManager& settings() { return m_settings; }
+
    public slots:
     void onDrawableChanged();
 

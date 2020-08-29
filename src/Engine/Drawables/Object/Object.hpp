@@ -51,9 +51,14 @@ class ENGINE_API Object : public Drawable {
 
     void reset() override;
 
-    virtual void update(){};
+    void update() override;
+
+    void updateNextFrame() { m_update = true; }
 
    protected:
+    virtual void applyUpdate() {}
+    bool m_update;
+
     std::vector<MeshObject> m_meshObjects;
 
    private:
