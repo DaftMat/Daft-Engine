@@ -71,9 +71,22 @@ void OpenGLWidget::mousePressEvent(QMouseEvent *e) {
     ss << "Mouse pressed on OpenGL viewer at coordinates (" << e->pos().x() << "," << e->pos().y() << ")";
     core::Logger::debug(std::move(ss));
 
-    if (e->button() == Qt::LeftButton) {
-        m_renderer->processMousePress(glm::vec2{e->pos().x(), e->pos().y()});
+    engine::Camera::Mouse mouse{};
+    mouse.pos = glm::vec2{e->pos().x(), e->pos().y()};
+    switch (e->button()) {
+        case Qt::LeftButton:
+            mouse.button = engine::Camera::Mouse::Button::Left;
+            break;
+        case Qt::RightButton:
+            mouse.button = engine::Camera::Mouse::Button::Right;
+            break;
+        case Qt::MidButton:
+            mouse.button = engine::Camera::Mouse::Button::Wheel;
+            break;
+        default:
+            return;
     }
+    m_renderer->processMousePress(mouse);
 }
 
 void OpenGLWidget::mouseReleaseEvent(QMouseEvent *e) {

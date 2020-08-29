@@ -58,7 +58,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     void processMouseScroll(float offset);
 
-    void processMousePress(glm::vec2 mousePos);
+    void processMousePress(daft::engine::Camera::Mouse mouse);
 
     void processMouseRelease();
 

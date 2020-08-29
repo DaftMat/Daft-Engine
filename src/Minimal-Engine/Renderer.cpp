@@ -64,7 +64,7 @@ void Renderer::processMouseScroll(float offset) {
     m_shader->stop();
 }
 
-void Renderer::processMousePress(glm::vec2 mousePos) { m_camera.processMousePress(mousePos); }
+void Renderer::processMousePress(daft::engine::Camera::Mouse mouse) { m_camera.processMousePress(mouse); }
 
 void Renderer::processMouseRelease() { m_camera.processMouseRelease(); }
 

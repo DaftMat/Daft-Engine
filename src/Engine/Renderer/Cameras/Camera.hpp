@@ -8,6 +8,11 @@
 namespace daft::engine {
 class ENGINE_API Camera {
    public:
+    struct Mouse {
+        glm::vec2 pos;
+        enum class Button { Left, Right, Wheel } button;
+    };
+
     /** Constructor.
      * no roll as this camera won't need it.
      * @param position - position of the camera
@@ -44,7 +49,7 @@ class ENGINE_API Camera {
 
     void processMouseScroll(float offset);
 
-    void processMousePress(glm::vec2 mousePos);
+    void processMousePress(Mouse mouse);
 
     void processMouseRelease() { m_mousePressed = false; }
 
@@ -68,7 +73,7 @@ class ENGINE_API Camera {
     float m_velocity, m_sensitivity, m_fov;
 
     /// mouse management
-    glm::vec2 m_mousePosition;
+    Mouse m_mouse;
     bool m_mousePressed{false};
 };
 }  // namespace daft::engine
