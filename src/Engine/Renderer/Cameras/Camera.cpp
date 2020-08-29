@@ -10,7 +10,6 @@ Camera::Camera(const glm::vec3 &position, const glm::vec3 &worldUp, float yaw, f
       m_target{0.f},
       m_yaw{yaw},
       m_pitch{pitch},
-      m_rot{0.f},
       m_velocity{0.005f},
       m_sensitivity{1.9f},
       m_fov{45.f} {

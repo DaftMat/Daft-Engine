@@ -61,7 +61,7 @@ class ENGINE_API Camera {
     /**
      * Apply action related to mouse press event.
      * Updates mouse data.
-     * @param mouse
+     * @param mouse - mouse data, see Mouse .
      */
     void processMousePress(Mouse mouse);
 
@@ -77,7 +77,7 @@ class ENGINE_API Camera {
      *  Left button - the camera rotates around the target.
      *  Right button - the camera translates following its up and right vectors.
      *  Wheel button - the camera translates following its front vector.
-     * @param mousePos
+     * @param mousePos - position of the mouse.
      */
     void processMouseMove(glm::vec2 mousePos);
 
@@ -100,7 +100,7 @@ class ENGINE_API Camera {
     glm::vec3 m_worldUp;
     glm::vec3 m_target;
 
-    float m_yaw, m_pitch, m_rot, m_dist;
+    float m_yaw, m_pitch, m_dist;
     float m_velocity, m_sensitivity, m_fov;
 
     /// mouse management
