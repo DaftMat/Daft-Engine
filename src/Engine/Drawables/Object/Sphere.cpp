@@ -4,6 +4,7 @@
 #include "Sphere.hpp"
 
 #include <Core/Utils/DrawableVisitor.hpp>
+#include <array>
 
 namespace daft::engine {
 
