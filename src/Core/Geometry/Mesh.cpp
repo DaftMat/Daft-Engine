@@ -47,6 +47,8 @@ void Mesh::unbind() const {
 }
 
 void Mesh::reset(const AttribManager& attribManager) {
+    clear();
+
     m_attribManager = attribManager;
     m_numVertex = m_attribManager.indices().size();
     m_vbos = std::vector<GLuint>(m_attribManager.size(), 0);

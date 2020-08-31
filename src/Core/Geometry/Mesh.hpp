@@ -93,7 +93,7 @@ class ENGINE_API Mesh : public NonCopyable {
    private:
     GLuint m_vao, m_ebo, m_numVertex;
     std::vector<GLuint> m_vbos;
-    bool m_isVisible;
+    bool m_isVisible{false};
     AttribManager m_attribManager;
 };
 }  // namespace daft::core

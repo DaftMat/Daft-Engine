@@ -57,6 +57,18 @@ class ENGINE_API MeshObject : public core::NonCopyable {
      */
     void unbind() const;
 
+    /**
+     * mesh reference getter.
+     * @return ref to mesh.
+     */
+    Mesh &mesh() { return m_mesh; }
+
+    /**
+     * mesh constant reference getter.
+     * @return const ref to mesh.
+     */
+    const Mesh &mesh() const { return m_mesh; }
+
    private:
     Mesh m_mesh;
     std::shared_ptr<Material> m_material;

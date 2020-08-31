@@ -55,18 +55,13 @@ class ENGINE_API Sphere : public Object {
     void createUVSphere();
     void createIcoSphere();
     void createIcosahedron();
-    void subdivideIcoSphere();
 
     void createCubeSphere();
-
-    static glm::vec3 computeHalfVertex(const glm::vec3 &a, glm::vec3 &b) { return glm::normalize(a + b); }
 
     Type m_type;
     int m_meridians{32}, m_parallels{16};  ///< UV sphere settings.
     int m_subdivisions{3};                 ///< Icosahedron based sphere settings.
-    std::vector<glm::vec3> m_icoPositions;
-    core::AttribManager m_icoAm;
-    int m_resolution{32};  ///< Cube based sphere settings.
+    int m_resolution{32};                  ///< Cube based sphere settings.
 
     static int m_nrSphere;
 };

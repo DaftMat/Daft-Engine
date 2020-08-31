@@ -94,9 +94,7 @@ void Sphere::createUVSphere() {
 void Sphere::createIcoSphere() {
     /// create the base icosahedron.
     createIcosahedron();
-    for (int i = 0; i < m_subdivisions; ++i) subdivideIcoSphere();
-    m_meshObjects.clear();
-    m_meshObjects.emplace_back(core::Mesh(m_icoAm));
+    for (int i = 0; i < m_subdivisions; ++i) subdivide(true);
 }
 
 void Sphere::createIcosahedron() {
@@ -107,8 +105,11 @@ void Sphere::createIcosahedron() {
     float h_angle1 = -glm::pi<float>() / 2.f - H_ANGLE / 2.f;
     float h_angle2 = -glm::pi<float>() / 2.f;
 
+    std::vector<glm::vec3> positions;
+    core::AttribManager am;
+
     // first vertex
-    m_icoPositions.emplace_back(0.f, 1.f, 0.f);
+    positions.emplace_back(0.f, 1.f, 0.f);
 
     // 10 "middle" vertices
     for (int i = 1; i <= 5; ++i) {
@@ -118,90 +119,92 @@ void Sphere::createIcosahedron() {
         glm::vec3 v1{xy * glm::cos(h_angle1), z, xy * glm::sin(h_angle1)};
         glm::vec3 v2{xy * glm::cos(h_angle2), -z, xy * glm::sin(h_angle2)};
 
-        m_icoPositions.push_back(v1);
-        m_icoPositions.push_back(v2);
+        positions.push_back(v1);
+        positions.push_back(v2);
 
         h_angle1 += H_ANGLE;
         h_angle2 += H_ANGLE;
     }
 
     // last vertex
-    m_icoPositions.emplace_back(0.f, -1.f, 0.f);
+    positions.emplace_back(0.f, -1.f, 0.f);
 
     // indices
     for (GLuint i = 1; i <= 9; i += 2) {
         // Top
-        m_icoAm.indices().push_back(0);
-        m_icoAm.indices().push_back(core::mod1(i + 2, 10));
-        m_icoAm.indices().push_back(i);
+        am.indices().push_back(0);
+        am.indices().push_back(core::mod1(i + 2, 10));
+        am.indices().push_back(i);
         // Middle up
-        m_icoAm.indices().push_back(i);
-        m_icoAm.indices().push_back(core::mod1(i + 2, 10));
-        m_icoAm.indices().push_back(core::mod1(i + 1, 10));
+        am.indices().push_back(i);
+        am.indices().push_back(core::mod1(i + 2, 10));
+        am.indices().push_back(core::mod1(i + 1, 10));
         // Middle down
-        m_icoAm.indices().push_back(core::mod1(i + 2, 10));
-        m_icoAm.indices().push_back(core::mod1(i + 3, 10));
-        m_icoAm.indices().push_back(core::mod1(i + 1, 10));
+        am.indices().push_back(core::mod1(i + 2, 10));
+        am.indices().push_back(core::mod1(i + 3, 10));
+        am.indices().push_back(core::mod1(i + 1, 10));
         // Bottom
-        m_icoAm.indices().push_back(core::mod1(i + 1, 10));
-        m_icoAm.indices().push_back(core::mod1(i + 3, 10));
-        m_icoAm.indices().push_back(11);
+        am.indices().push_back(core::mod1(i + 1, 10));
+        am.indices().push_back(core::mod1(i + 3, 10));
+        am.indices().push_back(11);
     }
 
-    m_icoAm.addAttrib(m_icoPositions);
-    m_icoAm.addAttrib(m_icoPositions);  ///< normals = positions;
+    am.addAttrib(positions);
+    am.addAttrib(positions);  ///< normals = positions;
     // am.addAttrib(texCoords);
+
+    m_meshObjects.clear();
+    m_meshObjects.emplace_back(core::Mesh(am));
 }
 
-void Sphere::subdivideIcoSphere() {
-    std::vector<glm::vec3> tmpPositions = m_icoPositions;
-    std::vector<GLuint> tmpIndices = m_icoAm.indices();
+void Sphere::createCubeSphere() {
+    std::array<glm::vec3, 6> directions{
+        glm::vec3(0.f, 0.f, 1.f),   // front
+        glm::vec3(0.f, 0.f, -1.f),  // back
+        glm::vec3(0.f, 1.f, 0.f),   // up
+        glm::vec3(0.f, -1.f, 0.f),  // bottom
+        glm::vec3(1.f, 0.f, 0.f),   // left
+        glm::vec3(-1.f, 0.f, 0.f)   // right
+    };
 
-    GLuint v1_ind, v2_ind, v3_ind, index = 0;
-    glm::vec3 new_v1, new_v2, new_v3;
+    m_meshObjects.clear();
 
-    m_icoPositions.clear();
-    /// TODO: fix
-    m_icoAm.clear();
+    for (auto &dir : directions) {
+        std::vector<glm::vec3> positions;
+        std::vector<glm::vec2> texCoords;
+        core::AttribManager am;
 
-    for (GLuint i = 0; i < tmpIndices.size(); i += 3) {
-        v1_ind = tmpIndices[i];
-        v2_ind = tmpIndices[i + 1];
-        v3_ind = tmpIndices[i + 2];
+        auto axisA = glm::vec3(dir.y, dir.z, dir.x);
+        auto axisB = glm::cross(dir, axisA);
+        for (int y = 0; y < m_resolution; ++y) {
+            for (int x = 0; x < m_resolution; ++x) {
+                int index = x + y * m_resolution;
+                glm::vec2 percent = glm::vec2(x, y) / (m_resolution - 1.f);
+                glm::vec3 pointOnUnitCube = dir + (percent.x - 0.5f) * 2.f * axisA + (percent.y - 0.5f) * 2.f * axisB;
+                glm::vec3 pointOnUnitSphere = glm::normalize(pointOnUnitCube);
 
-        new_v1 = computeHalfVertex(tmpPositions[v1_ind], tmpPositions[v2_ind]);
-        new_v2 = computeHalfVertex(tmpPositions[v2_ind], tmpPositions[v3_ind]);
-        new_v3 = computeHalfVertex(tmpPositions[v1_ind], tmpPositions[v3_ind]);
+                positions.push_back(pointOnUnitSphere);
+                texCoords.push_back(percent);
 
-        // 1st triangle
-        m_icoPositions.push_back(tmpPositions[v1_ind]);
-        m_icoPositions.push_back(new_v1);
-        m_icoPositions.push_back(new_v3);
-        // 2nd triangle
-        m_icoPositions.push_back(new_v1);
-        m_icoPositions.push_back(tmpPositions[v2_ind]);
-        m_icoPositions.push_back(new_v2);
-        // 3rd triangle
-        m_icoPositions.push_back(new_v1);
-        m_icoPositions.push_back(new_v2);
-        m_icoPositions.push_back(new_v3);
-        // 4th triangle
-        m_icoPositions.push_back(new_v3);
-        m_icoPositions.push_back(new_v2);
-        m_icoPositions.push_back(tmpPositions[v3_ind]);
+                /// Triangles
+                if (x != m_resolution - 1 && y != m_resolution - 1) {
+                    am.indices().push_back(index);
+                    am.indices().push_back(index + m_resolution + 1);
+                    am.indices().push_back(index + m_resolution);
 
-        /// 4 new triangles
-        for (int j = 0; j < 12; ++j) {
-            m_icoAm.indices().push_back(index + j);
+                    am.indices().push_back(index);
+                    am.indices().push_back(index + 1);
+                    am.indices().push_back(index + m_resolution + 1);
+                }
+            }
         }
-        index += 12;
+
+        am.addAttrib(positions);
+        am.addAttrib(positions);  /// normals = positions
+        am.addAttrib(texCoords);
+        m_meshObjects.emplace_back(core::Mesh(am));
     }
-
-    m_icoAm.addAttrib(m_icoPositions);
-    m_icoAm.addAttrib(m_icoPositions);  /// normals = positions
 }
-
-void Sphere::createCubeSphere() {}
 
 void Sphere::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
 

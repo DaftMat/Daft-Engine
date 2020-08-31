@@ -55,6 +55,8 @@ class ENGINE_API Object : public Drawable {
 
     void updateNextFrame() { m_update = true; }
 
+    void subdivide(bool normalsArePositions = false);
+
    protected:
     virtual void applyUpdate() {}
     bool m_update;
@@ -62,6 +64,8 @@ class ENGINE_API Object : public Drawable {
     std::vector<MeshObject> m_meshObjects;
 
    private:
+    static glm::vec3 computeHalfVertex(const glm::vec3 &a, glm::vec3 &b) { return glm::normalize(a + b); }
+
     static int m_nrObject;
 };
 }  // namespace daft::engine

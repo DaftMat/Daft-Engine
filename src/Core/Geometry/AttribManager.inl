@@ -81,6 +81,8 @@ void AttribManager::clear() noexcept {
     m_vec2Attribs.clear();
     m_vec3Attribs.clear();
     m_vec4Attribs.clear();
+    m_indices.clear();
+    m_numAttribs = 0;
 }
 
 }  // namespace daft::core
