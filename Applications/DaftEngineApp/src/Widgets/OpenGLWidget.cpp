@@ -21,6 +21,7 @@ void OpenGLWidget::initializeGL() {
 void OpenGLWidget::paintGL() {
     m_renderer->prepare();
     m_renderer->render();
+    emitSelectionChanged();
 }
 
 void OpenGLWidget::resizeGL(int width, int height) { m_renderer->resize(width, height); }
@@ -115,5 +116,17 @@ void OpenGLWidget::wheelEvent(QWheelEvent *e) {
     m_renderer->processMouseScroll(float(e->delta()) / 240.f);
     update();
     setFocus();
+}
+
+void OpenGLWidget::setSelection(std::string s) {
+    m_renderer->setSelection(std::move(s));
+    emit selectionChanged();
+}
+
+void OpenGLWidget::emitSelectionChanged() {
+    if (m_emitSelectionChanged) {
+        m_emitSelectionChanged = false;
+        emit selectionChanged();
+    }
 }
 }  // namespace daft::app

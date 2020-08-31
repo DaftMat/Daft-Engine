@@ -39,6 +39,7 @@ void Object::reset() {
 void Object::update() {
     if (m_update) {
         applyUpdate();
+        m_update = false;
     }
 }
 

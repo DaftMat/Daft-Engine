@@ -36,6 +36,7 @@ class ENGINE_API SettingWidget : public QScrollArea {
 
    signals:
     void settingChanged();
+    void comboBoxChanged();
 
    public slots:
     void on_settingChanged() {
@@ -44,6 +45,8 @@ class ENGINE_API SettingWidget : public QScrollArea {
         core::Logger::debug(std::move(ss));
         emit settingChanged();
     }
+
+    void on_comboBoxChanged() { emit comboBoxChanged(); }
 
    private:
     std::unique_ptr<DrawableSettings> m_settings{nullptr};

@@ -34,7 +34,10 @@ SettingWidget::SettingWidget(DrawableSettings *settings, TransformSettings *tran
     setObjectName("settingWidget");
     setSizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
 
-    if (m_settings != nullptr) connect(m_settings.get(), SIGNAL(settingChanged()), this, SLOT(on_settingChanged()));
+    if (m_settings != nullptr) {
+        connect(m_settings.get(), SIGNAL(settingChanged()), this, SLOT(on_settingChanged()));
+        connect(m_settings.get(), SIGNAL(comboBoxChanged()), this, SLOT(on_comboBoxChanged()));
+    }
     if (m_transforms != nullptr) connect(m_transforms.get(), SIGNAL(settingChanged()), this, SLOT(on_settingChanged()));
 }
 

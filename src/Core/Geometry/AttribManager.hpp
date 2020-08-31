@@ -110,7 +110,6 @@ class AttribManager {
      */
     inline void clear() noexcept;
 
-   private:
     /**
      * Gets the attribute buffer.
      * @tparam T - type of the attributes.
@@ -120,6 +119,7 @@ class AttribManager {
     template <typename T>
     AttribHandler<T> *getAttribs(GLuint index);
 
+   private:
     template <typename T>
     inline void setAttrib(GLuint index, AttribHandler<T> *attrib);
 

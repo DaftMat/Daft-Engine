@@ -38,6 +38,10 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
      */
     Renderer &renderer() { return *m_renderer; }
 
+    void emitNextFrame() { m_emitSelectionChanged = true; }
+
+    void setSelection(std::string s);
+
     [[nodiscard]] QSize minimumSizeHint() const override { return {50, 50}; }
 
     [[nodiscard]] QSize sizeHint() const override { return {width(), height()}; }
@@ -70,8 +74,11 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
     void prepareScene();
 
    private:
+    void emitSelectionChanged();
+
     std::unique_ptr<Renderer> m_renderer{nullptr};
 
     bool m_glInitialized{false};
+    bool m_emitSelectionChanged{false};
 };
 }  // namespace daft::app

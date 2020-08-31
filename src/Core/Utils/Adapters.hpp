@@ -62,6 +62,14 @@ constexpr Eigen::Matrix<T, M, 1> toEigen(const glm::vec<M, T> &vec) noexcept;
 template <typename T>
 constexpr auto toUType(T e) noexcept;
 
+/**
+ * apply the mod operator + 1
+ * @param x - first operand
+ * @param m - second operand
+ * @return (x % m) + 1
+ */
+constexpr GLuint mod1(GLuint x, GLuint m) noexcept;
+
 }  // namespace daft::core
 
 #include "Adapters.inl"

@@ -121,6 +121,7 @@ void MainWidget::on_selectionChanged() {
     }
     m_settingWidget.reset(widget);
     connect(m_settingWidget.get(), SIGNAL(settingChanged()), this, SLOT(on_settingChanged()));
+    connect(m_settingWidget.get(), SIGNAL(comboBoxChanged()), this, SLOT(on_comboBoxChanged()));
     m_southWidget->addWidget(m_settingWidget.get());
 }
 
@@ -131,4 +132,5 @@ void MainWidget::on_settingChanged() {
     selection->accept(visitor.get());
     m_glWidget->update();
 }
+
 }  // namespace daft::app

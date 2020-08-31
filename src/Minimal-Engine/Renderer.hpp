@@ -56,7 +56,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
         return m_root->find(m_selection);
     }
 
-    void setSelection(const std::string &s) { m_selection = s; }
+    void setSelection(std::string s) { m_selection = std::move(s); }
 
     void processMouseScroll(float offset);
 

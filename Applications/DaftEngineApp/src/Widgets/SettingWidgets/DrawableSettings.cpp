@@ -6,8 +6,6 @@
 #include <QtWidgets/QLabel>
 #include <src/Widgets/MainWidget.hpp>
 
-#include "SettingWidget.hpp"
-
 namespace daft::app {
 
 DrawableSettings::DrawableSettings(daft::core::SettingManager settings, QWidget* parent)
@@ -34,7 +32,7 @@ void DrawableSettings::addIntSpinBox(std::string label, int min, int max, int st
     spinBox->setMaximum(max);
     spinBox->setValue(m_settings.get<int>(label));
     spinBox->setSingleStep(step);
-    connect(spinBox, SIGNAL(valueChanged(int)), this, SLOT(onDrawableChanged()));
+    connect(spinBox, SIGNAL(valueChanged(int)), this, SLOT(on_drawableChanged()));
     m_intSpinBoxes.insert(std::make_pair(label, spinBox));
     addField(std::move(label), {spinBox});
 }
@@ -45,7 +43,7 @@ void DrawableSettings::addDoubleSpinBox(std::string label, double min, double ma
     doubleSpinBox->setMaximum(max);
     doubleSpinBox->setValue(m_settings.get<double>(label));
     doubleSpinBox->setSingleStep(step);
-    connect(doubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onDrawableChanged()));
+    connect(doubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(on_drawableChanged()));
     m_doubleSpinBoxes.insert(std::make_pair(label, doubleSpinBox));
     addField(std::move(label), {doubleSpinBox});
 }
@@ -59,7 +57,7 @@ void DrawableSettings::addIntSpinBoxVector(std::string label, int min, int max, 
         e->setMinimum(min);
         e->setMaximum(max);
         e->setSingleStep(step);
-        connect(e, SIGNAL(valueChanged(int)), this, SLOT(onDrawableChanged()));
+        connect(e, SIGNAL(valueChanged(int)), this, SLOT(on_drawableChanged()));
     });
 
     m_intSpinBoxVectors.insert(std::make_pair(label, spinBoxVector));
@@ -75,19 +73,22 @@ void DrawableSettings::addDoubleSpinBoxVector(std::string label, double min, dou
         e->setMinimum(min);
         e->setMaximum(max);
         e->setSingleStep(step);
-        connect(e, SIGNAL(valueChanged(double)), this, SLOT(onDrawableChanged()));
+        connect(e, SIGNAL(valueChanged(double)), this, SLOT(on_drawableChanged()));
     });
 
     m_doubleSpinBoxVectors.insert(std::make_pair(label, doubleSpinBoxVector));
     addField(std::move(label), {doubleSpinBoxVector[0], doubleSpinBoxVector[1], doubleSpinBoxVector[2]});
 }
 
-void DrawableSettings::addComboBox(std::string label, const std::vector<std::string>& args) {
+void DrawableSettings::addComboBox(std::string label, const std::vector<std::string>& args, int currentItem) {
     auto comboBox = new QComboBox;
     for (const auto& arg : args) {
         comboBox->addItem(arg.c_str());
     }
-    connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onDrawableChanged()));
+    comboBox->setCurrentIndex(currentItem);
+
+    connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(on_drawableChanged()));
+    connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(on_comboBoxChanged()));
     m_comboBoxes.insert(std::make_pair(label, comboBox));
     addField(std::move(label), {comboBox});
 }
@@ -102,7 +103,7 @@ void DrawableSettings::addField(std::string label, const std::vector<QWidget*>& 
     m_layout->addRow(lab.c_str(), widget);
 }
 
-void DrawableSettings::onDrawableChanged() {
+void DrawableSettings::on_drawableChanged() {
     for (const auto& elem : m_intSpinBoxes) {
         m_settings.get<int>(elem.first) = elem.second->value();
     }
@@ -123,5 +124,7 @@ void DrawableSettings::onDrawableChanged() {
     core::Logger::debug(std::move(ss));
     emit settingChanged();
 }
+
+void DrawableSettings::on_comboBoxChanged() { emit comboBoxChanged(); }
 
 }  // namespace daft::app

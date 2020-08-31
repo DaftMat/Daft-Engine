@@ -75,7 +75,7 @@ class ENGINE_API DrawableSettings : public QWidget {
      * @param label - label of the form.
      * @param args - text of each category of the combo box.
      */
-    void addComboBox(std::string label, const std::vector<std::string>& args);
+    void addComboBox(std::string label, const std::vector<std::string>& args, int currentItem = 0);
 
     /**
      * Settings constant reference getter.
@@ -84,10 +84,12 @@ class ENGINE_API DrawableSettings : public QWidget {
     [[nodiscard]] const core::SettingManager& settings() { return m_settings; }
 
    public slots:
-    void onDrawableChanged();
+    void on_drawableChanged();
+    void on_comboBoxChanged();
 
    signals:
     void settingChanged();
+    void comboBoxChanged();
 
    private:
     void addField(std::string label, const std::vector<QWidget*>& widgets);
