@@ -179,7 +179,7 @@ void Sphere::createCubeSphere() {
         for (int y = 0; y < m_resolution; ++y) {
             for (int x = 0; x < m_resolution; ++x) {
                 int index = x + y * m_resolution;
-                glm::vec2 percent = glm::vec2(x, y) / (m_resolution - 1.f);
+                glm::vec2 percent = glm::vec2(x, y) / float(m_resolution - 1);
                 glm::vec3 pointOnUnitCube = dir + (percent.x - 0.5f) * 2.f * axisA + (percent.y - 0.5f) * 2.f * axisB;
                 glm::vec3 pointOnUnitSphere = glm::normalize(pointOnUnitCube);
 
