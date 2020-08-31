@@ -68,7 +68,7 @@ constexpr auto toUType(T e) noexcept;
  * @param m - second operand
  * @return (x % m) + 1
  */
-constexpr GLuint mod1(GLuint x, GLuint m) noexcept;
+constexpr int mod1(int x, int m) noexcept;
 
 }  // namespace daft::core
 

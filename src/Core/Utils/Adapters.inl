@@ -45,6 +45,6 @@ constexpr auto toUType(T e) noexcept {
     return static_cast<std::underlying_type_t<T>>(e);
 }
 
-constexpr GLuint mod1(GLuint x, GLuint m) noexcept { return m == x ? x : x % m; }
+constexpr int mod1(int x, int m) noexcept { return m == x ? x : x % m; }
 
 }  // namespace daft::core
