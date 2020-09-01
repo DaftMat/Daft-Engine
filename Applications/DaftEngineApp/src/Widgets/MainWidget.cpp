@@ -12,6 +12,7 @@
 #include <QtWidgets/QLabel>
 #include <src/Widgets/SettingWidgets/SettingWidget.hpp>
 #include <src/Widgets/SettingWidgets/SettingWidgetVisitor.hpp>
+#include <src/Widgets/TreeWidget/TreeWidget.hpp>
 
 #include "BorderWidget.hpp"
 
@@ -57,10 +58,9 @@ MainWidget::MainWidget(QWidget *parent)
     m_southWidget->setObjectName("southWidget");
     m_layout->addWidget(m_southWidget.get(), BorderLayout::Position::South);
 
-    auto eastWidget = new BorderWidget(BorderWidget::Orientation::VERTICAL, 150, 350);
-    eastWidget->addWidget(createLabel("East"));
-    eastWidget->setObjectName("eastWidget");
-    m_layout->addWidget(eastWidget, BorderLayout::Position::East);
+    m_eastWidget = std::make_unique<BorderWidget>(BorderWidget::Orientation::VERTICAL, 150, 350);
+    m_eastWidget->setObjectName("eastWidget");
+    m_layout->addWidget(m_eastWidget.get(), BorderLayout::Position::East);
 
     auto westWidget = new BorderWidget(BorderWidget::Orientation::VERTICAL, 0, 150);
     westWidget->addWidget(createLabel("West"));
@@ -70,6 +70,8 @@ MainWidget::MainWidget(QWidget *parent)
     setLayout(m_layout.get());
 
     connect(m_glWidget.get(), SIGNAL(selectionChanged()), this, SLOT(on_selectionChanged()));
+    connect(m_glWidget.get(), SIGNAL(sceneTreeChanged()), this, SLOT(on_sceneTreeChanged()));
+    connect(m_glWidget.get(), SIGNAL(glInitialized()), this, SLOT(on_glInitialized()));
 }
 
 MainWidget::~MainWidget() {
@@ -100,17 +102,17 @@ QSpacerItem *MainWidget::createVSpacer(int hsize) {
 
 QDoubleSpinBox *MainWidget::createDoubleSpinBox(double val, double min, double max, double step, int decs) {
     auto spinbox = new QDoubleSpinBox();
-    spinbox->setValue(val);
     spinbox->setMinimum(min);
     spinbox->setMaximum(max);
     spinbox->setSingleStep(step);
     spinbox->setDecimals(decs);
+    spinbox->setValue(val);
     return spinbox;
 }
 
 void MainWidget::on_selectionChanged() {
     auto selection = m_glWidget->renderer().getSelection();
-    if (m_settingWidget != nullptr) m_southWidget->layout()->removeWidget(m_settingWidget.get());
+    // if (m_settingWidget != nullptr) m_southWidget->layout()->removeWidget(m_settingWidget.get());
     SettingWidget *widget;
     if (selection == nullptr) {
         widget = new SettingWidget(nullptr, nullptr);
@@ -120,8 +122,13 @@ void MainWidget::on_selectionChanged() {
         widget = visitor->widget();
     }
     m_settingWidget.reset(widget);
-    connect(m_settingWidget.get(), SIGNAL(settingChanged()), this, SLOT(on_settingChanged()));
-    connect(m_settingWidget.get(), SIGNAL(comboBoxChanged()), this, SLOT(on_comboBoxChanged()));
+    if (m_settingWidget->settingsWidget()) {
+        connect(m_settingWidget->settingsWidget(), SIGNAL(settingChanged()), this, SLOT(on_settingChanged()));
+        connect(m_settingWidget->settingsWidget(), SIGNAL(comboBoxChanged()), this, SLOT(on_comboBoxChanged()));
+    }
+    if (m_settingWidget->transformsWidget()) {
+        connect(m_settingWidget->transformsWidget(), SIGNAL(settingChanged()), this, SLOT(on_settingChanged()));
+    }
     m_southWidget->addWidget(m_settingWidget.get());
 }
 
@@ -131,6 +138,22 @@ void MainWidget::on_settingChanged() {
     auto visitor = std::make_unique<SettingEditorVisitor>(m_settingWidget->settings(), m_settingWidget->transforms());
     selection->accept(visitor.get());
     m_glWidget->update();
+}
+
+void MainWidget::on_sceneTreeChanged() { m_treeWidget->reset(m_glWidget->renderer().getSceneTree()); }
+
+void MainWidget::on_treeSelectionChanged() {
+    const auto index = m_treeWidget->selectionModel()->currentIndex();
+    auto selectedText = index.data(Qt::DisplayRole).toString();
+    m_glWidget->renderer().setSelection(selectedText.toStdString());
+    on_selectionChanged();
+}
+
+void MainWidget::on_glInitialized() {
+    m_treeWidget = std::make_unique<TreeWidget>(m_glWidget->renderer().getSceneTree());
+    connect(m_treeWidget->selectionModel(), &QItemSelectionModel::selectionChanged, this,
+            &MainWidget::on_treeSelectionChanged);
+    m_eastWidget->addWidget(m_treeWidget.get());
 }
 
 }  // namespace daft::app

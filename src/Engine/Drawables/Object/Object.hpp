@@ -57,6 +57,8 @@ class ENGINE_API Object : public Drawable {
 
     void subdivide(bool normalsArePositions = false);
 
+    [[nodiscard]] bool isComposite() const override { return false; }
+
    protected:
     virtual void applyUpdate() {}
     bool m_update;

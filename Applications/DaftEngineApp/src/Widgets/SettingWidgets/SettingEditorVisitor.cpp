@@ -7,25 +7,26 @@
 #include <Engine/Drawables/Object/Object.hpp>
 #include <Engine/Drawables/Object/Sphere.hpp>
 
-void daft::app::SettingEditorVisitor::visit(daft::engine::Object *object) { updateTransforms(object); }
+void daft::app::SettingEditorVisitor::visit(daft::engine::Object *object) { object->setTransformations(m_transforms); }
 
 void daft::app::SettingEditorVisitor::visit(daft::engine::Sphere *sphere) {
     using namespace daft::engine;
-    updateTransforms(sphere);
+    sphere->setTransformations(m_transforms);
     sphere->type() = Sphere::Type{m_settings.get<int>("Type")};
     switch (sphere->type()) {
         case Sphere::Type::UV:
-            sphere->meridians() = m_settings.get<int>("Meridians");
-            sphere->parallels() = m_settings.get<int>("Parallels");
+            sphere->setMeridians(m_settings.get<int>("Meridians"));
+            sphere->setParallels(m_settings.get<int>("Parallels"));
             break;
         case Sphere::Type::Ico:
-            sphere->subdivisions() = m_settings.get<int>("Subdivisions");
+            sphere->setSubdivisions(m_settings.get<int>("Subdivisions"));
             break;
         case Sphere::Type::Cube:
-            sphere->resolution() = m_settings.get<int>("Resolution");
+            sphere->setResolution(m_settings.get<int>("Resolution"));
             break;
     }
-    sphere->updateNextFrame();
 }
 
-void daft::app::SettingEditorVisitor::visit(daft::engine::Composite *composite) { updateTransforms(composite); }
+void daft::app::SettingEditorVisitor::visit(daft::engine::Composite *composite) {
+    composite->setTransformations(m_transforms);
+}

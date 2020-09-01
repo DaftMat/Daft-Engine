@@ -30,23 +30,17 @@ class ENGINE_API SettingWidget : public QScrollArea {
     explicit SettingWidget(DrawableSettings *settings, TransformSettings *transforms, std::string name = "Drawable",
                            QWidget *parent = nullptr);
 
-    [[nodiscard]] const core::SettingManager &settings() { return m_settings->settings(); }
-
-    [[nodiscard]] const core::SettingManager &transforms() { return m_transforms->transforms(); }
-
-   signals:
-    void settingChanged();
-    void comboBoxChanged();
-
-   public slots:
-    void on_settingChanged() {
-        std::stringstream ss;
-        ss << "Setting changed.";
-        core::Logger::debug(std::move(ss));
-        emit settingChanged();
+    [[nodiscard]] core::SettingManager settings() const {
+        return m_settings ? m_settings->settings() : core::SettingManager{};
     }
 
-    void on_comboBoxChanged() { emit comboBoxChanged(); }
+    [[nodiscard]] core::SettingManager transforms() const {
+        return m_transforms ? m_transforms->transforms() : core::SettingManager{};
+    }
+
+    DrawableSettings *settingsWidget() { return m_settings.get(); }
+
+    TransformSettings *transformsWidget() { return m_transforms.get(); }
 
    private:
     std::unique_ptr<DrawableSettings> m_settings{nullptr};

@@ -14,7 +14,7 @@ Drawable::Drawable(Composite *parent, std::string name) noexcept
 
 glm::mat4 Drawable::model() const {
     glm::mat4 parentModel{1.f};
-    if (getParent() != nullptr) {
+    if (getParent()) {
         parentModel = getParent()->model();
     }
     return parentModel * calculateModel();
@@ -32,16 +32,16 @@ const Composite *Drawable::getParent() const { return m_parent; }
 
 void Drawable::setParent(Composite *composite) { m_parent = composite; }
 
-glm::mat4 Drawable::calculateModel() const { return calculateNormalizedModel() * calculateTranslationMat(); }
+glm::mat4 Drawable::calculateModel() const { return calculateTranslationMat() * calculateNormalizedModel(); }
 
-glm::mat4 Drawable::calculateNormalizedModel() const { return calculateScaleMat() * calculateRotationMat(); }
+glm::mat4 Drawable::calculateNormalizedModel() const { return calculateRotationMat() * calculateScaleMat(); }
 
 glm::mat4 Drawable::calculateScaleMat() const { return glm::scale(glm::mat4{1.f}, m_scale); }
 
 glm::mat4 Drawable::calculateRotationMat() const {
-    auto rotX = glm::rotate(glm::mat4{1.f}, m_rotations.x, glm::vec3{1.f, 0.f, 0.f});
-    auto rotY = glm::rotate(glm::mat4{1.f}, m_rotations.y, glm::vec3{0.f, 1.f, 0.f});
-    auto rotZ = glm::rotate(glm::mat4{1.f}, m_rotations.z, glm::vec3{0.f, 0.f, 1.f});
+    auto rotX = glm::rotate(glm::mat4{1.f}, glm::radians(m_rotations.x), glm::vec3{1.f, 0.f, 0.f});
+    auto rotY = glm::rotate(glm::mat4{1.f}, glm::radians(m_rotations.y), glm::vec3{0.f, 1.f, 0.f});
+    auto rotZ = glm::rotate(glm::mat4{1.f}, glm::radians(m_rotations.z), glm::vec3{0.f, 0.f, 1.f});
     return rotX * rotY * rotZ;
 }
 
@@ -50,6 +50,20 @@ glm::mat4 Drawable::calculateTranslationMat() const { return glm::translate(glm:
 Drawable *Drawable::find(const std::string &pname) {
     if (pname == name()) return this;
     return nullptr;
+}
+
+core::SettingManager Drawable::getTransformations() {
+    core::SettingManager sm{};
+    sm.add("Position", m_position);
+    sm.add("Rotations", m_rotations);
+    sm.add("Scale", m_scale);
+    return sm;
+}
+
+void Drawable::setTransformations(const core::SettingManager &settings) {
+    m_position = settings.get<glm::vec3>("Position");
+    m_rotations = settings.get<glm::vec3>("Rotations");
+    m_scale = settings.get<glm::vec3>("Scale");
 }
 
 }  // namespace daft::engine

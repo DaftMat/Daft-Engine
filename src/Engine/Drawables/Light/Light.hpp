@@ -68,6 +68,8 @@ class Light : public Drawable {
 
     void reset() override;
 
+    [[nodiscard]] bool isComposite() const override { return false; }
+
    private:
     Mesh m_mesh;
     glm::vec3 m_color;

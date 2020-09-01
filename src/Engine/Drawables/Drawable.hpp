@@ -4,6 +4,7 @@
 #pragma once
 #include <API.hpp>
 #include <Core/Geometry/ShaderProgram.hpp>
+#include <Core/Materials/SettingManager.hpp>
 #include <Core/Utils/NonCopyable.hpp>
 #include <Core/Utils/Types.hpp>
 
@@ -162,9 +163,15 @@ class Drawable : public core::NonCopyable {
      */
     void setParent(Composite *composite);
 
+    core::SettingManager getTransformations();
+
+    void setTransformations(const core::SettingManager &settings);
+
     virtual void reset() { m_parent = nullptr; }
 
     virtual void update() {}
+
+    [[nodiscard]] virtual bool isComposite() const = 0;
 
    private:
     [[nodiscard]] glm::mat4 calculateModel() const;

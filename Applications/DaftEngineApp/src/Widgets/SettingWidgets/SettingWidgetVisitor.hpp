@@ -39,10 +39,10 @@ class SettingWidgetVisitor : public core::DrawableVisitor {
     SettingWidget *widget() { return m_widget; }
 
    private:
-    template <typename D>
-    TransformSettings *getTransforms(D *drawable);
+    static TransformSettings *createTransformWidget(core::SettingManager sm) {
+        return new TransformSettings(std::move(sm));
+    }
 
     SettingWidget *m_widget{nullptr};
 };
 }  // namespace daft::app
-#include <Widgets/SettingWidgets/SettingWidgetVisitor.inl>

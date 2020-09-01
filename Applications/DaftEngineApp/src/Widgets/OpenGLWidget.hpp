@@ -64,6 +64,10 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
 
     void selectionChanged();
 
+    void sceneTreeChanged();
+
+    void glInitialized();
+
    protected:
     void initializeGL() override;
 

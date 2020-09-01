@@ -36,6 +36,7 @@ Drawable *Composite::find(const std::string &pname) {
         found = d->find(pname);
         if (found) return found;
     }
+    return nullptr;
 }
 
 }  // namespace daft::engine

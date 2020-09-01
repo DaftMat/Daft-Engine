@@ -7,6 +7,7 @@
 #include <QFrame>
 #include <QtWidgets/QWidget>
 #include <src/Widgets/SettingWidgets/SettingWidget.hpp>
+#include <src/Widgets/TreeWidget/TreeWidget.hpp>
 
 #include "BorderWidget.hpp"
 #include "OpenGLWidget.hpp"
@@ -95,18 +96,23 @@ class ENGINE_API MainWidget : public QWidget {
      * @param decs - number of printed decimals in the spin box.
      * @return created QDoubleSpinBox .
      */
-    [[nodiscard]] static QDoubleSpinBox *createDoubleSpinBox(double val = 1.0, double min = -9999.0,
-                                                             double max = 9999.0, double step = 1.0, int decs = 2);
+    [[nodiscard]] static QDoubleSpinBox *createDoubleSpinBox(double val = 1.0, double min = -999, double max = 999,
+                                                             double step = 1.0, int decs = 2);
 
    public slots:
     void on_selectionChanged();
     void on_settingChanged();
     void on_comboBoxChanged() { m_glWidget->emitNextFrame(); }
+    void on_treeSelectionChanged();
+    void on_sceneTreeChanged();
+    void on_glInitialized();
 
    private:
     std::unique_ptr<OpenGLWidget> m_glWidget{nullptr};
     std::unique_ptr<BorderWidget> m_southWidget{nullptr};
+    std::unique_ptr<BorderWidget> m_eastWidget{nullptr};
     std::unique_ptr<SettingWidget> m_settingWidget{nullptr};
+    std::unique_ptr<TreeWidget> m_treeWidget{nullptr};
 
     std::unique_ptr<BorderLayout> m_layout{nullptr};
 };

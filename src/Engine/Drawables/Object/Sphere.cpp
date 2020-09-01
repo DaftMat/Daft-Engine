@@ -131,7 +131,7 @@ void Sphere::createIcosahedron() {
     positions.emplace_back(0.f, -1.f, 0.f);
 
     // indices
-    for (GLuint i = 1; i <= 9; i += 2) {
+    for (int i = 1; i <= 9; i += 2) {
         // Top
         am.indices().push_back(0);
         am.indices().push_back(core::mod1(i + 2, 10));
@@ -208,5 +208,29 @@ void Sphere::createCubeSphere() {
 }
 
 void Sphere::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
+
+void Sphere::setMeridians(int m) {
+    if (m == m_meridians) return;
+    m_meridians = m;
+    m_update = true;
+}
+
+void Sphere::setParallels(int p) {
+    if (p == m_parallels) return;
+    m_parallels = p;
+    m_update = true;
+}
+
+void Sphere::setSubdivisions(int s) {
+    if (s == m_subdivisions) return;
+    m_subdivisions = s;
+    m_update = true;
+}
+
+void Sphere::setResolution(int r) {
+    if (r == m_resolution) return;
+    m_resolution = r;
+    m_update = true;
+}
 
 }  // namespace daft::engine

@@ -80,6 +80,8 @@ class ENGINE_API Composite : public Drawable {
         }
     }
 
+    [[nodiscard]] bool isComposite() const override { return true; }
+
    private:
     using DrawablePtr = std::shared_ptr<Drawable>;
 

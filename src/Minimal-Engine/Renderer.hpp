@@ -37,24 +37,22 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     void resize(int width, int height);
 
-    void addMesh(daft::core::AttribManager attribManager) noexcept {
-        using namespace daft::engine;
-        auto toAdd = new Object(nullptr, MeshObject(daft::core::Mesh(std::move_if_noexcept(attribManager))));
-        m_root->add(toAdd);
-        m_selection = toAdd->name();
-    }
-
-    void addSphere() {
-        using namespace daft;
-        auto toAdd = new engine::Sphere;
-        m_root->add(toAdd);
-        m_selection = toAdd->name();
+    void addDrawable(daft::engine::Drawable *drawable) {
+        auto selection = getSelection();
+        if (selection && selection->isComposite()) {
+            dynamic_cast<daft::engine::Composite *>(selection)->add(drawable);
+        } else {
+            m_root->add(drawable);
+        }
+        setSelection(drawable->name());
     }
 
     daft::engine::Drawable *getSelection() {
         if (m_selection.empty()) return nullptr;
         return m_root->find(m_selection);
     }
+
+    daft::engine::Composite *getSceneTree() { return m_root.get(); }
 
     void setSelection(std::string s) { m_selection = std::move(s); }
 

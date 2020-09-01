@@ -8,11 +8,11 @@
 #include <Engine/Drawables/Object/Sphere.hpp>
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::Object *object) {
-    m_widget = new SettingWidget(nullptr, getTransforms(object), object->name());
+    m_widget = new SettingWidget(nullptr, createTransformWidget(object->getTransformations()), object->name());
 }
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::Composite *composite) {
-    m_widget = new SettingWidget(nullptr, getTransforms(composite), composite->name());
+    m_widget = new SettingWidget(nullptr, createTransformWidget(composite->getTransformations()), composite->name());
 }
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::Sphere *sphere) {
@@ -39,5 +39,5 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::Sphere *sphere) {
             break;
     }
 
-    m_widget = new SettingWidget(ds, getTransforms(sphere), sphere->name());
+    m_widget = new SettingWidget(ds, createTransformWidget(sphere->getTransformations()), sphere->name());
 }

@@ -15,6 +15,7 @@ void OpenGLWidget::initializeGL() {
         m_renderer = std::make_unique<Renderer>(width(), height());
         prepareScene();
         m_glInitialized = true;
+        emit glInitialized();
     }
 }
 
@@ -31,35 +32,9 @@ void OpenGLWidget::prepareScene() {
     ss << "Loading example scene...";
     core::Logger::info(std::move(ss));
 
-    daft::core::AttribManager attribManager;
-    std::vector<GLuint> indices{0, 2, 3, 0, 1, 2};
-    std::vector<glm::vec3> positions;
-    std::vector<glm::vec3> normals;
-    std::vector<glm::vec2> texCoords;
-
-    texCoords.emplace_back(0.f, 0.f);
-    normals.emplace_back(1.f, 1.f, 1.f);
-    positions.emplace_back(-0.5f, -0.5f, 0.5f);
-
-    texCoords.emplace_back(1.f, 0.f);
-    normals.emplace_back(1.f, 0.f, 0.f);
-    positions.emplace_back(0.5f, -0.5f, 0.f);
-
-    texCoords.emplace_back(1.f, 1.f);
-    normals.emplace_back(0.f, 1.f, 0.f);
-    positions.emplace_back(0.5f, 0.5f, 0.f);
-
-    texCoords.emplace_back(0.f, 1.f);
-    normals.emplace_back(0.f, 0.f, 1.f);
-    positions.emplace_back(-0.5f, 0.5f, 0.f);
-
-    attribManager.addAttrib(positions);
-    attribManager.addAttrib(normals);
-    attribManager.addAttrib(texCoords);
-    attribManager.setIndices(indices);
-
-    // m_renderer->addMesh(attribManager);
-    m_renderer->addSphere();
+    m_renderer->addDrawable(new engine::Sphere);
+    m_renderer->addDrawable(new engine::Composite);
+    m_renderer->addDrawable(new engine::Sphere);
 
     std::stringstream ss2;
     ss2 << "Example scene loaded";

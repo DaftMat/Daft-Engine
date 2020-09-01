@@ -5,6 +5,7 @@
 #include <API.hpp>
 #include <Core/Materials/SettingManager.hpp>
 #include <Core/Utils/DrawableVisitor.hpp>
+#include <utility>
 
 namespace daft::app {
 class SettingEditorVisitor : public core::DrawableVisitor {
@@ -12,8 +13,8 @@ class SettingEditorVisitor : public core::DrawableVisitor {
     /**
      * standard constructor.
      */
-    SettingEditorVisitor(const core::SettingManager &settings, const core::SettingManager &transforms)
-        : m_settings{settings}, m_transforms{transforms} {}
+    SettingEditorVisitor(core::SettingManager settings, core::SettingManager transforms)
+        : m_settings{std::move(settings)}, m_transforms{std::move(transforms)} {}
 
     /**
      * visits an Object .
@@ -34,13 +35,6 @@ class SettingEditorVisitor : public core::DrawableVisitor {
     void visit(engine::Composite *composite) override;
 
    private:
-    template <typename D>
-    void updateTransforms(D *drawable) {
-        drawable->position() = m_transforms.get<glm::vec3>("Position");
-        drawable->rotations() = m_transforms.get<glm::vec3>("Rotations");
-        drawable->scale() = m_transforms.get<glm::vec3>("Scale");
-    }
-
     core::SettingManager m_settings, m_transforms;
 };
 }  // namespace daft::app

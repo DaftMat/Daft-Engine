@@ -26,19 +26,19 @@ class ENGINE_API Sphere : public Object {
 
     [[nodiscard]] int meridians() const { return m_meridians; }
 
-    int &meridians() { return m_meridians; }
+    void setMeridians(int m);
 
     [[nodiscard]] int parallels() const { return m_parallels; }
 
-    int &parallels() { return m_parallels; }
+    void setParallels(int p);
 
     [[nodiscard]] int subdivisions() const { return m_subdivisions; }
 
-    int &subdivisions() { return m_subdivisions; }
+    void setSubdivisions(int s);
 
     [[nodiscard]] int resolution() const { return m_resolution; }
 
-    int &resolution() { return m_resolution; }
+    void setResolution(int r);
 
     void accept(DrawableVisitor *visitor) override;
 
