@@ -4,7 +4,7 @@
 #include "TreeWidget.hpp"
 
 namespace daft::app {
-void TreeWidget::reset(engine::Composite *root) {
+void TreeWidget::resetTree(engine::Composite *root) {
     // setModel(nullptr);
 
     auto *standardModel = new QStandardItemModel();
@@ -20,7 +20,6 @@ void TreeWidget::addNode(QStandardItem *parent, engine::Composite *node) {
     for (auto &drawable : node->drawables()) {
         /// add drawable
         auto *item = new QStandardItem(drawable->name().c_str());
-        item->setEditable(false);
         parent->appendRow(item);
         /// add elements if the current drawable is a node
         if (drawable->isComposite()) addNode(item, (engine::Composite *)drawable.get());

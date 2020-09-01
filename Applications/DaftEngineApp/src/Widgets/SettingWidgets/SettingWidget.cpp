@@ -19,9 +19,9 @@ SettingWidget::SettingWidget(DrawableSettings *settings, TransformSettings *tran
         pname = "No object selected.";
     else
         pname = std::move(name);
-    auto title = new QLabel(pname.c_str());
-    title->setObjectName("sectionTitle");
-    layout->addWidget(title);
+    m_title = new QLabel(pname.c_str());
+    m_title->setObjectName("sectionTitle");
+    layout->addWidget(m_title);
     if (m_settings != nullptr) layout->addWidget(settings);
     if (m_transforms != nullptr) layout->addWidget(transforms);
 
@@ -34,5 +34,7 @@ SettingWidget::SettingWidget(DrawableSettings *settings, TransformSettings *tran
     setObjectName("settingWidget");
     setSizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
 }
+
+void SettingWidget::setTitle(const std::string &name) { m_title->setText(name.c_str()); }
 
 }  // namespace daft::app

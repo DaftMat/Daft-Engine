@@ -5,6 +5,7 @@
 
 #include <API.hpp>
 #include <Engine/Drawables/Drawable.hpp>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QScrollArea>
 #include <memory>
 
@@ -42,8 +43,12 @@ class ENGINE_API SettingWidget : public QScrollArea {
 
     TransformSettings *transformsWidget() { return m_transforms.get(); }
 
+    void setTitle(const std::string &name);
+
    private:
     std::unique_ptr<DrawableSettings> m_settings{nullptr};
     std::unique_ptr<TransformSettings> m_transforms{nullptr};
+
+    QLabel *m_title;
 };
 }  // namespace daft::app

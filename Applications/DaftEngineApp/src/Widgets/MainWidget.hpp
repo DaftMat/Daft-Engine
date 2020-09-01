@@ -104,6 +104,7 @@ class ENGINE_API MainWidget : public QWidget {
     void on_settingChanged();
     void on_comboBoxChanged() { m_glWidget->emitNextFrame(); }
     void on_treeSelectionChanged();
+    void on_treeItemChanged();
     void on_sceneTreeChanged();
     void on_glInitialized();
 

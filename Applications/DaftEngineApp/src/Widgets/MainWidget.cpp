@@ -112,7 +112,6 @@ QDoubleSpinBox *MainWidget::createDoubleSpinBox(double val, double min, double m
 
 void MainWidget::on_selectionChanged() {
     auto selection = m_glWidget->renderer().getSelection();
-    // if (m_settingWidget != nullptr) m_southWidget->layout()->removeWidget(m_settingWidget.get());
     SettingWidget *widget;
     if (selection == nullptr) {
         widget = new SettingWidget(nullptr, nullptr);
@@ -140,7 +139,7 @@ void MainWidget::on_settingChanged() {
     m_glWidget->update();
 }
 
-void MainWidget::on_sceneTreeChanged() { m_treeWidget->reset(m_glWidget->renderer().getSceneTree()); }
+void MainWidget::on_sceneTreeChanged() { m_treeWidget->resetTree(m_glWidget->renderer().getSceneTree()); }
 
 void MainWidget::on_treeSelectionChanged() {
     const auto index = m_treeWidget->selectionModel()->currentIndex();
@@ -149,10 +148,18 @@ void MainWidget::on_treeSelectionChanged() {
     on_selectionChanged();
 }
 
+void MainWidget::on_treeItemChanged() {
+    const auto index = m_treeWidget->selectionModel()->currentIndex();
+    std::string newName = index.data(Qt::DisplayRole).toString().toStdString();
+    m_glWidget->renderer().getSelection()->name() = newName;
+    m_settingWidget->setTitle(newName);
+}
+
 void MainWidget::on_glInitialized() {
     m_treeWidget = std::make_unique<TreeWidget>(m_glWidget->renderer().getSceneTree());
     connect(m_treeWidget->selectionModel(), &QItemSelectionModel::selectionChanged, this,
             &MainWidget::on_treeSelectionChanged);
+    connect(m_treeWidget->model(), &QAbstractItemModel::dataChanged, this, &MainWidget::on_treeItemChanged);
     m_eastWidget->addWidget(m_treeWidget.get());
 }
 
