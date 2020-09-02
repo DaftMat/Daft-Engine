@@ -31,18 +31,39 @@ class ENGINE_API SettingWidget : public QScrollArea {
     explicit SettingWidget(DrawableSettings *settings, TransformSettings *transforms, std::string name = "Drawable",
                            QWidget *parent = nullptr);
 
+    /**
+     * Gets the SettingManager from the DrawableSettings .
+     * @return the specific settings of the selected Drawable as a SettingManager .
+     */
     [[nodiscard]] core::SettingManager settings() const {
         return m_settings ? m_settings->settings() : core::SettingManager{};
     }
 
+    /**
+     * Gets the SettingManager from the TransformSettings .
+     * @return the transformation settings of the selected Drawable as a SettingManager .
+     */
     [[nodiscard]] core::SettingManager transforms() const {
         return m_transforms ? m_transforms->transforms() : core::SettingManager{};
     }
 
+    /**
+     * Getter of the inner DrawableSettings .
+     * @return specific settings widget of the selected Drawable .
+     */
     DrawableSettings *settingsWidget() { return m_settings.get(); }
 
+    /**
+     * Getter of the inner TransformSettings .
+     * @return transformation settings widget of the selected Drawable .
+     */
     TransformSettings *transformsWidget() { return m_transforms.get(); }
 
+    /**
+     * Sets the title of the section.
+     * Always the name of the selected Drawable .
+     * @param name - title to use.
+     */
     void setTitle(const std::string &name);
 
    private:

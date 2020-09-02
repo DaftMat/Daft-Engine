@@ -12,6 +12,9 @@ class ShaderProgram;
 }
 
 namespace daft::engine {
+/**
+ * A Drawable that represents a group of drawables.
+ */
 class ENGINE_API Composite : public Drawable {
    public:
     /**
@@ -21,6 +24,9 @@ class ENGINE_API Composite : public Drawable {
     explicit Composite(Composite *parent = nullptr,
                        std::string name = "Group" + std::to_string(m_nrComposite++)) noexcept;
 
+    /**
+     * Default destructor.
+     */
     ~Composite() noexcept override = default;
 
     /**
@@ -72,14 +78,20 @@ class ENGINE_API Composite : public Drawable {
      */
     [[nodiscard]] const auto &drawables() const { return m_drawables; }
 
+    /**
+     * Resets all the drawables inside this.
+     */
     void reset() override;
 
-    void update() override {
-        for (auto &d : m_drawables) {
-            d->update();
-        }
-    }
+    /**
+     * updates all the drawables inside this.
+     */
+    void update() override;
 
+    /**
+     * Tests if this is a Composite .
+     * @return true.
+     */
     [[nodiscard]] bool isComposite() const override { return true; }
 
    private:

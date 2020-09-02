@@ -66,6 +66,9 @@ class Light : public Drawable {
      */
     glm::vec3 &color() { return m_color; }
 
+    /**
+     * Resets the light.
+     */
     void reset() override;
 
     [[nodiscard]] bool isComposite() const override { return false; }

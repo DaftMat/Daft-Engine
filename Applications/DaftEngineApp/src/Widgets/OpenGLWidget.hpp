@@ -38,43 +38,38 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
      */
     Renderer &renderer() { return *m_renderer; }
 
+    /**
+     * Tells the gl widget to emit a signal on the next frame.
+     */
     void emitNextFrame() { m_emitSelectionChanged = true; }
 
+    /**
+     * Selected Drawable setter.
+     * @param s - name of the selected drawable.
+     */
     void setSelection(std::string s);
 
     [[nodiscard]] QSize minimumSizeHint() const override { return {50, 50}; }
-
     [[nodiscard]] QSize sizeHint() const override { return {width(), height()}; }
 
     void mousePressEvent(QMouseEvent *e) override;
-
     void mouseReleaseEvent(QMouseEvent *e) override;
-
     void mouseMoveEvent(QMouseEvent *e) override;
-
     void keyPressEvent(QKeyEvent *e) override;
-
     void wheelEvent(QWheelEvent *e) override;
 
    public slots:
-
     void cleanup() { m_renderer.reset(); }
 
    signals:
-
     void selectionChanged();
-
     void sceneTreeChanged();
-
     void glInitialized();
 
    protected:
     void initializeGL() override;
-
     void paintGL() override;
-
     void resizeGL(int width, int height) override;
-
     void prepareScene();
 
    private:

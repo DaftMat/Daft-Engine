@@ -31,10 +31,20 @@ class Drawable : public core::NonCopyable {
     explicit Drawable(Composite *parent = nullptr,
                       std::string name = "Drawable" + std::to_string(m_nrDrawables++)) noexcept;
 
+    /**
+     * Default destructor.
+     */
     virtual ~Drawable() noexcept = default;
 
+    /**
+     * Default move constructor.
+     */
     Drawable(Drawable &&) noexcept = default;
 
+    /**
+     * Default move assignment operator.
+     * @return ref to this.
+     */
     Drawable &operator=(Drawable &&) noexcept = default;
 
     /**
@@ -128,6 +138,18 @@ class Drawable : public core::NonCopyable {
     [[nodiscard]] const std::string &name() const { return m_name; }
 
     /**
+     * Gets the transformations as a SettingManager .
+     * @return transformations.
+     */
+    core::SettingManager getTransformations();
+
+    /**
+     * Transformations setter using a SettingManager .
+     * @param settings - transformations.
+     */
+    void setTransformations(const core::SettingManager &settings);
+
+    /**
      * Name reference.
      * @return ref to name.
      */
@@ -145,25 +167,28 @@ class Drawable : public core::NonCopyable {
      */
     void setParent(Composite *composite);
 
-    core::SettingManager getTransformations();
-
-    void setTransformations(const core::SettingManager &settings);
-
+    /**
+     * Resets the drawable.
+     */
     virtual void reset() { m_parent = nullptr; }
 
+    /**
+     * updates the drawable (rebuild its vao for an Object ).
+     */
     virtual void update() {}
 
+    /**
+     * Tests if this is a Composite .
+     * to be overridden.
+     * @return true if this is a composite, false otherwise.
+     */
     [[nodiscard]] virtual bool isComposite() const = 0;
 
    private:
     [[nodiscard]] glm::mat4 calculateModel() const;
-
     [[nodiscard]] glm::mat4 calculateNormalizedModel() const;
-
     [[nodiscard]] glm::mat4 calculateScaleMat() const;
-
     [[nodiscard]] glm::mat4 calculateRotationMat() const;
-
     [[nodiscard]] glm::mat4 calculateTranslationMat() const;
 
     glm::vec3 m_position{0.f};

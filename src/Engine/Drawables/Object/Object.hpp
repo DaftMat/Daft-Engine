@@ -49,14 +49,32 @@ class ENGINE_API Object : public Drawable {
      */
     void accept(DrawableVisitor *visitor) override;
 
+    /**
+     * Resets the object.
+     */
     void reset() override;
 
+    /**
+     * Updates the object.
+     * Resets all the meshes' VAO.
+     */
     void update() override;
 
+    /**
+     * Tells this object to update on the next frame.
+     */
     void updateNextFrame() { m_update = true; }
 
+    /**
+     * Subdivides triangles of each meshes in 4 new triangles.
+     * @param normalsArePositions - true if the object is a sphere.
+     */
     void subdivide(bool normalsArePositions = false);
 
+    /**
+     * Tests if this is a Composite .
+     * @return false.
+     */
     [[nodiscard]] bool isComposite() const override { return false; }
 
    protected:

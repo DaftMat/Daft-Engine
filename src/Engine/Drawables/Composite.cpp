@@ -39,4 +39,10 @@ Drawable *Composite::find(const std::string &pname) {
     return nullptr;
 }
 
+void Composite::update() {
+    for (auto &d : m_drawables) {
+        d->update();
+    }
+}
+
 }  // namespace daft::engine

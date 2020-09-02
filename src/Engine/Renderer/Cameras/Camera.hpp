@@ -6,6 +6,9 @@
 #include <Core/Utils/Types.hpp>
 
 namespace daft::engine {
+/**
+ * A class that represents a virtual camera.
+ */
 class ENGINE_API Camera {
    public:
     /**
