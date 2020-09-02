@@ -21,6 +21,8 @@ MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent), m_glWidget{std::make_unique<OpenGLWidget>()}, m_layout{std::make_unique<BorderLayout>(0)} {
     m_layout->setMargin(0);
     m_layout->addWidget(m_glWidget.get(), BorderLayout::Position::Center);
+
+    /// NORTH
     auto button0 = new QPushButton();
     button0->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     button0->setText("Button0");
@@ -39,36 +41,28 @@ MainWidget::MainWidget(QWidget *parent)
     northWidget->setObjectName("northWidget");
     m_layout->addWidget(northWidget, BorderLayout::Position::North);
 
+    /// SOUTH
     auto screenHeight = float(QApplication::desktop()->screenGeometry().height());
     m_southWidget = std::make_unique<BorderWidget>(BorderWidget::Orientation::HORIZONTAL, int(screenHeight / 4.5f),
                                                    int(screenHeight / 4.5f));
     m_southWidget->addSpacer();
     m_southWidget->addSeparator();
-    // core::mat::SettingManager settingsTransform;
-    // settingsTransform.add("Position", glm::vec3{0.f, 0.f, 0.f});
-    // settingsTransform.add("Rotations", glm::vec3{0.f, 0.f, 0.f});
-    // settingsTransform.add("Scale", glm::vec3{1.f, 1.f, 1.f});
-    // core::mat::SettingManager settings;
-    // settings.add("test", glm::vec3{1.f, 2.f, 3.f});
-    // auto drawSettings = new DrawableSettings(settings);
-    // drawSettings->addDoubleSpinBoxVector("test");
-    // auto transformSettings = new TransformSettings(settingsTransform);
-    // auto settingWidget = new SettingWidget(drawSettings, transformSettings);
-    // southWidget->addWidget(settingWidget);
     m_southWidget->setObjectName("southWidget");
     m_layout->addWidget(m_southWidget.get(), BorderLayout::Position::South);
 
+    /// EAST
     m_eastWidget = std::make_unique<BorderWidget>(BorderWidget::Orientation::VERTICAL, 150, 350);
     m_eastWidget->setObjectName("eastWidget");
     m_layout->addWidget(m_eastWidget.get(), BorderLayout::Position::East);
 
-    auto westWidget = new BorderWidget(BorderWidget::Orientation::VERTICAL, 0, 150);
-    westWidget->addWidget(createLabel("West"));
-    westWidget->setObjectName("westWidget");
-    m_layout->addWidget(westWidget, BorderLayout::Position::West);
+    /// WEST
+    /// auto westWidget = new BorderWidget(BorderWidget::Orientation::VERTICAL, 0, 150);
+    /// westWidget->setObjectName("westWidget");
+    /// m_layout->addWidget(westWidget, BorderLayout::Position::West);
 
     setLayout(m_layout.get());
 
+    /// signal connections
     connect(m_glWidget.get(), SIGNAL(selectionChanged()), this, SLOT(on_selectionChanged()));
     connect(m_glWidget.get(), SIGNAL(sceneTreeChanged()), this, SLOT(on_sceneTreeChanged()));
     connect(m_glWidget.get(), SIGNAL(glInitialized()), this, SLOT(on_glInitialized()));
@@ -77,12 +71,6 @@ MainWidget::MainWidget(QWidget *parent)
 MainWidget::~MainWidget() {
     m_glWidget.reset();
     m_layout.reset();
-}
-
-QLabel *MainWidget::createLabel(const QString &text) {
-    auto label = new QLabel(text);
-    // label->setFrameStyle(QFrame::Box | QFrame::Raised);
-    return label;
 }
 
 QFrame *MainWidget::createLine(QFrame::Shape shape) {
@@ -123,7 +111,8 @@ void MainWidget::on_selectionChanged() {
     m_settingWidget.reset(widget);
     if (m_settingWidget->settingsWidget()) {
         connect(m_settingWidget->settingsWidget(), SIGNAL(settingChanged()), this, SLOT(on_settingChanged()));
-        connect(m_settingWidget->settingsWidget(), SIGNAL(comboBoxChanged()), this, SLOT(on_comboBoxChanged()));
+        connect(m_settingWidget->settingsWidget(), SIGNAL(comboBoxChanged()), this,
+                SLOT(on_selectionSettingsChanged()));
     }
     if (m_settingWidget->transformsWidget()) {
         connect(m_settingWidget->transformsWidget(), SIGNAL(settingChanged()), this, SLOT(on_settingChanged()));
@@ -156,6 +145,9 @@ void MainWidget::on_treeItemChanged() {
 }
 
 void MainWidget::on_glInitialized() {
+    /// creates the tree widget.
+    /// not possible in constructor :
+    /// the function glInitialize() has not been called yet thus the renderer is nullptr.
     m_treeWidget = std::make_unique<TreeWidget>(m_glWidget->renderer().getSceneTree());
     connect(m_treeWidget->selectionModel(), &QItemSelectionModel::selectionChanged, this,
             &MainWidget::on_treeSelectionChanged);

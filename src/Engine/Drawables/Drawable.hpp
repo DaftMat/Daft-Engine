@@ -68,24 +68,6 @@ class Drawable : public core::NonCopyable {
     [[nodiscard]] glm::mat4 normalizedModel() const;
 
     /**
-     * Is the object selected by the user ?
-     * @return true if the drawable is selected.
-     */
-    [[nodiscard]] bool selected() const { return m_selected; }
-
-    /**
-     * Selects the drawable.
-     * selected() becomes true.
-     */
-    void select() { m_selected = true; }
-
-    /**
-     * Deselects the drawable.
-     * selected() becomes false.
-     */
-    void unselect() { m_selected = false; }
-
-    /**
      * Applies a translation to the drawable.
      * @param t - translation to apply.
      */
@@ -187,8 +169,6 @@ class Drawable : public core::NonCopyable {
     glm::vec3 m_position{0.f};
     glm::vec3 m_rotations{0.f};
     glm::vec3 m_scale{1.f};
-
-    bool m_selected{false};
 
     Composite *m_parent;
     std::string m_name;
