@@ -41,7 +41,7 @@ class ENGINE_API Object : public Drawable {
     /**
      * Renders the mesh objects.
      */
-    void render(const core::ShaderProgram &shader) override;
+    void render(const core::ShaderProgram &shader, GLuint type) override;
 
     /**
      * Accepts a DrawableVisitor.
@@ -76,6 +76,18 @@ class ENGINE_API Object : public Drawable {
      * @return false.
      */
     [[nodiscard]] bool isComposite() const override { return false; }
+
+    /**
+     * Tests if this is an Object .
+     * @return true.
+     */
+    [[nodiscard]] bool isObject() const override { return true; }
+
+    /**
+     * Tests if this is a Light .
+     * @return false.
+     */
+    [[nodiscard]] bool isLight() const override { return false; }
 
    protected:
     virtual void applyUpdate() {}

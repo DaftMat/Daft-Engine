@@ -4,12 +4,14 @@
 #pragma once
 #include <API.hpp>
 #include <Core/Geometry/Mesh.hpp>
-#include <Core/Geometry/ShaderProgram.hpp>
+#include <Core/Rendering/ShaderProgram.hpp>
 #include <Engine/Drawables/Composite.hpp>
 #include <Engine/Drawables/MeshObject.hpp>
 #include <Engine/Drawables/Object/Object.hpp>
 #include <Engine/Drawables/Object/Sphere.hpp>
 #include <Engine/Renderer/Cameras/Camera.hpp>
+#include <Engine/Renderer/LineRenderer.hpp>
+#include <Engine/Renderer/ObjectRenderer.hpp>
 #include <memory>
 #include <vector>
 
@@ -54,7 +56,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     daft::engine::Composite *getSceneTree() { return m_root.get(); }
 
-    void setSelection(std::string s) { m_selection = std::move(s); }
+    void setSelection(std::string s);
 
     void processMouseScroll(float offset);
 
@@ -64,6 +66,10 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     void processMouseMove(glm::vec2 mousePos);
 
+    void updateViewMatrix();
+
+    void updateProjectionMatrix();
+
    private:
     static bool GLinitialized;
     int m_width{0}, m_height{0};
@@ -72,7 +78,10 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     std::shared_ptr<daft::engine::Composite> m_root{nullptr};
 
     std::unique_ptr<DeleterVisitor> m_deleter{nullptr};
-    std::shared_ptr<daft::core::ShaderProgram> m_shader{nullptr};
+    std::unique_ptr<daft::engine::ObjectRenderer> m_objRenderer{nullptr};
+    std::unique_ptr<daft::engine::LineRenderer> m_lineRenderer{nullptr};
+
+    std::vector<std::shared_ptr<daft::core::ShaderProgram>> m_shaders;
 
     daft::engine::Camera m_camera;
 };

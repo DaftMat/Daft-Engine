@@ -28,7 +28,7 @@ class Light : public Drawable {
     /**
      * Renders the mesh representation of the light.
      */
-    void render(const core::ShaderProgram &shader) override;
+    void render(const core::ShaderProgram &shader, GLuint type) override;
 
     /**
      * Translates the light.
@@ -71,7 +71,23 @@ class Light : public Drawable {
      */
     void reset() override;
 
+    /**
+     * Texts if this is a Composite .
+     * @return false
+     */
     [[nodiscard]] bool isComposite() const override { return false; }
+
+    /**
+     * Tests if this is an Object .
+     * @return false.
+     */
+    [[nodiscard]] bool isObject() const override { return false; }
+
+    /**
+     * Tests if this is a Light .
+     * @return true.
+     */
+    [[nodiscard]] bool isLight() const override { return true; }
 
    private:
     Mesh m_mesh;

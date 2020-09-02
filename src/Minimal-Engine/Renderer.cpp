@@ -25,13 +25,14 @@ Renderer::Renderer(int width, int height) : m_width{width}, m_height{height} {
     }
 
     m_root = std::make_shared<daft::engine::Composite>();
-    m_shader = std::make_shared<daft::core::ShaderProgram>("shaders/color.vert.glsl", "shaders/color.frag.glsl");
+    m_shaders.push_back(
+        std::make_shared<daft::core::ShaderProgram>("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
+    m_objRenderer = std::make_unique<daft::engine::ObjectRenderer>(m_shaders[0]);
+    m_lineRenderer = std::make_unique<daft::engine::LineRenderer>(m_shaders[0]);
     m_deleter = std::make_unique<DeleterVisitor>();
 
-    m_shader->use();
-    m_shader->setMat4("projection", glm::perspective(m_camera.fov(), float(m_width) / float(m_height), 0.1f, 500.f));
-    m_shader->setMat4("view", m_camera.getViewMatrix());
-    m_shader->stop();
+    updateProjectionMatrix();
+    updateViewMatrix();
 
     glViewport(0, 0, m_width, m_height);
     glEnable(GL_DEPTH_TEST);
@@ -46,25 +47,28 @@ void Renderer::prepare() {
 
 void Renderer::render() {
     m_root->update();
-    m_root->render(*m_shader);
+
+    m_objRenderer->prepare();
+    m_objRenderer->render(m_root.get());
+    m_objRenderer->unbind();
+
+    m_lineRenderer->prepare();
+    m_lineRenderer->render(m_root.get());
+    m_lineRenderer->unbind();
 }
 
 void Renderer::resize(int width, int height) {
     m_width = width;
     m_height = height;
     glViewport(0, 0, m_width, m_height);
-    m_shader->use();
-    m_shader->setMat4("projection", glm::perspective(m_camera.fov(), float(m_width) / float(m_height), 0.1f, 500.f));
-    m_shader->stop();
+    updateProjectionMatrix();
 }
 
 bool Renderer::GLinitialized{false};
 
 void Renderer::processMouseScroll(float offset) {
     m_camera.processMouseScroll(offset);
-    m_shader->use();
-    m_shader->setMat4("view", m_camera.getViewMatrix());
-    m_shader->stop();
+    updateViewMatrix();
 }
 
 void Renderer::processMousePress(daft::engine::Camera::Mouse mouse) { m_camera.processMousePress(mouse); }
@@ -73,7 +77,28 @@ void Renderer::processMouseRelease() { m_camera.processMouseRelease(); }
 
 void Renderer::processMouseMove(glm::vec2 mousePos) {
     m_camera.processMouseMove(mousePos);
-    m_shader->use();
-    m_shader->setMat4("view", m_camera.getViewMatrix());
-    m_shader->stop();
+    updateViewMatrix();
+}
+
+void Renderer::setSelection(std::string s) {
+    auto selection = getSelection();
+    if (selection) selection->unselect();
+    m_selection = std::move(s);
+    if (!m_selection.empty()) getSelection()->select();
+}
+
+void Renderer::updateViewMatrix() {
+    for (const auto &shader : m_shaders) {
+        shader->use();
+        shader->setMat4("view", m_camera.getViewMatrix());
+        shader->stop();
+    }
+}
+
+void Renderer::updateProjectionMatrix() {
+    for (const auto &shader : m_shaders) {
+        shader->use();
+        shader->setMat4("projection", glm::perspective(m_camera.fov(), float(m_width) / float(m_height), 0.1f, 500.f));
+        shader->stop();
+    }
 }

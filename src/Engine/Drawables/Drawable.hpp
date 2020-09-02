@@ -3,8 +3,8 @@
 //
 #pragma once
 #include <API.hpp>
-#include <Core/Geometry/ShaderProgram.hpp>
 #include <Core/Materials/SettingManager.hpp>
+#include <Core/Rendering/ShaderProgram.hpp>
 #include <Core/Utils/NonCopyable.hpp>
 #include <Core/Utils/Types.hpp>
 
@@ -50,7 +50,7 @@ class Drawable : public core::NonCopyable {
     /**
      * renders the inner geometry.
      */
-    virtual void render(const core::ShaderProgram &shader) = 0;
+    virtual void render(const core::ShaderProgram &shader, GLuint type) = 0;
 
     /**
      * Accepts a DrawableVisitor .
@@ -184,6 +184,36 @@ class Drawable : public core::NonCopyable {
      */
     [[nodiscard]] virtual bool isComposite() const = 0;
 
+    /**
+     * Tests if this is an Object .
+     * to be overridden.
+     * @return true if this is an object, false otherwise.
+     */
+    [[nodiscard]] virtual bool isObject() const = 0;
+
+    /**
+     * Tests if this is a Light .
+     * to be overridden.
+     * @return true if this is a light, false otherwise.
+     */
+    [[nodiscard]] virtual bool isLight() const = 0;
+
+    /**
+     * Selects the object.
+     */
+    void select() { m_isSelected = true; }
+
+    /**
+     * Unselect the object.
+     */
+    void unselect() { m_isSelected = false; }
+
+    /**
+     * Tests if this is selected.
+     * @return true if this is the current selection.
+     */
+    [[nodiscard]] bool selected() const { return m_isSelected; }
+
    private:
     [[nodiscard]] glm::mat4 calculateModel() const;
     [[nodiscard]] glm::mat4 calculateNormalizedModel() const;
@@ -197,6 +227,8 @@ class Drawable : public core::NonCopyable {
 
     Composite *m_parent;
     std::string m_name;
+
+    bool m_isSelected{false};
 
     static int m_nrDrawables;
 };

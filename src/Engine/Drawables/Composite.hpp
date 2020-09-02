@@ -44,7 +44,7 @@ class ENGINE_API Composite : public Drawable {
      * Does nothing. Have to pass through a RendererVisitor that will render all the objects within.
      * Because of the variation of shaders.
      */
-    void render(const core::ShaderProgram &shader) override;
+    void render(const core::ShaderProgram &shader, GLuint type) override;
 
     /**
      * Accepts a drawable visitor.
@@ -93,6 +93,18 @@ class ENGINE_API Composite : public Drawable {
      * @return true.
      */
     [[nodiscard]] bool isComposite() const override { return true; }
+
+    /**
+     * Tests if this is an Object .
+     * @return false.
+     */
+    [[nodiscard]] bool isObject() const override { return false; }
+
+    /**
+     * Tests if this is a Light .
+     * @return false.
+     */
+    [[nodiscard]] bool isLight() const override { return false; }
 
    private:
     using DrawablePtr = std::shared_ptr<Drawable>;

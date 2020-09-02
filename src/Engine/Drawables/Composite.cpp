@@ -3,7 +3,6 @@
 //
 #include "Composite.hpp"
 
-#include <Core/Geometry/ShaderProgram.hpp>
 #include <Core/Utils/DrawableVisitor.hpp>
 
 namespace daft::engine {
@@ -11,9 +10,9 @@ int Composite::m_nrComposite{0};
 
 Composite::Composite(Composite *parent, std::string name) noexcept : Drawable(parent, std::move_if_noexcept(name)) {}
 
-void Composite::render(const core::ShaderProgram &shader) {
+void Composite::render(const core::ShaderProgram &shader, GLuint type) {
     for (auto &d : m_drawables) {
-        d->render(shader);
+        d->render(shader, type);
     }
 }
 
