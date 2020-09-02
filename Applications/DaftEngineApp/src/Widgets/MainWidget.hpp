@@ -58,14 +58,6 @@ class ENGINE_API MainWidget : public QWidget {
      */
     [[nodiscard]] const BorderLayout &borderLayout() const { return *m_layout; }
 
-   public:
-    /**
-     * Creates a label with frame styles.
-     * @param text - text of the label.
-     * @return created QLabel .
-     */
-    [[nodiscard]] static QLabel *createLabel(const QString &text);
-
     /**
      * Creates a line.
      * @param shape - shape of the line (HLine/VLine)
@@ -102,7 +94,7 @@ class ENGINE_API MainWidget : public QWidget {
    public slots:
     void on_selectionChanged();
     void on_settingChanged();
-    void on_comboBoxChanged() { m_glWidget->emitNextFrame(); }
+    void on_selectionSettingsChanged() { m_glWidget->emitNextFrame(); }
     void on_treeSelectionChanged();
     void on_treeItemChanged();
     void on_sceneTreeChanged();
