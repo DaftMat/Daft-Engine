@@ -27,7 +27,7 @@ class ENGINE_API MeshObject : public core::NonCopyable {
      * @param mesh - mesh wrapped.
      * @param material - material wrapped.
      */
-    explicit MeshObject(Mesh mesh = Mesh{}, Material *material = nullptr);
+    explicit MeshObject(Mesh mesh = Mesh{}, std::shared_ptr<Material> material = nullptr);
 
     /**
      * Move constructor.
@@ -44,7 +44,7 @@ class ENGINE_API MeshObject : public core::NonCopyable {
     /**
      * prepares the wrapped mesh and its material to be rendered.
      */
-    void prepare();
+    void prepare() const;
 
     /**
      * render the wrapped mesh with its material.
@@ -69,7 +69,7 @@ class ENGINE_API MeshObject : public core::NonCopyable {
      */
     const Mesh &mesh() const { return m_mesh; }
 
-   private:
+   protected:
     Mesh m_mesh;
     std::shared_ptr<Material> m_material;
 };

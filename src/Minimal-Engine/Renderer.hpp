@@ -12,6 +12,7 @@
 #include <Engine/Renderer/Cameras/Camera.hpp>
 #include <Engine/Renderer/LineRenderer.hpp>
 #include <Engine/Renderer/ObjectRenderer.hpp>
+#include <Engine/Renderer/QuadRenderer.hpp>
 #include <memory>
 #include <vector>
 
@@ -28,8 +29,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
         m_root.reset();
     }
 
-    Renderer(Renderer &&other) noexcept
-        : m_width{other.m_width}, m_height{other.m_height}, m_root{std::move_if_noexcept(other.m_root)} {}
+    Renderer(Renderer &&other) noexcept : m_root{std::move_if_noexcept(other.m_root)} {}
 
     Renderer &operator=(Renderer &&other) noexcept;
 
@@ -70,9 +70,13 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     void updateProjectionMatrix();
 
+    static int width() { return m_width; }
+
+    static int height() { return m_height; }
+
    private:
     static bool GLinitialized;
-    int m_width{0}, m_height{0};
+    static int m_width, m_height;
     std::string m_selection;
 
     std::shared_ptr<daft::engine::Composite> m_root{nullptr};
@@ -81,7 +85,10 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     std::unique_ptr<daft::engine::ObjectRenderer> m_objRenderer{nullptr};
     std::unique_ptr<daft::engine::LineRenderer> m_lineRenderer{nullptr};
 
+    std::shared_ptr<daft::engine::QuadRenderer> m_screenQuad{nullptr};
+
     std::vector<std::shared_ptr<daft::core::ShaderProgram>> m_shaders;
+    std::vector<std::shared_ptr<daft::core::FrameBufferObject>> m_fbos;
 
     daft::engine::Camera m_camera;
 };

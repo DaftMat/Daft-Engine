@@ -211,25 +211,31 @@ void Sphere::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); 
 void Sphere::setMeridians(int m) {
     if (m == m_meridians) return;
     m_meridians = m;
-    m_update = true;
+    updateNextFrame();
 }
 
 void Sphere::setParallels(int p) {
     if (p == m_parallels) return;
     m_parallels = p;
-    m_update = true;
+    updateNextFrame();
 }
 
 void Sphere::setSubdivisions(int s) {
     if (s == m_subdivisions) return;
     m_subdivisions = s;
-    m_update = true;
+    updateNextFrame();
 }
 
 void Sphere::setResolution(int r) {
     if (r == m_resolution) return;
     m_resolution = r;
-    m_update = true;
+    updateNextFrame();
+}
+
+void Sphere::setType(Sphere::Type type) {
+    if (type == m_type) return;
+    m_type = type;
+    updateNextFrame();
 }
 
 }  // namespace daft::engine

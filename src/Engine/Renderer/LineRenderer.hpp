@@ -16,8 +16,8 @@ class ENGINE_API LineRenderer : public core::PassRenderer {
      * @param fbo - fbo to render to.
      * @param shader - shader to be used.
      */
-    LineRenderer(/*std::shared_ptr<FrameBufferObject> fbo, */ std::shared_ptr<core::ShaderProgram> shader)
-        : core::PassRenderer{/*std::move(fbo), */ std::move(shader), GL_LINES} {}
+    LineRenderer(std::shared_ptr<core::FrameBufferObject> fbo, std::shared_ptr<core::ShaderProgram> shader)
+        : core::PassRenderer{std::move(fbo), std::move(shader), GL_LINES} {}
 
     /**
      * Renders a Drawable to the fbo.

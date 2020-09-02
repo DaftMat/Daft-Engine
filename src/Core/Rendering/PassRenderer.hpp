@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "FrameBufferObject.hpp"
 #include "ShaderProgram.hpp"
 
 namespace daft::core {
@@ -21,9 +22,9 @@ class ENGINE_API PassRenderer : public NonCopyable {
      * @param fbo - fbo to render to.
      * @param shader - shader to use.
      */
-    PassRenderer(/*std::shared_ptr<FrameBufferObject> fbo, */ std::shared_ptr<ShaderProgram> shader,
+    PassRenderer(std::shared_ptr<FrameBufferObject> fbo, std::shared_ptr<ShaderProgram> shader,
                  GLuint renderType = GL_TRIANGLES)
-        : /*m_fbo{std::move(fbo)}, */ m_shader{std::move(shader)}, m_renderType{renderType} {}
+        : m_fbo{std::move(fbo)}, m_shader{std::move(shader)}, m_renderType{renderType} {}
 
     /**
      * Default destructor.
@@ -60,7 +61,7 @@ class ENGINE_API PassRenderer : public NonCopyable {
      * FBO getter.
      * @return the FrameBufferObject the renderer is rendering on.
      */
-    // auto fbo() { return m_fbo; }
+    auto fbo() { return m_fbo; }
 
     /**
      * Shader getter.
@@ -69,7 +70,7 @@ class ENGINE_API PassRenderer : public NonCopyable {
     auto shader() { return m_shader; }
 
    private:
-    // std::shared_ptr<FrameBufferObject> m_fbo;
+    std::shared_ptr<FrameBufferObject> m_fbo;
     std::shared_ptr<ShaderProgram> m_shader;
 
     GLuint m_renderType;

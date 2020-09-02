@@ -19,6 +19,16 @@
 namespace daft::app {
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent), m_glWidget{std::make_unique<OpenGLWidget>()}, m_layout{std::make_unique<BorderLayout>(0)} {
+    QSurfaceFormat format;
+    format.setVersion(GL_MAJOR, GL_MINOR);
+    format.setProfile(QSurfaceFormat::CoreProfile);
+    format.setDepthBufferSize(24);
+    format.setSamples(4);
+    QSurfaceFormat::setDefaultFormat(format);
+
+    m_glWidget->setFocus();
+    m_glWidget->setFormat(format);
+
     m_layout->setMargin(0);
     m_layout->addWidget(m_glWidget.get(), BorderLayout::Position::Center);
 
@@ -133,8 +143,7 @@ void MainWidget::on_sceneTreeChanged() { m_treeWidget->resetTree(m_glWidget->ren
 void MainWidget::on_treeSelectionChanged() {
     const auto index = m_treeWidget->selectionModel()->currentIndex();
     auto selectedText = index.data(Qt::DisplayRole).toString();
-    m_glWidget->renderer().setSelection(selectedText.toStdString());
-    on_selectionChanged();
+    m_glWidget->setSelection(selectedText.toStdString());
 }
 
 void MainWidget::on_treeItemChanged() {
@@ -151,7 +160,7 @@ void MainWidget::on_glInitialized() {
     m_treeWidget = std::make_unique<TreeWidget>(m_glWidget->renderer().getSceneTree());
     connect(m_treeWidget->selectionModel(), &QItemSelectionModel::selectionChanged, this,
             &MainWidget::on_treeSelectionChanged);
-    connect(m_treeWidget->model(), &QAbstractItemModel::dataChanged, this, &MainWidget::on_treeItemChanged);
+    connect(m_treeWidget->model(), &QStandardItemModel::dataChanged, this, &MainWidget::on_treeItemChanged);
     m_eastWidget->addWidget(m_treeWidget.get());
 }
 

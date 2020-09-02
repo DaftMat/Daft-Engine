@@ -12,7 +12,7 @@ void daft::app::SettingEditorVisitor::visit(daft::engine::Object *object) { obje
 void daft::app::SettingEditorVisitor::visit(daft::engine::Sphere *sphere) {
     using namespace daft::engine;
     sphere->setTransformations(m_transforms);
-    sphere->type() = Sphere::Type{m_settings.get<int>("Type")};
+    sphere->setType(Sphere::Type{m_settings.get<int>("Type")});
     switch (sphere->type()) {
         case Sphere::Type::UV:
             sphere->setMeridians(m_settings.get<int>("Meridians"));

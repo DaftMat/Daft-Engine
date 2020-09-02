@@ -16,8 +16,8 @@ class ENGINE_API ObjectRenderer : public core::PassRenderer {
      * @param fbo - fbo to render to.
      * @param shader - shader to be used.
      */
-    explicit ObjectRenderer(/*std::shared_ptr<FrameBufferObject> fbo, */ std::shared_ptr<core::ShaderProgram> shader)
-        : core::PassRenderer{/*std::move(fbo), */ std::move(shader), GL_TRIANGLES} {}
+    explicit ObjectRenderer(std::shared_ptr<core::FrameBufferObject> fbo, std::shared_ptr<core::ShaderProgram> shader)
+        : core::PassRenderer{std::move(fbo), std::move(shader), GL_TRIANGLES} {}
 
     /**
      * Renders a Drawable to the fbo.

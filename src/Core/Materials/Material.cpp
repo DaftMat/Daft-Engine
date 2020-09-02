@@ -17,7 +17,7 @@ void Material::prepare() const {
 }
 
 void Material::addTexture(Texture texture) {
-    m_textures.emplace_back(std::move(texture));
+    m_textures.push_back(std::move(texture));
     std::stringstream ss;
     ss << "Texture added to Material.";
     core::Logger::info(std::move(ss));

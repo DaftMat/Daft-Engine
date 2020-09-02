@@ -50,10 +50,10 @@ class ENGINE_API Sphere : public Object {
     [[nodiscard]] Type type() const { return m_type; }
 
     /**
-     * Type reference getter.
-     * @return ref to the type of the geometry of the sphere.
+     * Type setter.
+     * @param new type of the sphere.
      */
-    Type &type() { return m_type; }
+    void setType(Type type);
 
     /**
      * Meridians getter.
