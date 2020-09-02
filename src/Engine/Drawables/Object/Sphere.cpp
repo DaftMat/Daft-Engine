@@ -102,7 +102,6 @@ void Sphere::createIcosahedron() {
     const float H_ANGLE = glm::pi<float>() / 180.f * 72.f;
     const float V_ANGLE = glm::atan(0.5f);
 
-    float z, xy;
     float h_angle1 = -glm::pi<float>() / 2.f - H_ANGLE / 2.f;
     float h_angle2 = -glm::pi<float>() / 2.f;
 
@@ -114,8 +113,8 @@ void Sphere::createIcosahedron() {
 
     // 10 "middle" vertices
     for (int i = 1; i <= 5; ++i) {
-        z = glm::sin(V_ANGLE);
-        xy = glm::cos(V_ANGLE);
+        float z = glm::sin(V_ANGLE);
+        float xy = glm::cos(V_ANGLE);
 
         glm::vec3 v1{xy * glm::cos(h_angle1), z, xy * glm::sin(h_angle1)};
         glm::vec3 v2{xy * glm::cos(h_angle2), -z, xy * glm::sin(h_angle2)};

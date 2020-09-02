@@ -31,9 +31,8 @@ void Composite::reset() {
 
 Drawable *Composite::find(const std::string &pname) {
     if (pname == name()) return this;
-    Drawable *found;
     for (auto &d : m_drawables) {
-        found = d->find(pname);
+        Drawable *found = d->find(pname);
         if (found) return found;
     }
     return nullptr;
