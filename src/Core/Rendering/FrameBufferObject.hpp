@@ -16,7 +16,7 @@ class FrameBufferObject : public BaseFrameBuffer {
             NONE  ///< nothing
         };
 
-        explicit Attachments(Type p_color = Type::TEXTURE, int p_numColor = 1, Type p_depth = Type::BUFFER,
+        explicit Attachments(Type p_color = Type::BUFFER, int p_numColor = 1, Type p_depth = Type::BUFFER,
                              Type p_stencil = Type::NONE, Type p_stencil_depth = Type::NONE)
             : color{p_color},
               numColor{p_numColor},

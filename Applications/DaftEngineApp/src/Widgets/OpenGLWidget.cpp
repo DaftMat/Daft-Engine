@@ -15,11 +15,14 @@ void OpenGLWidget::initializeGL() {
         m_renderer = std::make_unique<Renderer>(width(), height());
         prepareScene();
         m_glInitialized = true;
+
         emit glInitialized();
     }
 }
 
 void OpenGLWidget::paintGL() {
+    /// find default fbo and bind it to the engine.
+    core::BaseFrameBuffer::setDefaultFbo(defaultFramebufferObject());
     m_renderer->prepare();
     m_renderer->render();
     emitSelectionChanged();

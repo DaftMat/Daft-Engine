@@ -4,9 +4,10 @@
 #include "BaseFrameBuffer.hpp"
 
 #include <Core/Utils/Logger.hpp>
-#include <Minimal-Engine/Renderer.hpp>
 
 namespace daft::core {
+GLuint BaseFrameBuffer::m_defaultFbo{0};
+
 BaseFrameBuffer::~BaseFrameBuffer() {
     if (!m_isValid) return;
     for (GLuint &b : m_buffers) {
@@ -15,6 +16,9 @@ BaseFrameBuffer::~BaseFrameBuffer() {
     for (GLuint &t : m_textures) {
         glDeleteTextures(1, &t);
     }
+    std::stringstream ss;
+    ss << "FrameBuffer of ID: " << m_fbo << " deleted";
+    Logger::info(std::move(ss));
     glDeleteFramebuffers(1, &m_fbo);
 }
 
@@ -52,7 +56,7 @@ BaseFrameBuffer &BaseFrameBuffer::operator=(BaseFrameBuffer &&o) noexcept {
 void BaseFrameBuffer::use() const {
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
         std::stringstream ss;
         ss << "Framebuffer is not complete.";
         core::Logger::error(std::move(ss));
@@ -61,20 +65,20 @@ void BaseFrameBuffer::use() const {
     glViewport(0, 0, m_width, m_height);
 }
 
-void BaseFrameBuffer::stop() const {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glViewport(0, 0, Renderer::width(), Renderer::height());
+void BaseFrameBuffer::stop(int width, int height) const {
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
+    glViewport(0, 0, width, height);
 }
 
 void BaseFrameBuffer::resolve(int width, int height, int index) const {
     if (index < 0) index = 0;
     if (index > m_num_color - 1) index = m_num_color - 1;
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_defaultFbo);
     glBindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
     glReadBuffer(GL_COLOR_ATTACHMENT0 + index);
     glDrawBuffer(GL_BACK);
     glBlitFramebuffer(0, 0, m_width, m_height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
 }
 
 void BaseFrameBuffer::resolve(BaseFrameBuffer &fb, int index) const {
@@ -85,7 +89,7 @@ void BaseFrameBuffer::resolve(BaseFrameBuffer &fb, int index) const {
     glReadBuffer(GL_COLOR_ATTACHMENT0 + index);
     glBlitFramebuffer(0, 0, m_width, m_height, 0, 0, fb.m_width, fb.m_height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT,
                       GL_NEAREST);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
 }
 
 void BaseFrameBuffer::addColorBuffer() {
@@ -99,7 +103,7 @@ void BaseFrameBuffer::addColorBuffer() {
     else
         glRenderbufferStorageMultisample(GL_RENDERBUFFER, m_numSamples, GL_RGB, m_width, m_height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + m_num_color++, GL_RENDERBUFFER, rbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_buffers.push_back(rbo);
 }
 
@@ -114,7 +118,7 @@ void BaseFrameBuffer::addDepthBuffer() {
     else
         glRenderbufferStorageMultisample(GL_RENDERBUFFER, m_numSamples, GL_DEPTH_COMPONENT, m_width, m_height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_depth = true;
     m_buffers.push_back(rbo);
 }
@@ -130,7 +134,7 @@ void BaseFrameBuffer::addStencilBuffer() {
     else
         glRenderbufferStorageMultisample(GL_RENDERBUFFER, m_numSamples, GL_STENCIL_INDEX, m_width, m_height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_stencil = true;
     m_buffers.push_back(rbo);
 }
@@ -146,7 +150,7 @@ void BaseFrameBuffer::addDepthStencilBuffer() {
     else
         glRenderbufferStorageMultisample(GL_RENDERBUFFER, m_numSamples, GL_DEPTH24_STENCIL8, m_width, m_height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_stencil_depth = true;
     m_buffers.push_back(rbo);
 }
@@ -161,7 +165,7 @@ void BaseFrameBuffer::addColorTexture() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + m_num_color++, GL_TEXTURE_2D, tex, 0);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_textures.push_back(tex);
 }
 
@@ -175,7 +179,7 @@ void BaseFrameBuffer::addDepthTexture() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, tex, 0);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_depth = true;
     m_textures.push_back(tex);
 }
@@ -190,7 +194,7 @@ void BaseFrameBuffer::addStencilTexture() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_TEXTURE_2D, tex, 0);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_stencil = true;
     m_textures.push_back(tex);
 }
@@ -205,7 +209,7 @@ void BaseFrameBuffer::addDepthStencilTexture() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, tex, 0);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_stencil_depth = true;
     m_textures.push_back(tex);
 }
@@ -216,6 +220,6 @@ void BaseFrameBuffer::drawBuffers() const {
     for (int i = 0; i < m_num_color; ++i) bufs[i] = GL_COLOR_ATTACHMENT0 + i;
     glDrawBuffers(m_num_color, bufs);
     delete[] bufs;
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
 }
 }  // namespace daft::core

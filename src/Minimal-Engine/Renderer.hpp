@@ -70,13 +70,11 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     void updateProjectionMatrix();
 
-    static int width() { return m_width; }
-
-    static int height() { return m_height; }
-
    private:
+    void clearGL() const;
+
     static bool GLinitialized;
-    static int m_width, m_height;
+    int m_width{0}, m_height{0};
     std::string m_selection;
 
     std::shared_ptr<daft::engine::Composite> m_root{nullptr};
@@ -88,7 +86,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     std::shared_ptr<daft::engine::QuadRenderer> m_screenQuad{nullptr};
 
     std::vector<std::shared_ptr<daft::core::ShaderProgram>> m_shaders;
-    std::vector<std::shared_ptr<daft::core::FrameBufferObject>> m_fbos;
+    std::vector<daft::core::FrameBufferObject> m_fbos;
 
     daft::engine::Camera m_camera;
 };

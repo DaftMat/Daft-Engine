@@ -19,16 +19,6 @@
 namespace daft::app {
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent), m_glWidget{std::make_unique<OpenGLWidget>()}, m_layout{std::make_unique<BorderLayout>(0)} {
-    QSurfaceFormat format;
-    format.setVersion(GL_MAJOR, GL_MINOR);
-    format.setProfile(QSurfaceFormat::CoreProfile);
-    format.setDepthBufferSize(24);
-    format.setSamples(4);
-    QSurfaceFormat::setDefaultFormat(format);
-
-    m_glWidget->setFocus();
-    m_glWidget->setFormat(format);
-
     m_layout->setMargin(0);
     m_layout->addWidget(m_glWidget.get(), BorderLayout::Position::Center);
 
@@ -144,6 +134,7 @@ void MainWidget::on_treeSelectionChanged() {
     const auto index = m_treeWidget->selectionModel()->currentIndex();
     auto selectedText = index.data(Qt::DisplayRole).toString();
     m_glWidget->setSelection(selectedText.toStdString());
+    // m_glWidget->update();
 }
 
 void MainWidget::on_treeItemChanged() {

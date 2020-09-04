@@ -4,6 +4,7 @@
 #pragma once
 #include <API.hpp>
 #include <Core/OpenGL.hpp>
+#include <Core/Utils/Logger.hpp>
 #include <Core/Utils/NonCopyable.hpp>
 
 namespace daft::core {
@@ -21,6 +22,9 @@ class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
     BaseFrameBuffer(int width, int height, int numSamples)
         : m_width{width}, m_height{height}, m_numSamples{numSamples}, m_isValid{true} {
         glGenFramebuffers(1, &m_fbo);
+        std::stringstream ss;
+        ss << "FrameBuffer created. ID: " << m_fbo;
+        Logger::info(std::move(ss));
     }
 
     /**
@@ -49,7 +53,7 @@ class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
      * Stops using this framebuffer.
      * The next frames will be rendered on the screen's framebuffer.
      */
-    void stop() const;
+    void stop(int width, int height) const;
 
     /** Resolves one fbo's color buffer to the screen's fbo.
      *
@@ -78,6 +82,13 @@ class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
      */
     [[nodiscard]] const std::vector<GLuint> &buffers() const { return m_buffers; }
 
+    /**
+     * Default fbo setter.
+     * Because Qt didn't want to be simple.
+     * @param fbo - default (screen) framebuffer object.
+     */
+    static void setDefaultFbo(GLuint fbo) { m_defaultFbo = fbo; }
+
    protected:
     void addColorBuffer();
     void addDepthBuffer();
@@ -91,8 +102,10 @@ class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
     void drawBuffers() const;
 
    private:
+    static GLuint m_defaultFbo;
+
     int m_width, m_height;
-    GLuint m_fbo;
+    GLuint m_fbo{0};
     std::vector<GLuint> m_textures;
     std::vector<GLuint> m_buffers;
 

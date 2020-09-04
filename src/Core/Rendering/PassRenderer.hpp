@@ -55,19 +55,19 @@ class ENGINE_API PassRenderer : public NonCopyable {
     /**
      * unbinds the renderer.
      */
-    void unbind();
+    void unbind(int width, int height);
 
     /**
      * FBO getter.
      * @return the FrameBufferObject the renderer is rendering on.
      */
-    auto fbo() { return m_fbo; }
+    auto &fbo() { return m_fbo; }
 
     /**
      * Shader getter.
      * @return the ShaderProgram used to render.
      */
-    auto shader() { return m_shader; }
+    auto &shader() { return m_shader; }
 
    private:
     std::shared_ptr<FrameBufferObject> m_fbo;
