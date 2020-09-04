@@ -6,10 +6,10 @@
 namespace daft::engine {
 int Light::m_nrLight{0};
 
-void Light::render(const core::ShaderProgram &shader, GLuint type) {
+void Light::render(const core::ShaderProgram &shader) {
     shader.setMat4("model", model());
     m_mesh.prepare();
-    m_mesh.render(type);
+    m_mesh.render(GL_LINES);
     m_mesh.unbind();
 }
 

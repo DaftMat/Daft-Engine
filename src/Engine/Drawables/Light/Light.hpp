@@ -28,7 +28,13 @@ class Light : public Drawable {
     /**
      * Renders the mesh representation of the light.
      */
-    void render(const core::ShaderProgram &shader, GLuint type) override;
+    void render(const core::ShaderProgram &shader) override;
+
+    /**
+     * renders the edges only of the inner geometry.
+     * @param shader - shader to render with.
+     */
+    void renderEdges(const core::ShaderProgram &shader) override {}
 
     /**
      * Translates the light.

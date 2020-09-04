@@ -49,8 +49,15 @@ class Drawable : public core::NonCopyable {
 
     /**
      * renders the inner geometry.
+     * @param shader - shader to render with.
      */
-    virtual void render(const core::ShaderProgram &shader, GLuint type) = 0;
+    virtual void render(const core::ShaderProgram &shader) = 0;
+
+    /**
+     * renders the edges only of the inner geometry.
+     * @param shader - shader to render with.
+     */
+    virtual void renderEdges(const core::ShaderProgram &shader) = 0;
 
     /**
      * Accepts a DrawableVisitor .
@@ -213,6 +220,14 @@ class Drawable : public core::NonCopyable {
      * @return true if this is the current selection.
      */
     [[nodiscard]] bool selected() const { return m_isSelected; }
+
+    /**
+     * Tells this object to update on the next frame.
+     */
+    void updateNextFrame() { m_update = true; }
+
+   protected:
+    bool m_update;
 
    private:
     [[nodiscard]] glm::mat4 calculateModel() const;

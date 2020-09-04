@@ -10,10 +10,18 @@ int Composite::m_nrComposite{0};
 
 Composite::Composite(Composite *parent, std::string name) noexcept : Drawable(parent, std::move_if_noexcept(name)) {}
 
-void Composite::render(const core::ShaderProgram &shader, GLuint type) {
+void Composite::render(const core::ShaderProgram &shader) {
     for (auto &d : m_drawables) {
-        d->render(shader, type);
+        d->render(shader);
     }
+}
+
+void Composite::renderEdges(const core::ShaderProgram &shader) {
+    if (selected()) shader.setVec3("color", {1.f, 0.5f, 0.f});
+    for (auto &d : m_drawables) {
+        d->renderEdges(shader);
+    }
+    if (selected()) shader.setVec3("color", glm::vec3{0.f});
 }
 
 void Composite::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }

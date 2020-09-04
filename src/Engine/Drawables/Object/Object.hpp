@@ -41,7 +41,13 @@ class ENGINE_API Object : public Drawable {
     /**
      * Renders the mesh objects.
      */
-    void render(const core::ShaderProgram &shader, GLuint type) override;
+    void render(const core::ShaderProgram &shader) override;
+
+    /**
+     * renders the edges only of the inner geometry.
+     * @param shader - shader to render with.
+     */
+    void renderEdges(const core::ShaderProgram &shader) override;
 
     /**
      * Accepts a DrawableVisitor.
@@ -59,11 +65,6 @@ class ENGINE_API Object : public Drawable {
      * Resets all the meshes' VAO.
      */
     void update() override;
-
-    /**
-     * Tells this object to update on the next frame.
-     */
-    void updateNextFrame() { m_update = true; }
 
     /**
      * Subdivides triangles of each meshes in 4 new triangles.
@@ -91,11 +92,11 @@ class ENGINE_API Object : public Drawable {
 
    protected:
     virtual void applyUpdate() {}
-    bool m_update;
 
     std::vector<MeshObject> m_meshObjects;
 
    private:
+    void _render();
     static glm::vec3 computeHalfVertex(const glm::vec3 &a, glm::vec3 &b) { return glm::normalize(a + b); }
 
     static int m_nrObject;

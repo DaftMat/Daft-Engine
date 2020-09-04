@@ -18,13 +18,16 @@ Object::Object(Composite *parent, MeshObject mo) noexcept : Drawable(parent), m_
 
 Object::~Object() noexcept { Object::reset(); }
 
-void Object::render(const core::ShaderProgram &shader, GLuint type) {
+void Object::render(const core::ShaderProgram &shader) {
     shader.setMat4("model", model());
-    for (auto &mo : m_meshObjects) {
-        mo.prepare();
-        mo.render(type);
-        mo.unbind();
-    }
+    _render();
+}
+
+void Object::renderEdges(const core::ShaderProgram &shader) {
+    shader.setMat4("model", model());
+    if (selected()) shader.setVec3("color", {1.f, 1.f, 0.f});
+    _render();
+    if (selected()) shader.setVec3("color", glm::vec3{0.f});
 }
 
 void Object::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
@@ -119,6 +122,14 @@ void Object::subdivide(bool normalsArePositions) {
         }
 
         obj.mesh().reset(am);
+    }
+}
+
+void Object::_render() {
+    for (auto &mo : m_meshObjects) {
+        mo.prepare();
+        mo.render();
+        mo.unbind();
     }
 }
 

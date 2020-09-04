@@ -134,7 +134,7 @@ void MainWidget::on_treeSelectionChanged() {
     const auto index = m_treeWidget->selectionModel()->currentIndex();
     auto selectedText = index.data(Qt::DisplayRole).toString();
     m_glWidget->setSelection(selectedText.toStdString());
-    // m_glWidget->update();
+    m_glWidget->update();
 }
 
 void MainWidget::on_treeItemChanged() {
