@@ -60,10 +60,10 @@ core::SettingManager Drawable::getTransformations() {
     return sm;
 }
 
-void Drawable::setTransformations(const core::SettingManager &settings) {
-    m_position = settings.get<glm::vec3>("Position");
-    m_rotations = settings.get<glm::vec3>("Rotations");
-    m_scale = settings.get<glm::vec3>("Scale");
+void Drawable::setTransformations(const core::SettingManager &t) {
+    m_position = t.get<glm::vec3>("Position");
+    m_rotations = t.get<glm::vec3>("Rotations");
+    m_scale = t.get<glm::vec3>("Scale");
 }
 
 }  // namespace daft::engine

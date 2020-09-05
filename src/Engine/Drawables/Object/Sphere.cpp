@@ -208,6 +208,41 @@ void Sphere::createCubeSphere() {
 
 void Sphere::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
 
+core::SettingManager Sphere::getSettings() const {
+    core::SettingManager sm;
+    sm.add("Type", core::toUType(m_type));
+    switch (m_type) {
+        case Type::UV:
+            sm.add("Meridians", m_meridians);
+            sm.add("Parallels", m_parallels);
+            break;
+        case Type::Ico:
+            sm.add("Subdivisions", m_subdivisions);
+            break;
+        case Type::Cube:
+            sm.add("Resolution", m_resolution);
+            break;
+    }
+    return sm;
+}
+
+void Sphere::setSettings(const core::SettingManager &s) {
+    setType(Type(s.get<int>("Type")));
+    if (m_update) return;
+    switch (m_type) {
+        case Type::UV:
+            setMeridians(s.get<int>("Meridians"));
+            setParallels(s.get<int>("Parallels"));
+            break;
+        case Type::Ico:
+            setSubdivisions(s.get<int>("Subdivisions"));
+            break;
+        case Type::Cube:
+            setResolution(s.get<int>("Resolution"));
+            break;
+    }
+}
+
 void Sphere::setMeridians(int m) {
     if (m == m_meridians) return;
     m_meridians = m;

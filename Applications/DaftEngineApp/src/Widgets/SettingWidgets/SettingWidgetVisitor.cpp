@@ -16,13 +16,8 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::Composite *composite) 
 }
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::Sphere *sphere) {
-    core::SettingManager sm;
+    core::SettingManager sm = sphere->getSettings();
     engine::Sphere::Type type = sphere->type();
-    sm.add("Type", int(type));
-    sm.add("Meridians", sphere->meridians());
-    sm.add("Parallels", sphere->parallels());
-    sm.add("Subdivisions", sphere->subdivisions());
-    sm.add("Resolution", sphere->resolution());
 
     auto ds = new DrawableSettings(sm);
     ds->addComboBox("Type", {"UV", "Icosahedron", "Cube"}, core::toUType(type));

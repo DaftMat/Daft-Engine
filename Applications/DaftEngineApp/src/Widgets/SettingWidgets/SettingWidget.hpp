@@ -10,7 +10,6 @@
 #include <memory>
 
 #include "DrawableSettings.hpp"
-#include "SettingEditorVisitor.hpp"
 #include "TransformSettings.hpp"
 
 namespace daft::app {

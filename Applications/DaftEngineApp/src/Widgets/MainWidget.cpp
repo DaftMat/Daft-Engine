@@ -10,9 +10,9 @@
 #include <QPushButton>
 #include <QSpacerItem>
 #include <QtWidgets/QLabel>
-#include <src/Widgets/SettingWidgets/SettingWidget.hpp>
-#include <src/Widgets/SettingWidgets/SettingWidgetVisitor.hpp>
-#include <src/Widgets/TreeWidget/TreeWidget.hpp>
+#include <Widgets/SettingWidgets/SettingWidget.hpp>
+#include <Widgets/SettingWidgets/SettingWidgetVisitor.hpp>
+#include <Widgets/TreeWidget/TreeWidget.hpp>
 
 #include "BorderWidget.hpp"
 
@@ -123,8 +123,8 @@ void MainWidget::on_selectionChanged() {
 void MainWidget::on_settingChanged() {
     auto selection = m_glWidget->renderer().getSelection();
     if (!selection) return;
-    auto visitor = std::make_unique<SettingEditorVisitor>(m_settingWidget->settings(), m_settingWidget->transforms());
-    selection->accept(visitor.get());
+    selection->setTransformations(m_settingWidget->transforms());
+    selection->setSettings(m_settingWidget->settings());
     m_glWidget->update();
 }
 

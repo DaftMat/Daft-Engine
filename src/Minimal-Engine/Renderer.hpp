@@ -12,6 +12,7 @@
 #include <Engine/Drawables/Object/Sphere.hpp>
 #include <Engine/Renderer/Cameras/Camera.hpp>
 #include <Engine/Renderer/QuadRenderer.hpp>
+#include <Engine/Renderer/RenderPasses/MultiSamplingPass.hpp>
 #include <memory>
 #include <vector>
 
@@ -81,6 +82,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     std::unique_ptr<DeleterVisitor> m_deleter{nullptr};
 
     std::shared_ptr<daft::engine::QuadRenderer> m_screenQuad{nullptr};
+    std::shared_ptr<daft::engine::MultiSamplingPass> m_multisamplePass{nullptr};
 
     std::vector<std::shared_ptr<daft::core::ShaderProgram>> m_shaders;
     std::vector<daft::core::FrameBufferObject> m_fbos;

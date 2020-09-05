@@ -44,6 +44,18 @@ class ENGINE_API Sphere : public Object {
     Sphere &operator=(Sphere &&) noexcept = default;
 
     /**
+     * Gets the sphere's specific settings as a SettingManager .
+     * @return settings.
+     */
+    [[nodiscard]] core::SettingManager getSettings() const override;
+
+    /**
+     * Settings setter using a SettingManager .
+     * @param s - settings.
+     */
+    void setSettings(const core::SettingManager &s) override;
+
+    /**
      * Type getter.
      * @return the type of the geometry of the sphere.
      */

@@ -152,9 +152,21 @@ class Drawable : public core::NonCopyable {
 
     /**
      * Transformations setter using a SettingManager .
-     * @param settings - transformations.
+     * @param t - transformations.
      */
-    void setTransformations(const core::SettingManager &settings);
+    void setTransformations(const core::SettingManager &t);
+
+    /**
+     * Gets the drawable's specific settings as a SettingManager .
+     * @return settings.
+     */
+    [[nodiscard]] virtual core::SettingManager getSettings() const { return core::SettingManager{}; }
+
+    /**
+     * Settings setter using a SettingManager .
+     * @param s - settings.
+     */
+    virtual void setSettings(const core::SettingManager &s) {}
 
     /**
      * Name reference.

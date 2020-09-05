@@ -31,14 +31,10 @@ Renderer::Renderer(int width, int height) {
     m_root = std::make_shared<daft::engine::Composite>();
     m_shaders.push_back(
         std::make_shared<daft::core::ShaderProgram>("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
-    m_fbos.emplace_back(2048, 2048, 32, daft::core::FrameBufferObject::Attachments{});
-    m_fbos.emplace_back(
-        2048, 2048, 1,
-        daft::core::FrameBufferObject::Attachments{daft::core::FrameBufferObject::Attachments::Type::TEXTURE, 1,
-                                                   daft::core::FrameBufferObject::Attachments::Type::TEXTURE});
+    m_multisamplePass = std::make_shared<daft::engine::MultiSamplingPass>(2048, 2048, 32);
     m_screenQuad = std::make_shared<daft::engine::QuadRenderer>();
     m_screenQuad->addQuad(-1.f, 1.f, 2.f, 2.f);
-    m_screenQuad->quad(0).setTexture(m_fbos[1].textures()[0]);
+    m_screenQuad->quad(0).setTexture(m_multisamplePass->outTexture());
     m_deleter = std::make_unique<DeleterVisitor>();
 
     updateProjectionMatrix();
@@ -52,7 +48,7 @@ void Renderer::prepare() {
 
 void Renderer::clearGL() const {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.3f, 0.3f, 0.3f, 1.f);
+    glClearColor(0.35f, 0.35f, 0.35f, 1.f);
 }
 
 void Renderer::render() {
@@ -61,7 +57,7 @@ void Renderer::render() {
 
     /// prepare opengl objects
     m_shaders[0]->use();
-    m_fbos[0].use();
+    m_multisamplePass->use();
     clearGL();
 
     /// draw objects
@@ -75,11 +71,10 @@ void Renderer::render() {
     m_root->renderEdges(*m_shaders[0]);
 
     /// unbind opengl objects
-    m_fbos[0].stop(m_width, m_height);
+    m_multisamplePass->stop(m_width, m_height);
     m_shaders[0]->stop();
 
-    /// render a quad textured with the frame
-    m_fbos[0].resolve(m_fbos[1]);
+    /// render the frame-textured quad to the screen.
     m_screenQuad->prepare();
     m_screenQuad->render();
 }
