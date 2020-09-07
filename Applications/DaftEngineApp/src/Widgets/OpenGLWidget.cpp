@@ -36,8 +36,10 @@ void OpenGLWidget::prepareScene() {
     core::Logger::info(std::move(ss));
 
     m_renderer->addDrawable(new engine::Sphere);
-    m_renderer->addDrawable(new engine::Composite);
-    m_renderer->addDrawable(new engine::Sphere);
+    auto group = new engine::Composite;
+    group->add(new engine::Sphere);
+    group->add(new engine::Sphere);
+    m_renderer->addDrawable(group);
 
     std::stringstream ss2;
     ss2 << "Example scene loaded";

@@ -62,7 +62,7 @@ void Renderer::render() {
 
     /// draw objects
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    m_shaders[0]->setVec3("color", {0.f, 0.f, 1.f});
+    m_shaders[0]->setVec3("color", {0.6f, 0.6f, 0.6f});
     m_root->render(*m_shaders[0]);
 
     /// draw objects' edges
