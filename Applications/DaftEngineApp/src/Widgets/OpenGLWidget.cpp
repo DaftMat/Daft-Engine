@@ -26,6 +26,7 @@ void OpenGLWidget::paintGL() {
     m_renderer->prepare();
     m_renderer->render();
     emitSelectionChanged();
+    emitSceneTreeChanged();
 }
 
 void OpenGLWidget::resizeGL(int width, int height) { m_renderer->resize(width, height); }
@@ -103,10 +104,29 @@ void OpenGLWidget::setSelection(std::string s) {
     emit selectionChanged();
 }
 
+void OpenGLWidget::addDrawable(engine::Drawable *drawable) {
+    m_renderer->addDrawable(drawable);
+    emit sceneTreeChanged();
+    emit selectionChanged();
+}
+
+void OpenGLWidget::removeSelection() {
+    m_renderer->removeSelection();
+    m_emitSceneTreeChanged = true;
+    m_emitSelectionChanged = true;
+}
+
 void OpenGLWidget::emitSelectionChanged() {
     if (m_emitSelectionChanged) {
         m_emitSelectionChanged = false;
         emit selectionChanged();
+    }
+}
+
+void OpenGLWidget::emitSceneTreeChanged() {
+    if (m_emitSceneTreeChanged) {
+        m_emitSceneTreeChanged = false;
+        emit sceneTreeChanged();
     }
 }
 }  // namespace daft::app

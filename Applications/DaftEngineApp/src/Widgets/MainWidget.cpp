@@ -23,20 +23,25 @@ MainWidget::MainWidget(QWidget *parent)
     m_layout->addWidget(m_glWidget.get(), BorderLayout::Position::Center);
 
     /// NORTH
-    auto button0 = new QPushButton();
-    button0->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    button0->setText("Button0");
-    auto button1 = new QPushButton();
-    button1->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    button1->setText("Button1");
-    auto button2 = new QPushButton();
-    button2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    button2->setText("Button2");
+    auto addGroup = new QPushButton();
+    addGroup->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    addGroup->setText("Add Group");
+    auto addSphere = new QPushButton();
+    addSphere->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    addSphere->setText("Add Sphere");
+    auto removeButton = new QPushButton();
+    removeButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    removeButton->setText("Remove");
+
+    connect(addGroup, &QPushButton::pressed, this, &MainWidget::on_addGroupButtonPressed);
+    connect(addSphere, &QPushButton::pressed, this, &MainWidget::on_addSphereButtonPressed);
+    connect(removeButton, &QPushButton::pressed, this, &MainWidget::on_removeButtonPressed);
+
     auto northWidget = new BorderWidget(BorderWidget::Orientation::HORIZONTAL, 70, 70);
-    northWidget->addWidget(button0);
-    northWidget->addWidget(button1);
+    northWidget->addWidget(addGroup);
+    northWidget->addWidget(addSphere);
     northWidget->addSeparator();
-    northWidget->addWidget(button2);
+    northWidget->addWidget(removeButton);
     northWidget->addSpacer();
     northWidget->setObjectName("northWidget");
     m_layout->addWidget(northWidget, BorderLayout::Position::North);
@@ -128,7 +133,10 @@ void MainWidget::on_settingChanged() {
     m_glWidget->update();
 }
 
-void MainWidget::on_sceneTreeChanged() { m_treeWidget->resetTree(m_glWidget->renderer().getSceneTree()); }
+void MainWidget::on_sceneTreeChanged() {
+    m_treeWidget->resetTree(m_glWidget->renderer().getSceneTree());
+    connectSceneTreeEvents();
+}
 
 void MainWidget::on_treeSelectionChanged() {
     const auto index = m_treeWidget->selectionModel()->currentIndex();
@@ -149,6 +157,10 @@ void MainWidget::on_glInitialized() {
     /// not possible in constructor :
     /// the function glInitialize() has not been called yet thus the renderer is nullptr.
     m_treeWidget = std::make_unique<TreeWidget>(m_glWidget->renderer().getSceneTree());
+    connectSceneTreeEvents();
+}
+
+void MainWidget::connectSceneTreeEvents() {
     connect(m_treeWidget->selectionModel(), &QItemSelectionModel::selectionChanged, this,
             &MainWidget::on_treeSelectionChanged);
     connect(m_treeWidget->model(), &QStandardItemModel::dataChanged, this, &MainWidget::on_treeItemChanged);

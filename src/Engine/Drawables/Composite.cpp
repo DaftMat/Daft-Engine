@@ -28,7 +28,19 @@ void Composite::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this
 
 void Composite::add(Drawable *drawable) {
     drawable->setParent(this);
+    drawable->updateNextFrame();
     m_drawables.emplace_back(drawable);
+}
+
+bool Composite::remove(const std::string &pname) {
+    if (pname == name()) return true;
+    for (const auto &d : m_drawables) {
+        if (d->remove(pname)) {
+            m_drawables.erase(std::find(m_drawables.begin(), m_drawables.end(), d));
+            break;
+        }
+    }
+    return false;
 }
 
 void Composite::reset() {

@@ -21,7 +21,7 @@ std::string IO::getStringFromFile(const std::string &path) {
         resFile.close();
     } catch (std::ifstream::failure &f) {
         std::stringstream ss;
-        ss << "failed to load file " << path << ".";
+        ss << "failed to load file " << path << "\n" << f.what();
         core::Logger::error(std::move(ss));
     }
     return res;

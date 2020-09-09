@@ -39,6 +39,15 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     void resize(int width, int height);
 
+    daft::engine::Drawable *getSelection() {
+        if (m_selection.empty()) return nullptr;
+        return m_root->find(m_selection);
+    }
+
+    daft::engine::Composite *getSceneTree() { return m_root.get(); }
+
+    void setSelection(std::string s);
+
     void addDrawable(daft::engine::Drawable *drawable) {
         auto selection = getSelection();
         if (selection && selection->isComposite()) {
@@ -49,14 +58,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
         setSelection(drawable->name());
     }
 
-    daft::engine::Drawable *getSelection() {
-        if (m_selection.empty()) return nullptr;
-        return m_root->find(m_selection);
-    }
-
-    daft::engine::Composite *getSceneTree() { return m_root.get(); }
-
-    void setSelection(std::string s);
+    void removeSelection() { m_removeNextFrame = true; }
 
     void processMouseScroll(float offset);
 
@@ -73,6 +75,13 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
    private:
     void clearGL() const;
 
+    void _removeSelection() {
+        if (m_removeNextFrame) {
+            m_root->remove(m_selection);
+            m_removeNextFrame = false;
+        }
+    }
+
     static bool GLinitialized;
     int m_width{0}, m_height{0};
     std::string m_selection;
@@ -88,4 +97,6 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     std::vector<daft::core::FrameBufferObject> m_fbos;
 
     daft::engine::Camera m_camera;
+
+    bool m_removeNextFrame{false};
 };

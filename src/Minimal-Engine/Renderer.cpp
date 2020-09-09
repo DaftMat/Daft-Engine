@@ -53,7 +53,8 @@ void Renderer::clearGL() const {
 
 void Renderer::render() {
     m_root->update();
-    m_root->find(m_selection)->select();
+
+    _removeSelection();
 
     /// prepare opengl objects
     m_shaders[0]->use();

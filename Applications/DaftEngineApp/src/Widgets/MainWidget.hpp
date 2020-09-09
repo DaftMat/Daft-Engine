@@ -100,7 +100,22 @@ class ENGINE_API MainWidget : public QWidget {
     void on_sceneTreeChanged();
     void on_glInitialized();
 
+    void on_addGroupButtonPressed() {
+        m_glWidget->addDrawable(new daft::engine::Composite{});
+        m_glWidget->update();
+    }
+    void on_addSphereButtonPressed() {
+        m_glWidget->addDrawable(new daft::engine::Sphere{});
+        m_glWidget->update();
+    }
+    void on_removeButtonPressed() {
+        m_glWidget->removeSelection();
+        m_glWidget->update();
+    }
+
    private:
+    void connectSceneTreeEvents();
+
     std::unique_ptr<OpenGLWidget> m_glWidget{nullptr};
     std::unique_ptr<BorderWidget> m_southWidget{nullptr};
     std::unique_ptr<BorderWidget> m_eastWidget{nullptr};

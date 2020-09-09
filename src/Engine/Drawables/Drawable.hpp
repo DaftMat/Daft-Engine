@@ -114,6 +114,8 @@ class Drawable : public core::NonCopyable {
      */
     glm::vec3 &position() { return m_position; }
 
+    virtual bool remove(const std::string &name) { return name == m_name; }
+
     /**
      * Rotations constant reference.
      * @return const ref to rotations.

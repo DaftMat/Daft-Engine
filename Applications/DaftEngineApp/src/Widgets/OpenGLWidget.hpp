@@ -49,6 +49,17 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
      */
     void setSelection(std::string s);
 
+    /**
+     * Adds a drawable to the scene.
+     * @param drawable - new drawable to add.
+     */
+    void addDrawable(engine::Drawable *drawable);
+
+    /**
+     * Removes the selected drawable from the scene.
+     */
+    void removeSelection();
+
     [[nodiscard]] QSize minimumSizeHint() const override { return {50, 50}; }
     [[nodiscard]] QSize sizeHint() const override { return {width(), height()}; }
 
@@ -74,10 +85,12 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
 
    private:
     void emitSelectionChanged();
+    void emitSceneTreeChanged();
 
     std::unique_ptr<Renderer> m_renderer{nullptr};
 
     bool m_glInitialized{false};
     bool m_emitSelectionChanged{false};
+    bool m_emitSceneTreeChanged{false};
 };
 }  // namespace daft::app

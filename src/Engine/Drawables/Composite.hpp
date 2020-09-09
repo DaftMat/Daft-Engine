@@ -73,6 +73,12 @@ class ENGINE_API Composite : public Drawable {
     void add(Drawable *drawable);
 
     /**
+     * Removes a drawable from the composite and the engine.
+     * @param name - name of the drawable to be deleted.
+     */
+    bool remove(const std::string &name) override;
+
+    /**
      * Drawables reference
      * @return drawables ref.
      */
