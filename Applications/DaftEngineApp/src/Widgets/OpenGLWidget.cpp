@@ -3,6 +3,7 @@
 //
 #include "OpenGLWidget.hpp"
 
+#include <Engine/Drawables/Object/Sphere.hpp>
 #include <QOpenGLContext>
 
 namespace daft::app {
@@ -12,7 +13,7 @@ void OpenGLWidget::initializeGL() {
     if (!m_glInitialized) {
         connect(context(), &QOpenGLContext::aboutToBeDestroyed, this, &OpenGLWidget::cleanup);
 
-        m_renderer = std::make_unique<Renderer>(width(), height());
+        m_renderer = std::make_unique<engine::Renderer>(width(), height());
         prepareScene();
         m_glInitialized = true;
 

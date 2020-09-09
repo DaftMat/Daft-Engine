@@ -3,9 +3,13 @@
 //
 #include "Renderer.hpp"
 
+#include <Core/Rendering/ShaderProgram.hpp>
 #include <Core/Utils/Logger.hpp>
+#include <Engine/Renderer/QuadRenderer.hpp>
+#include <Engine/Renderer/RenderPasses/MultiSamplingPass.hpp>
 #include <iostream>
 
+namespace daft::engine {
 Renderer &Renderer::operator=(Renderer &&other) noexcept {
     m_root = std::move_if_noexcept(other.m_root);
     return *this;
@@ -35,7 +39,6 @@ Renderer::Renderer(int width, int height) {
     m_screenQuad = std::make_shared<daft::engine::QuadRenderer>();
     m_screenQuad->addQuad(-1.f, 1.f, 2.f, 2.f);
     m_screenQuad->quad(0).setTexture(m_multisamplePass->outTexture());
-    m_deleter = std::make_unique<DeleterVisitor>();
 
     updateProjectionMatrix();
     updateViewMatrix();
@@ -103,11 +106,26 @@ void Renderer::processMouseMove(glm::vec2 mousePos) {
     updateViewMatrix();
 }
 
+daft::engine::Drawable *Renderer::getSelection() {
+    if (m_selection.empty()) return nullptr;
+    return m_root->find(m_selection);
+}
+
 void Renderer::setSelection(std::string s) {
     auto selection = getSelection();
     if (selection) selection->unselect();
     m_selection = std::move(s);
     if (!m_selection.empty()) getSelection()->select();
+}
+
+void Renderer::addDrawable(daft::engine::Drawable *drawable) {
+    auto selection = getSelection();
+    if (selection && selection->isComposite()) {
+        dynamic_cast<daft::engine::Composite *>(selection)->add(drawable);
+    } else {
+        m_root->add(drawable);
+    }
+    setSelection(drawable->name());
 }
 
 void Renderer::updateViewMatrix() {
@@ -125,3 +143,11 @@ void Renderer::updateProjectionMatrix() {
         shader->stop();
     }
 }
+
+void Renderer::_removeSelection() {
+    if (m_removeNextFrame) {
+        m_root->remove(m_selection);
+        m_removeNextFrame = false;
+    }
+}
+}  // namespace daft::engine

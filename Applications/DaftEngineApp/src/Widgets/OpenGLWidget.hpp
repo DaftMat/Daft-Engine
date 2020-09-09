@@ -3,7 +3,7 @@
 //
 #pragma once
 #include <Core/OpenGL.hpp>
-#include <Minimal-Engine/Renderer.hpp>
+#include <Engine/Renderer/Renderer.hpp>
 #include <QOpenGLWidget>
 #include <QtGui/QResizeEvent>
 
@@ -30,13 +30,13 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
      * renderer constant reference.
      * @return const ref to renderer.
      */
-    [[nodiscard]] const Renderer &renderer() const { return *m_renderer; }
+    [[nodiscard]] const engine::Renderer &renderer() const { return *m_renderer; }
 
     /**
      * renderer reference.
      * @return ref to renderer.
      */
-    Renderer &renderer() { return *m_renderer; }
+    engine::Renderer &renderer() { return *m_renderer; }
 
     /**
      * Tells the gl widget to emit a signal on the next frame.
@@ -87,7 +87,7 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
     void emitSelectionChanged();
     void emitSceneTreeChanged();
 
-    std::unique_ptr<Renderer> m_renderer{nullptr};
+    std::unique_ptr<engine::Renderer> m_renderer{nullptr};
 
     bool m_glInitialized{false};
     bool m_emitSelectionChanged{false};

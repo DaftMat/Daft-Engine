@@ -3,6 +3,7 @@
 //
 #pragma once
 
+#include <Engine/Drawables/Object/Sphere.hpp>
 #include <Layouts/BorderLayout.hpp>
 #include <QFrame>
 #include <QtWidgets/QWidget>
@@ -101,11 +102,11 @@ class ENGINE_API MainWidget : public QWidget {
     void on_glInitialized();
 
     void on_addGroupButtonPressed() {
-        m_glWidget->addDrawable(new daft::engine::Composite{});
+        m_glWidget->addDrawable(new engine::Composite{});
         m_glWidget->update();
     }
     void on_addSphereButtonPressed() {
-        m_glWidget->addDrawable(new daft::engine::Sphere{});
+        m_glWidget->addDrawable(new engine::Sphere{});
         m_glWidget->update();
     }
     void on_removeButtonPressed() {

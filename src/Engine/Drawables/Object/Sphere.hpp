@@ -141,7 +141,7 @@ class ENGINE_API Sphere : public Object {
     Type m_type;
     int m_meridians{32}, m_parallels{16};  ///< UV sphere settings.
     int m_subdivisions{3};                 ///< Icosahedron based sphere settings.
-    int m_resolution{32};                  ///< Cube based sphere settings.
+    int m_resolution{16};                  ///< Cube based sphere settings.
 
     static int m_nrSphere;
 };
