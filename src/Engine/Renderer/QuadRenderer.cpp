@@ -4,9 +4,8 @@
 #include "QuadRenderer.hpp"
 
 namespace daft::engine {
-QuadRenderer::QuadRenderer() {
-    m_shader = std::make_shared<core::ShaderProgram>("shaders/quad.vert.glsl", "shaders/quad.frag.glsl");
-}
+QuadRenderer::QuadRenderer()
+    : m_shader{std::make_shared<core::ShaderProgram>("shaders/quad.vert.glsl", "shaders/quad.frag.glsl")} {}
 
 void QuadRenderer::prepare() const {
     glDisable(GL_DEPTH_TEST);
