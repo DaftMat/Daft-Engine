@@ -41,7 +41,7 @@ void DrawableSettings::addDoubleSpinBox(std::string label, double min, double ma
     auto doubleSpinBox = new QDoubleSpinBox;
     doubleSpinBox->setMinimum(min);
     doubleSpinBox->setMaximum(max);
-    doubleSpinBox->setValue(m_settings.get<double>(label));
+    doubleSpinBox->setValue(double(m_settings.get<float>(label)));
     doubleSpinBox->setSingleStep(step);
     connect(doubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(on_drawableChanged()));
     m_doubleSpinBoxes.insert(std::make_pair(label, doubleSpinBox));
@@ -108,7 +108,7 @@ void DrawableSettings::on_drawableChanged() {
         m_settings.get<int>(elem.first) = elem.second->value();
     }
     for (const auto& elem : m_doubleSpinBoxes) {
-        m_settings.get<double>(elem.first) = elem.second->value();
+        m_settings.get<float>(elem.first) = float(elem.second->value());
     }
     for (const auto& elem : m_intSpinBoxVectors) {
         setVector(elem);

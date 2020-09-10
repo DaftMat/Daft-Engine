@@ -21,6 +21,7 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::Sphere *sphere) {
 
     auto ds = new DrawableSettings(sm);
     ds->addComboBox("Type", {"UV", "Icosahedron", "Cube"}, core::toUType(type));
+    ds->addDoubleSpinBox("Radius", 0, 9999, 1);
     switch (type) {
         case engine::Sphere::Type::UV:
             ds->addIntSpinBox("Meridians", 3, 9999, 1);

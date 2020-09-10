@@ -124,6 +124,18 @@ class ENGINE_API Sphere : public Object {
     void setResolution(int r);
 
     /**
+     * Radius getter.
+     * @return radius.
+     */
+    [[nodiscard]] float radius() const { return m_radius; }
+
+    /**
+     * Radius setter.
+     * @param r - new radius.
+     */
+    void setRadius(float r);
+
+    /**
      * Accepts a DrawableVisitor .
      * @param visitor - visitor to accept.
      */
@@ -138,7 +150,11 @@ class ENGINE_API Sphere : public Object {
     void createIcosahedron();
     void createCubeSphere();
 
+    static glm::vec3 computeHalfVertex(const glm::vec3 &a, const glm::vec3 &b) { return glm::normalize(a + b); }
+    void subdivideIcosahedron();
+
     Type m_type;
+    float m_radius{1.0};
     int m_meridians{32}, m_parallels{16};  ///< UV sphere settings.
     int m_subdivisions{3};                 ///< Icosahedron based sphere settings.
     int m_resolution{16};                  ///< Cube based sphere settings.

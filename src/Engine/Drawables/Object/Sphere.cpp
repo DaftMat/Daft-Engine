@@ -46,6 +46,7 @@ void Sphere::applyUpdate() {
 void Sphere::createUVSphere() {
     core::AttribManager am;
     std::vector<glm::vec3> positions;
+    std::vector<glm::vec3> normals;
     std::vector<glm::vec2> texCoords;
 
     /// geometry
@@ -60,13 +61,14 @@ void Sphere::createUVSphere() {
         for (int j = 0; j <= m_meridians; ++j) {
             float mAngle = float(j) * mStep;
 
-            glm::vec3 pn{xy * glm::cos(mAngle), z, xy * glm::sin(mAngle)};
-            positions.push_back(pn);
+            glm::vec3 n{xy * glm::cos(mAngle), z, xy * glm::sin(mAngle)};
+            positions.push_back(n * m_radius);
+            normals.push_back(n);
             texCoords.emplace_back(float(j) / float(m_meridians), float(i) / float(m_parallels));
         }
     }
     am.addAttrib(positions);
-    am.addAttrib(positions);  ///< normals = positions
+    am.addAttrib(normals);
     am.addAttrib(texCoords);
 
     /// topology
@@ -95,7 +97,7 @@ void Sphere::createUVSphere() {
 void Sphere::createIcoSphere() {
     /// create the base icosahedron.
     createIcosahedron();
-    for (int i = 0; i < m_subdivisions; ++i) subdivide(true);
+    for (int i = 0; i < m_subdivisions; ++i) subdivideIcosahedron();
 }
 
 void Sphere::createIcosahedron() {
@@ -106,10 +108,13 @@ void Sphere::createIcosahedron() {
     float h_angle2 = -glm::pi<float>() / 2.f;
 
     std::vector<glm::vec3> positions;
+    std::vector<glm::vec3> normals;
     core::AttribManager am;
 
     // first vertex
-    positions.emplace_back(0.f, 1.f, 0.f);
+    glm::vec3 fv{0.f, 1.f, 0.f};
+    positions.push_back(fv * m_radius);
+    normals.push_back(fv);
 
     // 10 "middle" vertices
     for (int i = 1; i <= 5; ++i) {
@@ -119,15 +124,20 @@ void Sphere::createIcosahedron() {
         glm::vec3 v1{xy * glm::cos(h_angle1), z, xy * glm::sin(h_angle1)};
         glm::vec3 v2{xy * glm::cos(h_angle2), -z, xy * glm::sin(h_angle2)};
 
-        positions.push_back(v1);
-        positions.push_back(v2);
+        positions.push_back(v1 * m_radius);
+        positions.push_back(v2 * m_radius);
+
+        normals.push_back(v1);
+        normals.push_back(v2);
 
         h_angle1 += H_ANGLE;
         h_angle2 += H_ANGLE;
     }
 
     // last vertex
-    positions.emplace_back(0.f, -1.f, 0.f);
+    glm::vec3 lv{0.f, -1.f, 0.f};
+    positions.push_back(lv * m_radius);
+    normals.push_back(lv);
 
     // indices
     for (int i = 1; i <= 9; i += 2) {
@@ -150,11 +160,81 @@ void Sphere::createIcosahedron() {
     }
 
     am.addAttrib(positions);
-    am.addAttrib(positions);  ///< normals = positions;
+    am.addAttrib(normals);
     // am.addAttrib(texCoords);
 
     m_meshObjects.clear();
     m_meshObjects.emplace_back(core::Mesh(am));
+}
+
+void Sphere::subdivideIcosahedron() {
+    for (auto &obj : m_meshObjects) {
+        std::vector<glm::vec3> tmpPositions = obj.mesh().attribManager().getAttribs<glm::vec3>(0)->attribs;
+        std::vector<glm::vec3> tmpNormals = obj.mesh().attribManager().getAttribs<glm::vec3>(1)->attribs;
+        std::vector<GLuint> tmpIndices = obj.mesh().attribManager().indices();
+
+        std::vector<glm::vec3> positions;
+        std::vector<glm::vec3> normals;
+        core::AttribManager am;
+        GLuint ind_v1, ind_v2, ind_v3, index{0};
+        glm::vec3 new_p1, new_n1, new_p2, new_n2, new_p3, new_n3;
+
+        for (GLuint i = 0; i < tmpIndices.size(); i += 3) {
+            ind_v1 = tmpIndices[i];
+            ind_v2 = tmpIndices[i + 1];
+            ind_v3 = tmpIndices[i + 2];
+
+            new_n1 = computeHalfVertex(tmpNormals[ind_v1], tmpNormals[ind_v2]);
+            new_n2 = computeHalfVertex(tmpNormals[ind_v2], tmpNormals[ind_v3]);
+            new_n3 = computeHalfVertex(tmpNormals[ind_v1], tmpNormals[ind_v3]);
+
+            new_p1 = m_radius * new_n1;
+            new_p2 = m_radius * new_n2;
+            new_p3 = m_radius * new_n3;
+
+            // 1st triangle
+            positions.push_back(tmpPositions[ind_v1]);
+            positions.push_back(new_p1);
+            positions.push_back(new_p3);
+
+            normals.push_back(tmpNormals[ind_v1]);
+            normals.push_back(new_n1);
+            normals.push_back(new_n3);
+            // 2nd triangle
+            positions.push_back(new_p1);
+            positions.push_back(tmpPositions[ind_v2]);
+            positions.push_back(new_p2);
+
+            normals.push_back(new_n1);
+            normals.push_back(tmpNormals[ind_v2]);
+            normals.push_back(new_n2);
+            // 3rd triangle
+            positions.push_back(new_p1);
+            positions.push_back(new_p2);
+            positions.push_back(new_p3);
+
+            normals.push_back(new_n1);
+            normals.push_back(new_n2);
+            normals.push_back(new_n3);
+            // 4th triangle
+            positions.push_back(new_p3);
+            positions.push_back(new_p2);
+            positions.push_back(tmpPositions[ind_v3]);
+
+            normals.push_back(new_n3);
+            normals.push_back(new_n2);
+            normals.push_back(tmpNormals[ind_v3]);
+
+            /// 4 new triangles
+            for (int j = 0; j < 12; ++j) am.indices().push_back(index + j);
+            index += 12;
+        }
+
+        am.addAttrib(positions);
+        am.addAttrib(normals);
+
+        obj.mesh().reset(am);
+    }
 }
 
 void Sphere::createCubeSphere() {
@@ -171,6 +251,7 @@ void Sphere::createCubeSphere() {
 
     for (auto &dir : directions) {
         std::vector<glm::vec3> positions;
+        std::vector<glm::vec3> normals;
         std::vector<glm::vec2> texCoords;
         core::AttribManager am;
 
@@ -183,7 +264,8 @@ void Sphere::createCubeSphere() {
                 glm::vec3 pointOnUnitCube = dir + (percent.x - 0.5f) * 2.f * axisA + (percent.y - 0.5f) * 2.f * axisB;
                 glm::vec3 pointOnUnitSphere = glm::normalize(pointOnUnitCube);
 
-                positions.push_back(pointOnUnitSphere);
+                positions.push_back(pointOnUnitSphere * m_radius);
+                normals.push_back(pointOnUnitSphere);
                 texCoords.push_back(percent);
 
                 /// Triangles
@@ -200,7 +282,7 @@ void Sphere::createCubeSphere() {
         }
 
         am.addAttrib(positions);
-        am.addAttrib(positions);  /// normals = positions
+        am.addAttrib(normals);
         am.addAttrib(texCoords);
         m_meshObjects.emplace_back(core::Mesh(am));
     }
@@ -211,6 +293,7 @@ void Sphere::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); 
 core::SettingManager Sphere::getSettings() const {
     core::SettingManager sm;
     sm.add("Type", core::toUType(m_type));
+    sm.add("Radius", m_radius);
     switch (m_type) {
         case Type::UV:
             sm.add("Meridians", m_meridians);
@@ -229,6 +312,7 @@ core::SettingManager Sphere::getSettings() const {
 void Sphere::setSettings(const core::SettingManager &s) {
     setType(Type(s.get<int>("Type")));
     if (m_update) return;
+    setRadius(s.get<float>("Radius"));
     switch (m_type) {
         case Type::UV:
             setMeridians(s.get<int>("Meridians"));
@@ -270,6 +354,12 @@ void Sphere::setResolution(int r) {
 void Sphere::setType(Sphere::Type type) {
     if (type == m_type) return;
     m_type = type;
+    updateNextFrame();
+}
+
+void Sphere::setRadius(float r) {
+    if (r == m_radius) return;
+    m_radius = r;
     updateNextFrame();
 }
 

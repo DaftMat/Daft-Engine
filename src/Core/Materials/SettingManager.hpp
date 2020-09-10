@@ -57,6 +57,7 @@ class SettingManager {
     using intSetting = Setting<int>;
     using boolSetting = Setting<bool>;
     using floatSetting = Setting<float>;
+    using doubleSetting = Setting<double>;
     using vec2Setting = Setting<glm::vec2>;
     using vec3Setting = Setting<glm::vec3>;
     using vec4Setting = Setting<glm::vec4>;
@@ -144,6 +145,7 @@ class SettingManager {
     std::vector<intSetting> m_ints;
     std::vector<boolSetting> m_bools;
     std::vector<floatSetting> m_floats;
+    std::vector<doubleSetting> m_doubles;
     std::vector<vec2Setting> m_vec2s;
     std::vector<vec3Setting> m_vec3s;
     std::vector<vec4Setting> m_vec4s;

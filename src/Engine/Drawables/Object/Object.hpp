@@ -68,9 +68,8 @@ class ENGINE_API Object : public Drawable {
 
     /**
      * Subdivides triangles of each meshes in 4 new triangles.
-     * @param normalsArePositions - true if the object is a sphere.
      */
-    void subdivide(bool normalsArePositions = false);
+    void subdivide();
 
     /**
      * Tests if this is a Composite .
@@ -97,7 +96,6 @@ class ENGINE_API Object : public Drawable {
 
    private:
     void _render();
-    static glm::vec3 computeHalfVertex(const glm::vec3 &a, glm::vec3 &b) { return glm::normalize(a + b); }
 
     static int m_nrObject;
 };

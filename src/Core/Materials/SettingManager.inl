@@ -11,6 +11,8 @@ const std::vector<SettingManager::Setting<T>>& SettingManager::settings() const 
         return m_bools;
     else if constexpr (std::is_same_v<T, float>)
         return m_floats;
+    else if constexpr (std::is_same_v<T, double>)
+        return m_doubles;
     else if constexpr (std::is_same_v<T, glm::vec2>)
         return m_vec2s;
     else if constexpr (std::is_same_v<T, glm::vec3>)
@@ -42,6 +44,8 @@ void SettingManager::add(std::string name, T value) noexcept {
         m_bools.emplace_back(std::move_if_noexcept(name), value);
     else if constexpr (std::is_same_v<T, float>)
         m_floats.emplace_back(std::move_if_noexcept(name), value);
+    else if constexpr (std::is_same_v<T, double>)
+        m_doubles.emplace_back(std::move_if_noexcept(name), value);
     else if constexpr (std::is_same_v<T, glm::vec2>)
         m_vec2s.emplace_back(std::move_if_noexcept(name), value);
     else if constexpr (std::is_same_v<T, glm::vec3>)
