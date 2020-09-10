@@ -154,6 +154,7 @@ void MainWidget::on_treeItemChanged() {
     const auto index = m_treeWidget->selectionModel()->currentIndex();
     std::string newName = index.data(Qt::DisplayRole).toString().toStdString();
     m_glWidget->renderer().getSelection()->name() = newName;
+    m_glWidget->setSelection(newName);
     m_settingWidget->setTitle(newName);
 }
 
