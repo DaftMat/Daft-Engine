@@ -102,11 +102,11 @@ class ENGINE_API MainWidget : public QWidget {
     void on_glInitialized();
 
     void on_addGroupButtonPressed() {
-        m_glWidget->addDrawable(new engine::Composite{});
+        m_glWidget->addDrawable(engine::Drawable::Type::Group);
         m_glWidget->update();
     }
     void on_addSphereButtonPressed() {
-        m_glWidget->addDrawable(new engine::Sphere{});
+        m_glWidget->addDrawable(engine::Drawable::Type::Sphere);
         m_glWidget->update();
     }
     void on_removeButtonPressed() {

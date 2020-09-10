@@ -5,6 +5,8 @@
 
 #include <Core/Rendering/ShaderProgram.hpp>
 #include <Core/Utils/Logger.hpp>
+#include <Engine/Drawables/Object/Object.hpp>
+#include <Engine/Drawables/Object/Sphere.hpp>
 #include <Engine/Renderer/QuadRenderer.hpp>
 #include <Engine/Renderer/RenderPasses/MultiSamplingPass.hpp>
 #include <iostream>
@@ -47,6 +49,12 @@ Renderer::Renderer(int width, int height) {
 void Renderer::prepare() {
     glEnable(GL_DEPTH_TEST);
     clearGL();
+
+    m_root->update();
+
+    _removeSelection();
+    _addDrawable();
+    _setSelection();
 }
 
 void Renderer::clearGL() const {
@@ -55,10 +63,6 @@ void Renderer::clearGL() const {
 }
 
 void Renderer::render() {
-    m_root->update();
-
-    _removeSelection();
-
     /// prepare opengl objects
     m_shaders[0]->use();
     m_multisamplePass->use();
@@ -115,17 +119,6 @@ void Renderer::setSelection(std::string s) {
     auto selection = getSelection();
     if (selection) selection->unselect();
     m_selection = std::move(s);
-    if (!m_selection.empty()) getSelection()->select();
-}
-
-void Renderer::addDrawable(daft::engine::Drawable *drawable) {
-    auto selection = getSelection();
-    if (selection && selection->isComposite()) {
-        dynamic_cast<daft::engine::Composite *>(selection)->add(drawable);
-    } else {
-        m_root->add(drawable);
-    }
-    setSelection(drawable->name());
 }
 
 void Renderer::updateViewMatrix() {
@@ -148,6 +141,41 @@ void Renderer::_removeSelection() {
     if (m_removeNextFrame) {
         m_root->remove(m_selection);
         m_removeNextFrame = false;
+    }
+}
+
+void Renderer::_addDrawable() {
+    Drawable *drawable;
+    switch (m_addNextFrame) {
+        case Drawable::Type::None:
+            return;
+        case Drawable::Type::Group:
+            drawable = new Composite{};
+            break;
+        case Drawable::Type::Object:
+            drawable = new Object{};  /// empty object
+            break;
+        case Drawable::Type::Sphere:
+            drawable = new Sphere{};
+            break;
+        default:
+            return;
+    }
+    m_addNextFrame = Drawable::Type::None;
+
+    auto selection = getSelection();
+    if (selection && selection->isComposite()) {
+        dynamic_cast<daft::engine::Composite *>(selection)->add(drawable);
+    } else {
+        m_root->add(drawable);
+    }
+    setSelection(drawable->name());
+}
+
+void Renderer::_setSelection() {
+    auto selection = getSelection();
+    if (selection && !selection->selected()) {
+        selection->select();
     }
 }
 }  // namespace daft::engine

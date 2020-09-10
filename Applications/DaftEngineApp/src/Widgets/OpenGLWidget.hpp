@@ -51,9 +51,9 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
 
     /**
      * Adds a drawable to the scene.
-     * @param drawable - new drawable to add.
+     * @param type - type of the new drawable to add.
      */
-    void addDrawable(engine::Drawable *drawable);
+    void addDrawable(engine::Drawable::Type type);
 
     /**
      * Removes the selected drawable from the scene.

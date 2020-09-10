@@ -128,6 +128,11 @@ void MainWidget::on_selectionChanged() {
 void MainWidget::on_settingChanged() {
     auto selection = m_glWidget->renderer().getSelection();
     if (!selection) return;
+
+    std::stringstream ss;
+    ss << "Setting of drawable changed. Drawable name : " << selection->name();
+    core::Logger::error(std::move(ss));
+
     selection->setTransformations(m_settingWidget->transforms());
     selection->setSettings(m_settingWidget->settings());
     m_glWidget->update();

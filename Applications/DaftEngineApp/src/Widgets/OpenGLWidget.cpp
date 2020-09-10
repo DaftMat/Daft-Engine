@@ -37,12 +37,6 @@ void OpenGLWidget::prepareScene() {
     ss << "Loading example scene...";
     core::Logger::info(std::move(ss));
 
-    m_renderer->addDrawable(new engine::Sphere);
-    auto group = new engine::Composite;
-    group->add(new engine::Sphere);
-    group->add(new engine::Sphere);
-    m_renderer->addDrawable(group);
-
     std::stringstream ss2;
     ss2 << "Example scene loaded";
     core::Logger::info(std::move(ss2));
@@ -105,10 +99,10 @@ void OpenGLWidget::setSelection(std::string s) {
     emit selectionChanged();
 }
 
-void OpenGLWidget::addDrawable(engine::Drawable *drawable) {
-    m_renderer->addDrawable(drawable);
-    emit sceneTreeChanged();
-    emit selectionChanged();
+void OpenGLWidget::addDrawable(engine::Drawable::Type type) {
+    m_renderer->addDrawable(type);
+    m_emitSceneTreeChanged = true;
+    m_emitSelectionChanged = true;
 }
 
 void OpenGLWidget::removeSelection() {

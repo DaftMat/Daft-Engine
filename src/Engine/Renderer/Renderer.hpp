@@ -90,7 +90,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
      * Adds a drawable to the scene tree.
      * @param drawable - drawable to add.
      */
-    void addDrawable(Drawable *drawable);
+    void addDrawable(Drawable::Type type) { m_addNextFrame = type; }
 
     /**
      * Removes the current selected drawable from the scene tree.
@@ -133,6 +133,8 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
    private:
     void clearGL() const;
     void _removeSelection();
+    void _addDrawable();
+    void _setSelection();
 
     static bool GLinitialized;
     int m_width{0}, m_height{0};
@@ -149,6 +151,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     daft::engine::Camera m_camera;
 
     bool m_removeNextFrame{false};
+    Drawable::Type m_addNextFrame{Drawable::Type::None};
 };
 }  // namespace engine
 }  // namespace daft

@@ -24,6 +24,24 @@ class Drawable : public core::NonCopyable {
    public:
     using DrawableVisitor = core::DrawableVisitor;
 
+    /// All type of drawables (for creation)
+    enum class Type {
+        /// Objects
+        Object,
+        Sphere,
+        Cube,
+        Cylinder,
+        Tore,
+        /// Lights
+        PointLight,
+        DirLight,
+        SpotLight,
+        /// Composite
+        Group,
+        /// No type
+        None
+    };
+
     /**
      * Standard constructor.
      * @param parent
