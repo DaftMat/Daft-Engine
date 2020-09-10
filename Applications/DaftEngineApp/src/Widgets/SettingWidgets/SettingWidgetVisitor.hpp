@@ -27,6 +27,12 @@ class SettingWidgetVisitor : public core::DrawableVisitor {
     void visit(engine::Sphere *sphere) override;
 
     /**
+     * Visits a Torus .
+     * @param torus - torus to visit.
+     */
+    void visit(engine::Torus *torus) override;
+
+    /**
      * visits a Composite .
      * @param composite - composite to visit.
      */

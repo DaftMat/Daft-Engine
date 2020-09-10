@@ -4,8 +4,7 @@
 #include "SettingWidgetVisitor.hpp"
 
 #include <Engine/Drawables/Composite.hpp>
-#include <Engine/Drawables/Object/Object.hpp>
-#include <Engine/Drawables/Object/Sphere.hpp>
+#include <Engine/Drawables/Object/primitives.hpp>
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::Object *object) {
     m_widget = new SettingWidget(nullptr, createTransformWidget(object->getTransformations()), object->name());
@@ -21,7 +20,6 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::Sphere *sphere) {
 
     auto ds = new DrawableSettings(sm);
     ds->addComboBox("Type", {"UV", "Icosahedron", "Cube"}, core::toUType(type));
-    ds->addDoubleSpinBox("Radius", 0, 9999, 1);
     switch (type) {
         case engine::Sphere::Type::UV:
             ds->addIntSpinBox("Meridians", 3, 9999, 1);
@@ -34,6 +32,17 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::Sphere *sphere) {
             ds->addIntSpinBox("Resolution", 2, 9999, 1);
             break;
     }
+    ds->addDoubleSpinBox("Radius", 0, 9999, 1);
 
     m_widget = new SettingWidget(ds, createTransformWidget(sphere->getTransformations()), sphere->name());
+}
+
+void daft::app::SettingWidgetVisitor::visit(daft::engine::Torus *torus) {
+    core::SettingManager sm = torus->getSettings();
+    auto ds = new DrawableSettings(sm);
+    ds->addIntSpinBox("Meridians", 3, 9999, 1);
+    ds->addIntSpinBox("Parallels", 3, 9999, 1);
+    ds->addDoubleSpinBox("Inner Radius", 0, 9999, 1);
+    ds->addDoubleSpinBox("Outer Radius", 0, 9999, 1);
+    m_widget = new SettingWidget(ds, createTransformWidget(torus->getTransformations()), torus->name());
 }

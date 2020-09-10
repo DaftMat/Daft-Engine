@@ -5,8 +5,7 @@
 
 #include <Core/Rendering/ShaderProgram.hpp>
 #include <Core/Utils/Logger.hpp>
-#include <Engine/Drawables/Object/Object.hpp>
-#include <Engine/Drawables/Object/Sphere.hpp>
+#include <Engine/Drawables/Object/primitives.hpp>
 #include <Engine/Renderer/QuadRenderer.hpp>
 #include <Engine/Renderer/RenderPasses/MultiSamplingPass.hpp>
 #include <iostream>
@@ -157,6 +156,9 @@ void Renderer::_addDrawable() {
             break;
         case Drawable::Type::Sphere:
             drawable = new Sphere{};
+            break;
+        case Drawable::Type::Torus:
+            drawable = new Torus{};
             break;
         default:
             return;

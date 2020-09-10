@@ -31,7 +31,7 @@ class Drawable : public core::NonCopyable {
         Sphere,
         Cube,
         Cylinder,
-        Tore,
+        Torus,
         /// Lights
         PointLight,
         DirLight,

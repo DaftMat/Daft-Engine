@@ -105,10 +105,17 @@ class ENGINE_API MainWidget : public QWidget {
         m_glWidget->addDrawable(engine::Drawable::Type::Group);
         m_glWidget->update();
     }
+
     void on_addSphereButtonPressed() {
         m_glWidget->addDrawable(engine::Drawable::Type::Sphere);
         m_glWidget->update();
     }
+
+    void on_addTorusButtonPressed() {
+        m_glWidget->addDrawable(engine::Drawable::Type::Torus);
+        m_glWidget->update();
+    }
+
     void on_removeButtonPressed() {
         m_glWidget->removeSelection();
         m_glWidget->update();

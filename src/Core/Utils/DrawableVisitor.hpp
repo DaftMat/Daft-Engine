@@ -10,6 +10,7 @@ namespace engine {
 // objects
 class Object;
 class Sphere;
+class Torus;
 // lights
 
 // composite
@@ -48,6 +49,11 @@ class ENGINE_API DrawableVisitor {
      * Visits a Sphere .
      */
     virtual void visit(engine::Sphere *) {}
+
+    /**
+     * Visits a Torus .
+     */
+    virtual void visit(engine::Torus *) {}
 
     /**
      * Visits a Composite .

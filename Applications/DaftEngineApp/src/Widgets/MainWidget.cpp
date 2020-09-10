@@ -29,17 +29,22 @@ MainWidget::MainWidget(QWidget *parent)
     auto addSphere = new QPushButton();
     addSphere->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     addSphere->setText("Add Sphere");
+    auto addTorus = new QPushButton();
+    addTorus->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    addTorus->setText("Add Torus");
     auto removeButton = new QPushButton();
     removeButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     removeButton->setText("Remove");
 
     connect(addGroup, &QPushButton::pressed, this, &MainWidget::on_addGroupButtonPressed);
     connect(addSphere, &QPushButton::pressed, this, &MainWidget::on_addSphereButtonPressed);
+    connect(addTorus, &QPushButton::pressed, this, &MainWidget::on_addTorusButtonPressed);
     connect(removeButton, &QPushButton::pressed, this, &MainWidget::on_removeButtonPressed);
 
     auto northWidget = new BorderWidget(BorderWidget::Orientation::HORIZONTAL, 70, 70);
     northWidget->addWidget(addGroup);
     northWidget->addWidget(addSphere);
+    northWidget->addWidget(addTorus);
     northWidget->addSeparator();
     northWidget->addWidget(removeButton);
     northWidget->addSpacer();
