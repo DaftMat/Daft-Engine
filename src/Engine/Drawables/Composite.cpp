@@ -26,10 +26,10 @@ void Composite::renderEdges(const core::ShaderProgram &shader) {
 
 void Composite::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
 
-void Composite::add(Drawable *drawable) {
+void Composite::add(std::shared_ptr<Drawable> drawable) {
     drawable->setParent(this);
     drawable->updateNextFrame();
-    m_drawables.emplace_back(drawable);
+    m_drawables.push_back(std::move(drawable));
 }
 
 bool Composite::remove(const std::string &pname) {

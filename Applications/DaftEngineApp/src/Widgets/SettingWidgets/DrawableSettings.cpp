@@ -48,10 +48,15 @@ void DrawableSettings::addDoubleSpinBox(std::string label, double min, double ma
     addField(std::move(label), {doubleSpinBox});
 }
 
-void DrawableSettings::addIntSpinBoxVector(std::string label, int min, int max, int step) {
+void DrawableSettings::addIntSpinBoxVector(std::string label, int min, int max, int step, float multiplier) {
     std::array<QSpinBox*, 3> spinBoxVector{new QSpinBox, new QSpinBox, new QSpinBox};
 
-    for (int i = 0; i < 3; ++i) spinBoxVector[i]->setValue(m_settings.get<glm::vec3>(label)[i]);
+    for (int i = 0; i < 3; ++i) {
+        spinBoxVector[i]->setMinimum(min);
+        spinBoxVector[i]->setMaximum(max);
+        spinBoxVector[i]->setValue(int(m_settings.get<glm::vec3>(label)[i] * multiplier));
+        spinBoxVector[i]->setSingleStep(step);
+    }
 
     std::for_each(spinBoxVector.begin(), spinBoxVector.end(), [min, max, step, this](QSpinBox* e) {
         e->setMinimum(min);
@@ -67,7 +72,12 @@ void DrawableSettings::addIntSpinBoxVector(std::string label, int min, int max, 
 void DrawableSettings::addDoubleSpinBoxVector(std::string label, double min, double max, double step) {
     std::array<QDoubleSpinBox*, 3> doubleSpinBoxVector{new QDoubleSpinBox, new QDoubleSpinBox, new QDoubleSpinBox};
 
-    for (int i = 0; i < 3; ++i) doubleSpinBoxVector[i]->setValue(m_settings.get<glm::vec3>(label)[i]);
+    for (int i = 0; i < 3; ++i) {
+        doubleSpinBoxVector[i]->setMinimum(min);
+        doubleSpinBoxVector[i]->setMaximum(max);
+        doubleSpinBoxVector[i]->setValue(m_settings.get<glm::vec3>(label)[i]);
+        doubleSpinBoxVector[i]->setSingleStep(step);
+    }
 
     std::for_each(doubleSpinBoxVector.begin(), doubleSpinBoxVector.end(), [min, max, step, this](QDoubleSpinBox* e) {
         e->setMinimum(min);

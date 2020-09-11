@@ -69,6 +69,20 @@ class ENGINE_API MeshObject : public core::NonCopyable {
      */
     const Mesh &mesh() const { return m_mesh; }
 
+    /**
+     * material reference getter.
+     * @return ref to material.
+     */
+    Material &material() { return *m_material; }
+
+    /**
+     * material constant reference getter.
+     * @return const ref to material.
+     */
+    const Material &material() const { return *m_material; }
+
+    bool hasMaterial() const { return m_material != nullptr; }
+
    protected:
     Mesh m_mesh;
     std::shared_ptr<Material> m_material;

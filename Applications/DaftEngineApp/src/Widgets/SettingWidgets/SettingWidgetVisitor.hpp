@@ -33,6 +33,12 @@ class SettingWidgetVisitor : public core::DrawableVisitor {
     void visit(engine::Torus *torus) override;
 
     /**
+     * Visits a PointLight .
+     * @param pointLight - point light to visit.
+     */
+    void visit(engine::PointLight *pointLight) override;
+
+    /**
      * visits a Composite .
      * @param composite - composite to visit.
      */
@@ -45,8 +51,9 @@ class SettingWidgetVisitor : public core::DrawableVisitor {
     SettingWidget *widget() { return m_widget; }
 
    private:
-    static TransformSettings *createTransformWidget(core::SettingManager sm) {
-        return new TransformSettings(std::move(sm));
+    static TransformSettings *createTransformWidget(core::SettingManager sm, bool enablePos = true,
+                                                    bool enableRot = true, bool enableSca = true) {
+        return new TransformSettings(std::move(sm), enablePos, enableRot, enableSca);
     }
 
     SettingWidget *m_widget{nullptr};

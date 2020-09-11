@@ -106,19 +106,19 @@ class Drawable : public core::NonCopyable {
      * Applies a translation to the drawable.
      * @param t - translation to apply.
      */
-    virtual void translate(const glm::vec3 &t) { m_position += t; }
+    virtual void translate(glm::vec3 t) { m_position += t; }
 
     /**
      * Applies a rotation to the drawable.
      * @param r - rotation to apply.
      */
-    virtual void rotate(const glm::vec3 &r) { m_rotations += r; }
+    virtual void rotate(glm::vec3 r) { m_rotations += r; }
 
     /**
      * Re-scales the drawable.
      * @param s - new scale of the drawble.
      */
-    virtual void rescale(const glm::vec3 &s) { m_scale = s; }
+    virtual void rescale(glm::vec3 s) { m_scale = s; }
 
     /**
      * Position constant reference.
@@ -132,6 +132,11 @@ class Drawable : public core::NonCopyable {
      */
     glm::vec3 &position() { return m_position; }
 
+    /**
+     * Utils function to remove something from a Composite .
+     * @param name - name of the drawable to remove.
+     * @return true is the drawable has the right name so it can be deleted from its parent.
+     */
     virtual bool remove(const std::string &name) { return name == m_name; }
 
     /**
@@ -168,13 +173,13 @@ class Drawable : public core::NonCopyable {
      * Gets the transformations as a SettingManager .
      * @return transformations.
      */
-    core::SettingManager getTransformations();
+    virtual core::SettingManager getTransformations();
 
     /**
      * Transformations setter using a SettingManager .
      * @param t - transformations.
      */
-    void setTransformations(const core::SettingManager &t);
+    virtual void setTransformations(const core::SettingManager &t);
 
     /**
      * Gets the drawable's specific settings as a SettingManager .

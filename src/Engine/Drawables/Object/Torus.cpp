@@ -9,7 +9,7 @@ namespace daft::engine {
 int Torus::m_nrTorus{0};
 
 Torus::Torus(int meridians, int parallels, float innerRadius, float outerRadius, Composite *parent, std::string name)
-    : Object(parent, std::move(name), {}),
+    : Object(parent, std::move(name)),
       m_meridians{meridians},
       m_parallels{parallels},
       m_innerRadius{innerRadius},
@@ -62,8 +62,6 @@ void Torus::createTorus() {
     std::vector<glm::vec3> positions;
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> texCoords;
-
-    // glm::vec3 center {0.f};
 
     float mStep = (2.f * glm::pi<float>()) / float(m_meridians);
     float pStep = (2.f * glm::pi<float>()) / float(m_parallels);

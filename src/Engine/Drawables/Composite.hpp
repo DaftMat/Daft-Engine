@@ -70,7 +70,7 @@ class ENGINE_API Composite : public Drawable {
      * Adds a drawable to the composite.
      * @param drawable - drawable to add.
      */
-    void add(Drawable *drawable);
+    void add(std::shared_ptr<Drawable> drawable);
 
     /**
      * Removes a drawable from the composite and the engine.

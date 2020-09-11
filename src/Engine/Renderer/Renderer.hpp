@@ -5,6 +5,7 @@
 #include <API.hpp>
 #include <Core/Rendering/FrameBufferObject.hpp>
 #include <Engine/Drawables/Composite.hpp>
+#include <Engine/Drawables/Light/LightPool.hpp>
 #include <Engine/Renderer/Cameras/Camera.hpp>
 #include <memory>
 #include <vector>
@@ -36,20 +37,20 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     /**
      * Destructor.
      */
-    ~Renderer() noexcept { m_root.reset(); }
+    ~Renderer() noexcept = default;
 
     /**
      * Move constructor.
      * @param other - renderer to move.
      */
-    Renderer(Renderer &&other) noexcept : m_root{std::move_if_noexcept(other.m_root)} {}
+    Renderer(Renderer &&other) noexcept = default;
 
     /**
      * Move assignment operator.
      * @param other - renderer to move.
      * @return ref to this.
      */
-    Renderer &operator=(Renderer &&other) noexcept;
+    Renderer &operator=(Renderer &&other) noexcept = default;
 
     /**
      * Prepare to render the next frame.
@@ -141,6 +142,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     std::string m_selection;
 
     std::shared_ptr<Composite> m_root{nullptr};
+    std::unique_ptr<LightPool> m_lightPool{nullptr};
 
     std::shared_ptr<QuadRenderer> m_screenQuad{nullptr};
     std::shared_ptr<MultiSamplingPass> m_multisamplePass{nullptr};

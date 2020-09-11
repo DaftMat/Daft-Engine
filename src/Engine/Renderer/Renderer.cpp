@@ -11,11 +11,6 @@
 #include <iostream>
 
 namespace daft::engine {
-Renderer &Renderer::operator=(Renderer &&other) noexcept {
-    m_root = std::move_if_noexcept(other.m_root);
-    return *this;
-}
-
 Renderer::Renderer(int width, int height) {
     m_width = width;
     m_height = height;
@@ -33,7 +28,9 @@ Renderer::Renderer(int width, int height) {
     glEnable(GL_MULTISAMPLE);
     glDepthFunc(GL_LESS);
 
-    m_root = std::make_shared<daft::engine::Composite>();
+    m_root = std::make_shared<Composite>();
+    m_lightPool = std::make_unique<LightPool>();
+
     m_shaders.push_back(
         std::make_shared<daft::core::ShaderProgram>("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
     m_multisamplePass = std::make_shared<daft::engine::MultiSamplingPass>(2048, 2048, 32);
@@ -66,6 +63,9 @@ void Renderer::render() {
     m_shaders[0]->use();
     m_multisamplePass->use();
     clearGL();
+
+    /// add lights to shader
+    m_lightPool->loadToShader(*m_shaders[0]);
 
     /// draw objects
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -138,28 +138,36 @@ void Renderer::updateProjectionMatrix() {
 
 void Renderer::_removeSelection() {
     if (m_removeNextFrame) {
+        auto selection = getSelection();
+        if (selection && selection->isLight()) m_lightPool->remove(m_selection);
         m_root->remove(m_selection);
         m_removeNextFrame = false;
     }
 }
 
 void Renderer::_addDrawable() {
-    Drawable *drawable;
+    std::shared_ptr<Drawable> drawable;
     switch (m_addNextFrame) {
         case Drawable::Type::None:
             return;
         case Drawable::Type::Group:
-            drawable = new Composite{};
+            drawable = std::make_shared<Composite>();
             break;
         case Drawable::Type::Object:
-            drawable = new Object{};  /// empty object
+            drawable = std::make_shared<Object>();  /// empty object
             break;
         case Drawable::Type::Sphere:
-            drawable = new Sphere{};
+            drawable = std::make_shared<Sphere>();
             break;
         case Drawable::Type::Torus:
-            drawable = new Torus{};
+            drawable = std::make_shared<Torus>();
             break;
+        case Drawable::Type::PointLight: {
+            auto toAdd = std::make_shared<PointLight>();
+            drawable = toAdd;
+            m_lightPool->add(toAdd);
+            break;
+        }
         default:
             return;
     }

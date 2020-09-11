@@ -58,8 +58,9 @@ class ENGINE_API DrawableSettings : public QWidget {
      * @param min - minimum value of the spin boxes.
      * @param max - maximum value of the spin boxes.
      * @param step - single step of the spin boxes.
+     * @param divider - if the ints has to be divided into some floats. e.g. colors.
      */
-    void addIntSpinBoxVector(std::string label, int min = 0, int max = 255, int step = 1);
+    void addIntSpinBoxVector(std::string label, int min = 0, int max = 255, int step = 1, float multiplier = 1.f);
 
     /**
      * Adds a row of 3 QDoubleSpinBox to the form.

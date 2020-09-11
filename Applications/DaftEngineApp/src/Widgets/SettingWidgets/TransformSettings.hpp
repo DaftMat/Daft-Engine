@@ -20,9 +20,13 @@ class ENGINE_API TransformSettings : public QWidget {
     /**
      * Constructor.
      * @param settings - library of the selected object's settings.
+     * @param enablePos - is position transformation enabled
+     * @param enableRot - is rotation transformation enabled
+     * @param enableSca - is scale transformation enabled
      * @param parent - parent of the widget.
      */
-    explicit TransformSettings(daft::core::SettingManager settings, QWidget *parent = nullptr);
+    explicit TransformSettings(daft::core::SettingManager settings, bool enablePos = true, bool enableRot = true,
+                               bool enableSca = true, QWidget *parent = nullptr);
 
     /**
      * Transformation settings constant reference getter.

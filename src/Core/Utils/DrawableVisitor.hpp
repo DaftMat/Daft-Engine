@@ -12,7 +12,7 @@ class Object;
 class Sphere;
 class Torus;
 // lights
-
+class PointLight;
 // composite
 class Composite;
 }  // namespace engine
@@ -40,6 +40,8 @@ class ENGINE_API DrawableVisitor {
      */
     DrawableVisitor &operator=(DrawableVisitor &&) = default;
 
+    /// OBJECTS
+
     /**
      * Visits an Object .
      */
@@ -54,6 +56,15 @@ class ENGINE_API DrawableVisitor {
      * Visits a Torus .
      */
     virtual void visit(engine::Torus *) {}
+
+    /// LIGHTS
+
+    /**
+     * Visits a PointLight .
+     */
+    virtual void visit(engine::PointLight *) {}
+
+    /// GROUP
 
     /**
      * Visits a Composite .

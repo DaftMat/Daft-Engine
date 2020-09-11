@@ -9,6 +9,8 @@
 namespace daft::app {
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 
+OpenGLWidget::~OpenGLWidget() { cleanup(); }
+
 void OpenGLWidget::initializeGL() {
     if (!m_glInitialized) {
         connect(context(), &QOpenGLContext::aboutToBeDestroyed, this, &OpenGLWidget::cleanup);
@@ -124,4 +126,6 @@ void OpenGLWidget::emitSceneTreeChanged() {
         emit sceneTreeChanged();
     }
 }
+
+void OpenGLWidget::cleanup() { m_renderer.reset(); }
 }  // namespace daft::app

@@ -10,6 +10,7 @@
 #include "Texture.hpp"
 
 namespace daft::core {
+class ShaderProgram;
 /**
  * surface appearance data of an object.
  */
@@ -113,6 +114,12 @@ class Material : public NonCopyable {
     [[nodiscard]] const std::vector<SettingManager::Setting<T>> &settings() const {
         return m_settings.settings<T>();
     }
+
+    /**
+     * Loads this material to the target shader as a uniform struct.
+     * @param shader - shader to load the material to.
+     */
+    void loadToShader(const core::ShaderProgram &shader) const;
 
    private:
     std::vector<Texture> m_textures;

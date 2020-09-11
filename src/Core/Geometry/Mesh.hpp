@@ -4,11 +4,10 @@
 #pragma once
 
 #include <API.hpp>
+#include <Core/Geometry/AttribManager.hpp>
 #include <Core/OpenGL.hpp>
 #include <Core/Utils/NonCopyable.hpp>
 #include <vector>
-
-#include "AttribManager.hpp"
 
 namespace daft::core {
 /**

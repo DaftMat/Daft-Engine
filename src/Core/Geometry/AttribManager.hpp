@@ -125,12 +125,12 @@ class AttribManager {
 
     GLuint m_numAttribs;
 
-    std::unordered_map<GLuint, AttribHandler<float>> m_floatAttribs;
-    std::unordered_map<GLuint, AttribHandler<glm::vec2>> m_vec2Attribs;
-    std::unordered_map<GLuint, AttribHandler<glm::vec3>> m_vec3Attribs;
-    std::unordered_map<GLuint, AttribHandler<glm::vec4>> m_vec4Attribs;
+    std::unordered_map<GLuint, AttribHandler<float>> m_floatAttribs{};
+    std::unordered_map<GLuint, AttribHandler<glm::vec2>> m_vec2Attribs{};
+    std::unordered_map<GLuint, AttribHandler<glm::vec3>> m_vec3Attribs{};
+    std::unordered_map<GLuint, AttribHandler<glm::vec4>> m_vec4Attribs{};
 
-    std::vector<GLuint> m_indices;
+    std::vector<GLuint> m_indices{};
 };
 }  // namespace daft::core
 

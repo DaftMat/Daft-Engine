@@ -46,3 +46,12 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::Torus *torus) {
     ds->addDoubleSpinBox("Outer Radius", 0, 9999, 1);
     m_widget = new SettingWidget(ds, createTransformWidget(torus->getTransformations()), torus->name());
 }
+
+void daft::app::SettingWidgetVisitor::visit(daft::engine::PointLight *pointLight) {
+    core::SettingManager sm = pointLight->getSettings();
+    auto ds = new DrawableSettings(sm);
+    ds->addIntSpinBoxVector("Color", 0, 255, 1, 255.f);
+    ds->addDoubleSpinBox("Intensity", 0, 9999);
+    m_widget = new SettingWidget(ds, createTransformWidget(pointLight->getTransformations(), true, false, false),
+                                 pointLight->name());
+}

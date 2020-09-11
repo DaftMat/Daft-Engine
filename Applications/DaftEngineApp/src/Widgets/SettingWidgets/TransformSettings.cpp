@@ -9,7 +9,8 @@
 #include <Widgets/MainWidget.hpp>
 
 namespace daft::app {
-TransformSettings::TransformSettings(daft::core::SettingManager settings, QWidget *parent)
+TransformSettings::TransformSettings(daft::core::SettingManager settings, bool enablePos, bool enableRot,
+                                     bool enableSca, QWidget *parent)
     : QWidget(parent), m_settings{std::move(settings)} {
     auto mainLayout = new QVBoxLayout();
     mainLayout->setMargin(2);
@@ -21,9 +22,16 @@ TransformSettings::TransformSettings(daft::core::SettingManager settings, QWidge
     auto centreLayout = new QHBoxLayout();
     centreLayout->setMargin(2);
 
-    centreLayout->addWidget(createTransformWidget(Type::POSITION));
-    centreLayout->addWidget(createTransformWidget(Type::ROTATION));
-    centreLayout->addWidget(createTransformWidget(Type::SCALE));
+    auto position = createTransformWidget(Type::POSITION);
+    position->setEnabled(enablePos);
+    auto rotation = createTransformWidget(Type::ROTATION);
+    rotation->setEnabled(enableRot);
+    auto scale = createTransformWidget(Type::SCALE);
+    scale->setEnabled(enableSca);
+
+    centreLayout->addWidget(position);
+    centreLayout->addWidget(rotation);
+    centreLayout->addWidget(scale);
 
     centreWidget->setLayout(centreLayout);
 

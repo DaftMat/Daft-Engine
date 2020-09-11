@@ -24,7 +24,7 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
     /**
      * Destructor.
      */
-    ~OpenGLWidget() override { cleanup(); }
+    ~OpenGLWidget() override;
 
     /**
      * renderer constant reference.
@@ -70,7 +70,7 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
     void wheelEvent(QWheelEvent *e) override;
 
    public slots:
-    void cleanup() { m_renderer.reset(); }
+    void cleanup();
 
    signals:
     void selectionChanged();
