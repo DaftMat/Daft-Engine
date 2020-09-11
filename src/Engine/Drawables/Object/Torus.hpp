@@ -30,22 +30,58 @@ class ENGINE_API Torus : public Object {
      */
     void setSettings(const core::SettingManager &s) override;
 
+    /**
+     * Meridians getter.
+     * @return meridians.
+     */
     [[nodiscard]] int meridians() const { return m_meridians; }
 
+    /**
+     * Meridians setter.
+     * @param m - new value for meridians.
+     */
     void setMeridians(int m);
 
+    /**
+     * Parallels getter.
+     * @return parallels.
+     */
     [[nodiscard]] int parallels() const { return m_parallels; }
 
+    /**
+     * Parallels setter.
+     * @param p - new value for parallels.
+     */
     void setParallels(int p);
 
+    /**
+     * Inner radius getter.
+     * @return inner radius.
+     */
     [[nodiscard]] float innerRadius() const { return m_innerRadius; }
 
+    /**
+     * Inner radius setter.
+     * @param r - new value for the inner radius.
+     */
     void setInnerRadius(float r);
 
+    /**
+     * Outer radius getter.
+     * @return outer radius.
+     */
     [[nodiscard]] float outerRadius() const { return m_outerRadius; }
 
+    /**
+     * Outer radius setter.
+     * @param r - new value for outer radius.
+     */
     void setOuterRadius(float r);
 
+    /**
+     * Accepts a visitor.
+     * @param visitor - visitor to be accepted.
+     */
     void accept(core::DrawableVisitor *visitor) override;
 
    protected:
