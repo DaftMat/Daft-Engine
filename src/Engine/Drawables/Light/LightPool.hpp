@@ -5,6 +5,7 @@
 #include <API.hpp>
 #include <Core/Utils/NonCopyable.hpp>
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace daft {
