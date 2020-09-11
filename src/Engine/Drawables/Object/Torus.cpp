@@ -57,7 +57,54 @@ void Torus::setOuterRadius(float r) {
     updateNextFrame();
 }
 
-void Torus::createTorus() {}
+void Torus::createTorus() {
+    core::AttribManager am;
+    std::vector<glm::vec3> positions;
+    std::vector<glm::vec3> normals;
+    std::vector<glm::vec2> texCoords;
+
+    // glm::vec3 center {0.f};
+
+    float mStep = (2.f * glm::pi<float>()) / float(m_meridians);
+    float pStep = (2.f * glm::pi<float>()) / float(m_parallels);
+
+    for (int j = 0; j <= m_meridians; ++j) {
+        float mAngle = float(j) * mStep;
+        for (int i = 0; i <= m_parallels; ++i) {
+            float pAngle = float(i) * pStep;
+            glm::vec3 outCenter = m_innerRadius * glm::vec3{glm::cos(mAngle), 0.f, glm::sin(mAngle)};
+
+            auto w = glm::normalize(outCenter);
+            glm::vec3 pos = outCenter + m_outerRadius * glm::cos(pAngle) * w +
+                            m_outerRadius * glm::sin(pAngle) * glm::vec3{0.f, 1.f, 0.f};
+
+            positions.push_back(pos);
+            normals.push_back(glm::normalize(pos - outCenter));
+            texCoords.emplace_back(mAngle, pAngle);
+        }
+    }
+    am.addAttrib(positions);
+    am.addAttrib(normals);
+    am.addAttrib(texCoords);
+
+    /// topology
+    for (int i = 1; i <= m_meridians; ++i) {
+        for (int j = 0; j < m_parallels; ++j) {
+            int max = m_parallels + 1;
+            /// first triangle
+            am.indices().push_back(j + max * i);
+            am.indices().push_back((j + 1) + max * i);
+            am.indices().push_back(j + max * (i - 1));
+            /// second triangle
+            am.indices().push_back(j + max * (i - 1));
+            am.indices().push_back((j + 1) + max * i);
+            am.indices().push_back((j + 1) + max * (i - 1));
+        }
+    }
+
+    m_meshObjects.clear();
+    m_meshObjects.emplace_back(core::Mesh{am});
+}
 
 void Torus::accept(core::DrawableVisitor *visitor) { visitor->visit(this); }
 }  // namespace daft::engine
