@@ -32,7 +32,8 @@ Renderer::Renderer(int width, int height) {
     m_lightPool = std::make_unique<LightPool>();
 
     m_shaders.push_back(
-        std::make_shared<daft::core::ShaderProgram>("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
+        std::make_shared<core::ShaderProgram>("shaders/blinnphong.vert.glsl", "shaders/blinnphong.frag.glsl"));
+    m_shaders.push_back(std::make_shared<core::ShaderProgram>("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
     m_multisamplePass = std::make_shared<daft::engine::MultiSamplingPass>(2048, 2048, 32);
     m_screenQuad = std::make_shared<daft::engine::QuadRenderer>();
     m_screenQuad->addQuad(-1.f, 1.f, 2.f, 2.f);
@@ -60,26 +61,26 @@ void Renderer::clearGL() const {
 
 void Renderer::render() {
     /// prepare opengl objects
-    m_shaders[0]->use();
     m_multisamplePass->use();
     clearGL();
 
+    m_shaders[0]->use();
     /// add lights to shader
     m_lightPool->loadToShader(*m_shaders[0]);
-
     /// draw objects
     glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
-    m_shaders[0]->setVec3("color", {0.6f, 0.6f, 0.6f});
     m_root->render(*m_shaders[0]);
+    m_shaders[0]->stop();
 
+    m_shaders[1]->use();
     /// draw objects' edges
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    m_shaders[0]->setVec3("color", glm::vec3{0.f});
-    m_root->renderEdges(*m_shaders[0]);
+    m_shaders[1]->setVec3("color", glm::vec3{0.f});
+    m_root->renderEdges(*m_shaders[1]);
+    m_shaders[1]->stop();
 
     /// unbind opengl objects
     m_multisamplePass->stop(m_width, m_height);
-    m_shaders[0]->stop();
 
     /// render the frame-textured quad to the screen.
     m_screenQuad->prepare();
