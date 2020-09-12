@@ -27,7 +27,6 @@ class Drawable : public core::NonCopyable {
     /// All type of drawables (for creation)
     enum class Type {
         /// Objects
-        Object,
         Sphere,
         Cube,
         Cylinder,

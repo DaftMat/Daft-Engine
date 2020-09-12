@@ -52,11 +52,12 @@ void Renderer::prepare() {
     _removeSelection();
     _addDrawable();
     _setSelection();
+    _setShader();
 }
 
 void Renderer::clearGL() const {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.35f, 0.35f, 0.35f, 1.f);
+    glClearColor(m_defaultSkyColor.x, m_defaultSkyColor.y, m_defaultSkyColor.z, 1.f);
 }
 
 void Renderer::render() {
@@ -72,12 +73,14 @@ void Renderer::render() {
     m_root->render(*m_shaders[0]);
     m_shaders[0]->stop();
 
-    m_shaders[1]->use();
-    /// draw objects' edges
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    m_shaders[1]->setVec3("color", glm::vec3{0.f});
-    m_root->renderEdges(*m_shaders[1]);
-    m_shaders[1]->stop();
+    if (m_drawEdges) {
+        m_shaders[1]->use();
+        /// draw objects' edges
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        m_shaders[1]->setVec3("color", glm::vec3{0.f});
+        m_root->renderEdges(*m_shaders[1]);
+        m_shaders[1]->stop();
+    }
 
     /// unbind opengl objects
     m_multisamplePass->stop(m_width, m_height);
@@ -137,6 +140,16 @@ void Renderer::updateProjectionMatrix() {
     }
 }
 
+void Renderer::switchToEditionMode() {
+    m_drawEdges = true;
+    m_defaultSkyColor = {0.35f, 0.35f, 0.35f};
+}
+
+void Renderer::switchToRenderingMode() {
+    m_drawEdges = false;
+    m_defaultSkyColor = {0.52f, 0.81f, 0.92f};
+}
+
 void Renderer::_removeSelection() {
     if (m_removeNextFrame) {
         auto selection = getSelection();
@@ -153,9 +166,6 @@ void Renderer::_addDrawable() {
             return;
         case Drawable::Type::Group:
             drawable = std::make_shared<Composite>();
-            break;
-        case Drawable::Type::Object:
-            drawable = std::make_shared<Object>();  /// empty object
             break;
         case Drawable::Type::Sphere:
             drawable = std::make_shared<Sphere>();
@@ -187,6 +197,21 @@ void Renderer::_setSelection() {
     auto selection = getSelection();
     if (selection && !selection->selected()) {
         selection->select();
+    }
+}
+
+void Renderer::_setShader() {
+    switch (m_newShader) {
+        case Renderer::AvailableShaders::BlinnPhong:
+            m_shaders[0].reset();
+            m_shaders[0] =
+                std::make_shared<core::ShaderProgram>("shaders/blinnphong.vert.glsl", "shaders/blinnphong.frag.glsl");
+            break;
+        case Renderer::AvailableShaders::Phong:
+            m_shaders[0].reset();
+            m_shaders[0] = std::make_shared<core::ShaderProgram>("shaders/phong.vert.glsl", "shaders/phong.frag.glsl");
+        default:
+            break;
     }
 }
 }  // namespace daft::engine

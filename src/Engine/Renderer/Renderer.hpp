@@ -22,6 +22,8 @@ class MultiSamplingPass;
 
 class ENGINE_API Renderer : public daft::core::NonCopyable {
    public:
+    enum class AvailableShaders { BlinnPhong, Phong, None };
+
     /**
      * Default constructor.
      */
@@ -131,11 +133,28 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
      */
     void updateProjectionMatrix();
 
+    /**
+     * Change the lighting shader being used on the scene.
+     * @param shader - new shader to use.
+     */
+    void setShader(AvailableShaders shader) { m_newShader = shader; }
+
+    /**
+     * Changes sky color to default grey and starts render edges.
+     */
+    void switchToEditionMode();
+
+    /**
+     * Changes sky color to blue sky and stops render edges.
+     */
+    void switchToRenderingMode();
+
    private:
     void clearGL() const;
     void _removeSelection();
     void _addDrawable();
     void _setSelection();
+    void _setShader();
 
     static bool GLinitialized;
     int m_width{0}, m_height{0};
@@ -154,6 +173,10 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     bool m_removeNextFrame{false};
     Drawable::Type m_addNextFrame{Drawable::Type::None};
+    AvailableShaders m_newShader{AvailableShaders::None};
+
+    glm::vec3 m_defaultSkyColor{0.35, 0.35, 0.35};
+    bool m_drawEdges{true};
 };
 }  // namespace engine
 }  // namespace daft
