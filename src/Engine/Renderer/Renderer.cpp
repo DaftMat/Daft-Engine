@@ -213,5 +213,7 @@ void Renderer::_setShader() {
         default:
             break;
     }
+    updateViewMatrix();
+    updateProjectionMatrix();
 }
 }  // namespace daft::engine
