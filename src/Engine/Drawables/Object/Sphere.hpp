@@ -176,7 +176,7 @@ class ENGINE_API Sphere : public Object {
     int m_meridians{32}, m_parallels{16};  ///< UV sphere settings.
     int m_subdivisions{3};                 ///< Icosahedron based sphere settings.
     int m_resolution{16};                  ///< Cube based sphere settings.
-    int m_nrPoints{1024};                  ///< Fibonacci sphere settings.
+    int m_nrPoints{512};                   ///< Fibonacci sphere settings.
 
     static int m_nrSphere;
 };
