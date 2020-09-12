@@ -165,9 +165,8 @@ class ENGINE_API Sphere : public Object {
     void createCubeSphere();
     void createFiboSphere();
 
-    static std::vector<glm::vec2> fibo2D(int n);
     static std::vector<glm::vec3> fibo3D(int n);
-    static std::vector<GLuint> triangulateFibo(const std::vector<glm::vec2> &points);  /// < using delaunay method.
+    static std::vector<GLuint> triangulateFibo(const std::vector<glm::vec3> &points);  /// < using convex hull method.
 
     static glm::vec3 computeHalfVertex(const glm::vec3 &a, const glm::vec3 &b) { return glm::normalize(a + b); }
     void subdivideIcosahedron();

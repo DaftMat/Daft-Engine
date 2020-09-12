@@ -4,8 +4,10 @@
 #include "Sphere.hpp"
 
 #include <Core/Utils/DrawableVisitor.hpp>
-#include <Delaunator/include/delaunator.hpp>
 #include <array>
+
+#define CONVHULL_3D_ENABLE
+#include <ConvexHull3D/convhull_3d.h>
 
 namespace daft::engine {
 
@@ -384,9 +386,7 @@ void Sphere::createFiboSphere() {
     core::AttribManager am;
     auto positions = fibo3D(m_nrPoints);
     auto normals = positions;
-    am.indices() = triangulateFibo(fibo2D(m_nrPoints));
-
-    /// TODO: implement convex hull to fill the hole on south pole.
+    am.indices() = triangulateFibo(positions);
 
     auto tempRadius = m_radius;
     std::for_each(positions.begin(), positions.end(), [tempRadius](glm::vec3 &pos) { pos *= tempRadius; });
@@ -396,17 +396,6 @@ void Sphere::createFiboSphere() {
 
     m_meshObjects.clear();
     m_meshObjects.emplace_back(core::Mesh{am});
-}
-
-std::vector<glm::vec2> Sphere::fibo2D(int n) {
-    float goldenAngle{glm::pi<float>() * (3.f - glm::sqrt(5.f))};
-    std::vector<glm::vec2> points;
-    for (int i = 0; i < n; ++i) {
-        float theta = float(i) * goldenAngle;
-        float r = glm::sqrt(float(i)) / glm::sqrt(float(n));
-        points.emplace_back(r * glm::cos(theta), r * glm::sin(theta));
-    }
-    return points;
 }
 
 std::vector<glm::vec3> Sphere::fibo3D(int n) {
@@ -423,17 +412,27 @@ std::vector<glm::vec3> Sphere::fibo3D(int n) {
     return points;
 }
 
-std::vector<GLuint> Sphere::triangulateFibo(const std::vector<glm::vec2> &points) {
-    /// Uses https://github.com/delfrrr/delaunator-cpp
-    std::vector<double> passPoints;
-    for (auto &p : points) {
-        passPoints.push_back(p.x);
-        passPoints.push_back(p.y);
+std::vector<GLuint> Sphere::triangulateFibo(const std::vector<glm::vec3> &points) {
+    std::vector<ch_vertex> passPoints;
+    std::for_each(points.begin(), points.end(), [&passPoints](glm::vec3 p) {
+        ch_vertex v;
+        v.x = p.x;
+        v.y = p.y;
+        v.z = p.z;
+        passPoints.push_back(v);
+    });
+
+    int *faceIndices = nullptr;
+    int nFaces;
+
+    /// TODO: implement (or find) merge convex hull which is O(n*log(n)).
+    convhull_3d_build(passPoints.data(), passPoints.size(), &faceIndices, &nFaces);
+
+    std::vector<GLuint> indices;
+    for (int i = 0; i < nFaces * 3; ++i) {
+        indices.push_back(faceIndices[i]);
     }
 
-    delaunator::Delaunator d(passPoints);
-    std::vector<GLuint> indices;
-    for (unsigned long triangle : d.triangles) indices.push_back(triangle);
     return indices;
 }
 
