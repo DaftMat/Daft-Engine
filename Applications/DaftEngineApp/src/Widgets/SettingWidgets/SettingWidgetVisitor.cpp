@@ -19,7 +19,7 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::Sphere *sphere) {
     engine::Sphere::Type type = sphere->type();
 
     auto ds = new DrawableSettings(sm);
-    ds->addComboBox("Type", {"UV", "Icosahedron", "Cube"}, core::toUType(type));
+    ds->addComboBox("Type", {"UV", "Icosahedron", "Cube", "Fibonacci"}, core::toUType(type));
     switch (type) {
         case engine::Sphere::Type::UV:
             ds->addIntSpinBox("Meridians", 3, 9999, 1);
@@ -30,6 +30,9 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::Sphere *sphere) {
             break;
         case engine::Sphere::Type::Cube:
             ds->addIntSpinBox("Resolution", 2, 9999, 1);
+            break;
+        case engine::Sphere::Type::Fibo:
+            ds->addIntSpinBox("Points", 8, 999999, 10);
             break;
     }
     ds->addDoubleSpinBox("Radius", 0, 9999, 1);

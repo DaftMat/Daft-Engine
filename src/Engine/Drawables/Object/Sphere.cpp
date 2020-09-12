@@ -4,6 +4,7 @@
 #include "Sphere.hpp"
 
 #include <Core/Utils/DrawableVisitor.hpp>
+#include <Delaunator/include/delaunator.hpp>
 #include <array>
 
 namespace daft::engine {
@@ -24,6 +25,9 @@ Sphere::Sphere(Sphere::Type type, const std::vector<int> &args, Composite *paren
             case Type::Cube:
                 m_resolution = args[0];
                 break;
+            case Type::Fibo:
+                m_nrPoints = args[0];
+                break;
         }
     }
     Sphere::applyUpdate();
@@ -39,6 +43,9 @@ void Sphere::applyUpdate() {
             break;
         case Type::Cube:
             createCubeSphere();
+            break;
+        case Type::Fibo:
+            createFiboSphere();
             break;
     }
 }
@@ -305,6 +312,8 @@ core::SettingManager Sphere::getSettings() const {
         case Type::Cube:
             sm.add("Resolution", m_resolution);
             break;
+        case Type::Fibo:
+            sm.add("Points", m_nrPoints);
     }
     return sm;
 }
@@ -324,6 +333,8 @@ void Sphere::setSettings(const core::SettingManager &s) {
         case Type::Cube:
             setResolution(s.get<int>("Resolution"));
             break;
+        case Type::Fibo:
+            setPoints(s.get<int>("Points"));
     }
 }
 
@@ -351,6 +362,12 @@ void Sphere::setResolution(int r) {
     updateNextFrame();
 }
 
+void Sphere::setPoints(int p) {
+    if (p == m_nrPoints) return;
+    m_nrPoints = p;
+    updateNextFrame();
+}
+
 void Sphere::setType(Sphere::Type type) {
     if (type == m_type) return;
     m_type = type;
@@ -361,6 +378,63 @@ void Sphere::setRadius(float r) {
     if (r == m_radius) return;
     m_radius = r;
     updateNextFrame();
+}
+
+void Sphere::createFiboSphere() {
+    core::AttribManager am;
+    auto positions = fibo3D(m_nrPoints);
+    auto normals = positions;
+    am.indices() = triangulateFibo(fibo2D(m_nrPoints));
+
+    /// TODO: implement convex hull to fill the hole on south pole.
+
+    auto tempRadius = m_radius;
+    std::for_each(positions.begin(), positions.end(), [tempRadius](glm::vec3 &pos) { pos *= tempRadius; });
+
+    am.addAttrib(positions);
+    am.addAttrib(normals);
+
+    m_meshObjects.clear();
+    m_meshObjects.emplace_back(core::Mesh{am});
+}
+
+std::vector<glm::vec2> Sphere::fibo2D(int n) {
+    float goldenAngle{glm::pi<float>() * (3.f - glm::sqrt(5.f))};
+    std::vector<glm::vec2> points;
+    for (int i = 0; i < n; ++i) {
+        float theta = float(i) * goldenAngle;
+        float r = glm::sqrt(float(i)) / glm::sqrt(float(n));
+        points.emplace_back(r * glm::cos(theta), r * glm::sin(theta));
+    }
+    return points;
+}
+
+std::vector<glm::vec3> Sphere::fibo3D(int n) {
+    float goldenAngle{glm::pi<float>() * (3.f - glm::sqrt(5.f))};
+    std::vector<glm::vec3> points;
+    float dz = 2.f / float(n);
+    float z = 1.f - dz / 2.f;
+    for (int i = 0; i < n; ++i) {
+        float theta = float(i) * goldenAngle;
+        float r = glm::sqrt(1.f - z * z);
+        points.emplace_back(r * glm::cos(theta), z, r * glm::sin(theta));
+        z -= dz;
+    }
+    return points;
+}
+
+std::vector<GLuint> Sphere::triangulateFibo(const std::vector<glm::vec2> &points) {
+    /// Uses https://github.com/delfrrr/delaunator-cpp
+    std::vector<double> passPoints;
+    for (auto &p : points) {
+        passPoints.push_back(p.x);
+        passPoints.push_back(p.y);
+    }
+
+    delaunator::Delaunator d(passPoints);
+    std::vector<GLuint> indices;
+    for (unsigned long triangle : d.triangles) indices.push_back(triangle);
+    return indices;
 }
 
 }  // namespace daft::engine

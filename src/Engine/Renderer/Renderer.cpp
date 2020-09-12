@@ -68,7 +68,7 @@ void Renderer::render() {
     m_lightPool->loadToShader(*m_shaders[0]);
 
     /// draw objects
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
     m_shaders[0]->setVec3("color", {0.6f, 0.6f, 0.6f});
     m_root->render(*m_shaders[0]);
 

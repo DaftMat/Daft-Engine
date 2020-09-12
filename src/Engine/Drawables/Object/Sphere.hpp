@@ -15,7 +15,7 @@ class ENGINE_API Sphere : public Object {
     /**
      * Enum that describes the type of sphere to build as a mesh.
      */
-    enum class Type { UV, Ico, Cube };
+    enum class Type { UV, Ico, Cube, Fibo };
 
     /**
      * Standard constructor.
@@ -124,6 +124,20 @@ class ENGINE_API Sphere : public Object {
     void setResolution(int r);
 
     /**
+     * Points getter.
+     * used when type is Type::Fibo .
+     * @return number of points in the fibonacci sphere.
+     */
+    [[nodiscard]] int points() const { return m_nrPoints; }
+
+    /**
+     * Points setter.
+     * used when type is Type::Fibo .
+     * @param p - new number of points.
+     */
+    void setPoints(int p);
+
+    /**
      * Radius getter.
      * @return radius.
      */
@@ -149,6 +163,11 @@ class ENGINE_API Sphere : public Object {
     void createIcoSphere();
     void createIcosahedron();
     void createCubeSphere();
+    void createFiboSphere();
+
+    static std::vector<glm::vec2> fibo2D(int n);
+    static std::vector<glm::vec3> fibo3D(int n);
+    static std::vector<GLuint> triangulateFibo(const std::vector<glm::vec2> &points);  /// < using delaunay method.
 
     static glm::vec3 computeHalfVertex(const glm::vec3 &a, const glm::vec3 &b) { return glm::normalize(a + b); }
     void subdivideIcosahedron();
@@ -158,6 +177,7 @@ class ENGINE_API Sphere : public Object {
     int m_meridians{32}, m_parallels{16};  ///< UV sphere settings.
     int m_subdivisions{3};                 ///< Icosahedron based sphere settings.
     int m_resolution{16};                  ///< Cube based sphere settings.
+    int m_nrPoints{1024};                  ///< Fibonacci sphere settings.
 
     static int m_nrSphere;
 };

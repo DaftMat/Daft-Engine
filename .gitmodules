@@ -7,3 +7,6 @@
 [submodule "3rdPartyLibs/stb"]
 	path = 3rdPartyLibs/stb
 	url = https://github.com/nothings/stb.git
+[submodule "3rdPartyLibs/Delaunator"]
+	path = 3rdPartyLibs/Delaunator
+	url = https://github.com/delfrrr/delaunator-cpp
