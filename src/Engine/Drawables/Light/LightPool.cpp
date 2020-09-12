@@ -17,7 +17,8 @@ void LightPool::remove(const std::string &name) {
     m_pointLights.erase(
         std::find_if(m_pointLights.begin(), m_pointLights.end(), [&name](auto pl) { return pl->name() == name; }));
     // m_dirLights.erase(std::find_if(m_dirLights.begin(), m_dirLights.end(), [&name](auto dl){ return dl->name() ==
-    // name; })); m_spotLights.erase(std::find_if(m_spotLights.begin(), m_spotLights.end(), [&name](auto sl){ return
+    // name; }));
+    // m_spotLights.erase(std::find_if(m_spotLights.begin(), m_spotLights.end(), [&name](auto sl){ return
     // sl->name() == name; }));
 }
 

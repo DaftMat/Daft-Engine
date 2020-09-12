@@ -425,7 +425,6 @@ std::vector<GLuint> Sphere::triangulateFibo(const std::vector<glm::vec3> &points
     int *faceIndices = nullptr;
     int nFaces;
 
-    /// TODO: implement (or find) merge convex hull which is O(n*log(n)).
     convhull_3d_build(passPoints.data(), passPoints.size(), &faceIndices, &nFaces);
 
     std::vector<GLuint> indices;
