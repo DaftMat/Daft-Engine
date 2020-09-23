@@ -10,11 +10,8 @@
 namespace daft::engine {
 class ENGINE_API BSpline : public Object {
    public:
-    explicit BSpline(std::vector<glm::vec3> controlPoints, Composite *parent = nullptr,
-                     std::string name = "BSpline" + std::to_string(m_nrBSpline))
-        : Object(parent, std::move(name)), m_controlPoints{std::move(controlPoints)} {
-        createBSpline();
-    }
+    explicit BSpline(std::vector<glm::vec3> controlPoints, int base = 2, float steps = 1000.f,
+                     Composite *parent = nullptr, std::string name = "BSpline" + std::to_string(m_nrBSpline));
 
     ~BSpline() override = default;
 
@@ -26,14 +23,32 @@ class ENGINE_API BSpline : public Object {
 
     void renderEdges(const core::ShaderProgram &shader) override;
 
-    [[nodiscard]] core::SettingManager getSettings() const override { return core::SettingManager{}; }
+    [[nodiscard]] core::SettingManager getSettings() const override;
 
-    void setSettings(const core::SettingManager &s) override {}
+    void setSettings(const core::SettingManager &s) override;
+
+    [[nodiscard]] int base() const { return m_base; }
+
+    void setBase(int b);
+
+    [[nodiscard]] float steps() const { return m_steps; }
+
+    void setSteps(float s);
+
+    [[nodiscard]] glm::vec3 eval(float u) const;
+
+    void accept(core::DrawableVisitor *visitor) override;
+
+   protected:
+    void applyUpdate() override { createBSpline(); }
 
    private:
     void createBSpline();
 
     std::vector<glm::vec3> m_controlPoints;
+    std::vector<float> m_modalVector;
+    int m_base{2};
+    float m_steps{100.f};
 
     static int m_nrBSpline;
 };

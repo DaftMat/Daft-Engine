@@ -176,10 +176,17 @@ void Renderer::_addDrawable() {
         case Drawable::Type::Cube:
             drawable = std::make_shared<Cube>();
             break;
-        case Drawable::Type::BSpline:
-            drawable =
-                std::make_shared<BSpline>(std::vector<glm::vec3>{{-1.f, 0.f, 0.f}, {0.f, 1.f, 0.f}, {1.f, 0.f, 0.f}});
+        case Drawable::Type::BSpline: {
+            std::vector<glm::vec3> controlPoints;
+            int size = 6;
+            float step = 2.f * glm::pi<float>() / float(size);
+            for (int i = 0; i < size; ++i) {
+                float angle = float(i) * step;
+                controlPoints.emplace_back(glm::cos(angle), glm::sin(angle), 0.f);
+            }
+            drawable = std::make_shared<BSpline>(controlPoints);
             break;
+        }
         case Drawable::Type::PointLight: {
             auto toAdd = std::make_shared<PointLight>();
             drawable = toAdd;

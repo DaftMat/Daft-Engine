@@ -61,6 +61,8 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::Cube *cube) {
 void daft::app::SettingWidgetVisitor::visit(daft::engine::BSpline *bspline) {
     core::SettingManager sm = bspline->getSettings();
     auto ds = new DrawableSettings(sm);
+    ds->addIntSpinBox("Base", 1, 99, 1);
+    ds->addDoubleSpinBox("Steps", 1, 9999, 1);
     m_widget = new SettingWidget(ds, createTransformWidget(bspline->getTransformations()), bspline->name());
 }
 
