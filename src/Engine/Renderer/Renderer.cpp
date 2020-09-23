@@ -177,11 +177,8 @@ void Renderer::_addDrawable() {
             drawable = std::make_shared<Cube>();
             break;
         case Drawable::Type::BSpline:
-            drawable = std::make_shared<BSpline>(std::vector<glm::vec3> {
-                 {-1.f, 0.f, 0.f},
-                 {0.f, 1.f, 0.f},
-                 {1.f, 0.f, 0.f}
-            });
+            drawable =
+                std::make_shared<BSpline>(std::vector<glm::vec3>{{-1.f, 0.f, 0.f}, {0.f, 1.f, 0.f}, {1.f, 0.f, 0.f}});
             break;
         case Drawable::Type::PointLight: {
             auto toAdd = std::make_shared<PointLight>();
