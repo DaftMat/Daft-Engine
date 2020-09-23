@@ -4,6 +4,8 @@
 
 #include "Cube.hpp"
 
+#include <array>
+
 namespace daft::engine {
 int Cube::m_nrCube{0};
 
