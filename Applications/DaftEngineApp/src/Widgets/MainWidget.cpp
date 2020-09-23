@@ -23,31 +23,22 @@ MainWidget::MainWidget(QWidget *parent)
     m_layout->addWidget(m_glWidget.get(), BorderLayout::Position::Center);
 
     /// NORTH
-    auto addGroup = new QPushButton();
-    addGroup->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    addGroup->setText("Add Group");
-    auto addSphere = new QPushButton();
-    addSphere->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    addSphere->setText("Add Sphere");
-    auto addTorus = new QPushButton();
-    addTorus->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    addTorus->setText("Add Torus");
+    createCreationComboBoxes();
+    createShaderComboBox();
+
     auto removeButton = new QPushButton();
     removeButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     removeButton->setText("Remove");
-
-    connect(addGroup, &QPushButton::pressed, this, &MainWidget::on_addGroupButtonPressed);
-    connect(addSphere, &QPushButton::pressed, this, &MainWidget::on_addSphereButtonPressed);
-    connect(addTorus, &QPushButton::pressed, this, &MainWidget::on_addTorusButtonPressed);
     connect(removeButton, &QPushButton::pressed, this, &MainWidget::on_removeButtonPressed);
 
     auto northWidget = new BorderWidget(BorderWidget::Orientation::HORIZONTAL, 70, 70);
-    northWidget->addWidget(addGroup);
-    northWidget->addWidget(addSphere);
-    northWidget->addWidget(addTorus);
+    northWidget->addWidget(m_objectCreator.get());
+    northWidget->addWidget(m_lightCreator.get());
     northWidget->addSeparator();
     northWidget->addWidget(removeButton);
     northWidget->addSpacer();
+    northWidget->addWidget(new QLabel("Shader"));
+    northWidget->addWidget(m_shaderBox.get());
     northWidget->setObjectName("northWidget");
     m_layout->addWidget(northWidget, BorderLayout::Position::North);
 
@@ -177,5 +168,74 @@ void MainWidget::connectSceneTreeEvents() {
     connect(m_treeWidget->model(), &QStandardItemModel::dataChanged, this, &MainWidget::on_treeItemChanged);
     m_eastWidget->addWidget(m_treeWidget.get());
 }
+
+void MainWidget::createCreationComboBoxes() {
+    std::vector<std::string> objects {
+        "Sphere",
+        "Torus",
+        "Cube",
+        "Group"
+    };
+    m_objectCreator = std::make_unique<QComboBox>();
+    m_objectCreator->addItem("Add object");
+    for (const auto &obj : objects) {
+        m_objectCreator->addItem(obj.c_str());
+    }
+    connect(m_objectCreator.get(), SIGNAL(currentIndexChanged(int)), this, SLOT(on_objectBoxChanged()));
+
+    std::vector<std::string> lights {
+            "Point Light"
+    };
+    m_lightCreator = std::make_unique<QComboBox>();
+    m_lightCreator->addItem("Add light");
+    for (const auto &light : lights) {
+        m_lightCreator->addItem(light.c_str());
+    }
+    connect(m_lightCreator.get(), SIGNAL(currentIndexChanged(int)), this, SLOT(on_lightBoxChanged()));
+}
+
+    void MainWidget::on_objectBoxChanged() {
+        if (m_objectCreator->currentText() == "Add object")
+            return;
+        else if (m_objectCreator->currentText() == "Sphere")
+            m_glWidget->addDrawable(engine::Drawable::Type::Sphere);
+        else if (m_objectCreator->currentText() == "Torus")
+            m_glWidget->addDrawable(engine::Drawable::Type::Torus);
+        else if (m_objectCreator->currentText() == "Cube")
+            m_glWidget->addDrawable(engine::Drawable::Type::Cube);
+        else if (m_objectCreator->currentText() == "Group")
+            m_glWidget->addDrawable(engine::Drawable::Type::Group);
+        m_objectCreator->setCurrentIndex(0);
+        m_glWidget->update();
+    }
+
+    void MainWidget::on_lightBoxChanged() {
+        if (m_lightCreator->currentText() == "Add light")
+            return;
+        else if (m_lightCreator->currentText() == "Point Light")
+            m_glWidget->addDrawable(engine::Drawable::Type::PointLight);
+        m_lightCreator->setCurrentIndex(0);
+        m_glWidget->update();
+    }
+
+    void MainWidget::createShaderComboBox() {
+        std::vector<std::string> shaders {
+            "Blinn Phong",
+            "Phong"
+        };
+        m_shaderBox = std::make_unique<QComboBox>();
+        for (const auto &shader : shaders) {
+            m_shaderBox->addItem(shader.c_str());
+        }
+        connect(m_shaderBox.get(), SIGNAL(currentIndexChanged(int)), this, SLOT(on_shaderBoxChanged()));
+    }
+
+    void MainWidget::on_shaderBoxChanged() {
+        if (m_shaderBox->currentText() == "Blinn Phong")
+            m_glWidget->renderer().setShader(engine::Renderer::AvailableShaders::BlinnPhong);
+        else if (m_shaderBox->currentText() == "Phong")
+            m_glWidget->renderer().setShader(engine::Renderer::AvailableShaders::Phong);
+        m_glWidget->update();
+    }
 
 }  // namespace daft::app

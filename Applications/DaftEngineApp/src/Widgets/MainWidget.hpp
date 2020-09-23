@@ -100,21 +100,9 @@ class ENGINE_API MainWidget : public QWidget {
     void on_treeItemChanged();
     void on_sceneTreeChanged();
     void on_glInitialized();
-
-    void on_addGroupButtonPressed() {
-        m_glWidget->addDrawable(engine::Drawable::Type::Group);
-        m_glWidget->update();
-    }
-
-    void on_addSphereButtonPressed() {
-        m_glWidget->addDrawable(engine::Drawable::Type::Sphere);
-        m_glWidget->update();
-    }
-
-    void on_addTorusButtonPressed() {
-        m_glWidget->addDrawable(engine::Drawable::Type::Cube);
-        m_glWidget->update();
-    }
+    void on_objectBoxChanged();
+    void on_lightBoxChanged();
+    void on_shaderBoxChanged();
 
     void on_removeButtonPressed() {
         m_glWidget->removeSelection();
@@ -123,12 +111,18 @@ class ENGINE_API MainWidget : public QWidget {
 
    private:
     void connectSceneTreeEvents();
+    void createCreationComboBoxes();
+    void createShaderComboBox();
 
     std::unique_ptr<OpenGLWidget> m_glWidget{nullptr};
     std::unique_ptr<BorderWidget> m_southWidget{nullptr};
     std::unique_ptr<BorderWidget> m_eastWidget{nullptr};
     std::unique_ptr<SettingWidget> m_settingWidget{nullptr};
     std::unique_ptr<TreeWidget> m_treeWidget{nullptr};
+
+    std::unique_ptr<QComboBox> m_objectCreator{nullptr};
+    std::unique_ptr<QComboBox> m_lightCreator{nullptr};
+    std::unique_ptr<QComboBox> m_shaderBox{nullptr};
 
     std::unique_ptr<BorderLayout> m_layout{nullptr};
 };

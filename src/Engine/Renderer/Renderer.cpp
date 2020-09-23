@@ -216,6 +216,7 @@ void Renderer::_setShader() {
         default:
             break;
     }
+    m_newShader = Renderer::AvailableShaders::None;
     updateViewMatrix();
     updateProjectionMatrix();
 }

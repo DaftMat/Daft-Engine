@@ -80,7 +80,7 @@ void main() {
 vec3 calcPointLight(PointLight light) {
     vec3 lightDir = normalize(light.position - fragPos);
     float diff = max(dot(fragNormal, lightDir), 0.0);
-    vec3 reflectDir = reflect(-lightDir, normal);
+    vec3 reflectDir = reflect(-lightDir, fragNormal);
     float spec = pow(max(dot(fragNormal, reflectDir), 0.0), defaultMat.shininess);
     float distance = length(light.position - fragPos);
     float attenuation = light.intensity / (distance * distance);
@@ -92,7 +92,7 @@ vec3 calcPointLight(PointLight light) {
 vec3 calcDirLight(DirLight light){
     vec3 lightDir = normalize(-light.direction);
     float diff = max(dot(fragNormal, lightDir), 0.0);
-    vec3 reflectDir = reflect(-lightDir, normal);
+    vec3 reflectDir = reflect(-lightDir, fragNormal);
     float spec = pow(max(dot(fragNormal, reflectDir), 0.0), defaultMat.shininess);
     vec3 diffuse = light.color * diff * vec3(defaultMat.albedo);
     vec3 specular = light.color * spec * vec3(defaultMat.specular);
@@ -102,7 +102,7 @@ vec3 calcDirLight(DirLight light){
 vec3 calcSpotLight(SpotLight light) {
     vec3 lightDir = normalize(light.position - fragPos);
     float diff = max(dot(fragNormal, lightDir), 0.0);
-    vec3 reflectDir = reflect(-lightDir, normal);
+    vec3 reflectDir = reflect(-lightDir, fragNormal);
     float spec = pow(max(dot(fragNormal, reflectDir), 0.0), defaultMat.shininess);
     float distance = length(light.position - fragPos);
     float attenuation = light.intensity / (distance * distance);
