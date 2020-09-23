@@ -12,6 +12,7 @@ $ git clone --recurse-submodules https://github.com/DaftMat/Daft-Engine.git
  - [GLAD](https://github.com/Stardust-Softwares/GLAD-Includes)
  - [random](https://github.com/effolkronium/random)
  - [stb](https://github.com/nothings/stb)
+ - [ConvexHull3D](https://github.com/leomccormack/convhull_3d)
 
 ### To install
  - [OpenGL/GLSL](https://www.opengl.org/)
