@@ -1,4 +1,4 @@
-namespace daft::core::utils {
+namespace daft::core {
 
 template <int M, int N, typename T>
 constexpr glm::mat<M, N, T> toGlm(const Eigen::Matrix<T, M, N, 0, M, N> &mat) noexcept {
@@ -45,4 +45,6 @@ constexpr auto toUType(T e) noexcept {
     return static_cast<std::underlying_type_t<T>>(e);
 }
 
-}  // namespace daft::core::utils
+constexpr int mod1(int x, int m) noexcept { return m == x ? x : x % m; }
+
+}  // namespace daft::core

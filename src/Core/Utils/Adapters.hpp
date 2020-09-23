@@ -9,7 +9,7 @@
 /**
  * This files provides casting function between glm and Eigen.
  */
-namespace daft::core::utils {
+namespace daft::core {
 
 /**
  * Casts from Eigen::Matrix to glm::mat.
@@ -62,6 +62,14 @@ constexpr Eigen::Matrix<T, M, 1> toEigen(const glm::vec<M, T> &vec) noexcept;
 template <typename T>
 constexpr auto toUType(T e) noexcept;
 
-}  // namespace daft::core::utils
+/**
+ * apply the mod operator + 1
+ * @param x - first operand
+ * @param m - second operand
+ * @return (x % m) + 1
+ */
+constexpr int mod1(int x, int m) noexcept;
+
+}  // namespace daft::core
 
 #include "Adapters.inl"

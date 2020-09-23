@@ -7,10 +7,10 @@
 
 #include <stb/stb_image.h>
 
-#include <Core/Utils/Log.hpp>
+#include <Core/Utils/Logger.hpp>
 #include <string>
 
-namespace daft::core::mat {
+namespace daft::core {
 void Texture::bind(GLenum textureType) const { glBindTexture(textureType, m_id); }
 
 Texture::Texture(std::string name, std::string path) : m_name{std::move(name)} {
@@ -38,9 +38,13 @@ Texture::Texture(std::string name, std::string path) : m_name{std::move(name)} {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        ENGINE_INFO("2D Texture created: {0}.", m_name);
+        std::stringstream ss;
+        ss << "2D Texture created: " << m_name << ".";
+        core::Logger::info(std::move(ss));
     } else {
-        ENGINE_ERROR("Failed to load texture {0}.", filePath);
+        std::stringstream ss;
+        ss << "Failed to load texture " << filePath << ".";
+        core::Logger::error(std::move(ss));
     }
     m_isValid = true;
 }
@@ -56,9 +60,13 @@ Texture::Texture(std::string name, const std::array<std::string, 6> &paths) : m_
                          data);
             stbi_image_free(data);
 
-            ENGINE_INFO("3D Texture created: {0}.", m_name);
+            std::stringstream ss;
+            ss << "3D Texture created: " << m_name << ".";
+            core::Logger::error(std::move(ss));
         } else {
-            ENGINE_ERROR("Failed to load texture {0}.", paths.at(i));
+            std::stringstream ss;
+            ss << "Failed to load texture" << paths.at(i) << ".";
+            core::Logger::error(std::move(ss));
         }
     }
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -81,4 +89,4 @@ Texture &Texture::operator=(Texture &&other) noexcept {
     other.m_isValid = false;
     return *this;
 }
-}  // namespace daft::core::mat
+}  // namespace daft::core

@@ -36,7 +36,7 @@ void run() {
 
 int main(int argc, const char **argv) {
     using namespace daft;
-    if (!testing::init_testing(1, argv)) {
+    if (!testing::init_testing(argc, argv)) {
         return EXIT_FAILURE;
     }
 

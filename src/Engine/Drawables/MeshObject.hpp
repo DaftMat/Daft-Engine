@@ -9,25 +9,25 @@
 
 namespace daft {
 /// forward declarations
-namespace core::mat {
+namespace core {
 class Material;
-}  // namespace core::mat
+}  // namespace core
 
-namespace engine::objects {
+namespace engine {
 /**
  * Wrapper for Mesh and a Material .
  */
-class ENGINE_API MeshObject : public core::utils::NonCopyable {
+class ENGINE_API MeshObject : public core::NonCopyable {
    public:
-    using Mesh = core::geometry::Mesh;
-    using Material = core::mat::Material;
+    using Mesh = core::Mesh;
+    using Material = core::Material;
 
     /**
      * Standard / default constructor.
      * @param mesh - mesh wrapped.
      * @param material - material wrapped.
      */
-    explicit MeshObject(Mesh mesh = Mesh{}, Material *material = nullptr);
+    explicit MeshObject(Mesh mesh = Mesh{}, std::shared_ptr<Material> material = nullptr);
 
     /**
      * Move constructor.
@@ -44,7 +44,7 @@ class ENGINE_API MeshObject : public core::utils::NonCopyable {
     /**
      * prepares the wrapped mesh and its material to be rendered.
      */
-    void prepare();
+    void prepare() const;
 
     /**
      * render the wrapped mesh with its material.
@@ -57,9 +57,35 @@ class ENGINE_API MeshObject : public core::utils::NonCopyable {
      */
     void unbind() const;
 
-   private:
+    /**
+     * mesh reference getter.
+     * @return ref to mesh.
+     */
+    Mesh &mesh() { return m_mesh; }
+
+    /**
+     * mesh constant reference getter.
+     * @return const ref to mesh.
+     */
+    const Mesh &mesh() const { return m_mesh; }
+
+    /**
+     * material reference getter.
+     * @return ref to material.
+     */
+    Material &material() { return *m_material; }
+
+    /**
+     * material constant reference getter.
+     * @return const ref to material.
+     */
+    const Material &material() const { return *m_material; }
+
+    bool hasMaterial() const { return m_material != nullptr; }
+
+   protected:
     Mesh m_mesh;
     std::shared_ptr<Material> m_material;
 };
-}  // namespace engine::objects
+}  // namespace engine
 }  // namespace daft

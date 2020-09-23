@@ -1,6 +1,6 @@
-#include <Core/Utils/Log.hpp>
+#include <Core/Utils/Logger.hpp>
 
-namespace daft::core::geometry {
+namespace daft::core {
 
 template <typename T>
 void AttribManager::addAttrib() {
@@ -13,7 +13,9 @@ void AttribManager::addAttrib() {
     } else if constexpr (std::is_same_v<T, glm::vec4>) {
         m_vec4Attribs.insert(std::make_pair(m_numAttribs++, std::vector<glm::vec4>{}));
     } else {
-        ENGINE_WARN("Unknown attribute type. nothing has been done.");
+        std::stringstream ss;
+        ss << "Unknown attribute type. nothing has been done.";
+        core::Logger::warn(std::move(ss));
     }
 }
 
@@ -28,7 +30,9 @@ void AttribManager::addAttrib(std::vector<T> attribs) {
     } else if constexpr (std::is_same_v<T, glm::vec4>) {
         m_vec4Attribs.insert(std::make_pair(m_numAttribs++, std::move(attribs)));
     } else {
-        ENGINE_WARN("Unknown attribute type. nothing has been done.");
+        std::stringstream ss;
+        ss << "Unknown attribute type. nothing has been done.";
+        core::Logger::warn(std::move(ss));
     }
 }
 
@@ -77,6 +81,8 @@ void AttribManager::clear() noexcept {
     m_vec2Attribs.clear();
     m_vec3Attribs.clear();
     m_vec4Attribs.clear();
+    m_indices.clear();
+    m_numAttribs = 0;
 }
 
-}  // namespace daft::core::geometry
+}  // namespace daft::core

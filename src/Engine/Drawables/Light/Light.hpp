@@ -6,48 +6,74 @@
 #include <Core/Geometry/Mesh.hpp>
 #include <Engine/Drawables/Drawable.hpp>
 
-namespace daft::engine::objects {
+namespace daft::engine {
 /**
  * Base class for any light in a 3D world.
  */
 class Light : public Drawable {
    public:
-    using Mesh = core::geometry::Mesh;
+    using Mesh = core::Mesh;
 
     /**
      * Default/standard constructor.
      * @param mesh - line mesh that represents the light.
      * @param color - color emitted by the light.
      */
-    explicit Light(Composite *parent = nullptr, std::string name = "Light" + std::to_string(m_nrLight++),
-                   Mesh mesh = Mesh{}, const glm::vec3 &color = glm::vec3{1.f}) noexcept
-        : Drawable(parent, std::move_if_noexcept(name)), m_mesh{std::move_if_noexcept(mesh)}, m_color{color} {}
+    explicit Light(glm::vec3 color = glm::vec3{1.f}, Composite *parent = nullptr,
+                   std::string name = "Light" + std::to_string(m_nrLight++))
+        : Drawable(parent, std::move(name)), m_color{color} {}
 
-    ~Light() { Light::reset(); }
+    /**
+     * Destructor.
+     */
+    ~Light() override { Light::reset(); }
+
+    /**
+     * Default move constructor.
+     */
+    Light(Light &&) noexcept = default;
+
+    /**
+     * Default move assignment operator.
+     * @return ref to this.
+     */
+    Light &operator=(Light &&) noexcept = default;
 
     /**
      * Renders the mesh representation of the light.
      */
-    void render() override;
+    void render(const core::ShaderProgram &shader) override {}
+
+    /**
+     * renders the edges only of the inner geometry.
+     * @param shader - shader to render with.
+     */
+    void renderEdges(const core::ShaderProgram &shader) override;
 
     /**
      * Translates the light.
      * @param t - translation to apply
      */
-    void translate(const glm::vec3 &t) override { Drawable::translate(t); }
+    void translate(glm::vec3 t) override { Drawable::translate(t); }
 
     /**
      * Rotates the light.
      * @param r - rotations to apply.
      */
-    void rotate(const glm::vec3 &r) override { Drawable::rotate(r); }
+    void rotate(glm::vec3 r) override { Drawable::rotate(r); }
+
+    /**
+     * Transformations setter using a SettingManager .
+     * @param t - transformations.
+     */
+    void setTransformations(const core::SettingManager &t) override {}
 
     /**
      * Scales the light.
      * No light can be scaled, nothing happens.
      * @param s - new scale (won't be applied).
      */
-    void rescale(const glm::vec3 &s) override {}
+    void rescale(glm::vec3 s) override {}
 
     /**
      * Accepts a DrawableVisitor .
@@ -66,12 +92,41 @@ class Light : public Drawable {
      */
     glm::vec3 &color() { return m_color; }
 
+    /**
+     * Loads this light to a target shader as a uniform struct.
+     * @param shader - shader to load the light to.
+     * @param index - index of the light in its list.
+     */
+    virtual void loadToShader(const core::ShaderProgram &shader, int index) const = 0;
+
+    /**
+     * Resets the light.
+     */
     void reset() override;
 
-   private:
-    Mesh m_mesh;
-    glm::vec3 m_color;
+    /**
+     * Texts if this is a Composite .
+     * @return false
+     */
+    [[nodiscard]] bool isComposite() const override { return false; }
 
+    /**
+     * Tests if this is an Object .
+     * @return false.
+     */
+    [[nodiscard]] bool isObject() const override { return false; }
+
+    /**
+     * Tests if this is a Light .
+     * @return true.
+     */
+    [[nodiscard]] bool isLight() const override { return true; }
+
+   protected:
+    Mesh m_mesh;
+
+   private:
+    glm::vec3 m_color;
     static int m_nrLight;
 };
-}  // namespace daft::engine::objects
+}  // namespace daft::engine

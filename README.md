@@ -12,13 +12,13 @@ $ git clone --recurse-submodules https://github.com/DaftMat/Daft-Engine.git
  - [GLAD](https://github.com/Stardust-Softwares/GLAD-Includes)
  - [random](https://github.com/effolkronium/random)
  - [stb](https://github.com/nothings/stb)
+ - [ConvexHull3D](https://github.com/leomccormack/convhull_3d)
 
 ### To install
  - [OpenGL/GLSL](https://www.opengl.org/)
  - [GLM](https://github.com/g-truc/glm)
  - [Eigen3](https://eigen.tuxfamily.org/dox/)
  - [Assimp](https://github.com/assimp/assimp)
- - [spdlog](https://github.com/gabime/spdlog)
  - [Qt5](https://www.qt.io/download-open-source?hsCtaTracking=9f6a2170-a938-42df-a8e2-a9f0b1d6cdce%7C6cb0de4f-9bb5-4778-ab02-bfb62735f3e5)
  
 #### How to install deps
@@ -34,12 +34,12 @@ $ sudo apt install libomp-dev libgl1-mesa-dev libglu1-mesa-dev xorg-dev libxrand
 On **mac** using homebrew :
 ```txt
 $ brew update
-$ brew install libomp glm eigen assimp spdlog qt
+$ brew install libomp glm eigen assimp qt
 ```
 
 On **windows** using vcpkg (make sure vcpkg is [updated](https://vcpkg.readthedocs.io/en/latest/about/faq/#how-do-i-update-libraries)) :
 ```txt
-$ vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows spdlog:x64-windows
+$ vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows
 $ vcpkg integrate install
 ```
 **Note:** the command vcpkg integrate install will give you a path to the vcpkg toolchain, copy this path.
@@ -69,26 +69,6 @@ $ ./DaftEngineApp
 ```
 
 ### Troubleshooting
-#### spdlog not found
-
-On some distrib, the apt package `libspdlog-dev` will be outdated. 
-
-The `cmake ..` command will then output something like that :
-```txt
-CMake Error at src/CMakeLists.txt:13 (find_package):
-  Could not find a configuration file for package "spdlog" that is compatible
-  with requested version "1".
-  The following configuration files were considered but not accepted:
-    /usr/lib/x86_64-linux-gnu/cmake/spdlog/spdlogConfig.cmake, version: 0.16.2
-```
-To solve this problem, you have to install `spdlog` *manually* by typing these commands from some download directory on your computer :
-```txt
-$ git clone --recurse-submodules https://github.com/gabime/spdlog.git
-$ cd spdlog && mkdir build && cd build
-& cmake .. && make install
-```
-This will install `spdlog` last version in `/usr/local/`, you'll then be able to compile the engine.
-
 #### Qt5 not found
 
 For some reasons, Qt5 could be not found by cmake, which will output the following error:

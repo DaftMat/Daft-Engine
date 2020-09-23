@@ -3,16 +3,18 @@
 //
 #pragma once
 
+#include <Core/Utils/Logger.hpp>
 #include <vector>
 
 #include "SettingManager.hpp"
 #include "Texture.hpp"
 
-namespace daft::core::mat {
+namespace daft::core {
+class ShaderProgram;
 /**
  * surface appearance data of an object.
  */
-class Material : public utils::NonCopyable {
+class Material : public NonCopyable {
    public:
     /**
      * default constructor.
@@ -56,7 +58,9 @@ class Material : public utils::NonCopyable {
      */
     template <typename T>
     void addSetting(std::string name, T data) {
-        ENGINE_INFO("Setting of type {0} added to Material : {1}.", typeid(data).name(), name);
+        std::stringstream ss;
+        ss << "Setting of type" << typeid(data).name() << "added to Material : " << name << ".";
+        core::Logger::info(std::move(ss));
         m_settings.add(std::move(name), data);
     }
 
@@ -78,7 +82,9 @@ class Material : public utils::NonCopyable {
      */
     template <typename T>
     void deleteSetting(std::string name) {
-        ENGINE_INFO("Setting {0} deleted from Material.", name);
+        std::stringstream ss;
+        ss << "Setting " << name << " deleted from Material.\n";
+        core::Logger::info(std::move(ss));
         m_settings.remove<T>(std::move(name));
     }
 
@@ -109,8 +115,14 @@ class Material : public utils::NonCopyable {
         return m_settings.settings<T>();
     }
 
+    /**
+     * Loads this material to the target shader as a uniform struct.
+     * @param shader - shader to load the material to.
+     */
+    void loadToShader(const core::ShaderProgram &shader) const;
+
    private:
     std::vector<Texture> m_textures;
     SettingManager m_settings{};
 };
-}  // namespace daft::core::mat
+}  // namespace daft::core

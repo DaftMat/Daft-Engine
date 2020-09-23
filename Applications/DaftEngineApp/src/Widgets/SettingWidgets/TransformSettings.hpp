@@ -7,6 +7,7 @@
 #include <Core/OpenGL.hpp>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QWidget>
+#include <array>
 
 namespace daft::app {
 /**
@@ -19,9 +20,19 @@ class ENGINE_API TransformSettings : public QWidget {
     /**
      * Constructor.
      * @param settings - library of the selected object's settings.
+     * @param enablePos - is position transformation enabled
+     * @param enableRot - is rotation transformation enabled
+     * @param enableSca - is scale transformation enabled
      * @param parent - parent of the widget.
      */
-    explicit TransformSettings(daft::core::mat::SettingManager settings, QWidget *parent = nullptr);
+    explicit TransformSettings(daft::core::SettingManager settings, bool enablePos = true, bool enableRot = true,
+                               bool enableSca = true, QWidget *parent = nullptr);
+
+    /**
+     * Transformation settings constant reference getter.
+     * @return const ref to the transformation settings of the drawable.
+     */
+    [[nodiscard]] const core::SettingManager &transforms() const { return m_settings; }
 
    public slots:
     void onTransformChanged();
@@ -40,6 +51,6 @@ class ENGINE_API TransformSettings : public QWidget {
     std::array<QDoubleSpinBoxPtr, 3> m_rotations{nullptr, nullptr, nullptr};
     std::array<QDoubleSpinBoxPtr, 3> m_scale{nullptr, nullptr, nullptr};
 
-    daft::core::mat::SettingManager m_settings;
+    daft::core::SettingManager m_settings;
 };
 }  // namespace daft::app

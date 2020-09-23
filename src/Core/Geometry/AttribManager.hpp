@@ -10,7 +10,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace daft::core::geometry {
+namespace daft::core {
 /**
  * A class that holds a list for each attributes of a Mesh
  */
@@ -110,7 +110,6 @@ class AttribManager {
      */
     inline void clear() noexcept;
 
-   private:
     /**
      * Gets the attribute buffer.
      * @tparam T - type of the attributes.
@@ -120,18 +119,19 @@ class AttribManager {
     template <typename T>
     AttribHandler<T> *getAttribs(GLuint index);
 
+   private:
     template <typename T>
     inline void setAttrib(GLuint index, AttribHandler<T> *attrib);
 
     GLuint m_numAttribs;
 
-    std::unordered_map<GLuint, AttribHandler<float>> m_floatAttribs;
-    std::unordered_map<GLuint, AttribHandler<glm::vec2>> m_vec2Attribs;
-    std::unordered_map<GLuint, AttribHandler<glm::vec3>> m_vec3Attribs;
-    std::unordered_map<GLuint, AttribHandler<glm::vec4>> m_vec4Attribs;
+    std::unordered_map<GLuint, AttribHandler<float>> m_floatAttribs{};
+    std::unordered_map<GLuint, AttribHandler<glm::vec2>> m_vec2Attribs{};
+    std::unordered_map<GLuint, AttribHandler<glm::vec3>> m_vec3Attribs{};
+    std::unordered_map<GLuint, AttribHandler<glm::vec4>> m_vec4Attribs{};
 
-    std::vector<GLuint> m_indices;
+    std::vector<GLuint> m_indices{};
 };
-}  // namespace daft::core::geometry
+}  // namespace daft::core
 
 #include "AttribManager.inl"

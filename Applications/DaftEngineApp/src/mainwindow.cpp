@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new ::Ui::Main
     QSurfaceFormat format;
     format.setVersion(GL_MAJOR, GL_MINOR);
     format.setProfile(QSurfaceFormat::CoreProfile);
+    format.setSamples(32);
     format.setDepthBufferSize(24);
     QSurfaceFormat::setDefaultFormat(format);
 

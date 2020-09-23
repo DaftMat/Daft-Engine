@@ -7,3 +7,6 @@
 [submodule "3rdPartyLibs/stb"]
 	path = 3rdPartyLibs/stb
 	url = https://github.com/nothings/stb.git
+[submodule "3rdPartyLibs/ConvexHull3D"]
+	path = 3rdPartyLibs/ConvexHull3D
+	url = https://github.com/leomccormack/convhull_3d

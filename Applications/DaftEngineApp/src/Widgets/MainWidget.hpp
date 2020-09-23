@@ -3,10 +3,12 @@
 //
 #pragma once
 
+#include <Engine/Drawables/Object/Sphere.hpp>
 #include <Layouts/BorderLayout.hpp>
 #include <QFrame>
 #include <QtWidgets/QWidget>
 #include <src/Widgets/SettingWidgets/SettingWidget.hpp>
+#include <src/Widgets/TreeWidget/TreeWidget.hpp>
 
 #include "BorderWidget.hpp"
 #include "OpenGLWidget.hpp"
@@ -57,14 +59,6 @@ class ENGINE_API MainWidget : public QWidget {
      */
     [[nodiscard]] const BorderLayout &borderLayout() const { return *m_layout; }
 
-   public:
-    /**
-     * Creates a label with frame styles.
-     * @param text - text of the label.
-     * @return created QLabel .
-     */
-    [[nodiscard]] static QLabel *createLabel(const QString &text);
-
     /**
      * Creates a line.
      * @param shape - shape of the line (HLine/VLine)
@@ -95,16 +89,40 @@ class ENGINE_API MainWidget : public QWidget {
      * @param decs - number of printed decimals in the spin box.
      * @return created QDoubleSpinBox .
      */
-    [[nodiscard]] static QDoubleSpinBox *createDoubleSpinBox(double val = 1.0, double min = -9999.0,
-                                                             double max = 9999.0, double step = 1.0, int decs = 2);
+    [[nodiscard]] static QDoubleSpinBox *createDoubleSpinBox(double val = 1.0, double min = -999, double max = 999,
+                                                             double step = 1.0, int decs = 2);
 
    public slots:
     void on_selectionChanged();
+    void on_settingChanged();
+    void on_selectionSettingsChanged() { m_glWidget->emitNextFrame(); }
+    void on_treeSelectionChanged();
+    void on_treeItemChanged();
+    void on_sceneTreeChanged();
+    void on_glInitialized();
+    void on_objectBoxChanged();
+    void on_lightBoxChanged();
+    void on_shaderBoxChanged();
+
+    void on_removeButtonPressed() {
+        m_glWidget->removeSelection();
+        m_glWidget->update();
+    }
 
    private:
+    void connectSceneTreeEvents();
+    void createCreationComboBoxes();
+    void createShaderComboBox();
+
     std::unique_ptr<OpenGLWidget> m_glWidget{nullptr};
     std::unique_ptr<BorderWidget> m_southWidget{nullptr};
+    std::unique_ptr<BorderWidget> m_eastWidget{nullptr};
     std::unique_ptr<SettingWidget> m_settingWidget{nullptr};
+    std::unique_ptr<TreeWidget> m_treeWidget{nullptr};
+
+    std::unique_ptr<QComboBox> m_objectCreator{nullptr};
+    std::unique_ptr<QComboBox> m_lightCreator{nullptr};
+    std::unique_ptr<QComboBox> m_shaderBox{nullptr};
 
     std::unique_ptr<BorderLayout> m_layout{nullptr};
 };

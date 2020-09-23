@@ -10,6 +10,7 @@
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QWidget>
 #include <memory>
+#include <unordered_map>
 #include <utility>
 
 namespace daft::app {
@@ -26,7 +27,7 @@ class ENGINE_API DrawableSettings : public QWidget {
      * @param settings - library of the object's settings.
      * @param parent - parent of the widget.
      */
-    explicit DrawableSettings(daft::core::mat::SettingManager settings, QWidget* parent = nullptr);
+    explicit DrawableSettings(daft::core::SettingManager settings, QWidget* parent = nullptr);
 
     /**
      * Destructor.
@@ -57,8 +58,9 @@ class ENGINE_API DrawableSettings : public QWidget {
      * @param min - minimum value of the spin boxes.
      * @param max - maximum value of the spin boxes.
      * @param step - single step of the spin boxes.
+     * @param divider - if the ints has to be divided into some floats. e.g. colors.
      */
-    void addIntSpinBoxVector(std::string label, int min = 0, int max = 255, int step = 1);
+    void addIntSpinBoxVector(std::string label, int min = 0, int max = 255, int step = 1, float multiplier = 1.f);
 
     /**
      * Adds a row of 3 QDoubleSpinBox to the form.
@@ -74,16 +76,29 @@ class ENGINE_API DrawableSettings : public QWidget {
      * @param label - label of the form.
      * @param args - text of each category of the combo box.
      */
-    void addComboBox(std::string label, const std::vector<std::string>& args);
+    void addComboBox(std::string label, const std::vector<std::string>& args, int currentItem = 0);
+
+    /**
+     * Settings constant reference getter.
+     * @return const ref to the settings of the drawable.
+     */
+    [[nodiscard]] const core::SettingManager& settings() { return m_settings; }
 
    public slots:
-    void onDrawableChanged();
+    void on_drawableChanged();
+    void on_comboBoxChanged();
 
    signals:
     void settingChanged();
+    void comboBoxChanged();
 
    private:
     void addField(std::string label, const std::vector<QWidget*>& widgets);
+
+    template <typename T>
+    inline void setVector(const T& elem) {
+        for (int i = 0; i < 3; ++i) m_settings.get<glm::vec3>(elem.first)[i] = elem.second[i]->value();
+    }
 
     std::unordered_map<std::string, QSpinBox*> m_intSpinBoxes;
     std::unordered_map<std::string, QDoubleSpinBox*> m_doubleSpinBoxes;
@@ -91,7 +106,7 @@ class ENGINE_API DrawableSettings : public QWidget {
     std::unordered_map<std::string, std::array<QDoubleSpinBox*, 3>> m_doubleSpinBoxVectors;
     std::unordered_map<std::string, QComboBox*> m_comboBoxes;
 
-    daft::core::mat::SettingManager m_settings;
+    daft::core::SettingManager m_settings;
 
     std::unique_ptr<QFormLayout> m_layout;
 };

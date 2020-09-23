@@ -9,12 +9,12 @@
 #include <array>
 #include <string>
 
-namespace daft::core::mat {
+namespace daft::core {
 /**
  * texture class.
  * loads an image into an opengl texture.
  */
-class Texture : public utils::NonCopyable {
+class Texture : public NonCopyable {
    public:
     /**
      * Base constructor.
@@ -84,4 +84,4 @@ class Texture : public utils::NonCopyable {
     std::string m_name;
     bool m_isValid{false};
 };
-}  // namespace daft::core::mat
+}  // namespace daft::core

@@ -5,6 +5,6 @@
 
 #include <random/include/effolkronium/random.hpp>
 
-namespace sdt::core {
+namespace daft::core {
 using Random = effolkronium::random_static;
 }  // namespace daft::core

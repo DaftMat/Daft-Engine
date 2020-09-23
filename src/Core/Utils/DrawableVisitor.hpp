@@ -6,35 +6,83 @@
 
 namespace daft {
 /// forward declarations
-namespace engine::objects {
+namespace engine {
+// objects
 class Object;
+class Sphere;
+class Torus;
+class Cube;
+class BSpline;
+// lights
+class PointLight;
+// composite
 class Composite;
-}  // namespace engine::objects
+}  // namespace engine
 
-namespace core::utils {
-using namespace engine::objects;
+namespace core {
 
 /**
  * Base visitor class for all drawables
  */
 class ENGINE_API DrawableVisitor {
    public:
+    /**
+     * Default ctor.
+     */
     DrawableVisitor() = default;
 
+    /**
+     * Default move ctor.
+     */
     DrawableVisitor(DrawableVisitor &&) = default;
 
+    /**
+     * Default move assignment operator.
+     * @return ref to this.
+     */
     DrawableVisitor &operator=(DrawableVisitor &&) = default;
+
+    /// OBJECTS
 
     /**
      * Visits an Object .
      */
-    virtual void visit(Object *) {}
+    virtual void visit(engine::Object *) {}
+
+    /**
+     * Visits a Sphere .
+     */
+    virtual void visit(engine::Sphere *) {}
+
+    /**
+     * Visits a Torus .
+     */
+    virtual void visit(engine::Torus *) {}
+
+    /**
+     * Visits a Cube .
+     */
+    virtual void visit(engine::Cube *) {}
+
+    /**
+     * Visits a BSpline .
+     */
+    virtual void visit(engine::BSpline *) {}
+
+    /// LIGHTS
+
+    /**
+     * Visits a PointLight .
+     */
+    virtual void visit(engine::PointLight *) {}
+
+    /// GROUP
 
     /**
      * Visits a Composite .
      */
-    virtual void visit(Composite *);
+    virtual void visit(engine::Composite *);
 };
 
-}  // namespace core::utils
+}  // namespace core
 }  // namespace daft

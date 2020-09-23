@@ -8,11 +8,11 @@
 #include <Core/Utils/NonCopyable.hpp>
 #include <string>
 
-namespace daft::core::geometry {
+namespace daft::core {
 /**
  * Shader object base class.
  */
-class ENGINE_API ShaderProgram : public utils::NonCopyable {
+class ENGINE_API ShaderProgram : public NonCopyable {
    public:
     /**
      * Constructor.
@@ -31,14 +31,14 @@ class ENGINE_API ShaderProgram : public utils::NonCopyable {
      * Move constructor.
      * @param other - Shader to be moved into this.
      */
-    inline ShaderProgram(ShaderProgram &&other) noexcept;
+    ShaderProgram(ShaderProgram &&other) noexcept;
 
     /**
      * Move assignment operator.
      * @param other - Shader to be moved into this.
      * @return this shader after the other is moved.
      */
-    inline ShaderProgram &operator=(ShaderProgram &&other) noexcept;
+    ShaderProgram &operator=(ShaderProgram &&other) noexcept;
 
     /**
      * Activates the shaders.
@@ -127,4 +127,4 @@ class ENGINE_API ShaderProgram : public utils::NonCopyable {
     GLuint m_id;
     bool m_isValid;
 };
-}  // namespace daft::core::geometry
+}  // namespace daft::core

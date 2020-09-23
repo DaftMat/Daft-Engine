@@ -1,8 +1,8 @@
-#include <Core/Utils/Log.hpp>
+#include <Core/Utils/Logger.hpp>
 
 #include "SettingManager.hpp"
 
-namespace daft::core::mat {
+namespace daft::core {
 template <typename T>
 const std::vector<SettingManager::Setting<T>>& SettingManager::settings() const {
     if constexpr (std::is_same_v<T, int>)
@@ -11,6 +11,8 @@ const std::vector<SettingManager::Setting<T>>& SettingManager::settings() const 
         return m_bools;
     else if constexpr (std::is_same_v<T, float>)
         return m_floats;
+    else if constexpr (std::is_same_v<T, double>)
+        return m_doubles;
     else if constexpr (std::is_same_v<T, glm::vec2>)
         return m_vec2s;
     else if constexpr (std::is_same_v<T, glm::vec3>)
@@ -23,7 +25,9 @@ const std::vector<SettingManager::Setting<T>>& SettingManager::settings() const 
         return m_mat3s;
     else if constexpr (std::is_same_v<T, glm::mat4>)
         return m_mat4s;
-    ENGINE_INFO("invalid setting type, returning empty list...");
+    std::stringstream ss;
+    ss << "invalid setting type, returning empty list...";
+    core::Logger::info(std::move(ss));
     return std::vector<Setting<T>>{};
 }
 
@@ -40,6 +44,8 @@ void SettingManager::add(std::string name, T value) noexcept {
         m_bools.emplace_back(std::move_if_noexcept(name), value);
     else if constexpr (std::is_same_v<T, float>)
         m_floats.emplace_back(std::move_if_noexcept(name), value);
+    else if constexpr (std::is_same_v<T, double>)
+        m_doubles.emplace_back(std::move_if_noexcept(name), value);
     else if constexpr (std::is_same_v<T, glm::vec2>)
         m_vec2s.emplace_back(std::move_if_noexcept(name), value);
     else if constexpr (std::is_same_v<T, glm::vec3>)
@@ -53,7 +59,9 @@ void SettingManager::add(std::string name, T value) noexcept {
     else if constexpr (std::is_same_v<T, glm::mat4>)
         m_mat4s.emplace_back(std::move_if_noexcept(name), value);
     else {
-        ENGINE_INFO("invalid setting type, nothing has been done.");
+        std::stringstream ss;
+        ss << "invalid setting type, nothing has been done.";
+        core::Logger::info(std::move(ss));
     }
 }
 
@@ -77,4 +85,4 @@ bool SettingManager::empty() noexcept {
     return m_bools.empty() && m_ints.empty() && m_floats.empty() && m_vec2s.empty() && m_vec3s.empty() &&
            m_vec4s.empty() && m_mat2s.empty() && m_mat3s.empty() && m_mat4s.empty();
 }
-}  // namespace daft::core::mat
+}  // namespace daft::core

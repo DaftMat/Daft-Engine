@@ -5,10 +5,10 @@
 
 #include <Engine/Drawables/Composite.hpp>
 
-namespace daft::core::utils {
-void DrawableVisitor::visit(Composite *composite) {
+namespace daft::core {
+void DrawableVisitor::visit(engine::Composite *composite) {
     for (auto &d : composite->drawables()) {
         d->accept(this);
     }
 }
-}  // namespace daft::core::utils
+}  // namespace daft::core

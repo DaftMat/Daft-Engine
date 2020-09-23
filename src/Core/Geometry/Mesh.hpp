@@ -4,18 +4,17 @@
 #pragma once
 
 #include <API.hpp>
+#include <Core/Geometry/AttribManager.hpp>
 #include <Core/OpenGL.hpp>
 #include <Core/Utils/NonCopyable.hpp>
 #include <vector>
 
-#include "AttribManager.hpp"
-
-namespace daft::core::geometry {
+namespace daft::core {
 /**
  * mesh class.
  * a triangle based mesh that associates geometry and topology
  */
-class ENGINE_API Mesh : public utils::NonCopyable {
+class ENGINE_API Mesh : public NonCopyable {
    public:
     /**
      * Default constructor.
@@ -93,7 +92,7 @@ class ENGINE_API Mesh : public utils::NonCopyable {
    private:
     GLuint m_vao, m_ebo, m_numVertex;
     std::vector<GLuint> m_vbos;
-    bool m_isVisible;
+    bool m_isVisible{false};
     AttribManager m_attribManager;
 };
-}  // namespace daft::core::geometry
+}  // namespace daft::core

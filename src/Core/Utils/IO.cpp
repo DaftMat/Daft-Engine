@@ -6,9 +6,9 @@
 #include <fstream>
 #include <sstream>
 
-#include "Log.hpp"
+#include "Logger.hpp"
 
-namespace daft::core::utils {
+namespace daft::core {
 std::string IO::getStringFromFile(const std::string &path) {
     std::string res;
     std::ifstream resFile;
@@ -20,8 +20,10 @@ std::string IO::getStringFromFile(const std::string &path) {
         res = resStream.str();
         resFile.close();
     } catch (std::ifstream::failure &f) {
-        ENGINE_ERROR("failed to load file {0}", path);
+        std::stringstream ss;
+        ss << "failed to load file " << path << "\n" << f.what();
+        core::Logger::error(std::move(ss));
     }
     return res;
 }
-}  // namespace daft::core::utils
+}  // namespace daft::core

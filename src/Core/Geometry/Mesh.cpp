@@ -4,7 +4,9 @@
 
 #include "Mesh.hpp"
 
-namespace daft::core::geometry {
+#include <Core/Utils/Logger.hpp>
+
+namespace daft::core {
 
 Mesh::Mesh(Mesh&& o) noexcept
     : m_vao{o.m_vao},
@@ -45,6 +47,8 @@ void Mesh::unbind() const {
 }
 
 void Mesh::reset(const AttribManager& attribManager) {
+    clear();
+
     m_attribManager = attribManager;
     m_numVertex = m_attribManager.indices().size();
     m_vbos = std::vector<GLuint>(m_attribManager.size(), 0);
@@ -63,7 +67,9 @@ void Mesh::reset(const AttribManager& attribManager) {
                  GL_STATIC_DRAW);
 
     glBindVertexArray(0);
-    ENGINE_INFO("Mesh created. VAO: {0}.", m_vao);
+    std::stringstream ss;
+    ss << "Mesh created. VAO: " << m_vao << ".";
+    core::Logger::info(std::move(ss));
 }
 void Mesh::clear() {
     if (!m_isVisible) return;
@@ -72,7 +78,9 @@ void Mesh::clear() {
     glDeleteBuffers(1, &m_ebo);
     glDeleteVertexArrays(1, &m_vao);
     m_attribManager.clear();
-    ENGINE_INFO("Mesh of VAO: {0} deleted.", m_vao);
+    std::stringstream ss;
+    ss << "Mesh of VAO: " << m_vao << " deleted.";
+    core::Logger::info(std::move(ss));
 }
 
-}  // namespace daft::core::geometry
+}  // namespace daft::core

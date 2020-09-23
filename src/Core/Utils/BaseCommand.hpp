@@ -4,7 +4,7 @@
 #pragma once
 #include <API.hpp>
 
-namespace daft::core::utils {
+namespace daft::core {
 /**
  * Base class for the design pattern Command.
  */
@@ -15,4 +15,4 @@ class ENGINE_API BaseCommand {
      */
     virtual void execute() = 0;
 };
-}  // namespace daft::core::utils
+}  // namespace daft::core

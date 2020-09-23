@@ -6,7 +6,7 @@
 #include <Engine/Drawables/Drawable.hpp>
 #include <Engine/Drawables/MeshObject.hpp>
 
-namespace daft::engine::objects {
+namespace daft::engine {
 /**
  * Base 3D object.
  */
@@ -16,16 +16,12 @@ class ENGINE_API Object : public Drawable {
      * Standard constructor.
      * @param mos - list of mesh objects.
      */
-    explicit Object(Composite *parent = nullptr, std::string name = "Object" + std::to_string(m_nrObject++),
-                    std::vector<MeshObject> mos = {}) noexcept;
+    explicit Object(Composite *parent = nullptr, std::string name = "Object" + std::to_string(m_nrObject++));
 
     /**
-     * One mesh constructor.
-     * @param mo - mesh object.
+     * Destructor.
      */
-    explicit Object(Composite *parent, MeshObject mo) noexcept;
-
-    ~Object() noexcept;
+    ~Object() noexcept override;
 
     /**
      * Default move constructor.
@@ -41,7 +37,13 @@ class ENGINE_API Object : public Drawable {
     /**
      * Renders the mesh objects.
      */
-    void render() override;
+    void render(const core::ShaderProgram &shader) override;
+
+    /**
+     * renders the edges only of the inner geometry.
+     * @param shader - shader to render with.
+     */
+    void renderEdges(const core::ShaderProgram &shader) override;
 
     /**
      * Accepts a DrawableVisitor.
@@ -49,11 +51,46 @@ class ENGINE_API Object : public Drawable {
      */
     void accept(DrawableVisitor *visitor) override;
 
+    /**
+     * Resets the object.
+     */
     void reset() override;
 
-   private:
+    /**
+     * Updates the object.
+     * Resets all the meshes' VAO.
+     */
+    void update() override;
+
+    /**
+     * Subdivides triangles of each meshes in 4 new triangles.
+     */
+    void subdivide();
+
+    /**
+     * Tests if this is a Composite .
+     * @return false.
+     */
+    [[nodiscard]] bool isComposite() const override { return false; }
+
+    /**
+     * Tests if this is an Object .
+     * @return true.
+     */
+    [[nodiscard]] bool isObject() const override { return true; }
+
+    /**
+     * Tests if this is a Light .
+     * @return false.
+     */
+    [[nodiscard]] bool isLight() const override { return false; }
+
+   protected:
+    virtual void applyUpdate() {}
+
     std::vector<MeshObject> m_meshObjects;
 
+   private:
     static int m_nrObject;
 };
-}  // namespace daft::engine::objects
+}  // namespace daft::engine

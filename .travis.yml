@@ -29,7 +29,6 @@ addons:
       - libglm-dev
       - libassimp-dev
       - libeigen3-dev
-      - libspdlog-dev
       - libglew-dev
     sources:
       - ubuntu-toolchain-r-test
@@ -41,8 +40,7 @@ addons:
       - glm
       - eigen
       - assimp
-      - spdlog
-      - qt
+      - fmt
 
 before_install:
   - export CHECKOUT_PATH=`pwd`;
@@ -52,10 +50,6 @@ before_install:
   - cmake --version
   - |
     if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
-      git clone --recurse-submodules https://github.com/gabime/spdlog.git
-      cd spdlog && mkdir build && cd build
-      cmake .. && sudo make -j16 install
-
       sudo add-apt-repository --yes ppa:beineri/opt-qt-5.15.0-focal
       sudo apt --yes update
       sudo apt --yes install qt515base qt515svg qt515multimedia

@@ -23,6 +23,9 @@
 #if defined(daft_Release) || defined(daft_RELEASE) || defined(_RELEASE)
 #define RELEASE
 #endif
+#if defined(daft_Trace) || defined(daft_TRACE) || defined(_TRACE)
+#define TRACE
+#endif
 
 /// --------------------------------------------------
 /// Platform identification

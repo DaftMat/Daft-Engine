@@ -9,7 +9,7 @@
 namespace daft::testing {
 
 void run() {
-    using namespace core::utils;
+    using namespace core;
     /// toGlm
     /// Vector2
     UNIT_VERIFY(toGlm(Vector2f(1.f, 5.f)) == glm::vec2(1.f, 5.f), "toGlm fails with Vector2f");
@@ -45,7 +45,7 @@ void run() {
 
 int main(int argc, const char **argv) {
     using namespace daft;
-    if (!testing::init_testing(1, argv)) {
+    if (!testing::init_testing(argc, argv)) {
         return EXIT_FAILURE;
     }
 

@@ -7,10 +7,16 @@ environment:
 
 clone_folder: C:\projects\Engine
 
-before_build:
+install:
   - set Qt5_DIR=C:\Qt\5.15.0\msvc2019_64
-  - vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows spdlog:x64-windows
+  - cd C:\Tools\vcpkg\
+  - git pull
+  - .\bootstrap-vcpkg.bat
+  - vcpkg update
+  - vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows
   - vcpkg integrate install
+
+before_build:
   - cd %REPO_ROOT%
   - git submodule update --init --recursive
   - cmd: md build

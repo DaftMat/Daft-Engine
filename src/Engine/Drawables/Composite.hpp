@@ -7,11 +7,14 @@
 
 #include "Drawable.hpp"
 
-namespace daft::core::geometry {
+namespace daft::core {
 class ShaderProgram;
 }
 
-namespace daft::engine::objects {
+namespace daft::engine {
+/**
+ * A Drawable that represents a group of drawables.
+ */
 class ENGINE_API Composite : public Drawable {
    public:
     /**
@@ -21,7 +24,10 @@ class ENGINE_API Composite : public Drawable {
     explicit Composite(Composite *parent = nullptr,
                        std::string name = "Group" + std::to_string(m_nrComposite++)) noexcept;
 
-    ~Composite() noexcept = default;
+    /**
+     * Default destructor.
+     */
+    ~Composite() noexcept override = default;
 
     /**
      * Default move constructor.
@@ -38,7 +44,13 @@ class ENGINE_API Composite : public Drawable {
      * Does nothing. Have to pass through a RendererVisitor that will render all the objects within.
      * Because of the variation of shaders.
      */
-    void render() override{};
+    void render(const core::ShaderProgram &shader) override;
+
+    /**
+     * renders the edges only of the inner geometry.
+     * @param shader - shader to render with.
+     */
+    void renderEdges(const core::ShaderProgram &shader) override;
 
     /**
      * Accepts a drawable visitor.
@@ -47,10 +59,24 @@ class ENGINE_API Composite : public Drawable {
     void accept(DrawableVisitor *visitor) override;
 
     /**
+     * Object accessor.
+     * This version is recursive.
+     * @param name - name of the object we're looking for.
+     * @return the object if it's the right name. nullptr otherwise.
+     */
+    Drawable *find(const std::string &name) override;
+
+    /**
      * Adds a drawable to the composite.
      * @param drawable - drawable to add.
      */
-    void add(Drawable *drawable);
+    void add(std::shared_ptr<Drawable> drawable);
+
+    /**
+     * Removes a drawable from the composite and the engine.
+     * @param name - name of the drawable to be deleted.
+     */
+    bool remove(const std::string &name) override;
 
     /**
      * Drawables reference
@@ -64,7 +90,33 @@ class ENGINE_API Composite : public Drawable {
      */
     [[nodiscard]] const auto &drawables() const { return m_drawables; }
 
+    /**
+     * Resets all the drawables inside this.
+     */
     void reset() override;
+
+    /**
+     * updates all the drawables inside this.
+     */
+    void update() override;
+
+    /**
+     * Tests if this is a Composite .
+     * @return true.
+     */
+    [[nodiscard]] bool isComposite() const override { return true; }
+
+    /**
+     * Tests if this is an Object .
+     * @return false.
+     */
+    [[nodiscard]] bool isObject() const override { return false; }
+
+    /**
+     * Tests if this is a Light .
+     * @return false.
+     */
+    [[nodiscard]] bool isLight() const override { return false; }
 
    private:
     using DrawablePtr = std::shared_ptr<Drawable>;
@@ -73,4 +125,4 @@ class ENGINE_API Composite : public Drawable {
 
     static int m_nrComposite;
 };
-}  // namespace daft::engine::objects
+}  // namespace daft::engine
