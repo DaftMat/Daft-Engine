@@ -33,6 +33,12 @@ class SettingWidgetVisitor : public core::DrawableVisitor {
     void visit(engine::Torus *torus) override;
 
     /**
+     * Visits a Cube .
+     * @param cube - cube to visit.
+     */
+    void visit(engine::Cube *cube) override;
+
+    /**
      * Visits a PointLight .
      * @param pointLight - point light to visit.
      */

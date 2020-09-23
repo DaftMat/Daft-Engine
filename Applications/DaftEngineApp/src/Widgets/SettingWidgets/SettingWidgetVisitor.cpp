@@ -35,7 +35,7 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::Sphere *sphere) {
             ds->addIntSpinBox("Points", 8, 999999, 10);
             break;
     }
-    ds->addDoubleSpinBox("Radius", 0, 9999, 1);
+    ds->addDoubleSpinBox("Radius", 0, 9999, 0.1);
 
     m_widget = new SettingWidget(ds, createTransformWidget(sphere->getTransformations()), sphere->name());
 }
@@ -45,9 +45,17 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::Torus *torus) {
     auto ds = new DrawableSettings(sm);
     ds->addIntSpinBox("Meridians", 3, 9999, 1);
     ds->addIntSpinBox("Parallels", 3, 9999, 1);
-    ds->addDoubleSpinBox("Inner Radius", 0, 9999, 1);
-    ds->addDoubleSpinBox("Outer Radius", 0, 9999, 1);
+    ds->addDoubleSpinBox("Inner Radius", 0, 9999, 0.1);
+    ds->addDoubleSpinBox("Outer Radius", 0, 9999, 0.1);
     m_widget = new SettingWidget(ds, createTransformWidget(torus->getTransformations()), torus->name());
+}
+
+void daft::app::SettingWidgetVisitor::visit(daft::engine::Cube *cube) {
+    core::SettingManager sm = cube->getSettings();
+    auto ds = new DrawableSettings(sm);
+    ds->addIntSpinBox("Resolution", 2, 9999, 1);
+    ds->addDoubleSpinBox("Radius", 0, 9999, 0.1);
+    m_widget = new SettingWidget(ds, createTransformWidget(cube->getTransformations()), cube->name());
 }
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::PointLight *pointLight) {

@@ -173,6 +173,9 @@ void Renderer::_addDrawable() {
         case Drawable::Type::Torus:
             drawable = std::make_shared<Torus>();
             break;
+        case Drawable::Type::Cube:
+            drawable = std::make_shared<Cube>();
+            break;
         case Drawable::Type::PointLight: {
             auto toAdd = std::make_shared<PointLight>();
             drawable = toAdd;

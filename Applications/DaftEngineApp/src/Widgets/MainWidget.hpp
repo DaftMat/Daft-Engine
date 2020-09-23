@@ -112,7 +112,7 @@ class ENGINE_API MainWidget : public QWidget {
     }
 
     void on_addTorusButtonPressed() {
-        m_glWidget->addDrawable(engine::Drawable::Type::PointLight);
+        m_glWidget->addDrawable(engine::Drawable::Type::Cube);
         m_glWidget->update();
     }
 
