@@ -58,6 +58,12 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::Cube *cube) {
     m_widget = new SettingWidget(ds, createTransformWidget(cube->getTransformations()), cube->name());
 }
 
+void daft::app::SettingWidgetVisitor::visit(daft::engine::BSpline *bspline) {
+    core::SettingManager sm = bspline->getSettings();
+    auto ds = new DrawableSettings(sm);
+    m_widget = new SettingWidget(ds, createTransformWidget(bspline->getTransformations()), bspline->name());
+}
+
 void daft::app::SettingWidgetVisitor::visit(daft::engine::PointLight *pointLight) {
     core::SettingManager sm = pointLight->getSettings();
     auto ds = new DrawableSettings(sm);

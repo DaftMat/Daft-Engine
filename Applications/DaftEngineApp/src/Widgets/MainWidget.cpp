@@ -174,6 +174,7 @@ void MainWidget::createCreationComboBoxes() {
         "Sphere",
         "Torus",
         "Cube",
+        "B-Spline",
         "Group"
     };
     m_objectCreator = std::make_unique<QComboBox>();
@@ -203,6 +204,8 @@ void MainWidget::createCreationComboBoxes() {
             m_glWidget->addDrawable(engine::Drawable::Type::Torus);
         else if (m_objectCreator->currentText() == "Cube")
             m_glWidget->addDrawable(engine::Drawable::Type::Cube);
+        else if (m_objectCreator->currentText() == "B-Spline")
+            m_glWidget->addDrawable(engine::Drawable::Type::BSpline);
         else if (m_objectCreator->currentText() == "Group")
             m_glWidget->addDrawable(engine::Drawable::Type::Group);
         m_objectCreator->setCurrentIndex(0);

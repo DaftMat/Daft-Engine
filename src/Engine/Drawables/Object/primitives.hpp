@@ -7,3 +7,4 @@
 #include <Engine/Drawables/Object/Sphere.hpp>
 #include <Engine/Drawables/Object/Torus.hpp>
 #include <Engine/Drawables/Object/Cube.hpp>
+#include <Engine/Drawables/Object/BSpline.hpp>
