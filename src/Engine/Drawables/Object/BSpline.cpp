@@ -11,7 +11,6 @@ int BSpline::m_nrBSpline{0};
 
 BSpline::BSpline(std::vector<glm::vec3> controlPoints, int base, float steps, Composite *parent, std::string name)
     : Object(parent, std::move(name)), m_controlPoints{std::move(controlPoints)}, m_base{base}, m_steps{steps} {
-    for (int i = 0; i < m_base + int(m_controlPoints.size()) + 1; ++i) m_modalVector.push_back(float(i));
     createBSpline();
 }
 
@@ -30,6 +29,10 @@ void BSpline::renderEdges(const core::ShaderProgram &shader) {
 }
 
 void BSpline::createBSpline() {
+    /// create modal vector
+    m_modalVector.clear();
+    for (int i = 0; i < m_base + int(m_controlPoints.size()) + 1; ++i) m_modalVector.push_back(float(i));
+
     m_meshObjects.clear();
     /// from:   m_modalVector[m_base]
     /// to:     m_modalVector[m_modalVector.size()]
