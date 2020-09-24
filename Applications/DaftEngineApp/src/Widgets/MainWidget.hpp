@@ -116,7 +116,12 @@ class ENGINE_API MainWidget : public QWidget {
     void createShaderComboBox();
     void createRenderModeComboBox();
 
+    void createNorthComponents();
+    void createSouthComponents();
+    void createEastComponents();
+
     std::unique_ptr<OpenGLWidget> m_glWidget{nullptr};
+    std::unique_ptr<BorderWidget> m_northWidget{nullptr};
     std::unique_ptr<BorderWidget> m_southWidget{nullptr};
     std::unique_ptr<BorderWidget> m_eastWidget{nullptr};
     std::unique_ptr<SettingWidget> m_settingWidget{nullptr};

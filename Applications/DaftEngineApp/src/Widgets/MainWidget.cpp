@@ -22,55 +22,9 @@ MainWidget::MainWidget(QWidget *parent)
     m_layout->setMargin(0);
     m_layout->addWidget(m_glWidget.get(), BorderLayout::Position::Center);
 
-    /// NORTH
-    createCreationComboBoxes();
-    createShaderComboBox();
-    createRenderModeComboBox();
-
-    auto removeButton = new QPushButton();
-    removeButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    removeButton->setText("Remove");
-    connect(removeButton, &QPushButton::pressed, this, &MainWidget::on_removeButtonPressed);
-
-    auto northWidget = new BorderWidget(BorderWidget::Orientation::HORIZONTAL, 70, 70);
-    northWidget->addWidget(m_objectCreator.get());
-    northWidget->addWidget(m_lightCreator.get());
-    northWidget->addSeparator();
-    northWidget->addWidget(removeButton);
-
-    northWidget->addSpacer();
-
-    auto formLayout = new QFormLayout{};
-    formLayout->setMargin(1);
-    formLayout->addRow("Shader", m_shaderBox.get());
-    formLayout->addRow("Render Mode", m_renderMode.get());
-    auto formWidget = new QWidget{};
-    // formWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    // formWidget->setFixedWidth(10);
-    formWidget->setLayout(formLayout);
-    northWidget->addWidget(formWidget);
-
-    northWidget->setObjectName("northWidget");
-    m_layout->addWidget(northWidget, BorderLayout::Position::North);
-
-    /// SOUTH
-    auto screenHeight = float(QApplication::desktop()->screenGeometry().height());
-    m_southWidget = std::make_unique<BorderWidget>(BorderWidget::Orientation::HORIZONTAL, int(screenHeight / 4.5f),
-                                                   int(screenHeight / 4.5f));
-    m_southWidget->addSpacer();
-    m_southWidget->addSeparator();
-    m_southWidget->setObjectName("southWidget");
-    m_layout->addWidget(m_southWidget.get(), BorderLayout::Position::South);
-
-    /// EAST
-    m_eastWidget = std::make_unique<BorderWidget>(BorderWidget::Orientation::VERTICAL, 150, 350);
-    m_eastWidget->setObjectName("eastWidget");
-    m_layout->addWidget(m_eastWidget.get(), BorderLayout::Position::East);
-
-    /// WEST
-    /// auto westWidget = new BorderWidget(BorderWidget::Orientation::VERTICAL, 0, 150);
-    /// westWidget->setObjectName("westWidget");
-    /// m_layout->addWidget(westWidget, BorderLayout::Position::West);
+    createNorthComponents();
+    createSouthComponents();
+    createEastComponents();
 
     setLayout(m_layout.get());
 
@@ -259,6 +213,52 @@ void MainWidget::on_renderModeChanged() {
         m_glWidget->renderer().switchToRenderingMode();
     }
     m_glWidget->update();
+}
+
+void MainWidget::createNorthComponents() {
+    createCreationComboBoxes();
+    createShaderComboBox();
+    createRenderModeComboBox();
+
+    auto removeButton = new QPushButton();
+    removeButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    removeButton->setText("Remove");
+    connect(removeButton, &QPushButton::pressed, this, &MainWidget::on_removeButtonPressed);
+
+    m_northWidget = std::make_unique<BorderWidget>(BorderWidget::Orientation::HORIZONTAL, 70, 70);
+    m_northWidget->addWidget(m_objectCreator.get());
+    m_northWidget->addWidget(m_lightCreator.get());
+    m_northWidget->addSeparator();
+    m_northWidget->addWidget(removeButton);
+
+    m_northWidget->addSpacer();
+
+    auto formLayout = new QFormLayout{};
+    formLayout->setMargin(1);
+    formLayout->addRow("Shader", m_shaderBox.get());
+    formLayout->addRow("Render Mode", m_renderMode.get());
+    auto formWidget = new QWidget{};
+    formWidget->setLayout(formLayout);
+    m_northWidget->addWidget(formWidget);
+
+    m_northWidget->setObjectName("northWidget");
+    m_layout->addWidget(m_northWidget.get(), BorderLayout::Position::North);
+}
+
+void MainWidget::createSouthComponents() {
+    auto screenHeight = float(QApplication::desktop()->screenGeometry().height());
+    m_southWidget = std::make_unique<BorderWidget>(BorderWidget::Orientation::HORIZONTAL, int(screenHeight / 4.5f),
+                                                   int(screenHeight / 4.5f));
+    m_southWidget->addSpacer();
+    m_southWidget->addSeparator();
+    m_southWidget->setObjectName("southWidget");
+    m_layout->addWidget(m_southWidget.get(), BorderLayout::Position::South);
+}
+
+void MainWidget::createEastComponents() {
+    m_eastWidget = std::make_unique<BorderWidget>(BorderWidget::Orientation::VERTICAL, 150, 350);
+    m_eastWidget->setObjectName("eastWidget");
+    m_layout->addWidget(m_eastWidget.get(), BorderLayout::Position::East);
 }
 
 }  // namespace daft::app
