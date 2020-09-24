@@ -25,6 +25,7 @@ MainWidget::MainWidget(QWidget *parent)
     /// NORTH
     createCreationComboBoxes();
     createShaderComboBox();
+    createRenderModeComboBox();
 
     auto removeButton = new QPushButton();
     removeButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -36,9 +37,19 @@ MainWidget::MainWidget(QWidget *parent)
     northWidget->addWidget(m_lightCreator.get());
     northWidget->addSeparator();
     northWidget->addWidget(removeButton);
+
     northWidget->addSpacer();
-    northWidget->addWidget(new QLabel("Shader"));
-    northWidget->addWidget(m_shaderBox.get());
+
+    auto formLayout = new QFormLayout{};
+    formLayout->setMargin(1);
+    formLayout->addRow("Shader", m_shaderBox.get());
+    formLayout->addRow("Render Mode", m_renderMode.get());
+    auto formWidget = new QWidget{};
+    // formWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    // formWidget->setFixedWidth(10);
+    formWidget->setLayout(formLayout);
+    northWidget->addWidget(formWidget);
+
     northWidget->setObjectName("northWidget");
     m_layout->addWidget(northWidget, BorderLayout::Position::North);
 
@@ -218,7 +229,7 @@ void MainWidget::on_lightBoxChanged() {
 void MainWidget::createShaderComboBox() {
     std::vector<std::string> shaders{"Blinn Phong", "Phong"};
     m_shaderBox = std::make_unique<QComboBox>();
-    m_shaderBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_shaderBox->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     for (const auto &shader : shaders) {
         m_shaderBox->addItem(shader.c_str());
     }
@@ -230,6 +241,23 @@ void MainWidget::on_shaderBoxChanged() {
         m_glWidget->renderer().setShader(engine::Renderer::AvailableShaders::BlinnPhong);
     else if (m_shaderBox->currentText() == "Phong")
         m_glWidget->renderer().setShader(engine::Renderer::AvailableShaders::Phong);
+    m_glWidget->update();
+}
+
+void MainWidget::createRenderModeComboBox() {
+    m_renderMode = std::make_unique<QComboBox>();
+    m_renderMode->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    m_renderMode->addItem("Edition");
+    m_renderMode->addItem("Rendering");
+    connect(m_renderMode.get(), SIGNAL(currentIndexChanged(int)), this, SLOT(on_renderModeChanged()));
+}
+
+void MainWidget::on_renderModeChanged() {
+    if (m_renderMode->currentIndex() == 0) {
+        m_glWidget->renderer().switchToEditionMode();
+    } else {
+        m_glWidget->renderer().switchToRenderingMode();
+    }
     m_glWidget->update();
 }
 

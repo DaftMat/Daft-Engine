@@ -12,7 +12,7 @@ SettingWidget::SettingWidget(DrawableSettings *settings, TransformSettings *tran
                              QWidget *parent)
     : QScrollArea(parent), m_settings{settings}, m_transforms{transforms} {
     auto layout = new QVBoxLayout;
-    layout->setMargin(2);
+    layout->setMargin(1);
 
     std::string pname;
     if (m_settings == nullptr && m_transforms == nullptr)

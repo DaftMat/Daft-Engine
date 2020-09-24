@@ -103,6 +103,7 @@ class ENGINE_API MainWidget : public QWidget {
     void on_objectBoxChanged();
     void on_lightBoxChanged();
     void on_shaderBoxChanged();
+    void on_renderModeChanged();
 
     void on_removeButtonPressed() {
         m_glWidget->removeSelection();
@@ -113,6 +114,7 @@ class ENGINE_API MainWidget : public QWidget {
     void connectSceneTreeEvents();
     void createCreationComboBoxes();
     void createShaderComboBox();
+    void createRenderModeComboBox();
 
     std::unique_ptr<OpenGLWidget> m_glWidget{nullptr};
     std::unique_ptr<BorderWidget> m_southWidget{nullptr};
@@ -123,6 +125,7 @@ class ENGINE_API MainWidget : public QWidget {
     std::unique_ptr<QComboBox> m_objectCreator{nullptr};
     std::unique_ptr<QComboBox> m_lightCreator{nullptr};
     std::unique_ptr<QComboBox> m_shaderBox{nullptr};
+    std::unique_ptr<QComboBox> m_renderMode{nullptr};
 
     std::unique_ptr<BorderLayout> m_layout{nullptr};
 };
