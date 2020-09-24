@@ -10,7 +10,7 @@ namespace daft::engine {
 int BSpline::m_nrBSpline{0};
 
 BSpline::BSpline(std::vector<glm::vec3> controlPoints, int base, float steps, Composite *parent, std::string name)
-    : Object(parent, std::move(name)), m_controlPoints{std::move(controlPoints)}, m_base{base}, m_steps{steps} {
+    : Object(parent, std::move(name)), m_spline{std::move(controlPoints), base}, m_steps{steps} {
     createBSpline();
 }
 
@@ -30,8 +30,9 @@ void BSpline::renderEdges(const core::ShaderProgram &shader) {
 
 void BSpline::createBSpline() {
     /// create modal vector
-    m_modalVector.clear();
-    for (int i = 0; i < m_base + int(m_controlPoints.size()) + 1; ++i) m_modalVector.push_back(float(i));
+    m_spline.modalVector().clear();
+    for (int i = 0; i < m_spline.base() + int(m_spline.controlPoints().size()) + 1; ++i)
+        m_spline.modalVector().push_back(float(i));
 
     m_meshObjects.clear();
     /// from:   m_modalVector[m_base]
@@ -39,23 +40,23 @@ void BSpline::createBSpline() {
     core::AttribManager am{};
     std::vector<glm::vec3> positions;
     int index = 0;
-    float umin = m_modalVector[m_base];
-    float umax = m_modalVector[m_controlPoints.size()];
+    float umin = m_spline.modalVector()[m_spline.base()];
+    float umax = m_spline.modalVector()[m_spline.controlPoints().size()];
     for (float u = umin; u < umax; u += (umax - umin) / m_steps) {
         if (index > 0) {
             am.indices().push_back(index - 1);
             am.indices().push_back(index++);
         } else
             index++;
-        positions.push_back(eval(u));
+        positions.push_back(m_spline.eval(u));
     }
     am.addAttrib(positions);
     m_meshObjects.emplace_back(core::Mesh{am});
 
     /// control polygon to display
     am.clear();
-    am.addAttrib(m_controlPoints);
-    for (size_t i = 0; i < m_controlPoints.size() - 1; ++i) {
+    am.addAttrib(m_spline.controlPoints());
+    for (size_t i = 0; i < m_spline.controlPoints().size() - 1; ++i) {
         am.indices().push_back(i);
         am.indices().push_back(i + 1);
     }
@@ -64,7 +65,7 @@ void BSpline::createBSpline() {
 
 core::SettingManager BSpline::getSettings() const {
     core::SettingManager sm;
-    sm.add("Base", m_base);
+    sm.add("Base", m_spline.base());
     sm.add("Steps", m_steps);
     return sm;
 }
@@ -75,8 +76,8 @@ void BSpline::setSettings(const core::SettingManager &s) {
 }
 
 void BSpline::setBase(int b) {
-    if (m_base == b) return;
-    m_base = b;
+    if (m_spline.base() == b) return;
+    m_spline.base() = b;
     updateNextFrame();
 }
 
@@ -84,29 +85,6 @@ void BSpline::setSteps(float s) {
     if (m_steps == s) return;
     m_steps = s;
     updateNextFrame();
-}
-
-glm::vec3 BSpline::eval(float u) const {
-    /// find pTemp
-    int k = m_base + 1;
-    int dec = 0, i = k;
-    while (u > m_modalVector[i++]) dec++;
-
-    std::vector<glm::vec3> pTemp;
-    for (int j = dec; j < dec + k; ++j) pTemp.push_back(m_controlPoints[j]);
-
-    /// calculate B-Spline point at u
-    for (int h = 0; h < m_base; ++h) {
-        for (int j = 0; j < k - 1; ++j) {
-            float u1 = m_modalVector[dec + k + j];
-            float u2 = m_modalVector[dec + 1 + j];
-            float div = u1 - u2;
-            pTemp[j] = (u1 - u) / div * pTemp[j] + (u - u2) / div * pTemp[j + 1];
-        }
-        ++dec;
-        --k;
-    }
-    return pTemp[0];
 }
 
 void BSpline::accept(core::DrawableVisitor *visitor) { visitor->visit(this); }

@@ -56,14 +56,8 @@ void DrawableSettings::addIntSpinBoxVector(std::string label, int min, int max, 
         spinBoxVector[i]->setMaximum(max);
         spinBoxVector[i]->setValue(int(m_settings.get<glm::vec3>(label)[i] * multiplier));
         spinBoxVector[i]->setSingleStep(step);
+        connect(spinBoxVector[i], SIGNAL(valueChanged(int)), this, SLOT(on_drawableChanged()));
     }
-
-    std::for_each(spinBoxVector.begin(), spinBoxVector.end(), [min, max, step, this](QSpinBox* e) {
-        e->setMinimum(min);
-        e->setMaximum(max);
-        e->setSingleStep(step);
-        connect(e, SIGNAL(valueChanged(int)), this, SLOT(on_drawableChanged()));
-    });
 
     m_intSpinBoxVectors.insert(std::make_pair(label, spinBoxVector));
     addField(std::move(label), {spinBoxVector[0], spinBoxVector[1], spinBoxVector[2]});
@@ -77,14 +71,8 @@ void DrawableSettings::addDoubleSpinBoxVector(std::string label, double min, dou
         doubleSpinBoxVector[i]->setMaximum(max);
         doubleSpinBoxVector[i]->setValue(m_settings.get<glm::vec3>(label)[i]);
         doubleSpinBoxVector[i]->setSingleStep(step);
+        connect(doubleSpinBoxVector[i], SIGNAL(valueChanged(double)), this, SLOT(on_drawableChanged()));
     }
-
-    std::for_each(doubleSpinBoxVector.begin(), doubleSpinBoxVector.end(), [min, max, step, this](QDoubleSpinBox* e) {
-        e->setMinimum(min);
-        e->setMaximum(max);
-        e->setSingleStep(step);
-        connect(e, SIGNAL(valueChanged(double)), this, SLOT(on_drawableChanged()));
-    });
 
     m_doubleSpinBoxVectors.insert(std::make_pair(label, doubleSpinBoxVector));
     addField(std::move(label), {doubleSpinBoxVector[0], doubleSpinBoxVector[1], doubleSpinBoxVector[2]});

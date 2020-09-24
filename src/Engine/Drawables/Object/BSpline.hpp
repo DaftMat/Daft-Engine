@@ -4,13 +4,14 @@
 
 #pragma once
 #include <API.hpp>
+#include <Core/Geometry/BSplineBase.hpp>
 
 #include "Object.hpp"
 
 namespace daft::engine {
 class ENGINE_API BSpline : public Object {
    public:
-    explicit BSpline(std::vector<glm::vec3> controlPoints, int base = 2, float steps = 1000.f,
+    explicit BSpline(std::vector<glm::vec3> controlPoints = {}, int base = 2, float steps = 100.f,
                      Composite *parent = nullptr, std::string name = "BSpline" + std::to_string(m_nrBSpline));
 
     ~BSpline() override = default;
@@ -27,15 +28,13 @@ class ENGINE_API BSpline : public Object {
 
     void setSettings(const core::SettingManager &s) override;
 
-    [[nodiscard]] int base() const { return m_base; }
+    [[nodiscard]] int base() const { return m_spline.base(); }
 
     void setBase(int b);
 
     [[nodiscard]] float steps() const { return m_steps; }
 
     void setSteps(float s);
-
-    [[nodiscard]] glm::vec3 eval(float u) const;
 
     void accept(core::DrawableVisitor *visitor) override;
 
@@ -45,9 +44,7 @@ class ENGINE_API BSpline : public Object {
    private:
     void createBSpline();
 
-    std::vector<glm::vec3> m_controlPoints;
-    std::vector<float> m_modalVector;
-    int m_base{2};
+    core::BSplineBase m_spline;
     float m_steps{100.f};
 
     static int m_nrBSpline;
