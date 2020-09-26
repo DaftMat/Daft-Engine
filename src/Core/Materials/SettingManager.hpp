@@ -125,7 +125,10 @@ class SettingManager {
      * Checks if the manager is empty.
      * @return true if the manager is empty.
      */
-    inline bool empty() noexcept;
+    [[nodiscard]] bool empty() const {
+        return m_bools.empty() && m_ints.empty() && m_floats.empty() && m_doubles.empty() && m_vec2s.empty() &&
+               m_vec3s.empty() && m_vec4s.empty() && m_mat2s.empty() && m_mat3s.empty() && m_mat4s.empty();
+    }
 
     template <typename T>
     inline const T &get(std::string name) const {

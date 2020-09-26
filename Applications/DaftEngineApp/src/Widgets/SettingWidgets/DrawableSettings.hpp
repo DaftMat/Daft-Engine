@@ -7,6 +7,7 @@
 #include <Core/Materials/SettingManager.hpp>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QFormLayout>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QWidget>
 #include <memory>
@@ -84,13 +85,18 @@ class ENGINE_API DrawableSettings : public QWidget {
      */
     [[nodiscard]] const core::SettingManager& settings() { return m_settings; }
 
+    void mousePressEvent(QMouseEvent* event) override;
+
    public slots:
     void on_drawableChanged();
     void on_comboBoxChanged();
+    void on_titleClicked();
 
    signals:
     void settingChanged();
     void comboBoxChanged();
+    void titleClicked();
+    void updateEvent();
 
    private:
     void addField(std::string label, const std::vector<QWidget*>& widgets);
@@ -108,6 +114,8 @@ class ENGINE_API DrawableSettings : public QWidget {
 
     daft::core::SettingManager m_settings;
 
-    std::unique_ptr<QFormLayout> m_layout;
+    std::unique_ptr<QLabel> m_title{nullptr};
+    std::unique_ptr<QFormLayout> m_layout{nullptr};
+    std::unique_ptr<QWidget> m_widget{nullptr};
 };
 }  // namespace daft::app

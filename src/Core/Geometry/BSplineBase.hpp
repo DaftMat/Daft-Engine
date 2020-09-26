@@ -62,6 +62,12 @@ class ENGINE_API BSplineBase {
      */
     int &base() { return m_base; }
 
+    /**
+     * Adds a point to the control points list.
+     * @param p - point to add.
+     */
+    void addPoint(glm::vec3 p = glm::vec3{0.f}) { m_controlPoints.push_back(p); }
+
    private:
     std::vector<glm::vec3> m_controlPoints;
     std::vector<float> m_modalVector;

@@ -36,6 +36,8 @@ class ENGINE_API BSpline : public Object {
 
     void setSteps(float s);
 
+    void addPoint(glm::vec3 p = glm::vec3{0.f});
+
     void accept(core::DrawableVisitor *visitor) override;
 
    protected:

@@ -6,8 +6,10 @@
 #include <Core/Materials/SettingManager.hpp>
 #include <Core/OpenGL.hpp>
 #include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QWidget>
 #include <array>
+#include <memory>
 
 namespace daft::app {
 /**
@@ -34,11 +36,16 @@ class ENGINE_API TransformSettings : public QWidget {
      */
     [[nodiscard]] const core::SettingManager &transforms() const { return m_settings; }
 
+    void mousePressEvent(QMouseEvent *event) override;
+
    public slots:
     void onTransformChanged();
+    void on_titleClicked();
 
    signals:
     void settingChanged();
+    void titleClicked();
+    void updateEvent();
 
    private:
     enum class Type { POSITION, ROTATION, SCALE };
@@ -52,5 +59,8 @@ class ENGINE_API TransformSettings : public QWidget {
     std::array<QDoubleSpinBoxPtr, 3> m_scale{nullptr, nullptr, nullptr};
 
     daft::core::SettingManager m_settings;
+
+    std::unique_ptr<QLabel> m_title;
+    std::unique_ptr<QWidget> m_widget;
 };
 }  // namespace daft::app
