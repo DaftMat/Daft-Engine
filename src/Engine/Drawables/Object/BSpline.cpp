@@ -70,23 +70,23 @@ void BSpline::addPoint(glm::vec3 p) {
 
 core::SettingManager BSpline::getSettings() const {
     core::SettingManager sm;
-    sm.add("Base", m_spline.base());
-    sm.add("Steps", m_steps);
-    // sm.add("nrPoints", int(m_spline.controlPoints().size()));
-    // for (size_t i = 0; i < m_spline.controlPoints().size(); ++i) {
-    //    sm.add("Point" + std::to_string(i), m_spline.controlPoints()[i]);
-    //}
+    if (m_selectedPoint == -1) {
+        sm.add("Base", m_spline.base());
+        sm.add("Steps", m_steps);
+    } else {
+        sm.add("Position", getSelectedPoint());
+    }
     return sm;
 }
 
 void BSpline::setSettings(const core::SettingManager &s) {
-    setBase(s.get<int>("Base"));
-    setSteps(s.get<float>("Steps"));
-    // m_spline.controlPoints().clear();
-    // int nrPoints = s.get<int>("nrPoints");
-    // for (int i = 0; i < nrPoints; ++i) {
-    //    addPoint(s.get<glm::vec3>("Point" + std::to_string(i)));
-    //}
+    if (m_selectedPoint == -1) {
+        setBase(s.get<int>("Base"));
+        setSteps(s.get<float>("Steps"));
+    } else {
+        m_spline.controlPoints()[m_selectedPoint] = s.get<glm::vec3>("Position");
+        updateNextFrame();
+    }
 }
 
 void BSpline::setBase(int b) {
@@ -102,4 +102,11 @@ void BSpline::setSteps(float s) {
 }
 
 void BSpline::accept(core::DrawableVisitor *visitor) { visitor->visit(this); }
+
+glm::vec3 BSpline::getSelectedPoint() const {
+    if (m_selectedPoint >= 0) {
+        return points()[m_selectedPoint];
+    }
+    return glm::vec3{glm::epsilon<float>()};
+}
 }  // namespace daft::engine

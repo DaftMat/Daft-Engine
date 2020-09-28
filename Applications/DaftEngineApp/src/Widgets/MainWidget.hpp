@@ -134,5 +134,7 @@ class ENGINE_API MainWidget : public QWidget {
     std::unique_ptr<QComboBox> m_renderMode{nullptr};
 
     std::unique_ptr<BorderLayout> m_layout{nullptr};
+
+    bool m_selectionIsDrawable{true};
 };
 }  // namespace daft::app

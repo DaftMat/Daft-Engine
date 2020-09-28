@@ -98,7 +98,7 @@ void OpenGLWidget::wheelEvent(QWheelEvent *e) {
 
 void OpenGLWidget::setSelection(std::string s) {
     m_renderer->setSelection(std::move(s));
-    emit selectionChanged();
+    m_emitSelectionChanged = true;
 }
 
 void OpenGLWidget::addDrawable(engine::Drawable::Type type) {

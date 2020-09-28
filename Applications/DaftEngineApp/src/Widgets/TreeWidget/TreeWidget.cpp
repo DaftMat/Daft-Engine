@@ -30,7 +30,19 @@ void TreeWidget::addNode(QStandardItem *parent, engine::Composite *node) {
         item->setData(QColor(0xf2f2f2), Qt::TextColorRole);
         parent->appendRow(item);
         /// add elements if the current drawable is a node
-        if (drawable->isComposite()) addNode(item, (engine::Composite *)drawable.get());
+        if (drawable->isComposite())
+            addNode(item, (engine::Composite *)drawable.get());
+        else if (drawable->getType() == engine::Drawable::Type::BSpline)
+            addNode(item, (engine::BSpline *)drawable.get());
+    }
+}
+
+void TreeWidget::addNode(QStandardItem *parent, engine::BSpline *spline) {
+    for (size_t i = 0; i < spline->points().size(); ++i) {
+        auto *item = new QStandardItem(("Point" + std::to_string(i)).c_str());
+        item->setData(QColor(0xf2f2f2), Qt::TextColorRole);
+        item->setEditable(false);
+        parent->appendRow(item);
     }
 }
 }  // namespace daft::app

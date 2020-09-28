@@ -14,6 +14,7 @@
 #include <Widgets/SettingWidgets/SettingWidget.hpp>
 #include <Widgets/SettingWidgets/SettingWidgetVisitor.hpp>
 #include <Widgets/TreeWidget/TreeWidget.hpp>
+#include <src/Widgets/SettingWidgets/DrawableSettings/PointSettings.hpp>
 
 #include "BorderWidget.hpp"
 
@@ -70,6 +71,12 @@ void MainWidget::on_selectionChanged() {
     SettingWidget *widget;
     if (selection == nullptr) {
         widget = new SettingWidget(nullptr, nullptr);
+    } else if (!m_selectionIsDrawable) {
+        core::SettingManager sm;
+        auto spline = (engine::BSpline *)selection;
+        sm.add("Position", (spline->getSelectedPoint()));
+        widget =
+            new SettingWidget(new PointSettings{sm}, nullptr, ("Point" + std::to_string(spline->getSelectedIndex())));
     } else {
         auto visitor = std::make_unique<SettingWidgetVisitor>();
         selection->accept(visitor.get());
@@ -80,13 +87,14 @@ void MainWidget::on_selectionChanged() {
         connect(m_settingWidget->settingsWidget(), SIGNAL(settingChanged()), this, SLOT(on_settingChanged()));
         connect(m_settingWidget->settingsWidget(), SIGNAL(comboBoxChanged()), this,
                 SLOT(on_selectionSettingsChanged()));
-        if (selection && selection->getType() == engine::Drawable::Type::BSpline)
+        if (m_selectionIsDrawable && selection && selection->getType() == engine::Drawable::Type::BSpline)
             connect(m_settingWidget->settingsWidget(), SIGNAL(bSplineAddPointButtonPressed()), this,
                     SLOT(on_bSplineAddButtonPressed()));
     }
     if (m_settingWidget->transformsWidget()) {
         connect(m_settingWidget->transformsWidget(), SIGNAL(settingChanged()), this, SLOT(on_settingChanged()));
     }
+    m_selectionIsDrawable = true;
     m_southWidget->addWidget(m_settingWidget.get());
 }
 
@@ -98,8 +106,8 @@ void MainWidget::on_settingChanged() {
     ss << "Setting of drawable changed. Drawable name : " << selection->name();
     core::Logger::info(std::move(ss));
 
-    selection->setTransformations(m_settingWidget->transforms());
-    selection->setSettings(m_settingWidget->settings());
+    if (m_settingWidget->transformsWidget()) selection->setTransformations(m_settingWidget->transforms());
+    if (m_settingWidget->settingsWidget()) selection->setSettings(m_settingWidget->settings());
     m_glWidget->update();
 }
 
@@ -111,7 +119,20 @@ void MainWidget::on_sceneTreeChanged() {
 void MainWidget::on_treeSelectionChanged() {
     const auto index = m_treeWidget->selectionModel()->currentIndex();
     auto selectedText = index.data(Qt::DisplayRole).toString();
-    m_glWidget->setSelection(selectedText.toStdString());
+
+    const auto parent = index.parent();
+    m_glWidget->setSelection(parent.data(Qt::DisplayRole).toString().toStdString());
+    auto parentDrawable = m_glWidget->renderer().getSelection();
+
+    if (parentDrawable && parentDrawable->getType() == engine::Drawable::Type::BSpline) {
+        ((engine::BSpline *)parentDrawable)->setSelectedPoint(index.row());
+        m_selectionIsDrawable = false;
+    } else {
+        m_glWidget->setSelection(selectedText.toStdString());
+        auto selection = m_glWidget->renderer().getSelection();
+        if (selection->getType() == engine::Drawable::Type::BSpline)
+            ((engine::BSpline *)selection)->setSelectedPoint(-1);
+    }
     m_glWidget->update();
 }
 
@@ -268,6 +289,7 @@ void MainWidget::createEastComponents() {
 void MainWidget::on_bSplineAddButtonPressed() {
     auto spline = m_glWidget->renderer().getSelection();
     ((engine::BSpline *)spline)->addPoint();
+    on_sceneTreeChanged();
     m_glWidget->update();
 }
 

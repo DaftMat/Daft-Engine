@@ -36,7 +36,15 @@ class ENGINE_API BSpline : public Object {
 
     void setSteps(float s);
 
+    [[nodiscard]] const auto &points() const { return m_spline.controlPoints(); }
+
     void addPoint(glm::vec3 p = glm::vec3{0.f});
+
+    [[nodiscard]] glm::vec3 getSelectedPoint() const;
+
+    [[nodiscard]] int getSelectedIndex() const { return m_selectedPoint; }
+
+    void setSelectedPoint(int p) { m_selectedPoint = p < int(points().size()) ? p : -1; }
 
     void accept(core::DrawableVisitor *visitor) override;
 
@@ -54,6 +62,7 @@ class ENGINE_API BSpline : public Object {
 
     core::BSplineBase m_spline;
     float m_steps{100.f};
+    int m_selectedPoint{-1};
 
     static int m_nrBSpline;
 };
