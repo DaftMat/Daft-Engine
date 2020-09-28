@@ -178,13 +178,8 @@ void Renderer::_addDrawable() {
             break;
         case Drawable::Type::BSpline: {
             std::vector<glm::vec3> controlPoints;
-            int size = 6;
-            float step = 2.f * glm::pi<float>() / float(size);
-            for (int i = 0; i <= size; ++i) {
-                float angle = float(i) * step;
-                controlPoints.emplace_back(glm::cos(angle), glm::sin(angle), 0);
-            }
-            drawable = std::make_shared<BSpline>(controlPoints);
+            controlPoints.emplace_back(glm::vec3{0.f});
+            drawable = std::make_shared<BSpline>(controlPoints, 1);
             break;
         }
         case Drawable::Type::PointLight: {
