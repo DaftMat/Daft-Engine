@@ -6,7 +6,6 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
 #include <Widgets/MainWidget.hpp>
 
 namespace daft::app {

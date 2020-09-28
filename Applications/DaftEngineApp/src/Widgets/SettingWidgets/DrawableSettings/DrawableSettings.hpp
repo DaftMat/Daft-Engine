@@ -10,6 +10,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QWidget>
+#include <array>
 #include <memory>
 #include <unordered_map>
 #include <utility>
