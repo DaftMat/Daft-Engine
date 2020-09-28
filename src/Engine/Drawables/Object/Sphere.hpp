@@ -155,6 +155,12 @@ class ENGINE_API Sphere : public Object {
      */
     void accept(DrawableVisitor *visitor) override;
 
+    /**
+     * Gets the type of drawable.
+     * @return Drawable::Type::Sphere .
+     */
+    Drawable::Type getType() override { return Drawable::Type::Sphere; }
+
    protected:
     void applyUpdate() override;
 

@@ -104,6 +104,7 @@ class ENGINE_API MainWidget : public QWidget {
     void on_lightBoxChanged();
     void on_shaderBoxChanged();
     void on_renderModeChanged();
+    void on_bSplineAddButtonPressed();
 
     void on_removeButtonPressed() {
         m_glWidget->removeSelection();

@@ -84,6 +84,12 @@ class ENGINE_API Torus : public Object {
      */
     void accept(core::DrawableVisitor *visitor) override;
 
+    /**
+     * Gets the type of drawable.
+     * @return Type::Torus .
+     */
+    Type getType() override { return Type::Torus; }
+
    protected:
     void applyUpdate() override { createTorus(); }
 

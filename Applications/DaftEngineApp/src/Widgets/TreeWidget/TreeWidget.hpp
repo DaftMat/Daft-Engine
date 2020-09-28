@@ -4,6 +4,7 @@
 #pragma once
 #include <API.hpp>
 #include <Engine/Drawables/Composite.hpp>
+#include <Engine/Drawables/Object/BSpline.hpp>
 #include <QStandardItem>
 #include <QTreeView>
 

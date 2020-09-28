@@ -105,6 +105,12 @@ class Light : public Drawable {
     void reset() override;
 
     /**
+     * Gets the type of drawable.
+     * @return nothing.
+     */
+    Type getType() override = 0;
+
+    /**
      * Texts if this is a Composite .
      * @return false
      */

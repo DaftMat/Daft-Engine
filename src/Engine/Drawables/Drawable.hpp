@@ -82,6 +82,8 @@ class Drawable : public core::NonCopyable {
      */
     virtual void accept(DrawableVisitor *) = 0;
 
+    virtual Type getType() = 0;
+
     /**
      * Object accessor.
      * @param name - name of the object we're looking for.
@@ -264,7 +266,7 @@ class Drawable : public core::NonCopyable {
     void updateNextFrame() { m_update = true; }
 
    protected:
-    bool m_update;
+    bool m_update{false};
 
    private:
     [[nodiscard]] glm::mat4 calculateModel() const;

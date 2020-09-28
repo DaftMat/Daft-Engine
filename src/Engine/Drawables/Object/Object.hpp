@@ -85,6 +85,12 @@ class ENGINE_API Object : public Drawable {
      */
     [[nodiscard]] bool isLight() const override { return false; }
 
+    /**
+     * Gets the type of drawable.
+     * @return Type::None .
+     */
+    Type getType() override { return Type::None; }
+
    protected:
     virtual void applyUpdate() {}
 

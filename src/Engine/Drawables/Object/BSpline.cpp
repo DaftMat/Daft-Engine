@@ -72,21 +72,21 @@ core::SettingManager BSpline::getSettings() const {
     core::SettingManager sm;
     sm.add("Base", m_spline.base());
     sm.add("Steps", m_steps);
-    sm.add("nrPoints", int(m_spline.controlPoints().size()));
-    for (size_t i = 0; i < m_spline.controlPoints().size(); ++i) {
-        sm.add("Point" + std::to_string(i), m_spline.controlPoints()[i]);
-    }
+    // sm.add("nrPoints", int(m_spline.controlPoints().size()));
+    // for (size_t i = 0; i < m_spline.controlPoints().size(); ++i) {
+    //    sm.add("Point" + std::to_string(i), m_spline.controlPoints()[i]);
+    //}
     return sm;
 }
 
 void BSpline::setSettings(const core::SettingManager &s) {
     setBase(s.get<int>("Base"));
     setSteps(s.get<float>("Steps"));
-    m_spline.controlPoints().clear();
-    int nrPoints = s.get<int>("nrPoints");
-    for (int i = 0; i < nrPoints; ++i) {
-        addPoint(s.get<glm::vec3>("Point" + std::to_string(i)));
-    }
+    // m_spline.controlPoints().clear();
+    // int nrPoints = s.get<int>("nrPoints");
+    // for (int i = 0; i < nrPoints; ++i) {
+    //    addPoint(s.get<glm::vec3>("Point" + std::to_string(i)));
+    //}
 }
 
 void BSpline::setBase(int b) {

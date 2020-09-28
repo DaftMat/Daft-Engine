@@ -40,6 +40,12 @@ class ENGINE_API BSpline : public Object {
 
     void accept(core::DrawableVisitor *visitor) override;
 
+    /**
+     * Gets the type of drawable.
+     * @return nothing.
+     */
+    Type getType() override { return Type::BSpline; }
+
    protected:
     void applyUpdate() override { createBSpline(); }
 

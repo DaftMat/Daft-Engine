@@ -9,8 +9,8 @@
 #include <QtWidgets/QScrollArea>
 #include <memory>
 
-#include "DrawableSettings.hpp"
 #include "TransformSettings.hpp"
+#include "src/Widgets/SettingWidgets/DrawableSettings/DrawableSettings.hpp"
 
 namespace daft::app {
 /**

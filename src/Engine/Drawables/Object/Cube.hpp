@@ -37,6 +37,12 @@ class ENGINE_API Cube : public Object {
 
     void accept(core::DrawableVisitor *visitor) override { visitor->visit(this); }
 
+    /**
+     * Gets the type of drawable.
+     * @return Type::Cube .
+     */
+    Type getType() override { return Type::Cube; }
+
    protected:
     void applyUpdate() override;
 

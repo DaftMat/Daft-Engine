@@ -98,9 +98,12 @@ class ENGINE_API DrawableSettings : public QWidget {
     void titleClicked();
     void updateEvent();
 
-   private:
+   protected:
     void addField(std::string label, const std::vector<QWidget*>& widgets);
 
+    daft::core::SettingManager m_settings;
+
+   private:
     template <typename T>
     inline void setVector(const T& elem) {
         for (int i = 0; i < 3; ++i) m_settings.get<glm::vec3>(elem.first)[i] = elem.second[i]->value();
@@ -111,8 +114,6 @@ class ENGINE_API DrawableSettings : public QWidget {
     std::unordered_map<std::string, std::array<QSpinBox*, 3>> m_intSpinBoxVectors;
     std::unordered_map<std::string, std::array<QDoubleSpinBox*, 3>> m_doubleSpinBoxVectors;
     std::unordered_map<std::string, QComboBox*> m_comboBoxes;
-
-    daft::core::SettingManager m_settings;
 
     std::unique_ptr<QLabel> m_title{nullptr};
     std::unique_ptr<QFormLayout> m_layout{nullptr};

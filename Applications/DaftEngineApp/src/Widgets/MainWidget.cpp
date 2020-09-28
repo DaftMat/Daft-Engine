@@ -9,6 +9,7 @@
 #include <QDoubleSpinBox>
 #include <QPushButton>
 #include <QSpacerItem>
+#include <QWindow>
 #include <QtWidgets/QLabel>
 #include <Widgets/SettingWidgets/SettingWidget.hpp>
 #include <Widgets/SettingWidgets/SettingWidgetVisitor.hpp>
@@ -79,6 +80,9 @@ void MainWidget::on_selectionChanged() {
         connect(m_settingWidget->settingsWidget(), SIGNAL(settingChanged()), this, SLOT(on_settingChanged()));
         connect(m_settingWidget->settingsWidget(), SIGNAL(comboBoxChanged()), this,
                 SLOT(on_selectionSettingsChanged()));
+        if (selection && selection->getType() == engine::Drawable::Type::BSpline)
+            connect(m_settingWidget->settingsWidget(), SIGNAL(bSplineAddPointButtonPressed()), this,
+                    SLOT(on_bSplineAddButtonPressed()));
     }
     if (m_settingWidget->transformsWidget()) {
         connect(m_settingWidget->transformsWidget(), SIGNAL(settingChanged()), this, SLOT(on_settingChanged()));
@@ -259,6 +263,12 @@ void MainWidget::createEastComponents() {
     m_eastWidget = std::make_unique<BorderWidget>(BorderWidget::Orientation::VERTICAL, 150, 350);
     m_eastWidget->setObjectName("eastWidget");
     m_layout->addWidget(m_eastWidget.get(), BorderLayout::Position::East);
+}
+
+void MainWidget::on_bSplineAddButtonPressed() {
+    auto spline = m_glWidget->renderer().getSelection();
+    ((engine::BSpline *)spline)->addPoint();
+    m_glWidget->update();
 }
 
 }  // namespace daft::app
