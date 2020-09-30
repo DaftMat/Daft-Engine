@@ -70,6 +70,14 @@ constexpr auto toUType(T e) noexcept;
  */
 constexpr int mod1(int x, int m) noexcept;
 
+/**
+ * Calculates the tangent and bi-tangent using the normal
+ * @param n - normal
+ * @param u - tangent
+ * @param v - bi-tangent
+ */
+void orthoVectors(glm::vec3 n, glm::vec3 &u, glm::vec3 &v);
+
 }  // namespace daft::core
 
 #include "Adapters.inl"

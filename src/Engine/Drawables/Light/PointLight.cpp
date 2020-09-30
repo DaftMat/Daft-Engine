@@ -3,7 +3,7 @@
 //
 #include "PointLight.hpp"
 
-#include <Core/Utils/DrawableVisitor.hpp>
+#include <Engine/Drawables/Object/primitives.hpp>
 
 namespace daft::engine {
 int PointLight::m_nrPointLights{0};
@@ -56,7 +56,7 @@ void PointLight::createPointLight() {
 
     am.addAttrib(positions);
 
-    m_mesh = Mesh{am};
+    m_mesh = Mesh{createCircle(position(), glm::vec3{0.f, 1.f, 0.f}, m_intensity)};
 }
 
 void PointLight::setTransformations(const core::SettingManager &t) { position() = t.get<glm::vec3>("Position"); }
