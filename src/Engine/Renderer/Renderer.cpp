@@ -27,7 +27,7 @@ Renderer::Renderer(int width, int height) {
     glViewport(0, 0, m_width, m_height);
     glEnable(GL_MULTISAMPLE);
     glDepthFunc(GL_LESS);
-    glPointSize(16);
+    glPointSize(8);
 
     m_root = std::make_shared<Composite>();
     m_lightPool = std::make_unique<LightPool>();
