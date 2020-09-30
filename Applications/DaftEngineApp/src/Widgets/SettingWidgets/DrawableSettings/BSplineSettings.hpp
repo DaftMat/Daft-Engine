@@ -6,10 +6,18 @@
 #include "DrawableSettings.hpp"
 
 namespace daft::app {
+/**
+ * DrawableSettings implementation for BSpline objects.
+ */
 class ENGINE_API BSplineSettings : public DrawableSettings {
     Q_OBJECT
 
    public:
+    /**
+     * Constructor.
+     * @param settings - settings of the B-Spline.
+     * @param parent - parent widget.
+     */
     explicit BSplineSettings(core::SettingManager settings, QWidget *parent = nullptr);
 
    public slots:

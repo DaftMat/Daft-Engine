@@ -16,10 +16,23 @@ BSpline::BSpline(std::vector<glm::vec3> controlPoints, int base, float steps, Co
 
 void BSpline::renderEdges(const core::ShaderProgram &shader) {
     shader.setMat4("model", model());
+    /// draw control polygon
     shader.setVec3("color", {0.f, 0.f, 1.f});
     m_meshObjects[1].prepare();
     m_meshObjects[1].render(GL_LINES);
     m_meshObjects[1].unbind();
+
+    /// draw points
+    if (selected()) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+        shader.setVec3("color", glm::vec3{0.8f});
+        m_meshObjects[1].prepare();
+        m_meshObjects[1].render(GL_POINTS);
+        m_meshObjects[1].unbind();
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+
+    /// draw resulting spline
     shader.setVec3("color", glm::vec3{1.f});
     if (selected()) shader.setVec3("color", {1.f, 1.f, 0.f});
     m_meshObjects[0].prepare();

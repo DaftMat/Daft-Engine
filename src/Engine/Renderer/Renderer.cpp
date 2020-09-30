@@ -27,6 +27,7 @@ Renderer::Renderer(int width, int height) {
     glViewport(0, 0, m_width, m_height);
     glEnable(GL_MULTISAMPLE);
     glDepthFunc(GL_LESS);
+    glPointSize(16);
 
     m_root = std::make_shared<Composite>();
     m_lightPool = std::make_unique<LightPool>();
@@ -34,7 +35,7 @@ Renderer::Renderer(int width, int height) {
     m_shaders.push_back(
         std::make_shared<core::ShaderProgram>("shaders/blinnphong.vert.glsl", "shaders/blinnphong.frag.glsl"));
     m_shaders.push_back(std::make_shared<core::ShaderProgram>("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
-    m_multisamplePass = std::make_shared<daft::engine::MultiSamplingPass>(2048, 2048, 32);
+    m_multisamplePass = std::make_shared<daft::engine::MultiSamplingPass>(m_width, m_height, 32);
     m_screenQuad = std::make_shared<daft::engine::QuadRenderer>();
     m_screenQuad->addQuad(-1.f, 1.f, 2.f, 2.f);
     m_screenQuad->quad(0).setTexture(m_multisamplePass->outTexture());
