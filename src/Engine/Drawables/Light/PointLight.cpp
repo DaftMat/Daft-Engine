@@ -34,30 +34,7 @@ void PointLight::loadToShader(const core::ShaderProgram &shader, int index) cons
 
 void PointLight::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
 
-void PointLight::createPointLight() {
-    std::vector<glm::vec3> dir{
-        {0.f, 0.f, 1.f},   // front
-        {0.f, 0.f, -1.f},  // back
-        {0.f, 1.f, 0.f},   // top
-        {0.f, -1.f, 0.f},  // bottom
-        {1.f, 0.f, 0.f},   // right
-        {-1.f, 0.f, 0.f}   // left
-    };
-
-    core::AttribManager am;
-    std::vector<glm::vec3> positions;
-    positions.emplace_back(0.f);
-
-    for (size_t i = 0; i < dir.size(); ++i) {
-        positions.push_back(dir[i] * 0.5f);
-        am.indices().push_back(0);
-        am.indices().push_back(i + 1);
-    }
-
-    am.addAttrib(positions);
-
-    m_mesh = Mesh{createCircle(position(), glm::vec3{0.f, 1.f, 0.f}, m_intensity)};
-}
+void PointLight::createPointLight() { m_mesh = Mesh{createStar(position())}; }
 
 void PointLight::setTransformations(const core::SettingManager &t) { position() = t.get<glm::vec3>("Position"); }
 }  // namespace daft::engine
