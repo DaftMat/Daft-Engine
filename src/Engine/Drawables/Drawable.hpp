@@ -221,7 +221,7 @@ class Drawable : public core::NonCopyable {
     /**
      * updates the drawable (rebuild its vao for an Object ).
      */
-    virtual void update() {}
+    virtual void update();
 
     /**
      * Tests if this is a Composite .
@@ -266,14 +266,16 @@ class Drawable : public core::NonCopyable {
     void updateNextFrame() { m_update = true; }
 
    protected:
+    [[nodiscard]] glm::mat4 calculateScaleMat() const;
+    [[nodiscard]] glm::mat4 calculateRotationMat() const;
+    [[nodiscard]] glm::mat4 calculateTranslationMat() const;
+    virtual void applyUpdate(){};
+
     bool m_update{false};
 
    private:
     [[nodiscard]] glm::mat4 calculateModel() const;
     [[nodiscard]] glm::mat4 calculateNormalizedModel() const;
-    [[nodiscard]] glm::mat4 calculateScaleMat() const;
-    [[nodiscard]] glm::mat4 calculateRotationMat() const;
-    [[nodiscard]] glm::mat4 calculateTranslationMat() const;
 
     glm::vec3 m_position{0.f};
     glm::vec3 m_rotations{0.f};

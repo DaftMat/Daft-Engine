@@ -169,7 +169,7 @@ void MainWidget::createCreationComboBoxes() {
     }
     connect(m_objectCreator.get(), SIGNAL(currentIndexChanged(int)), this, SLOT(on_objectBoxChanged()));
 
-    std::vector<std::string> lights{"Point Light"};
+    std::vector<std::string> lights{"Point Light", "Spot Light"};
     m_lightCreator = std::make_unique<QComboBox>();
     m_lightCreator->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_lightCreator->addItem("Add light");
@@ -201,6 +201,8 @@ void MainWidget::on_lightBoxChanged() {
         return;
     else if (m_lightCreator->currentText() == "Point Light")
         m_glWidget->addDrawable(engine::Drawable::Type::PointLight);
+    else if (m_lightCreator->currentText() == "Spot Light")
+        m_glWidget->addDrawable(engine::Drawable::Type::SpotLight);
     m_lightCreator->setCurrentIndex(0);
     m_glWidget->update();
 }

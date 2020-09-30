@@ -42,13 +42,6 @@ void Object::reset() {
     m_meshObjects.clear();
 }
 
-void Object::update() {
-    if (m_update) {
-        applyUpdate();
-        m_update = false;
-    }
-}
-
 void Object::subdivide() {
     /// in the future : half-edges
 }

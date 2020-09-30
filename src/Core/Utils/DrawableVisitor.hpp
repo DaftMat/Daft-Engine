@@ -15,6 +15,7 @@ class Cube;
 class BSpline;
 // lights
 class PointLight;
+class SpotLight;
 // composite
 class Composite;
 }  // namespace engine
@@ -75,6 +76,11 @@ class ENGINE_API DrawableVisitor {
      * Visits a PointLight .
      */
     virtual void visit(engine::PointLight *) {}
+
+    /**
+     * Visits a SpotLight .
+     */
+    virtual void visit(engine::SpotLight *) {}
 
     /// GROUP
 

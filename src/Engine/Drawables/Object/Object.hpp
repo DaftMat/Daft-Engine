@@ -57,12 +57,6 @@ class ENGINE_API Object : public Drawable {
     void reset() override;
 
     /**
-     * Updates the object.
-     * Resets all the meshes' VAO.
-     */
-    void update() override;
-
-    /**
      * Subdivides triangles of each meshes in 4 new triangles.
      */
     void subdivide();
@@ -92,8 +86,6 @@ class ENGINE_API Object : public Drawable {
     Type getType() override { return Type::None; }
 
    protected:
-    virtual void applyUpdate() {}
-
     std::vector<MeshObject> m_meshObjects;
 
    private:

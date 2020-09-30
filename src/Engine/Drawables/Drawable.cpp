@@ -66,4 +66,11 @@ void Drawable::setTransformations(const core::SettingManager &t) {
     m_scale = t.get<glm::vec3>("Scale");
 }
 
+void Drawable::update() {
+    if (m_update) {
+        applyUpdate();
+        m_update = false;
+    }
+}
+
 }  // namespace daft::engine

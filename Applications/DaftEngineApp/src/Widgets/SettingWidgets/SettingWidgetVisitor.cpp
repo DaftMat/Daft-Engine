@@ -10,6 +10,7 @@
 #include <Widgets/SettingWidgets/DrawableSettings/PointLightSettings.hpp>
 #include <Widgets/SettingWidgets/DrawableSettings/SphereSettings.hpp>
 #include <Widgets/SettingWidgets/DrawableSettings/TorusSettings.hpp>
+#include <src/Widgets/SettingWidgets/DrawableSettings/SpotLightSettings.hpp>
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::Object *object) {
     m_widget = new SettingWidget(nullptr, createTransformWidget(object->getTransformations()), object->name());
@@ -48,4 +49,11 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::PointLight *pointLight
     DrawableSettings *ds = new PointLightSettings(sm);
     m_widget = new SettingWidget(ds, createTransformWidget(pointLight->getTransformations(), true, false, false),
                                  pointLight->name());
+}
+
+void daft::app::SettingWidgetVisitor::visit(daft::engine::SpotLight *spotLight) {
+    core::SettingManager sm = spotLight->getSettings();
+    DrawableSettings *ds = new SpotLightSettings(sm);
+    m_widget = new SettingWidget(ds, createTransformWidget(spotLight->getTransformations(), true, true, false),
+                                 spotLight->name());
 }

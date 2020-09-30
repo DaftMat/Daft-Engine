@@ -161,10 +161,8 @@ void Renderer::_removeSelection() {
 }
 
 void Renderer::_addDrawable() {
-    std::shared_ptr<Drawable> drawable;
+    std::shared_ptr<Drawable> drawable{nullptr};
     switch (m_addNextFrame) {
-        case Drawable::Type::None:
-            return;
         case Drawable::Type::Group:
             drawable = std::make_shared<Composite>();
             break;
@@ -185,6 +183,12 @@ void Renderer::_addDrawable() {
         }
         case Drawable::Type::PointLight: {
             auto toAdd = std::make_shared<PointLight>();
+            drawable = toAdd;
+            m_lightPool->add(toAdd);
+            break;
+        }
+        case Drawable::Type::SpotLight: {
+            auto toAdd = std::make_shared<SpotLight>();
             drawable = toAdd;
             m_lightPool->add(toAdd);
             break;
