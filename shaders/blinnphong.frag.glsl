@@ -62,9 +62,9 @@ void main() {
         resultColor += calcPointLight(pointLights[i]);
     }
 
-    //for (int i = 0 ; i < nrDirLights ; ++i) {
-    //    resultColor += calcDirLight(dirLights[i]);
-    //}
+    for (int i = 0 ; i < nrDirLights ; ++i) {
+        resultColor += calcDirLight(dirLights[i]);
+    }
 
     for (int i = 0 ; i < nrSpotLights ; ++i) {
         resultColor += calcSpotLight(spotLights[i]);
@@ -73,7 +73,7 @@ void main() {
     vec3 ambient = vec3(0.03) * defaultMat.albedo;
     vec3 color = ambient + resultColor;
     color = color / (color + vec3(1.0));
-    color = pow(color, vec3(1.0/2.2));
+    color = pow(color, vec3(1.0/2.4));
     fragColor = vec4(color, 1.0);
 }
 
@@ -108,10 +108,8 @@ vec3 calcSpotLight(SpotLight light) {
     float attenuation = light.intensity / (distance * distance);
     float theta = dot(lightDir, normalize(-light.direction));
     float epsilon = light.innerCutOff - light.outerCutOff;
-    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
-    vec3 diffuse = light.color * diff * vec3(defaultMat.albedo);
-    vec3 specular = light.color * spec * vec3(defaultMat.specular);
-    diffuse *= attenuation * intensity;
-    specular *= attenuation * intensity;
+    float intensity = attenuation * clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+    vec3 diffuse = intensity * light.color * diff * vec3(defaultMat.albedo);
+    vec3 specular = intensity * light.color * spec * vec3(defaultMat.specular);
     return diffuse + specular;
 }

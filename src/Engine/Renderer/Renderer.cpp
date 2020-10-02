@@ -154,7 +154,9 @@ void Renderer::switchToRenderingMode() {
 void Renderer::_removeSelection() {
     if (m_removeNextFrame) {
         auto selection = getSelection();
-        if (selection && selection->isLight()) m_lightPool->remove(m_selection);
+        if (selection && selection->isLight()) {
+            m_lightPool->remove(m_selection);
+        }
         m_root->remove(m_selection);
         m_removeNextFrame = false;
     }
@@ -231,4 +233,5 @@ void Renderer::_setShader() {
     updateViewMatrix();
     updateProjectionMatrix();
 }
+
 }  // namespace daft::engine
