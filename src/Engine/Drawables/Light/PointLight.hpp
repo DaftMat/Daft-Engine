@@ -15,7 +15,7 @@ class ENGINE_API PointLight : public Light {
      * @param name - light's name.
      * @param parent - Composite holding this light.
      */
-    explicit PointLight(float intensity = 1.f, glm::vec3 color = glm::vec3{1.f}, Composite *parent = nullptr,
+    explicit PointLight(float intensity = 1.f, glm::vec3 color = glm::vec3{0.8f}, Composite *parent = nullptr,
                         std::string name = "PointLight" + std::to_string(m_nrPointLights++));
 
     /**

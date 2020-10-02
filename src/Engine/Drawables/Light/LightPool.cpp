@@ -12,7 +12,7 @@ void LightPool::loadToShader(const core::ShaderProgram &shader) const {
         m_pointLights[i]->loadToShader(shader, int(i));
     }
     shader.setInt("nrPointLights", int(m_pointLights.size()));
-    // for (size_t i = 0 ; i < m_spotLights.size() ; ++i) {
+    // for (size_t i = 0 ; i < m_dirLights.size() ; ++i) {
     //    m_dirLights[i]->loadToShader(shader, int(i));
     //}
     for (size_t i = 0; i < m_spotLights.size(); ++i) {

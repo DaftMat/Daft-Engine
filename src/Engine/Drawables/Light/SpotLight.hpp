@@ -10,7 +10,7 @@ namespace daft::engine {
 class ENGINE_API SpotLight : public Light {
    public:
     explicit SpotLight(glm::vec3 dir = {0.f, -1.f, 0.f}, float intensity = 1.f, float innerCutOff = 12.5f,
-                       float outerCutOff = 15.f, glm::vec3 color = glm::vec3{1.f}, Composite *parent = nullptr,
+                       float outerCutOff = 15.f, glm::vec3 color = glm::vec3{0.8f}, Composite *parent = nullptr,
                        std::string name = "SpotLight" + std::to_string(m_nrSpotLight++));
 
     ~SpotLight() override = default;

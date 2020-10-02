@@ -39,10 +39,11 @@ glm::mat4 Drawable::calculateNormalizedModel() const { return calculateRotationM
 glm::mat4 Drawable::calculateScaleMat() const { return glm::scale(glm::mat4{1.f}, m_scale); }
 
 glm::mat4 Drawable::calculateRotationMat() const {
-    auto rotX = glm::rotate(glm::mat4{1.f}, glm::radians(m_rotations.x), glm::vec3{1.f, 0.f, 0.f});
-    auto rotY = glm::rotate(glm::mat4{1.f}, glm::radians(m_rotations.y), glm::vec3{0.f, 1.f, 0.f});
-    auto rotZ = glm::rotate(glm::mat4{1.f}, glm::radians(m_rotations.z), glm::vec3{0.f, 0.f, 1.f});
-    return rotX * rotY * rotZ;
+    glm::mat4 res{1.f};
+    res = glm::rotate(res, glm::radians(m_rotations.x), glm::vec3{1.f, 0.f, 0.f});
+    res = glm::rotate(res, glm::radians(m_rotations.y), glm::vec3{0.f, 1.f, 0.f});
+    res = glm::rotate(res, glm::radians(m_rotations.z), glm::vec3{0.f, 0.f, 1.f});
+    return res;
 }
 
 glm::mat4 Drawable::calculateTranslationMat() const { return glm::translate(glm::mat4{1.f}, m_position); }

@@ -21,7 +21,7 @@ SpotLight::SpotLight(glm::vec3 dir, float intensity, float innerCutOff, float ou
 
 core::SettingManager SpotLight::getSettings() const {
     core::SettingManager sm{};
-    sm.add("Color", color());
+    sm.add("Color", color() * 255.f);
     sm.add("Intensity", m_intensity);
     sm.add("Inner angle", m_innerCutOff);
     sm.add("Outer angle", m_outerCutOff);
@@ -29,7 +29,7 @@ core::SettingManager SpotLight::getSettings() const {
 }
 
 void SpotLight::setSettings(const core::SettingManager &s) {
-    color() = s.get<glm::vec3>("Color");
+    color() = s.get<glm::vec3>("Color") / 255.f;
     setIntensity(s.get<float>("Intensity"));
     setInnerCutOff(s.get<float>("Inner angle"));
     setOuterCutOff(s.get<float>("Outer angle"));
@@ -65,8 +65,8 @@ void SpotLight::loadToShader(const core::ShaderProgram &shader, int index) const
     std::string name = "spotLights[" + std::to_string(index) + "]";
     shader.setVec3(name + ".position", position());
     shader.setVec3(name + ".direction", m_direction);
-    shader.setFloat(name + ".innerCutOff", m_innerCutOff);
-    shader.setFloat(name + ".outerCutOff", m_outerCutOff);
+    shader.setFloat(name + ".innerCutOff", glm::radians(m_innerCutOff));
+    shader.setFloat(name + ".outerCutOff", glm::radians(m_outerCutOff));
     shader.setFloat(name + ".intensity", m_intensity);
     shader.setVec3(name + ".color", color());
 }
@@ -80,11 +80,9 @@ void SpotLight::createSpotLight() {
     std::vector<GLuint> indices = star.indices();
 
     float factor = m_intensity * 4.f;
-    float innerDist = glm::tan(glm::radians(m_innerCutOff / 2.f)) * factor;
-    float outerDist = glm::tan(glm::radians(m_outerCutOff / 2.f)) * factor;
+    float innerDist = glm::tan(glm::radians(m_innerCutOff)) * factor;
+    float outerDist = glm::tan(glm::radians(m_outerCutOff)) * factor;
     glm::vec3 target = m_baseDirection * factor;
-    glm::vec3 u{0.f}, v{0.f};
-    core::orthoVectors(-target, u, v);
     int circleSteps = 64;
     int innerOffset = int(positions.size());
 

@@ -129,6 +129,7 @@ void Renderer::updateViewMatrix() {
     for (const auto &shader : m_shaders) {
         shader->use();
         shader->setMat4("view", m_camera.getViewMatrix());
+        shader->setVec3("viewPos", m_camera.position());
         shader->stop();
     }
 }

@@ -1,10 +1,6 @@
 #version 450
 layout (location = 0) out vec4 fragColor;
 
-in vec3 fragPos;
-in vec3 fragNormal;
-in vec2 fragTex;
-
 struct Material {
     vec3 albedo;
     vec3 specular;
@@ -30,6 +26,10 @@ struct SpotLight {
     float intensity;
     vec3 color;
 };
+
+in vec3 fragPos;
+in vec3 fragNormal;
+in vec2 fragTex;
 
 #define MAX_LIGHTS 32
 
@@ -106,7 +106,7 @@ vec3 calcSpotLight(SpotLight light) {
     float spec = pow(max(dot(fragNormal, halfwayDir), 0.0), defaultMat.shininess);
     float distance = length(light.position - fragPos);
     float attenuation = light.intensity / (distance * distance);
-    float theta = dot(lightDir, normalize(-light.direction));
+    float theta = max(dot(lightDir, normalize(-light.direction)), 0.0);
     float epsilon = light.innerCutOff - light.outerCutOff;
     float intensity = attenuation * clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
     vec3 diffuse = intensity * light.color * diff * vec3(defaultMat.albedo);
