@@ -66,8 +66,8 @@ void SpotLight::loadToShader(const core::ShaderProgram &shader, int index) const
     std::string name = "spotLights[" + std::to_string(index) + "]";
     shader.setVec3(name + ".position", position());
     shader.setVec3(name + ".direction", m_direction);
-    shader.setFloat(name + ".innerCutOff", glm::radians(m_innerCutOff));
-    shader.setFloat(name + ".outerCutOff", glm::radians(m_outerCutOff));
+    shader.setFloat(name + ".innerCutOff", glm::cos(glm::radians(m_innerCutOff)));
+    shader.setFloat(name + ".outerCutOff", glm::cos(glm::radians(m_outerCutOff)));
     shader.setFloat(name + ".intensity", m_intensity);
     shader.setVec3(name + ".color", color());
 }

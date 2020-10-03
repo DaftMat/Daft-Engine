@@ -22,15 +22,21 @@ void LightPool::loadToShader(const core::ShaderProgram &shader) const {
 }
 
 void LightPool::remove(const std::string &name) {
-    if (!m_pointLights.empty())
-        m_pointLights.erase(
-            std::find_if(m_pointLights.begin(), m_pointLights.end(), [&name](auto pl) { return pl->name() == name; }));
-    if (!m_dirLights.empty())
-        m_dirLights.erase(
-            std::find_if(m_dirLights.begin(), m_dirLights.end(), [&name](auto dl) { return dl->name() == name; }));
-    if (!m_spotLights.empty())
-        m_spotLights.erase(
-            std::find_if(m_spotLights.begin(), m_spotLights.end(), [&name](auto sl) { return sl->name() == name; }));
+    for (size_t i = 0; i < m_pointLights.size(); ++i) {
+        if (m_pointLights[i]->name() == name) {
+            m_pointLights.erase(m_pointLights.begin() + i);
+        }
+    }
+    for (size_t i = 0; i < m_dirLights.size(); ++i) {
+        if (m_dirLights[i]->name() == name) {
+            m_dirLights.erase(m_dirLights.begin() + i);
+        }
+    }
+    for (size_t i = 0; i < m_spotLights.size(); ++i) {
+        if (m_spotLights[i]->name() == name) {
+            m_spotLights.erase(m_spotLights.begin() + i);
+        }
+    }
 }
 
 void LightPool::addPoint(std::shared_ptr<PointLight> pointLight) { m_pointLights.push_back(std::move(pointLight)); }
