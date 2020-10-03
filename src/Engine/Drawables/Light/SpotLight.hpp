@@ -70,6 +70,9 @@ class ENGINE_API SpotLight : public Light {
      */
     Type getType() const override { return Type::SpotLight; }
 
+   protected:
+    void applyUpdate() override { createSpotLight(); }
+
    private:
     void createSpotLight();
 
