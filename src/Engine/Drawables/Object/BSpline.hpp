@@ -129,7 +129,7 @@ class ENGINE_API BSpline : public Object {
      * Gets the type of drawable.
      * @return nothing.
      */
-    Type getType() override { return Type::BSpline; }
+    Type getType() const override { return Type::BSpline; }
 
    protected:
     void applyUpdate() override { createBSpline(); }

@@ -1,5 +1,5 @@
 //
-// Created by mathis on 30/09/2020.
+// Created by mathis on 03/10/2020.
 //
 #pragma once
 #include <API.hpp>
@@ -7,17 +7,16 @@
 #include "Light.hpp"
 
 namespace daft::engine {
-class ENGINE_API SpotLight : public Light {
+class ENGINE_API DirLight : public Light {
    public:
-    explicit SpotLight(glm::vec3 dir = {0.f, -1.f, 0.f}, float intensity = 1.f, float innerCutOff = 12.5f,
-                       float outerCutOff = 15.f, glm::vec3 color = glm::vec3{0.8f}, Composite *parent = nullptr,
-                       std::string name = "SpotLight" + std::to_string(m_nrSpotLight++));
+    explicit DirLight(glm::vec3 dir = {0.f, -1.f, 0.f}, glm::vec3 color = glm::vec3{0.8f}, Composite *parent = nullptr,
+                      std::string name = "DirLight" + std::to_string(m_nrDirLight++));
 
-    ~SpotLight() override = default;
+    ~DirLight() override = default;
 
-    SpotLight(SpotLight &&) noexcept = default;
+    DirLight(DirLight &&) noexcept = default;
 
-    SpotLight &operator=(SpotLight &&) noexcept = default;
+    DirLight &operator=(DirLight &&) noexcept = default;
 
     /**
      * Gets the drawable's specific settings as a SettingManager .
@@ -37,19 +36,20 @@ class ENGINE_API SpotLight : public Light {
      */
     void setTransformations(const core::SettingManager &t) override;
 
+    /**
+     * Can't translate a directionnal light.
+     * Does nothing.
+     * @param t ~~
+     */
+    void translate(glm::vec3 t) override {}
+
+    /**
+     * Ges the direction pointed by the light.
+     * @return direction.
+     */
     glm::vec3 direction() const { return m_direction; }
 
-    float intensity() const { return m_intensity; }
-
-    void setIntensity(float i);
-
-    float innerCutOff() const { return m_innerCutOff; }
-
-    void setInnerCutOff(float i);
-
-    float outerCutOff() const { return m_outerCutOff; }
-
-    void setOuterCutOff(float o);
+    // void applyUpdate() override { createDirLight(); }
 
     /**
      * Loads this light to a target shader as a uniform struct.
@@ -71,14 +71,11 @@ class ENGINE_API SpotLight : public Light {
     Type getType() const override { return Type::SpotLight; }
 
    private:
-    void createSpotLight();
+    void createDirLight();
 
     glm::vec3 m_direction;
     glm::vec3 m_baseDirection;
-    float m_intensity;
-    float m_innerCutOff;
-    float m_outerCutOff;
 
-    static int m_nrSpotLight;
+    static int m_nrDirLight;
 };
 }  // namespace daft::engine

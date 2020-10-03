@@ -159,7 +159,7 @@ class ENGINE_API Sphere : public Object {
      * Gets the type of drawable.
      * @return Drawable::Type::Sphere .
      */
-    Drawable::Type getType() override { return Drawable::Type::Sphere; }
+    [[nodiscard]] Drawable::Type getType() const override { return Drawable::Type::Sphere; }
 
    protected:
     void applyUpdate() override;

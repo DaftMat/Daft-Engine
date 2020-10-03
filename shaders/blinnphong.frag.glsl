@@ -106,10 +106,12 @@ vec3 calcSpotLight(SpotLight light) {
     float spec = pow(max(dot(fragNormal, halfwayDir), 0.0), defaultMat.shininess);
     float distance = length(light.position - fragPos);
     float attenuation = light.intensity / (distance * distance);
-    float theta = max(dot(lightDir, normalize(-light.direction)), 0.0);
+    float theta = dot(lightDir, normalize(-light.direction));
     float epsilon = light.innerCutOff - light.outerCutOff;
-    float intensity = attenuation * clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
-    vec3 diffuse = intensity * light.color * diff * vec3(defaultMat.albedo);
-    vec3 specular = intensity * light.color * spec * vec3(defaultMat.specular);
+    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+    vec3 diffuse = light.color * diff * vec3(defaultMat.albedo);
+    vec3 specular = light.color * spec * vec3(defaultMat.specular);
+    diffuse *= attenuation * intensity;
+    specular *= attenuation * intensity;
     return diffuse + specular;
 }

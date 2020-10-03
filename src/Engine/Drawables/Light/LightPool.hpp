@@ -4,6 +4,9 @@
 #pragma once
 #include <API.hpp>
 #include <Core/Utils/NonCopyable.hpp>
+#include <Engine/Drawables/Light/DirLight.hpp>
+#include <Engine/Drawables/Light/PointLight.hpp>
+#include <Engine/Drawables/Light/SpotLight.hpp>
 #include <memory>
 #include <string>
 #include <vector>
@@ -13,10 +16,6 @@ namespace core {
 class ShaderProgram;
 }
 namespace engine {
-class PointLight;
-class DirLight;
-class SpotLight;
-
 class ENGINE_API LightPool : public core::NonCopyable {
    public:
     /**
@@ -50,19 +49,19 @@ class ENGINE_API LightPool : public core::NonCopyable {
      * Adds a PointLight to the pool.
      * @param pointLight - point light to add.
      */
-    void add(std::shared_ptr<PointLight> pointLight);
+    void addPoint(std::shared_ptr<PointLight> pointLight);
 
     /**
      * Adds a DirLight to the pool.
      * @param dirLight - dir light to add.
      */
-    void add(std::shared_ptr<DirLight> dirLight);
+    void addDir(std::shared_ptr<DirLight> dirLight);
 
     /**
      * Adds a SpotLight to the pool.
      * @param spotLight - spot light to add.
      */
-    void add(std::shared_ptr<SpotLight> spotLight);
+    void addSpot(std::shared_ptr<SpotLight> spotLight);
 
     /**
      * Removes a light from the pool.

@@ -5,7 +5,7 @@
 
 #include <Core/Rendering/ShaderProgram.hpp>
 #include <Core/Utils/Logger.hpp>
-#include <Engine/Drawables/Object/primitives.hpp>
+#include <Engine/Drawables/Object/primitiveIncludes.hpp>
 #include <Engine/Renderer/QuadRenderer.hpp>
 #include <Engine/Renderer/RenderPasses/MultiSamplingPass.hpp>
 #include <iostream>
@@ -187,13 +187,19 @@ void Renderer::_addDrawable() {
         case Drawable::Type::PointLight: {
             auto toAdd = std::make_shared<PointLight>();
             drawable = toAdd;
-            m_lightPool->add(toAdd);
+            m_lightPool->addPoint(toAdd);
+            break;
+        }
+        case Drawable::Type::DirLight: {
+            auto toAdd = std::make_shared<DirLight>();
+            drawable = toAdd;
+            m_lightPool->addDir(toAdd);
             break;
         }
         case Drawable::Type::SpotLight: {
             auto toAdd = std::make_shared<SpotLight>();
             drawable = toAdd;
-            m_lightPool->add(toAdd);
+            m_lightPool->addSpot(toAdd);
             break;
         }
         default:

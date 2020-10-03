@@ -108,7 +108,7 @@ class Light : public Drawable {
      * Gets the type of drawable.
      * @return nothing.
      */
-    Type getType() override = 0;
+    Type getType() const override = 0;
 
     /**
      * Texts if this is a Composite .

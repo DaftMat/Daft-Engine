@@ -4,12 +4,13 @@
 #include "SettingWidgetVisitor.hpp"
 
 #include <Engine/Drawables/Composite.hpp>
-#include <Engine/Drawables/Object/primitives.hpp>
+#include <Engine/Drawables/Object/primitiveIncludes.hpp>
 #include <Widgets/SettingWidgets/DrawableSettings/BSplineSettings.hpp>
 #include <Widgets/SettingWidgets/DrawableSettings/CubeSettings.hpp>
 #include <Widgets/SettingWidgets/DrawableSettings/PointLightSettings.hpp>
 #include <Widgets/SettingWidgets/DrawableSettings/SphereSettings.hpp>
 #include <Widgets/SettingWidgets/DrawableSettings/TorusSettings.hpp>
+#include <src/Widgets/SettingWidgets/DrawableSettings/DirLightSettings.hpp>
 #include <src/Widgets/SettingWidgets/DrawableSettings/SpotLightSettings.hpp>
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::Object *object) {
@@ -56,4 +57,11 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::SpotLight *spotLight) 
     DrawableSettings *ds = new SpotLightSettings(sm);
     m_widget = new SettingWidget(ds, createTransformWidget(spotLight->getTransformations(), true, true, false),
                                  spotLight->name());
+}
+
+void daft::app::SettingWidgetVisitor::visit(daft::engine::DirLight *dirLight) {
+    core::SettingManager sm = dirLight->getSettings();
+    DrawableSettings *ds = new DirLightSettings(sm);
+    m_widget = new SettingWidget(ds, createTransformWidget(dirLight->getTransformations(), false, true, false),
+                                 dirLight->name());
 }

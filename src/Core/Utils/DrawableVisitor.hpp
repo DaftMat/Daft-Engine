@@ -16,6 +16,7 @@ class BSpline;
 // lights
 class PointLight;
 class SpotLight;
+class DirLight;
 // composite
 class Composite;
 }  // namespace engine
@@ -81,6 +82,11 @@ class ENGINE_API DrawableVisitor {
      * Visits a SpotLight .
      */
     virtual void visit(engine::SpotLight *) {}
+
+    /**
+     * Visits a DirLight .
+     */
+    virtual void visit(engine::DirLight *) {}
 
     /// GROUP
 

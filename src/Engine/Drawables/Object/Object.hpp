@@ -83,7 +83,7 @@ class ENGINE_API Object : public Drawable {
      * Gets the type of drawable.
      * @return Type::None .
      */
-    Type getType() override { return Type::None; }
+    Type getType() const override { return Type::None; }
 
    protected:
     std::vector<MeshObject> m_meshObjects;

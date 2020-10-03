@@ -57,6 +57,12 @@ class SettingWidgetVisitor : public core::DrawableVisitor {
     void visit(engine::SpotLight *spotLight) override;
 
     /**
+     * Visits a DirLight .
+     * @param spotLight - spot light to visit.
+     */
+    void visit(engine::DirLight *dirLight) override;
+
+    /**
      * visits a Composite .
      * @param composite - composite to visit.
      */

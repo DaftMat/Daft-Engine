@@ -87,7 +87,7 @@ class ENGINE_API PointLight : public Light {
      * Gets the type of drawable.
      * @return Type::PointLight .
      */
-    Type getType() override { return Type::PointLight; }
+    Type getType() const override { return Type::PointLight; }
 
    private:
     void createPointLight();

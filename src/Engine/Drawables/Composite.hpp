@@ -122,7 +122,7 @@ class ENGINE_API Composite : public Drawable {
      * Gets the type of drawable.
      * @return Type::Group .
      */
-    Type getType() override { return Type::Group; }
+    Type getType() const override { return Type::Group; }
 
    private:
     using DrawablePtr = std::shared_ptr<Drawable>;

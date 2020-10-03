@@ -3,6 +3,7 @@
 //
 #include "SpotLight.hpp"
 
+#include <Core/Utils/DrawableVisitor.hpp>
 #include <Engine/Drawables/Object/primitives.hpp>
 
 namespace daft::engine {
