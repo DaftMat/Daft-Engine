@@ -13,7 +13,7 @@ install:
   - git pull
   - .\bootstrap-vcpkg.bat
   - vcpkg update
-  - vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows
+  - vcpkg install glm eigen3 assimp
   - vcpkg integrate install
 
 before_build:
@@ -23,6 +23,6 @@ before_build:
   - cmd: cd build
 
 build_script:
-  - cmake -DCMAKE_TOOLCHAIN_FILE="C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake" -G "Visual Studio 16 2019" -A x64 ..
+  - cmake -DCMAKE_TOOLCHAIN_FILE="C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake" -G "Visual Studio 16 2019" ..
   - cmake --build . --target buildtests
   - ctest -C %configuration%
