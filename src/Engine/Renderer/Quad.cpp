@@ -31,7 +31,7 @@ Quad::Quad(float x, float y, float width, float height) {
 
     m_mesh = Mesh(am);
     m_material = std::make_shared<core::Material>();
-    m_material->addTexture(core::Texture("quadTexture"));
+    m_material->addTexture(core::Texture("quadTexture", core::Texture::Type::ALBEDO));
 }
 
 void Quad::setTexture(int id) { m_material->texture("quadTexture").id() = id; }
