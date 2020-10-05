@@ -78,6 +78,9 @@ constexpr int mod1(int x, int m) noexcept;
  */
 void orthoVectors(glm::vec3 n, glm::vec3 &u, glm::vec3 &v);
 
+template <typename T>
+constexpr T lerp(T a, T b, float u);
+
 }  // namespace daft::core
 
 #include "Adapters.inl"

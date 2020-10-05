@@ -50,4 +50,6 @@ core::AttribManager createStar(glm::vec3 pos) {
     am.addAttrib(positions);
     return am;
 }
+
+float circleStep(int n) { return 2.f * glm::pi<float>() / float(n); }
 }  // namespace daft::engine

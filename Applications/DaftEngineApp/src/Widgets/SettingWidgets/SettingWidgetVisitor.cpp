@@ -10,6 +10,7 @@
 #include <Widgets/SettingWidgets/DrawableSettings/PointLightSettings.hpp>
 #include <Widgets/SettingWidgets/DrawableSettings/SphereSettings.hpp>
 #include <Widgets/SettingWidgets/DrawableSettings/TorusSettings.hpp>
+#include <src/Widgets/SettingWidgets/DrawableSettings/CylinderSettings.hpp>
 #include <src/Widgets/SettingWidgets/DrawableSettings/DirLightSettings.hpp>
 #include <src/Widgets/SettingWidgets/DrawableSettings/SpotLightSettings.hpp>
 
@@ -43,6 +44,12 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::BSpline *bspline) {
     core::SettingManager sm = bspline->getSettings();
     DrawableSettings *ds = new BSplineSettings(sm);
     m_widget = new SettingWidget(ds, createTransformWidget(bspline->getTransformations()), bspline->name());
+}
+
+void daft::app::SettingWidgetVisitor::visit(daft::engine::Cylinder *cylinder) {
+    core::SettingManager sm = cylinder->getSettings();
+    DrawableSettings *ds = new CylinderSettings(sm);
+    m_widget = new SettingWidget(ds, createTransformWidget(cylinder->getTransformations()), cylinder->name());
 }
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::PointLight *pointLight) {

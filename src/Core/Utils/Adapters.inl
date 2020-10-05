@@ -47,4 +47,9 @@ constexpr auto toUType(T e) noexcept {
 
 constexpr int mod1(int x, int m) noexcept { return m == x ? x : x % m; }
 
+template <typename T>
+constexpr T lerp(T a, T b, float u) {
+    return u * a + (1.f - u) * b;
+}
+
 }  // namespace daft::core

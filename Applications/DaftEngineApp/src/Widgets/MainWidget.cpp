@@ -160,7 +160,7 @@ void MainWidget::connectSceneTreeEvents() {
 }
 
 void MainWidget::createCreationComboBoxes() {
-    std::vector<std::string> objects{"Sphere", "Torus", "Cube", "B-Spline", "Group"};
+    std::vector<std::string> objects{"Sphere", "Torus", "Cube", "Cylinder", "B-Spline", "Group"};
     m_objectCreator = std::make_unique<QComboBox>();
     m_objectCreator->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_objectCreator->addItem("Add object");
@@ -188,6 +188,8 @@ void MainWidget::on_objectBoxChanged() {
         m_glWidget->addDrawable(engine::Drawable::Type::Torus);
     else if (m_objectCreator->currentText() == "Cube")
         m_glWidget->addDrawable(engine::Drawable::Type::Cube);
+    else if (m_objectCreator->currentText() == "Cylinder")
+        m_glWidget->addDrawable(engine::Drawable::Type::Cylinder);
     else if (m_objectCreator->currentText() == "B-Spline")
         m_glWidget->addDrawable(engine::Drawable::Type::BSpline);
     else if (m_objectCreator->currentText() == "Group")
