@@ -1,7 +1,15 @@
 #version 450
 layout (location = 0) out vec4 fragColor;
 
+#define MAX_SIZE 32
+
 struct Material {
+    sampler2D albedoTex[MAX_SIZE];
+    sampler2D specularTex[MAX_SIZE];
+    sampler2D normalTex[MAX_SIZE];
+    int nrAlbedoTex;
+    int nrSpecularTex;
+    int nrNormalTex;
     vec3 albedo;
     vec3 specular;
     float shininess;
@@ -31,17 +39,15 @@ in vec3 fragPos;
 in vec3 fragNormal;
 in vec2 fragTex;
 
-#define MAX_LIGHTS 32
-
 uniform vec3 viewPos;
 
-uniform PointLight pointLights[MAX_LIGHTS];
+uniform PointLight pointLights[MAX_SIZE];
 uniform int nrPointLights;
 
-uniform DirLight dirLights[MAX_LIGHTS];
+uniform DirLight dirLights[MAX_SIZE];
 uniform int nrDirLights;
 
-uniform SpotLight spotLights[MAX_LIGHTS];
+uniform SpotLight spotLights[MAX_SIZE];
 uniform int nrSpotLights;
 
 vec3 calcPointLight(PointLight light);

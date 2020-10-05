@@ -61,7 +61,7 @@ set(ENGINE_API ${api_target} PARENT_SCOPE)
 #   Shaders
 ##################################
 set(SHADER_DIR ${CMAKE_SOURCE_DIR}/shaders)
-file(GLOB_RECURSE SHADER_SOURCES ${SHADER_DIR}/.*.glsl)
+file(GLOB_RECURSE SHADER_SOURCES ${SHADER_DIR}/.*)
 
 if(WIN32)
     set(COPY_COMMAND copy_directory)

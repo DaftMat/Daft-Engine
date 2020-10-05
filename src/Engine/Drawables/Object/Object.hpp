@@ -2,9 +2,13 @@
 // Created by mathis on 08/07/2020.
 //
 #pragma once
+#include <assimp/postprocess.h>
+#include <assimp/scene.h>
+
 #include <API.hpp>
 #include <Engine/Drawables/Drawable.hpp>
 #include <Engine/Drawables/MeshObject.hpp>
+#include <assimp/Importer.hpp>
 
 namespace daft::engine {
 /**
@@ -17,6 +21,9 @@ class ENGINE_API Object : public Drawable {
      * @param mos - list of mesh objects.
      */
     explicit Object(Composite *parent = nullptr, std::string name = "Object" + std::to_string(m_nrObject++));
+
+    explicit Object(std::string filepath, Composite *parent = nullptr,
+                    std::string name = "Object" + std::to_string(m_nrObject++));
 
     /**
      * Destructor.
@@ -89,6 +96,17 @@ class ENGINE_API Object : public Drawable {
     std::vector<MeshObject> m_meshObjects;
 
    private:
+    void loadFromFile(std::string path);
+    void processNode(aiNode *node, const aiScene *scene);
+    void processMesh(aiMesh *mesh, const aiScene *scene);
+    void loadMaterialTextures(aiMaterial *mat);
+
+    std::vector<core::Mesh> m_constructedMeshes{};
+    std::vector<std::shared_ptr<core::Material>> m_constructedMaterials{};
+    int m_nrAlbedo{0}, m_nrSpec{0}, m_nrNormal{0};
+
+    std::string m_directory;
+
     static int m_nrObject;
 };
 }  // namespace daft::engine

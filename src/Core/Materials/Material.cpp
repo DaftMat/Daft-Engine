@@ -45,9 +45,24 @@ void Material::reset() {
 
 void Material::loadToShader(const ShaderProgram &shader) const {
     /// Textures
+    int nrAlbedoTex, nrSpecTex, nrNormalTex;
     for (size_t i = 0; i < textures().size(); ++i) {
         shader.setInt("material." + textures()[i].name(), i);
+        switch (textures()[i].type()) {
+            case core::Texture::Type::ALBEDO:
+                nrAlbedoTex++;
+                break;
+            case core::Texture::Type::SPECULAR:
+                nrSpecTex++;
+                break;
+            case core::Texture::Type::NORMAL:
+                nrNormalTex++;
+        }
     }
+    shader.setInt("material.nrAlbedoTex", nrAlbedoTex);
+    shader.setInt("material.nrSpecularTex", nrSpecTex);
+    shader.setInt("material.nrNormalTex", nrNormalTex);
+
     /// Int settings
     for (auto &setting : settings<int>()) {
         shader.setInt("material." + setting.name, setting.data);

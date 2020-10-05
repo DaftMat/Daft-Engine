@@ -16,18 +16,21 @@ namespace daft::core {
  */
 class Texture : public NonCopyable {
    public:
+    enum class Type { ALBEDO, SPECULAR, NORMAL };
+
     /**
      * Base constructor.
      * @param name - name of the texture.
      */
-    explicit Texture(std::string name) noexcept : m_id{0}, m_name{std::move_if_noexcept(name)} {}
+    explicit Texture(std::string name, Type type) noexcept
+        : m_id{0}, m_name{std::move_if_noexcept(name)}, m_type{type} {}
 
     /**
      * 2D texture constructor.
      * @param name - name of the texture.
      * @param path - path of the picture file.
      */
-    Texture(std::string name, std::string path);
+    Texture(std::string name, Type type, std::string path);
 
     /**
      * 3D texture constructor.
@@ -45,7 +48,8 @@ class Texture : public NonCopyable {
      * Move constructor.
      * @param other - texture to move.
      */
-    Texture(Texture &&other) noexcept : m_id{other.m_id}, m_name{std::move_if_noexcept(other.m_name)} {
+    Texture(Texture &&other) noexcept
+        : m_id{other.m_id}, m_name{std::move_if_noexcept(other.m_name)}, m_type{other.m_type} {
         other.m_isValid = false;
     }
 
@@ -79,9 +83,12 @@ class Texture : public NonCopyable {
      */
     GLuint &id() { return m_id; }
 
+    [[nodiscard]] Type type() const { return m_type; }
+
    private:
     GLuint m_id;
     std::string m_name;
+    Type m_type;
     bool m_isValid{false};
 };
 }  // namespace daft::core
