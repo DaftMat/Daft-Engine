@@ -179,7 +179,7 @@ void Renderer::_addDrawable() {
             drawable = std::make_shared<Cube>();
             break;
         case Drawable::Type::Cylinder:
-            drawable = std::make_shared<Object>("shaders/backpack/backpack.obj");
+            drawable = std::make_shared<Cylinder>();
             break;
         case Drawable::Type::BSpline: {
             std::vector<glm::vec3> controlPoints;
