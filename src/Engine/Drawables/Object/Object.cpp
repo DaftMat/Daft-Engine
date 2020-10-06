@@ -53,18 +53,18 @@ void Object::subdivide() {
 void Object::loadFromFile(std::string path) {
     std::string filepath = std::move(path);
     Assimp::Importer importer;
-    const aiScene *scene = importer.ReadFile(
-        filepath, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+    const aiScene *scene =
+        importer.ReadFile(filepath, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::stringstream ss;
         ss << "could not load this file into assimp." << importer.GetErrorString();
         core::Logger::error(std::move(ss));
     }
-    m_directory = filepath.substr(0, filepath.find_last_of('/'));
+    m_directory = filepath.substr(0, filepath.find_last_of('/')) + "/";
     processNode(scene->mRootNode, scene);
 
     for (size_t i = 0; i < m_constructedMeshes.size(); ++i)
-        m_meshObjects.emplace_back(std::move(m_constructedMeshes[i]), std::move(m_constructedMaterials[i]));
+        m_meshObjects.emplace_back(std::move(m_constructedMeshes[i]), std::move(m_constructedMaterials[0]));
     m_constructedMeshes.clear();
     m_constructedMaterials.clear();
 }
@@ -124,32 +124,41 @@ void Object::processMesh(aiMesh *mesh, const aiScene *scene) {
 void Object::loadMaterialTextures(aiMaterial *mat) {
     auto material = std::make_shared<core::Material>();
     std::vector<aiTextureType> types{aiTextureType_DIFFUSE, aiTextureType_SPECULAR, aiTextureType_NORMALS};
+    material->addSetting("hasAlbedoTex", false);
+    material->addSetting("hasSpecularTex", false);
+    material->addSetting("hasNormalTex", false);
 
     for (auto type : types) {
         for (size_t i = 0; i < mat->GetTextureCount(type); ++i) {
             aiString str;
             mat->GetTexture(type, i, &str);
+            auto skip = std::find(m_loadedTextures.begin(), m_loadedTextures.end(), std::string(str.C_Str()));
+            if (skip != m_loadedTextures.end()) return;
+            m_loadedTextures.emplace_back(str.C_Str());
 
             std::string name;
             core::Texture::Type type1;
             switch (type) {
                 case aiTextureType_DIFFUSE:
-                    name = "albedoTex" + std::to_string(m_nrAlbedo++);
+                    name = "albedoTex";
                     type1 = core::Texture::Type::ALBEDO;
+                    material->setSetting("hasAlbedoTex", true);
                     break;
                 case aiTextureType_SPECULAR:
-                    name = "specularTex" + std::to_string(m_nrSpec++);
+                    name = "specularTex";
                     type1 = core::Texture::Type::SPECULAR;
+                    material->addSetting("hasSpecularTex", true);
                     break;
                 case aiTextureType_NORMALS:
-                    name = "normalTex" + std::to_string(m_nrNormal++);
+                    name = "normalTex";
                     type1 = core::Texture::Type::NORMAL;
+                    material->addSetting("hasNormalTex", true);
                     break;
                 default:
                     /// impossible
                     break;
             }
-            material->addTexture(core::Texture{name, type1, std::string(m_directory + str.C_Str())});
+            material->addTexture(core::Texture{name, type1, m_directory + std::string(str.C_Str())});
         }
     }
     m_constructedMaterials.push_back(material);
