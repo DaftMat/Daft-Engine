@@ -63,10 +63,10 @@ void Object::loadFromFile(std::string path) {
     m_directory = filepath.substr(0, filepath.find_last_of('/')) + "/";
     processNode(scene->mRootNode, scene);
 
-    for (size_t i = 0; i < m_constructedMeshes.size(); ++i)
-        m_meshObjects.emplace_back(std::move(m_constructedMeshes[i]), std::move(m_constructedMaterials[0]));
+    m_meshObjects.emplace_back(std::move(m_constructedMeshes), std::move(m_constructedMaterial));
     m_constructedMeshes.clear();
-    m_constructedMaterials.clear();
+    m_constructedMaterial.reset();
+    m_loadedTextures.clear();
 }
 
 void Object::processNode(aiNode *node, const aiScene *scene) {
@@ -117,51 +117,50 @@ void Object::processMesh(aiMesh *mesh, const aiScene *scene) {
 
     /// Material
     aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-
-    loadMaterialTextures(material);
+    if (material) {
+        if (m_constructedMaterial == nullptr) m_constructedMaterial = std::make_shared<core::Material>();
+        loadMaterialTextures(material);
+    }
 }
 
 void Object::loadMaterialTextures(aiMaterial *mat) {
-    auto material = std::make_shared<core::Material>();
     std::vector<aiTextureType> types{aiTextureType_DIFFUSE, aiTextureType_SPECULAR, aiTextureType_NORMALS};
-    material->addSetting("hasAlbedoTex", false);
-    material->addSetting("hasSpecularTex", false);
-    material->addSetting("hasNormalTex", false);
 
     for (auto type : types) {
         for (size_t i = 0; i < mat->GetTextureCount(type); ++i) {
             aiString str;
             mat->GetTexture(type, i, &str);
-            auto skip = std::find(m_loadedTextures.begin(), m_loadedTextures.end(), std::string(str.C_Str()));
-            if (skip != m_loadedTextures.end()) return;
+            auto skipIt = std::find(m_loadedTextures.begin(), m_loadedTextures.end(), std::string(str.C_Str()));
+            bool skip = skipIt != m_loadedTextures.end();
             m_loadedTextures.emplace_back(str.C_Str());
 
-            std::string name;
-            core::Texture::Type type1;
-            switch (type) {
-                case aiTextureType_DIFFUSE:
-                    name = "albedoTex";
-                    type1 = core::Texture::Type::ALBEDO;
-                    material->setSetting("hasAlbedoTex", true);
-                    break;
-                case aiTextureType_SPECULAR:
-                    name = "specularTex";
-                    type1 = core::Texture::Type::SPECULAR;
-                    material->addSetting("hasSpecularTex", true);
-                    break;
-                case aiTextureType_NORMALS:
-                    name = "normalTex";
-                    type1 = core::Texture::Type::NORMAL;
-                    material->addSetting("hasNormalTex", true);
-                    break;
-                default:
-                    /// impossible
-                    break;
+            if (!skip) {
+                std::string name;
+                core::Texture::Type type1;
+                switch (type) {
+                    case aiTextureType_DIFFUSE:
+                        name = "albedoTex";
+                        type1 = core::Texture::Type::ALBEDO;
+                        m_constructedMaterial->setSetting("hasAlbedoTex", true);
+                        break;
+                    case aiTextureType_SPECULAR:
+                        name = "specularTex";
+                        type1 = core::Texture::Type::SPECULAR;
+                        m_constructedMaterial->setSetting("hasSpecularTex", true);
+                        break;
+                    case aiTextureType_NORMALS:
+                        name = "normalTex";
+                        type1 = core::Texture::Type::NORMAL;
+                        m_constructedMaterial->setSetting("hasNormalTex", true);
+                        break;
+                    default:
+                        /// impossible
+                        break;
+                }
+                m_constructedMaterial->addTexture(core::Texture{name, type1, m_directory + std::string(str.C_Str())});
             }
-            material->addTexture(core::Texture{name, type1, m_directory + std::string(str.C_Str())});
         }
     }
-    m_constructedMaterials.push_back(material);
 }
 
 }  // namespace daft::engine

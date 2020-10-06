@@ -19,7 +19,7 @@ class Material : public NonCopyable {
     /**
      * default constructor.
      */
-    Material() = default;
+    Material();
 
     /**
      * Move constructor.

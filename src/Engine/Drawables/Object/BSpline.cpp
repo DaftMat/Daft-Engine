@@ -64,7 +64,10 @@ void BSpline::createBSpline() {
         positions.push_back(m_spline.eval(u));
     }
     am.addAttrib(positions);
-    m_meshObjects.emplace_back(core::Mesh{am});
+    std::vector<core::Mesh> meshes;
+    meshes.emplace_back(am);
+    m_meshObjects.emplace_back(std::move(meshes));
+    meshes.clear();
 
     /// control polygon to display
     am.clear();
@@ -73,7 +76,8 @@ void BSpline::createBSpline() {
         am.indices().push_back(i);
         am.indices().push_back(i + 1);
     }
-    m_meshObjects.emplace_back(core::Mesh{am});
+    meshes.emplace_back(am);
+    m_meshObjects.emplace_back(std::move(meshes));
 }
 
 void BSpline::addPoint(glm::vec3 p) {

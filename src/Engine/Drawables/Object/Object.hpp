@@ -102,7 +102,7 @@ class ENGINE_API Object : public Drawable {
     void loadMaterialTextures(aiMaterial *mat);
 
     std::vector<core::Mesh> m_constructedMeshes{};
-    std::vector<std::shared_ptr<core::Material>> m_constructedMaterials{};
+    std::shared_ptr<core::Material> m_constructedMaterial{nullptr};
     std::vector<std::string> m_loadedTextures{};
 
     std::string m_directory;

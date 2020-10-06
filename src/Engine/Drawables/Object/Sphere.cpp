@@ -100,7 +100,9 @@ void Sphere::createUVSphere() {
     }
 
     m_meshObjects.clear();
-    m_meshObjects.emplace_back(core::Mesh(am));
+    std::vector<core::Mesh> meshes;
+    meshes.emplace_back(am);
+    m_meshObjects.emplace_back(std::move(meshes));
 }
 
 void Sphere::createIcoSphere() {
@@ -173,14 +175,16 @@ void Sphere::createIcosahedron() {
     // am.addAttrib(texCoords);
 
     m_meshObjects.clear();
-    m_meshObjects.emplace_back(core::Mesh(am));
+    std::vector<core::Mesh> meshes;
+    meshes.emplace_back(am);
+    m_meshObjects.emplace_back(std::move(meshes));
 }
 
 void Sphere::subdivideIcosahedron() {
     for (auto &obj : m_meshObjects) {
-        std::vector<glm::vec3> tmpPositions = obj.mesh().attribManager().getAttribs<glm::vec3>(0)->attribs;
-        std::vector<glm::vec3> tmpNormals = obj.mesh().attribManager().getAttribs<glm::vec3>(1)->attribs;
-        std::vector<GLuint> tmpIndices = obj.mesh().attribManager().indices();
+        std::vector<glm::vec3> tmpPositions = obj.meshes()[0].attribManager().getAttribs<glm::vec3>(0)->attribs;
+        std::vector<glm::vec3> tmpNormals = obj.meshes()[0].attribManager().getAttribs<glm::vec3>(1)->attribs;
+        std::vector<GLuint> tmpIndices = obj.meshes()[0].attribManager().indices();
 
         std::vector<glm::vec3> positions;
         std::vector<glm::vec3> normals;
@@ -242,7 +246,7 @@ void Sphere::subdivideIcosahedron() {
         am.addAttrib(positions);
         am.addAttrib(normals);
 
-        obj.mesh().reset(am);
+        obj.meshes()[0].reset(am);
     }
 }
 
@@ -256,7 +260,7 @@ void Sphere::createCubeSphere() {
         glm::vec3(-1.f, 0.f, 0.f)   // right
     };
 
-    m_meshObjects.clear();
+    std::vector<core::Mesh> meshes;
 
     for (auto &dir : directions) {
         std::vector<glm::vec3> positions;
@@ -293,8 +297,11 @@ void Sphere::createCubeSphere() {
         am.addAttrib(positions);
         am.addAttrib(normals);
         am.addAttrib(texCoords);
-        m_meshObjects.emplace_back(core::Mesh(am));
+        meshes.emplace_back(core::Mesh(am));
     }
+
+    m_meshObjects.clear();
+    m_meshObjects.emplace_back(std::move(meshes));
 }
 
 void Sphere::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
@@ -395,7 +402,9 @@ void Sphere::createFiboSphere() {
     am.addAttrib(normals);
 
     m_meshObjects.clear();
-    m_meshObjects.emplace_back(core::Mesh{am});
+    std::vector<core::Mesh> meshes;
+    meshes.emplace_back(am);
+    m_meshObjects.emplace_back(std::move(meshes));
 }
 
 std::vector<glm::vec3> Sphere::fibo3D(int n) {

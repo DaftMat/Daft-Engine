@@ -50,7 +50,7 @@ void Cube::createCube() {
         glm::vec3(-1.f, 0.f, 0.f)   // right
     };
 
-    m_meshObjects.clear();
+    std::vector<core::Mesh> meshes;
 
     for (auto &dir : directions) {
         std::vector<glm::vec3> positions;
@@ -86,7 +86,10 @@ void Cube::createCube() {
         am.addAttrib(positions);
         am.addAttrib(normals);
         am.addAttrib(texCoords);
-        m_meshObjects.emplace_back(core::Mesh(am));
+        meshes.emplace_back(core::Mesh{am});
     }
+
+    m_meshObjects.clear();
+    m_meshObjects.emplace_back(std::move(meshes));
 }
 }  // namespace daft::engine

@@ -101,7 +101,9 @@ void Torus::createTorus() {
     }
 
     m_meshObjects.clear();
-    m_meshObjects.emplace_back(core::Mesh{am});
+    std::vector<core::Mesh> meshes;
+    meshes.emplace_back(am);
+    m_meshObjects.emplace_back(std::move(meshes));
 }
 
 void Torus::accept(core::DrawableVisitor *visitor) { visitor->visit(this); }

@@ -50,8 +50,6 @@ void Cylinder::setRadius(float r) {
 void Cylinder::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
 
 void Cylinder::createCylinder() {
-    m_meshObjects.clear();
-
     std::vector<glm::vec3> positions{};
     std::vector<glm::vec3> normals{};
     std::vector<GLuint> indices{};
@@ -92,7 +90,11 @@ void Cylinder::createCylinder() {
     am.addAttrib(positions);
     am.addAttrib(normals);
     am.indices() = indices;
-    m_meshObjects.emplace_back(core::Mesh{am});
+
+    m_meshObjects.clear();
+    std::vector<core::Mesh> meshes;
+    meshes.emplace_back(am);
+    m_meshObjects.emplace_back(std::move(meshes));
 }
 
 void Cylinder::createDisk(glm::vec3 pole, std::vector<glm::vec3> &positions, std::vector<glm::vec3> &normals,
