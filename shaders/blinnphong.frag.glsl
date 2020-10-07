@@ -77,10 +77,12 @@ void main() {
 
     defaultMat.shininess = material.shininess;
     for (int i = 0 ; i < material.nrAlbedoTex ; ++i) {
-        defaultMat.albedo += texture2D(material.albedoTex[i], fragTex).rgb;
+        vec4 alb = texture2D(material.albedoTex[i], fragTex);
+        defaultMat.albedo += alb.rgb * alb.a;
     }
     for (int i = 0 ; i < material.nrSpecularTex ; ++i) {
-        defaultMat.specular += texture2D(material.specularTex[i], fragTex).rgb;
+        vec4 spec = texture2D(material.specularTex[i], fragTex);
+        defaultMat.specular += spec.rgb * spec.a;
     }
     normal = vec3(0.0);
     for (int i = 0 ; i < material.nrNormalTex ; ++i) {

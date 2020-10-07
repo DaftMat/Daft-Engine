@@ -53,8 +53,8 @@ void Object::subdivide() {
 void Object::loadFromFile(std::string path) {
     std::string filepath = std::move(path);
     Assimp::Importer importer;
-    const aiScene *scene =
-        importer.ReadFile(filepath, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
+    const aiScene *scene = importer.ReadFile(
+        filepath, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::stringstream ss;
         ss << "could not load this file into assimp." << importer.GetErrorString();
