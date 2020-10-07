@@ -28,11 +28,11 @@ struct SpotLight {
 };
 
 struct Material {
-    bool hasAlbedoTex;
-    bool hasSpecularTex;
-    bool hasNormalTex;
-    sampler2D albedoTex;
-    sampler2D specularTex;
+    int nrAlbedoTex;
+    int nrSpecularTex;
+    int hasNormalTex;
+    sampler2D albedoTex[MAX_SIZE];
+    sampler2D specularTex[MAX_SIZE];
     sampler2D normalTex;
     vec3 albedo;
     vec3 specular;
@@ -65,14 +65,20 @@ vec3 calcSpotLight(SpotLight light);
 vec3 viewDir;
 
 void main() {
-    defaultMat.albedo = vec3(0.6);
-    defaultMat.specular = vec3(1.0);
+    if (material.nrAlbedoTex > 0)
+        defaultMat.albedo = vec3(0.0);
+    else defaultMat.albedo = vec3(6.0);
+    if (material.nrSpecularTex > 0)
+        defaultMat.specular = vec3(0.0);
+    else defaultMat.specular = vec3(1.0);
+
+    defaultMat.specular = vec3(0.0);
     defaultMat.shininess = 3.0;
-    if (material.hasAlbedoTex) {
-        defaultMat.albedo = texture2D(material.albedoTex, fragTex).rgb;
+    for (int i = 0 ; i < material.nrAlbedoTex ; ++i) {
+        defaultMat.albedo += texture2D(material.albedoTex[i], fragTex).rgb;
     }
-    if (material.hasSpecularTex) {
-        defaultMat.specular = texture2D(material.specularTex, fragTex).rgb;
+    for (int i = 0 ; i < material.nrSpecularTex ; ++i) {
+        defaultMat.specular += texture2D(material.specularTex[i], fragTex).rgb;
     }
 
     viewDir = normalize(viewPos - fragPos);

@@ -95,6 +95,8 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
      */
     void addDrawable(Drawable::Type type) { m_addNextFrame = type; }
 
+    void addCustomObject(std::string filePath);
+
     /**
      * Removes the current selected drawable from the scene tree.
      */
@@ -173,6 +175,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     bool m_removeNextFrame{false};
     Drawable::Type m_addNextFrame{Drawable::Type::None};
+    std::string m_filePathCustom;
     AvailableShaders m_newShader{AvailableShaders::None};
 
     glm::vec3 m_defaultSkyColor{0.35, 0.35, 0.35};

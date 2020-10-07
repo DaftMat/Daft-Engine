@@ -125,6 +125,11 @@ void Renderer::setSelection(std::string s) {
     m_selection = std::move(s);
 }
 
+void Renderer::addCustomObject(std::string filePath) {
+    m_addNextFrame = Drawable::Type::Custom;
+    m_filePathCustom = std::move(filePath);
+}
+
 void Renderer::updateViewMatrix() {
     for (const auto &shader : m_shaders) {
         shader->use();
@@ -185,6 +190,11 @@ void Renderer::_addDrawable() {
             std::vector<glm::vec3> controlPoints;
             controlPoints.emplace_back(glm::vec3{0.f});
             drawable = std::make_shared<BSpline>(controlPoints, 1);
+            break;
+        }
+        case Drawable::Type::Custom: {
+            drawable = std::make_shared<Object>(std::move(m_filePathCustom));
+            m_filePathCustom.clear();
             break;
         }
         case Drawable::Type::PointLight: {

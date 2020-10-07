@@ -38,6 +38,8 @@ class Drawable : public core::NonCopyable {
         SpotLight,
         /// Composite
         Group,
+        /// Other
+        Custom,
         /// No type
         None
     };

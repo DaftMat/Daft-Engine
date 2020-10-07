@@ -96,13 +96,21 @@ class ENGINE_API Object : public Drawable {
     std::vector<MeshObject> m_meshObjects;
 
    private:
+    struct MeshInfo {
+        MeshInfo(core::AttribManager am, size_t i) : mesh{std::move(am)}, matIndex{i} {}
+
+        core::Mesh mesh;
+        size_t matIndex;
+    };
+
     void loadFromFile(std::string path);
     void processNode(aiNode *node, const aiScene *scene);
     void processMesh(aiMesh *mesh, const aiScene *scene);
-    void loadMaterialTextures(aiMaterial *mat);
+    void processMaterials(const aiScene *scene);
+    void loadMaterialTextures(aiMaterial *mat, size_t index);
 
-    std::vector<core::Mesh> m_constructedMeshes{};
-    std::shared_ptr<core::Material> m_constructedMaterial{nullptr};
+    std::vector<MeshInfo> m_constructedMeshes{};
+    std::vector<std::shared_ptr<core::Material>> m_constructedMaterial{};
     std::vector<std::string> m_loadedTextures{};
 
     std::string m_directory;

@@ -10,8 +10,8 @@
 
 namespace daft::core {
 Material::Material() {
-    addSetting("hasAlbedoTex", false);
-    addSetting("hasSpecularTex", false);
+    addSetting("nrAlbedoTex", int(0));
+    addSetting("nrSpecularTex", int(0));
     addSetting("hasNormalTex", false);
 }
 

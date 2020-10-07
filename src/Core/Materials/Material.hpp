@@ -75,6 +75,11 @@ class Material : public NonCopyable {
         m_settings.set(std::move(name), data);
     }
 
+    template <typename T>
+    T getSetting(std::string name) {
+        return m_settings.get<T>(std::move(name));
+    }
+
     /**
      * Delete a setting.
      * @tparam T - type of the setting.

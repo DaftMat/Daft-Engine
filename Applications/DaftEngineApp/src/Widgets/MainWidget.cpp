@@ -7,6 +7,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QDoubleSpinBox>
+#include <QFileDialog>
 #include <QPushButton>
 #include <QSpacerItem>
 #include <QWindow>
@@ -160,7 +161,7 @@ void MainWidget::connectSceneTreeEvents() {
 }
 
 void MainWidget::createCreationComboBoxes() {
-    std::vector<std::string> objects{"Sphere", "Torus", "Cube", "Cylinder", "B-Spline", "Group"};
+    std::vector<std::string> objects{"Sphere", "Torus", "Cube", "Cylinder", "B-Spline", "Group", "Custom"};
     m_objectCreator = std::make_unique<QComboBox>();
     m_objectCreator->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_objectCreator->addItem("Add object");
@@ -194,6 +195,10 @@ void MainWidget::on_objectBoxChanged() {
         m_glWidget->addDrawable(engine::Drawable::Type::BSpline);
     else if (m_objectCreator->currentText() == "Group")
         m_glWidget->addDrawable(engine::Drawable::Type::Group);
+    else if (m_objectCreator->currentText() == "Custom") {
+        auto fileName = QFileDialog::getOpenFileName(this, "Open Object", "/home", "Object Files (*.obj)");
+        m_glWidget->addCustomObject(fileName.toStdString());
+    }
     m_objectCreator->setCurrentIndex(0);
     m_glWidget->update();
 }

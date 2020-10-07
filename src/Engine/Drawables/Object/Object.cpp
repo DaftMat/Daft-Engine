@@ -61,11 +61,20 @@ void Object::loadFromFile(std::string path) {
         core::Logger::error(std::move(ss));
     }
     m_directory = filepath.substr(0, filepath.find_last_of('/')) + "/";
+
+    processMaterials(scene);
     processNode(scene->mRootNode, scene);
 
-    m_meshObjects.emplace_back(std::move(m_constructedMeshes), std::move(m_constructedMaterial));
+    for (size_t i = 0; i < m_constructedMaterial.size(); ++i) {
+        m_meshObjects.emplace_back(std::vector<core::Mesh>{}, std::move(m_constructedMaterial[i]));
+        for (auto &meshInfo : m_constructedMeshes) {
+            if (meshInfo.matIndex == i) {
+                m_meshObjects[m_meshObjects.size() - 1].meshes().emplace_back(std::move(meshInfo.mesh));
+            }
+        }
+    }
     m_constructedMeshes.clear();
-    m_constructedMaterial.reset();
+    m_constructedMaterial.clear();
     m_loadedTextures.clear();
 }
 
@@ -113,17 +122,17 @@ void Object::processMesh(aiMesh *mesh, const aiScene *scene) {
     am.addAttrib(normals);
     am.addAttrib(texCoords);
     am.indices() = indices;
-    m_constructedMeshes.emplace_back(am);
+    m_constructedMeshes.emplace_back(am, mesh->mMaterialIndex);
+}
 
-    /// Material
-    aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-    if (material) {
-        if (m_constructedMaterial == nullptr) m_constructedMaterial = std::make_shared<core::Material>();
-        loadMaterialTextures(material);
+void Object::processMaterials(const aiScene *scene) {
+    for (size_t i = 0; i < scene->mNumMaterials; ++i) {
+        m_constructedMaterial.push_back(std::make_shared<core::Material>());
+        loadMaterialTextures(scene->mMaterials[i], i);
     }
 }
 
-void Object::loadMaterialTextures(aiMaterial *mat) {
+void Object::loadMaterialTextures(aiMaterial *mat, size_t index) {
     std::vector<aiTextureType> types{aiTextureType_DIFFUSE, aiTextureType_SPECULAR, aiTextureType_NORMALS};
 
     for (auto type : types) {
@@ -138,26 +147,32 @@ void Object::loadMaterialTextures(aiMaterial *mat) {
                 std::string name;
                 core::Texture::Type type1;
                 switch (type) {
-                    case aiTextureType_DIFFUSE:
-                        name = "albedoTex";
+                    case aiTextureType_DIFFUSE: {
+                        int texIndex = m_constructedMaterial[index]->getSetting<int>("nrAlbedoTex");
+                        name = "albedoTex[" + std::to_string(texIndex++) + "]";
                         type1 = core::Texture::Type::ALBEDO;
-                        m_constructedMaterial->setSetting("hasAlbedoTex", true);
+                        m_constructedMaterial[index]->setSetting("nrAlbedoTex", texIndex);
                         break;
-                    case aiTextureType_SPECULAR:
-                        name = "specularTex";
+                    }
+                    case aiTextureType_SPECULAR: {
+                        int texIndex = m_constructedMaterial[index]->getSetting<int>("nrSpecularTex");
+                        name = "specularTex[" + std::to_string(texIndex++) + "]";
                         type1 = core::Texture::Type::SPECULAR;
-                        m_constructedMaterial->setSetting("hasSpecularTex", true);
+                        m_constructedMaterial[index]->setSetting("nrSpecularTex", texIndex);
                         break;
-                    case aiTextureType_NORMALS:
+                    }
+                    case aiTextureType_NORMALS: {
                         name = "normalTex";
                         type1 = core::Texture::Type::NORMAL;
-                        m_constructedMaterial->setSetting("hasNormalTex", true);
+                        m_constructedMaterial[index]->setSetting("hasNormalTex", true);
                         break;
+                    }
                     default:
                         /// impossible
                         break;
                 }
-                m_constructedMaterial->addTexture(core::Texture{name, type1, m_directory + std::string(str.C_Str())});
+                m_constructedMaterial[index]->addTexture(
+                    core::Texture{name, type1, m_directory + std::string(str.C_Str())});
             }
         }
     }
