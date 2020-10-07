@@ -33,18 +33,22 @@ struct Material {
     int nrAlbedoTex;
     int nrSpecularTex;
     int nrNormalTex;
+    int nrReflectionTex;
     sampler2D albedoTex[MAX_SIZE];
     sampler2D specularTex[MAX_SIZE];
     sampler2D normalTex[MAX_SIZE];
+    sampler2D reflectionTex[MAX_SIZE];
     vec3 albedo;
     vec3 specular;
     float shininess;
+    float reflectivity;
 };
 
 struct DefaultMaterial {
     vec3 albedo;
     vec3 specular;
     float shininess;
+    float reflectivity;
 } defaultMat;
 
 uniform vec3 viewPos;
@@ -68,43 +72,34 @@ vec3 viewDir;
 vec3 normal;
 
 void main() {
-    if (material.nrAlbedoTex > 0)
-        defaultMat.albedo = vec3(0.0);
-    else defaultMat.albedo = material.albedo;
-    if (material.nrSpecularTex > 0)
-        defaultMat.specular = vec3(0.0);
-    else defaultMat.specular = material.specular;
-
+    defaultMat.albedo = material.albedo;
+    defaultMat.specular = material.specular;
     defaultMat.shininess = material.shininess;
-    for (int i = 0 ; i < material.nrAlbedoTex ; ++i) {
-        vec4 alb = texture2D(material.albedoTex[i], fragTex);
-        defaultMat.albedo += alb.rgb * alb.a;
-    }
-    for (int i = 0 ; i < material.nrSpecularTex ; ++i) {
-        vec4 spec = texture2D(material.specularTex[i], fragTex);
-        defaultMat.specular += spec.rgb * spec.a;
-    }
-    normal = vec3(0.0);
-    for (int i = 0 ; i < material.nrNormalTex ; ++i) {
-        normal += normalize(texture2D(material.normalTex[i], fragTex).rgb * 2.0 - 1.0);
-    }
-    if (material.nrNormalTex == 0) {
-        normal = fragNormal;
-    }
-
+    defaultMat.reflectivity = material.reflectivity;
+    normal = normalize(fragNormal);
     viewDir = normalize(viewPos - fragPos);
-    if (material.nrNormalTex > 0)
-        viewDir = normalize(tbn * viewDir);
-    vec3 resultColor = vec3(0.0);
 
+    if (material.nrAlbedoTex > 0) {
+        defaultMat.albedo = texture2D(material.albedoTex[0], fragTex).rgb;
+    }
+    if (material.nrSpecularTex > 0) {
+        defaultMat.specular = vec3(texture2D(material.specularTex[0], fragTex).r);
+    }
+    if (material.nrNormalTex > 0) {
+        normal = 2.0 * normalize(texture2D(material.normalTex[0], fragTex).rgb) - 1.0;
+        viewDir = normalize(tbn * viewDir);
+    }
+    if (material.nrReflectionTex > 0) {
+        defaultMat.reflectivity = texture2D(material.reflectionTex[0], fragTex).r;
+    }
+
+    vec3 resultColor = vec3(0.0);
     for (int i = 0 ; i < nrPointLights ; ++i) {
         resultColor += calcPointLight(pointLights[i]);
     }
-
     for (int i = 0 ; i < nrDirLights ; ++i) {
         resultColor += calcDirLight(dirLights[i]);
     }
-
     for (int i = 0 ; i < nrSpotLights ; ++i) {
         resultColor += calcSpotLight(spotLights[i]);
     }
@@ -125,8 +120,8 @@ vec3 calcPointLight(PointLight light) {
     float spec = pow(max(dot(normal, halfwayDir), 0.0), defaultMat.shininess);
     float distance = length(light.position - fragPos);
     float attenuation = light.intensity / (distance * distance);
-    vec3 diffuse = light.color * diff * vec3(defaultMat.albedo) * attenuation;
-    vec3 specular = light.color * spec * vec3(defaultMat.specular).r * attenuation;
+    vec3 diffuse = light.color * diff * defaultMat.albedo * attenuation;
+    vec3 specular = light.color * spec * defaultMat.specular * attenuation * defaultMat.reflectivity;
     return diffuse + specular;
 }
 
@@ -137,8 +132,8 @@ vec3 calcDirLight(DirLight light){
     float diff = max(dot(normal, lightDir), 0.0);
     vec3 halfwayDir = normalize(lightDir + viewDir);
     float spec = pow(max(dot(normal, halfwayDir), 0.0), defaultMat.shininess);
-    vec3 diffuse = light.color * diff * vec3(defaultMat.albedo);
-    vec3 specular = light.color * spec * vec3(defaultMat.specular).r;
+    vec3 diffuse = light.color * diff * defaultMat.albedo;
+    vec3 specular = light.color * spec * defaultMat.specular * defaultMat.reflectivity;
     return diffuse + specular;
 }
 
@@ -154,8 +149,8 @@ vec3 calcSpotLight(SpotLight light) {
     float theta = dot(lightDir, normalize(-light.direction));
     float epsilon = light.innerCutOff - light.outerCutOff;
     float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
-    vec3 diffuse = light.color * diff * vec3(defaultMat.albedo);
-    vec3 specular = light.color * spec * vec3(defaultMat.specular).r;
+    vec3 diffuse = light.color * diff * defaultMat.albedo;
+    vec3 specular = light.color * spec * defaultMat.specular * defaultMat.reflectivity;
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
     return diffuse + specular;

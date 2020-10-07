@@ -16,13 +16,13 @@ uniform mat4 projection;
 
 void main() {
     fragPos = vec3(model * vec4(aPos, 1.0));
-    mat3 normalMatrix = mat3(transpose(inverse(model)));
-    fragNormal = normalize(normalMatrix * aNormal);
+    mat4 normalMatrix = transpose(inverse(model));
+    fragNormal = normalize(normalMatrix * vec4(aNormal, 0.0)).xyz;
     fragTex = aTexCoords;
 
-    vec3 tangent = normalize(normalMatrix * aTangent);
+    vec3 tangent = normalize(normalMatrix * vec4(aTangent, 0.0)).xyz;
     tangent = normalize(tangent - dot(tangent, fragNormal) * fragNormal);
-    vec3 bitangent = cross(fragNormal, tangent);
+    vec3 bitangent = normalize(cross(fragNormal, tangent));
     tbn = transpose(mat3(tangent, bitangent, fragNormal));
 
     gl_Position = projection * view * vec4(fragPos, 1.0);

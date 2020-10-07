@@ -13,9 +13,11 @@ Material::Material() {
     addSetting("nrAlbedoTex", int(0));
     addSetting("nrSpecularTex", int(0));
     addSetting("nrNormalTex", int(0));
+    addSetting("nrReflectionTex", int(0));
     addSetting("albedo", glm::vec3{0.3f});
-    addSetting("specular", glm::vec3{0.9f});
-    addSetting("shininess", 1.f);
+    addSetting("specular", glm::vec3{0.8f});
+    addSetting("shininess", 10.f);
+    addSetting("reflectivity", 1.f);
 }
 
 void Material::prepare() const {

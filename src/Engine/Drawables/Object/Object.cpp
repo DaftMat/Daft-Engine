@@ -138,7 +138,8 @@ void Object::processMaterials(const aiScene *scene) {
 }
 
 void Object::loadMaterialTextures(aiMaterial *mat, size_t index) {
-    std::vector<aiTextureType> types{aiTextureType_DIFFUSE, aiTextureType_SPECULAR, aiTextureType_HEIGHT};
+    std::vector<aiTextureType> types{aiTextureType_DIFFUSE, aiTextureType_SPECULAR, aiTextureType_HEIGHT,
+                                     aiTextureType_REFLECTION};
 
     for (auto type : types) {
         for (size_t i = 0; i < mat->GetTextureCount(type); ++i) {
@@ -172,6 +173,12 @@ void Object::loadMaterialTextures(aiMaterial *mat, size_t index) {
                         type1 = core::Texture::Type::NORMAL;
                         m_constructedMaterial[index]->setSetting("nrNormalTex", texIndex);
                         break;
+                    }
+                    case aiTextureType_REFLECTION: {
+                        int texIndex = m_constructedMaterial[index]->getSetting<int>("nrReflectionTex");
+                        name = "reflectionTex[" + std::to_string(texIndex++) + "]";
+                        type1 = core::Texture::Type::REFLECTION;
+                        m_constructedMaterial[index]->setSetting("nrReflectionTex", texIndex);
                     }
                     default:
                         /// impossible
