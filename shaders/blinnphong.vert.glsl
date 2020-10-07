@@ -22,7 +22,8 @@ void main() {
     float a = -1.0 / (sign + fragNormal.z);
     float b = fragNormal.x * fragNormal.y * a;
     vec3 tangent = normalize(vec3(1.0 + sign + fragNormal.x * fragNormal.x * a, sign * b, -sign * fragNormal.x));
-    vec3 bitangent = normalize(vec3(b, sign + fragNormal.y * fragNormal.y * a, -fragNormal.y));
+    tangent = normalize(tangent - dot(tangent, fragNormal) * fragNormal);
+    vec3 bitangent = cross(fragNormal, tangent);
     tbn = transpose(mat3(tangent, bitangent, fragNormal));
 
     gl_Position = projection * view * vec4(fragPos, 1.0);
