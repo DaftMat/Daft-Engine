@@ -54,7 +54,7 @@ void Object::loadFromFile(std::string path) {
     std::string filepath = std::move(path);
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(
-        filepath, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+        filepath, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::stringstream ss;
         ss << "could not load this file into assimp." << importer.GetErrorString();
@@ -139,7 +139,7 @@ void Object::processMaterials(const aiScene *scene) {
 
 void Object::loadMaterialTextures(aiMaterial *mat, size_t index) {
     std::vector<aiTextureType> types{aiTextureType_DIFFUSE, aiTextureType_SPECULAR, aiTextureType_HEIGHT,
-                                     aiTextureType_REFLECTION};
+                                     aiTextureType_AMBIENT};
 
     for (auto type : types) {
         for (size_t i = 0; i < mat->GetTextureCount(type); ++i) {
@@ -174,11 +174,12 @@ void Object::loadMaterialTextures(aiMaterial *mat, size_t index) {
                         m_constructedMaterial[index]->setSetting("nrNormalTex", texIndex);
                         break;
                     }
-                    case aiTextureType_REFLECTION: {
+                    case aiTextureType_AMBIENT: {
                         int texIndex = m_constructedMaterial[index]->getSetting<int>("nrReflectionTex");
                         name = "reflectionTex[" + std::to_string(texIndex++) + "]";
                         type1 = core::Texture::Type::REFLECTION;
                         m_constructedMaterial[index]->setSetting("nrReflectionTex", texIndex);
+                        break;
                     }
                     default:
                         /// impossible
