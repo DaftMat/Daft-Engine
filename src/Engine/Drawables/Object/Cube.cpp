@@ -56,6 +56,7 @@ void Cube::createCube() {
         std::vector<glm::vec3> positions;
         std::vector<glm::vec3> normals;
         std::vector<glm::vec2> texCoords;
+        std::vector<glm::vec3> tangents;
         core::AttribManager am;
 
         auto axisA = glm::vec3(dir.y, dir.z, dir.x);
@@ -69,6 +70,9 @@ void Cube::createCube() {
                 positions.push_back(pointOnUnitCube * m_radius);
                 normals.push_back(dir);
                 texCoords.push_back(percent);
+                glm::vec3 t, b;
+                core::orthoVectors(dir, t, b);
+                tangents.push_back(t);
 
                 /// Triangles
                 if (x != m_resolution - 1 && y != m_resolution - 1) {

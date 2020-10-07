@@ -12,7 +12,7 @@ namespace daft::core {
 Material::Material() {
     addSetting("nrAlbedoTex", int(0));
     addSetting("nrSpecularTex", int(0));
-    addSetting("hasNormalTex", false);
+    addSetting("nrNormalTex", int(0));
 }
 
 void Material::prepare() const {

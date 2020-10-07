@@ -84,7 +84,7 @@ class ENGINE_API Cylinder : public Object {
    private:
     void createCylinder();
     void createDisk(glm::vec3 pole, std::vector<glm::vec3> &positions, std::vector<glm::vec3> &normals,
-                    std::vector<GLuint> &indices) const;
+                    std::vector<glm::vec3> &tangents, std::vector<GLuint> &indices) const;
 
     int m_meridians;
     int m_parallels;

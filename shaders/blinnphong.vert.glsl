@@ -2,6 +2,7 @@
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoords;
+layout (location = 3) in vec3 aTangent;
 
 out vec3 fragPos;
 out vec3 fragNormal;
@@ -15,13 +16,11 @@ uniform mat4 projection;
 
 void main() {
     fragPos = vec3(model * vec4(aPos, 1.0));
-    fragNormal = normalize(mat3(transpose(inverse(model))) * aNormal);
+    mat3 normalMatrix = mat3(transpose(inverse(model)));
+    fragNormal = normalize(normalMatrix * aNormal);
     fragTex = aTexCoords;
 
-    float sign = sign(fragNormal.z);
-    float a = -1.0 / (sign + fragNormal.z);
-    float b = fragNormal.x * fragNormal.y * a;
-    vec3 tangent = normalize(vec3(1.0 + sign + fragNormal.x * fragNormal.x * a, sign * b, -sign * fragNormal.x));
+    vec3 tangent = normalize(normalMatrix * aTangent);
     tangent = normalize(tangent - dot(tangent, fragNormal) * fragNormal);
     vec3 bitangent = cross(fragNormal, tangent);
     tbn = transpose(mat3(tangent, bitangent, fragNormal));

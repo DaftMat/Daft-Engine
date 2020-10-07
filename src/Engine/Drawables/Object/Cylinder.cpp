@@ -52,6 +52,8 @@ void Cylinder::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this)
 void Cylinder::createCylinder() {
     std::vector<glm::vec3> positions{};
     std::vector<glm::vec3> normals{};
+    std::vector<glm::vec2> texCoords;
+    std::vector<glm::vec3> tangents;
     std::vector<GLuint> indices{};
 
     glm::vec3 northPole{0.f, 1.f, 0.f};
@@ -66,6 +68,9 @@ void Cylinder::createCylinder() {
 
             positions.push_back(center + circleDir * m_radius);
             normals.push_back(circleDir);
+            glm::vec3 t, b;
+            core::orthoVectors(circleDir, t, b);
+            tangents.push_back(t);
         }
     }
 
@@ -83,12 +88,14 @@ void Cylinder::createCylinder() {
         }
     }
 
-    createDisk(northPole, positions, normals, indices);
-    createDisk(southPole, positions, normals, indices);
+    createDisk(northPole, positions, normals, tangents, indices);
+    createDisk(southPole, positions, normals, tangents, indices);
 
     core::AttribManager am{};
     am.addAttrib(positions);
     am.addAttrib(normals);
+    am.addAttrib(texCoords);
+    am.addAttrib(tangents);
     am.indices() = indices;
 
     m_meshObjects.clear();
@@ -98,17 +105,21 @@ void Cylinder::createCylinder() {
 }
 
 void Cylinder::createDisk(glm::vec3 pole, std::vector<glm::vec3> &positions, std::vector<glm::vec3> &normals,
-                          std::vector<GLuint> &indices) const {
+                          std::vector<glm::vec3> &tangents, std::vector<GLuint> &indices) const {
     GLuint startIndex = positions.size();
     GLuint index = startIndex + 1;
     positions.push_back(pole);
     normals.push_back(pole);
+    glm::vec3 t, b;
+    core::orthoVectors(pole, t, b);
+    tangents.push_back(t);
     auto step = circleStep(m_meridians);
     for (int i = 0; i <= m_meridians; ++i) {
         float theta = step * float(i);
         glm::vec3 circleDir = glm::normalize(glm::vec3{glm::cos(theta), 0.f, glm::sin(theta)});
         positions.push_back(pole + circleDir * m_radius);
         normals.push_back(pole);
+        tangents.push_back(t);
 
         if (i > 0) {
             indices.push_back(startIndex);

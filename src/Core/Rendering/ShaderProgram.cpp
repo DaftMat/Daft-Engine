@@ -116,11 +116,12 @@ void ShaderProgram::checkCompileError(GLuint shader, const std::string &type) {
     int success;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if (!success) {
-        char *infoLog = nullptr;
+        char *infoLog;
         glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
         std::stringstream ss;
         ss << "SHADER_COMPILATION ERROR of type : " << type << "\n\t" << infoLog;
         core::Logger::error(std::move(ss));
+        exit(-1);
     }
 }
 
@@ -128,11 +129,12 @@ void ShaderProgram::checkLinkError(GLuint program) {
     int success;
     glGetProgramiv(program, GL_LINK_STATUS, &success);
     if (!success) {
-        char *infoLog = nullptr;
+        char *infoLog;
         glGetProgramInfoLog(program, 1024, nullptr, infoLog);
         std::stringstream ss;
         ss << "PROGRAM_LINKING ERROR \n\t" << infoLog;
         core::Logger::error(std::move(ss));
+        exit(-1);
     }
 }
 }  // namespace daft::core

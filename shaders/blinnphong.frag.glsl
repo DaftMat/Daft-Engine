@@ -32,10 +32,10 @@ struct SpotLight {
 struct Material {
     int nrAlbedoTex;
     int nrSpecularTex;
-    bool hasNormalTex;
+    int nrNormalTex;
     sampler2D albedoTex[MAX_SIZE];
     sampler2D specularTex[MAX_SIZE];
-    sampler2D normalTex;
+    sampler2D normalTex[MAX_SIZE];
     vec3 albedo;
     vec3 specular;
     float shininess;
@@ -70,7 +70,7 @@ vec3 normal;
 void main() {
     if (material.nrAlbedoTex > 0)
         defaultMat.albedo = vec3(0.0);
-    else defaultMat.albedo = vec3(6.0);
+    else defaultMat.albedo = vec3(3.0);
     if (material.nrSpecularTex > 0)
         defaultMat.specular = vec3(0.0);
     else defaultMat.specular = vec3(1.0);
@@ -83,13 +83,16 @@ void main() {
     for (int i = 0 ; i < material.nrSpecularTex ; ++i) {
         defaultMat.specular += texture2D(material.specularTex[i], fragTex).rgb;
     }
-    normal = fragNormal;
-    if (material.hasNormalTex) {
-        normal = normalize(texture2D(material.normalTex, fragTex).rgb * 2.0 - 1.0);
+    normal = vec3(0.0);
+    for (int i = 0 ; i < material.nrNormalTex ; ++i) {
+        normal += normalize(texture2D(material.normalTex[i], fragTex).rgb * 2.0 - 1.0);
+    }
+    if (material.nrNormalTex == 0) {
+        normal = fragNormal;
     }
 
     viewDir = normalize(viewPos - fragPos);
-    if (material.hasNormalTex)
+    if (material.nrNormalTex > 0)
         viewDir = normalize(tbn * viewDir);
     vec3 resultColor = vec3(0.0);
 
@@ -114,7 +117,7 @@ void main() {
 
 vec3 calcPointLight(PointLight light) {
     vec3 lightDir = normalize(light.position - fragPos);
-    if (material.hasNormalTex)
+    if (material.nrNormalTex > 0)
         lightDir = normalize(tbn * lightDir);
     float diff = max(dot(normal, lightDir), 0.0);
     vec3 halfwayDir = normalize(lightDir + viewDir);
@@ -128,7 +131,7 @@ vec3 calcPointLight(PointLight light) {
 
 vec3 calcDirLight(DirLight light){
     vec3 lightDir = normalize(-light.direction);
-    if (material.hasNormalTex)
+    if (material.nrNormalTex > 0)
         lightDir = normalize(tbn * lightDir);
     float diff = max(dot(normal, lightDir), 0.0);
     vec3 halfwayDir = normalize(lightDir + viewDir);
@@ -140,7 +143,7 @@ vec3 calcDirLight(DirLight light){
 
 vec3 calcSpotLight(SpotLight light) {
     vec3 lightDir = normalize(light.position - fragPos);
-    if (material.hasNormalTex)
+    if (material.nrNormalTex > 0)
         lightDir = normalize(tbn * lightDir);
     float diff = max(dot(normal, lightDir), 0.0);
     vec3 halfwayDir = normalize(lightDir + viewDir);

@@ -93,6 +93,7 @@ void Object::processMesh(aiMesh *mesh, const aiScene *scene) {
     std::vector<glm::vec3> positions;
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> texCoords;
+    std::vector<glm::vec3> tangents;
     std::vector<GLuint> indices;
     /// Geometry
     for (size_t i = 0; i < mesh->mNumVertices; ++i) {
@@ -105,8 +106,11 @@ void Object::processMesh(aiMesh *mesh, const aiScene *scene) {
         }
 
         if (mesh->mTextureCoords[0]) {
-            auto t = mesh->mTextureCoords[0][i];
-            texCoords.emplace_back(t.x, t.y);
+            auto tex = mesh->mTextureCoords[0][i];
+            texCoords.emplace_back(tex.x, tex.y);
+
+            auto t = mesh->mTangents[i];
+            tangents.emplace_back(t.x, t.y, t.z);
         }
     }
     /// Topology
@@ -121,6 +125,7 @@ void Object::processMesh(aiMesh *mesh, const aiScene *scene) {
     am.addAttrib(positions);
     am.addAttrib(normals);
     am.addAttrib(texCoords);
+    am.addAttrib(tangents);
     am.indices() = indices;
     m_constructedMeshes.emplace_back(am, mesh->mMaterialIndex);
 }
@@ -162,9 +167,10 @@ void Object::loadMaterialTextures(aiMaterial *mat, size_t index) {
                         break;
                     }
                     case aiTextureType_HEIGHT: {
-                        name = "normalTex";
+                        int texIndex = m_constructedMaterial[index]->getSetting<int>("nrNormalTex");
+                        name = "normalTex[" + std::to_string(texIndex++) + "]";
                         type1 = core::Texture::Type::NORMAL;
-                        m_constructedMaterial[index]->setSetting("hasNormalTex", true);
+                        m_constructedMaterial[index]->setSetting("nrNormalTex", texIndex);
                         break;
                     }
                     default:

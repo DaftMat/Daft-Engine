@@ -62,6 +62,7 @@ void Torus::createTorus() {
     std::vector<glm::vec3> positions;
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> texCoords;
+    std::vector<glm::vec3> tangents;
 
     float mStep = (2.f * glm::pi<float>()) / float(m_meridians);
     float pStep = (2.f * glm::pi<float>()) / float(m_parallels);
@@ -77,8 +78,12 @@ void Torus::createTorus() {
                             m_outerRadius * glm::sin(pAngle) * glm::vec3{0.f, 1.f, 0.f};
 
             positions.push_back(pos);
-            normals.push_back(glm::normalize(pos - outCenter));
+            glm::vec3 n = glm::normalize(pos - outCenter);
+            normals.push_back(n);
             texCoords.emplace_back(mAngle, pAngle);
+            glm::vec3 t, b;
+            core::orthoVectors(n, t, b);
+            tangents.push_back(t);
         }
     }
     am.addAttrib(positions);
