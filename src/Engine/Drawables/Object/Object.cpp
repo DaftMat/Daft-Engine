@@ -133,7 +133,7 @@ void Object::processMaterials(const aiScene *scene) {
 }
 
 void Object::loadMaterialTextures(aiMaterial *mat, size_t index) {
-    std::vector<aiTextureType> types{aiTextureType_DIFFUSE, aiTextureType_SPECULAR, aiTextureType_NORMALS};
+    std::vector<aiTextureType> types{aiTextureType_DIFFUSE, aiTextureType_SPECULAR, aiTextureType_HEIGHT};
 
     for (auto type : types) {
         for (size_t i = 0; i < mat->GetTextureCount(type); ++i) {
@@ -161,7 +161,7 @@ void Object::loadMaterialTextures(aiMaterial *mat, size_t index) {
                         m_constructedMaterial[index]->setSetting("nrSpecularTex", texIndex);
                         break;
                     }
-                    case aiTextureType_NORMALS: {
+                    case aiTextureType_HEIGHT: {
                         name = "normalTex";
                         type1 = core::Texture::Type::NORMAL;
                         m_constructedMaterial[index]->setSetting("hasNormalTex", true);

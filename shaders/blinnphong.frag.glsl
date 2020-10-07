@@ -5,6 +5,8 @@ in vec3 fragPos;
 in vec3 fragNormal;
 in vec2 fragTex;
 
+in mat3 tbn;
+
 #define MAX_SIZE 32
 
 struct PointLight {
@@ -30,7 +32,7 @@ struct SpotLight {
 struct Material {
     int nrAlbedoTex;
     int nrSpecularTex;
-    int hasNormalTex;
+    bool hasNormalTex;
     sampler2D albedoTex[MAX_SIZE];
     sampler2D specularTex[MAX_SIZE];
     sampler2D normalTex;
@@ -63,6 +65,7 @@ vec3 calcDirLight(DirLight light);
 vec3 calcSpotLight(SpotLight light);
 
 vec3 viewDir;
+vec3 normal;
 
 void main() {
     if (material.nrAlbedoTex > 0)
@@ -80,8 +83,14 @@ void main() {
     for (int i = 0 ; i < material.nrSpecularTex ; ++i) {
         defaultMat.specular += texture2D(material.specularTex[i], fragTex).rgb;
     }
+    normal = fragNormal;
+    if (material.hasNormalTex) {
+        normal = normalize(texture2D(material.normalTex, fragTex).rgb * 2.0 - 1.0);
+    }
 
     viewDir = normalize(viewPos - fragPos);
+    if (material.hasNormalTex)
+        viewDir = normalize(tbn * viewDir);
     vec3 resultColor = vec3(0.0);
 
     for (int i = 0 ; i < nrPointLights ; ++i) {
@@ -105,9 +114,11 @@ void main() {
 
 vec3 calcPointLight(PointLight light) {
     vec3 lightDir = normalize(light.position - fragPos);
-    float diff = max(dot(fragNormal, lightDir), 0.0);
+    if (material.hasNormalTex)
+        lightDir = normalize(tbn * lightDir);
+    float diff = max(dot(normal, lightDir), 0.0);
     vec3 halfwayDir = normalize(lightDir + viewDir);
-    float spec = pow(max(dot(fragNormal, halfwayDir), 0.0), defaultMat.shininess);
+    float spec = pow(max(dot(normal, halfwayDir), 0.0), defaultMat.shininess);
     float distance = length(light.position - fragPos);
     float attenuation = light.intensity / (distance * distance);
     vec3 diffuse = light.color * diff * vec3(defaultMat.albedo) * attenuation;
@@ -117,9 +128,11 @@ vec3 calcPointLight(PointLight light) {
 
 vec3 calcDirLight(DirLight light){
     vec3 lightDir = normalize(-light.direction);
-    float diff = max(dot(fragNormal, lightDir), 0.0);
+    if (material.hasNormalTex)
+        lightDir = normalize(tbn * lightDir);
+    float diff = max(dot(normal, lightDir), 0.0);
     vec3 halfwayDir = normalize(lightDir + viewDir);
-    float spec = pow(max(dot(fragNormal, halfwayDir), 0.0), defaultMat.shininess);
+    float spec = pow(max(dot(normal, halfwayDir), 0.0), defaultMat.shininess);
     vec3 diffuse = light.color * diff * vec3(defaultMat.albedo);
     vec3 specular = light.color * spec * vec3(defaultMat.specular).r;
     return diffuse + specular;
@@ -127,9 +140,11 @@ vec3 calcDirLight(DirLight light){
 
 vec3 calcSpotLight(SpotLight light) {
     vec3 lightDir = normalize(light.position - fragPos);
-    float diff = max(dot(fragNormal, lightDir), 0.0);
+    if (material.hasNormalTex)
+        lightDir = normalize(tbn * lightDir);
+    float diff = max(dot(normal, lightDir), 0.0);
     vec3 halfwayDir = normalize(lightDir + viewDir);
-    float spec = pow(max(dot(fragNormal, halfwayDir), 0.0), defaultMat.shininess);
+    float spec = pow(max(dot(normal, halfwayDir), 0.0), defaultMat.shininess);
     float distance = length(light.position - fragPos);
     float attenuation = light.intensity / (distance * distance);
     float theta = dot(lightDir, normalize(-light.direction));
