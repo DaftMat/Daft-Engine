@@ -42,12 +42,6 @@ class ENGINE_API BSpline : public Object {
     BSpline &operator=(BSpline &&) noexcept = default;
 
     /**
-     * Render the triangles related to the spline (e.g. tensor)
-     * @param shader - shader to render with.
-     */
-    void render(const core::ShaderProgram &shader) override {}
-
-    /**
      * Renders the edges and the control polygons of the b-spline.
      * @param shader - shader to render with.
      */
