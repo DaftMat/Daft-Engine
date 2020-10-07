@@ -40,6 +40,8 @@ Renderer::Renderer(int width, int height) {
     m_screenQuad->addQuad(-1.f, 1.f, 2.f, 2.f);
     m_screenQuad->quad(0).setTexture(m_multisamplePass->outTexture());
 
+    buildGrid(100);
+
     updateProjectionMatrix();
     updateViewMatrix();
 }
@@ -80,6 +82,10 @@ void Renderer::render() {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         m_shaders[1]->setVec3("color", glm::vec3{0.f});
         m_root->renderEdges(*m_shaders[1]);
+        /// draw grid
+        m_shaders[1]->setMat4("model", glm::mat4{1.f});
+        /// grid
+        drawGrid();
         m_shaders[1]->stop();
     }
 
@@ -252,6 +258,66 @@ void Renderer::_setShader() {
     m_newShader = Renderer::AvailableShaders::None;
     updateViewMatrix();
     updateProjectionMatrix();
+}
+
+void Renderer::buildGrid(int size) {
+    std::vector<glm::vec3> positions;
+    std::vector<GLuint> indices;
+
+    /// grid
+    GLuint index;
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            index = GLuint(i + j * size);
+            positions.emplace_back(float(i) - float(size) / 2.f, 0.f, float(j) - float(size) / 2.f);
+
+            if (i < size && j < size && (i != size / 2 || j != size / 2)) {
+                if (i < size - 1) {
+                    indices.push_back(index);
+                    indices.push_back(index + 1);
+                }
+                if (j < size - 1) {
+                    indices.push_back(index);
+                    indices.push_back(index + size);
+                }
+            }
+        }
+    }
+
+    core::AttribManager amGrid;
+    amGrid.addAttrib(positions);
+    amGrid.indices() = indices;
+    m_grid.grid.reset(std::move(amGrid));
+
+    /// arrows
+    positions.clear();
+    indices.clear();
+    indices.push_back(0);
+    indices.push_back(1);
+    positions.emplace_back(0.f, 0.f, 0.f);
+    positions.emplace_back(0.f, 0.f, 0.f);
+    for (int i = 0; i < 3; ++i) {
+        positions[1] = core::axis()[i];
+        core::AttribManager amAxis;
+        amAxis.addAttrib(positions);
+        amAxis.indices() = indices;
+        m_grid.axis.emplace_back(std::move(amAxis));
+    }
+}
+
+void Renderer::drawGrid() const {
+    /// grid
+    m_shaders[1]->setVec3("color", glm::vec3{0.1f});
+    m_grid.grid.prepare();
+    m_grid.grid.render(GL_LINES);
+    m_grid.grid.unbind();
+    /// axis
+    for (int i = 0; i < 3; ++i) {
+        m_shaders[1]->setVec3("color", core::axis()[i]);
+        m_grid.axis[i].prepare();
+        m_grid.axis[i].render(GL_LINES);
+        m_grid.axis[i].unbind();
+    }
 }
 
 }  // namespace daft::engine

@@ -81,6 +81,8 @@ void orthoVectors(glm::vec3 n, glm::vec3 &u, glm::vec3 &v);
 template <typename T>
 constexpr T lerp(T a, T b, float u);
 
+std::vector<glm::vec3> axis();
+
 }  // namespace daft::core
 
 #include "Adapters.inl"

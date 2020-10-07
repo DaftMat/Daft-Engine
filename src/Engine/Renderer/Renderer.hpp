@@ -157,6 +157,8 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     void _addDrawable();
     void _setSelection();
     void _setShader();
+    void buildGrid(int size = 50);
+    void drawGrid() const;
 
     static bool GLinitialized;
     int m_width{0}, m_height{0};
@@ -180,6 +182,11 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     glm::vec3 m_defaultSkyColor{0.35, 0.35, 0.35};
     bool m_drawEdges{true};
+
+    struct Grid {
+        core::Mesh grid;
+        std::vector<core::Mesh> axis;
+    } m_grid;
 };
 }  // namespace engine
 }  // namespace daft
