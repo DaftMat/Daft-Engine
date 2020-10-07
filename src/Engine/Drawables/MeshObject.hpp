@@ -22,7 +22,7 @@ class ENGINE_API MeshObject : public core::NonCopyable {
      * @param mesh - mesh wrapped.
      * @param material - material wrapped.
      */
-    explicit MeshObject(std::vector<Mesh> meshes = {Mesh{}},
+    explicit MeshObject(std::vector<Mesh> meshes = {},
                         std::shared_ptr<Material> material = std::make_shared<Material>());
 
     /**
