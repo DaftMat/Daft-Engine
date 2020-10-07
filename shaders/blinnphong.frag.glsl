@@ -70,13 +70,12 @@ vec3 normal;
 void main() {
     if (material.nrAlbedoTex > 0)
         defaultMat.albedo = vec3(0.0);
-    else defaultMat.albedo = vec3(3.0);
+    else defaultMat.albedo = material.albedo;
     if (material.nrSpecularTex > 0)
         defaultMat.specular = vec3(0.0);
-    else defaultMat.specular = vec3(1.0);
+    else defaultMat.specular = material.specular;
 
-    defaultMat.specular = vec3(0.0);
-    defaultMat.shininess = 3.0;
+    defaultMat.shininess = material.shininess;
     for (int i = 0 ; i < material.nrAlbedoTex ; ++i) {
         defaultMat.albedo += texture2D(material.albedoTex[i], fragTex).rgb;
     }
