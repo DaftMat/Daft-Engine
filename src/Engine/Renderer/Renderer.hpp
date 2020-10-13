@@ -93,7 +93,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
      * Adds a drawable to the scene tree.
      * @param drawable - drawable to add.
      */
-    void addDrawable(Drawable::Type type) { m_addNextFrame = type; }
+    void addDrawable(Drawable::Type type) { m_addNextFrame.push_back(type); }
 
     void addCustomObject(std::string filePath);
 
@@ -176,7 +176,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     daft::engine::Camera m_camera;
 
     bool m_removeNextFrame{false};
-    Drawable::Type m_addNextFrame{Drawable::Type::None};
+    std::vector<Drawable::Type> m_addNextFrame;
     std::string m_filePathCustom;
     AvailableShaders m_newShader{AvailableShaders::None};
 

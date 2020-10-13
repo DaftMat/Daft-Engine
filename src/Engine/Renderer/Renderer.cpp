@@ -132,7 +132,7 @@ void Renderer::setSelection(std::string s) {
 }
 
 void Renderer::addCustomObject(std::string filePath) {
-    m_addNextFrame = Drawable::Type::Custom;
+    m_addNextFrame.push_back(Drawable::Type::Custom);
     m_filePathCustom = std::move(filePath);
 }
 
@@ -175,64 +175,68 @@ void Renderer::_removeSelection() {
 }
 
 void Renderer::_addDrawable() {
-    std::shared_ptr<Drawable> drawable{nullptr};
-    switch (m_addNextFrame) {
-        case Drawable::Type::Group:
-            drawable = std::make_shared<Composite>();
-            break;
-        case Drawable::Type::Sphere:
-            drawable = std::make_shared<Sphere>();
-            break;
-        case Drawable::Type::Torus:
-            drawable = std::make_shared<Torus>();
-            break;
-        case Drawable::Type::Cube:
-            drawable = std::make_shared<Cube>();
-            break;
-        case Drawable::Type::Cylinder:
-            drawable = std::make_shared<Cylinder>();
-            break;
-        case Drawable::Type::BSpline: {
-            std::vector<glm::vec3> controlPoints;
-            controlPoints.emplace_back(glm::vec3{0.f});
-            drawable = std::make_shared<BSpline>(controlPoints, 1);
-            break;
+    for (auto type : m_addNextFrame) {
+        std::shared_ptr<Drawable> drawable{nullptr};
+        switch (type) {
+            case Drawable::Type::Group:
+                drawable = std::make_shared<Composite>();
+                break;
+            case Drawable::Type::Sphere:
+                drawable = std::make_shared<Sphere>();
+                break;
+            case Drawable::Type::Torus:
+                drawable = std::make_shared<Torus>();
+                break;
+            case Drawable::Type::Cube:
+                drawable = std::make_shared<Cube>();
+                break;
+            case Drawable::Type::Cylinder:
+                drawable = std::make_shared<Cylinder>();
+                break;
+            case Drawable::Type::BSpline: {
+                std::vector<glm::vec3> controlPoints;
+                controlPoints.emplace_back(glm::vec3{0.f});
+                drawable = std::make_shared<BSpline>(controlPoints, 1);
+                break;
+            }
+            case Drawable::Type::Custom: {
+                drawable = std::make_shared<Object>(std::move(m_filePathCustom));
+                m_filePathCustom.clear();
+                break;
+            }
+            case Drawable::Type::PointLight: {
+                auto toAdd = std::make_shared<PointLight>();
+                drawable = toAdd;
+                m_lightPool->addPoint(toAdd);
+                break;
+            }
+            case Drawable::Type::DirLight: {
+                auto toAdd = std::make_shared<DirLight>();
+                drawable = toAdd;
+                m_lightPool->addDir(toAdd);
+                break;
+            }
+            case Drawable::Type::SpotLight: {
+                auto toAdd = std::make_shared<SpotLight>();
+                drawable = toAdd;
+                m_lightPool->addSpot(toAdd);
+                break;
+            }
+            default:
+                break;
         }
-        case Drawable::Type::Custom: {
-            drawable = std::make_shared<Object>(std::move(m_filePathCustom));
-            m_filePathCustom.clear();
-            break;
-        }
-        case Drawable::Type::PointLight: {
-            auto toAdd = std::make_shared<PointLight>();
-            drawable = toAdd;
-            m_lightPool->addPoint(toAdd);
-            break;
-        }
-        case Drawable::Type::DirLight: {
-            auto toAdd = std::make_shared<DirLight>();
-            drawable = toAdd;
-            m_lightPool->addDir(toAdd);
-            break;
-        }
-        case Drawable::Type::SpotLight: {
-            auto toAdd = std::make_shared<SpotLight>();
-            drawable = toAdd;
-            m_lightPool->addSpot(toAdd);
-            break;
-        }
-        default:
-            return;
-    }
-    m_addNextFrame = Drawable::Type::None;
 
-    auto selection = getSelection();
-    if (selection && selection->isComposite()) {
-        dynamic_cast<daft::engine::Composite *>(selection)->add(drawable);
-    } else {
-        m_root->add(drawable);
+        if (drawable) {
+            auto selection = getSelection();
+            if (selection && selection->isComposite()) {
+                dynamic_cast<daft::engine::Composite *>(selection)->add(drawable);
+            } else {
+                m_root->add(drawable);
+            }
+            setSelection(drawable->name());
+        }
     }
-    setSelection(drawable->name());
+    m_addNextFrame.clear();
 }
 
 void Renderer::_setSelection() {
