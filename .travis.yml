@@ -30,6 +30,7 @@ addons:
       - libassimp-dev
       - libeigen3-dev
       - libglew-dev
+      - libglfw3-dev
     sources:
       - ubuntu-toolchain-r-test
       - llvm-toolchain-bionic-9
@@ -40,7 +41,7 @@ addons:
       - glm
       - eigen
       - assimp
-      - fmt
+      - glfw3
 
 before_install:
   - export CHECKOUT_PATH=`pwd`;

@@ -13,7 +13,7 @@ install:
   - git pull
   - .\bootstrap-vcpkg.bat
   - vcpkg update
-  - vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows
+  - vcpkg install glm:x64-windows eigen3:x64-windows assimp:x64-windows glfw3:x64-windows
   - vcpkg integrate install
 
 before_build:
