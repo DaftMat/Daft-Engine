@@ -7,8 +7,8 @@ namespace daft::app {
 GLFWExample::GLFWExample() {
     init(1600, 900);
     auto &renderer = m_window->renderer();
-    GLFWWindow::setFramebufferCallback([&renderer](int width, int height) { renderer.resize(width, height); });
 
+    GLFWWindow::setFramebufferCallback([&renderer](int width, int height) { renderer.resize(width, height); });
     GLFWWindow::setMouseMoveCallback([&renderer](float xpos, float ypos) {
         renderer.processMouseMove(glm::vec2{xpos, ypos});
     });
