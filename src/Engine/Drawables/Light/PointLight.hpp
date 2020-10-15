@@ -78,6 +78,15 @@ class ENGINE_API PointLight : public Light {
     void loadToShader(const core::ShaderProgram &shader, int index) const override;
 
     /**
+     * Render the scene to this light's depth buffer to create a light map.
+     * @param root - objects to render to the light map.
+     * @param shader - shadow shader.
+     * @param fbo - frame buffer to use to render the light map.
+     */
+    void renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
+                          const Camera &viewCam) override;
+
+    /**
      * Accepts a DrawableVisitor.
      * @param visitor - visitor.
      */

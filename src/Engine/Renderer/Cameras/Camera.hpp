@@ -91,6 +91,8 @@ class ENGINE_API Camera {
      */
     void flip();
 
+    [[nodiscard]] glm::vec3 target() const { return m_target; }
+
    private:
     void updateCameraVectors();
     void updatePosition();

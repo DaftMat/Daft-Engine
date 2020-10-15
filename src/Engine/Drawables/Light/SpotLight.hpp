@@ -58,6 +58,9 @@ class ENGINE_API SpotLight : public Light {
      */
     void loadToShader(const core::ShaderProgram &shader, int index) const override;
 
+    void renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
+                          const Camera &viewCam) override;
+
     /**
      * Accepts a DrawableVisitor.
      * @param visitor - visitor.

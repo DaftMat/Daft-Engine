@@ -10,17 +10,26 @@ in mat3 tbn;
 #define MAX_SIZE 32
 
 struct PointLight {
+    sampler2D shadowMap;
+    mat4 lightSpaceMatrix;
+
     vec3 position;
     float intensity;
     vec3 color;
 };
 
 struct DirLight {
+    sampler2D shadowMap;
+    mat4 lightSpaceMatrix;
+
     vec3 direction;
     vec3 color;
 };
 
 struct SpotLight {
+    sampler2D shadowMap;
+    mat4 lightSpaceMatrix;
+
     vec3 position;
     vec3 direction;
     float innerCutOff;
@@ -67,6 +76,8 @@ uniform Material material;
 vec3 calcPointLight(PointLight light);
 vec3 calcDirLight(DirLight light);
 vec3 calcSpotLight(SpotLight light);
+
+float calculateShadow(sampler2D shadowMap, mat4 lightSpaceMatrix);
 
 vec3 viewDir;
 vec3 normal;
@@ -122,7 +133,8 @@ vec3 calcPointLight(PointLight light) {
     float attenuation = light.intensity / (distance * distance);
     vec3 diffuse = light.color * diff * defaultMat.albedo * attenuation;
     vec3 specular = light.color * spec * defaultMat.specular * attenuation * defaultMat.reflectivity;
-    return diffuse + specular;
+    float shadow = 1.0 - calculateShadow(light.shadowMap, light.lightSpaceMatrix);
+    return shadow * (diffuse + specular);
 }
 
 vec3 calcDirLight(DirLight light){
@@ -134,7 +146,8 @@ vec3 calcDirLight(DirLight light){
     float spec = pow(max(dot(normal, halfwayDir), 0.0), defaultMat.shininess);
     vec3 diffuse = light.color * diff * defaultMat.albedo;
     vec3 specular = light.color * spec * defaultMat.specular * defaultMat.reflectivity;
-    return diffuse + specular;
+    float shadow = 1.0 - calculateShadow(light.shadowMap, light.lightSpaceMatrix);
+    return shadow * (diffuse + specular);
 }
 
 vec3 calcSpotLight(SpotLight light) {
@@ -154,4 +167,22 @@ vec3 calcSpotLight(SpotLight light) {
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
     return diffuse + specular;
+}
+
+float calculateShadow(sampler2D shadowMap, mat4 lightSpaceMatrix) {
+    vec4 fragPosLightSpace = lightSpaceMatrix * vec4(fragPos, 1.0);
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    projCoords = projCoords * 0.5 + 0.5;
+    float currentDepth = projCoords.z;
+    float eps = 5e-3;
+    // PCF
+    float shadow = 0.0;
+    vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+    for (int i = -1 ; i <= 1 ; ++i) {
+        for (int j = -1 ; j <= 1 ; ++j) {
+            float depth = texture2D(shadowMap, projCoords.xy + vec2(i, j) * texelSize).r;
+            shadow += currentDepth - eps > depth ? 1.0 : 0.0;
+        }
+    }
+    return shadow / 9;
 }

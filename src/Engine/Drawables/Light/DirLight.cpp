@@ -4,6 +4,7 @@
 #include "DirLight.hpp"
 
 #include <Core/Utils/DrawableVisitor.hpp>
+#include <Engine/Drawables/Composite.hpp>
 #include <Engine/Drawables/Object/primitives.hpp>
 
 namespace daft::engine {
@@ -12,6 +13,7 @@ int DirLight::m_nrDirLight{0};
 DirLight::DirLight(glm::vec3 dir, glm::vec3 color, Composite *parent, std::string name)
     : Light(color, parent, std::move(name)), m_direction{dir}, m_baseDirection{dir} {
     createDirLight();
+    m_shadowMap.id() = m_fbo->textures()[0];
 }
 
 core::SettingManager DirLight::getSettings() const {
@@ -31,6 +33,23 @@ void DirLight::loadToShader(const core::ShaderProgram &shader, int index) const 
     std::string name = "dirLights[" + std::to_string(index) + "]";
     shader.setVec3(name + ".direction", m_direction);
     shader.setVec3(name + ".color", color());
+    shader.setMat4(name + ".lightSpaceMatrix", m_lightSpaceMatrix);
+}
+
+void DirLight::renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
+                                const Camera &viewCam) {
+    m_fbo->use();
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glm::vec3 center = viewCam.target();
+    glm::vec3 cameraPos = center - m_direction * 10.f;
+    glm::vec3 right = glm::cross(m_direction, glm::vec3{0.f, 1.f, 0.f});
+    glm::vec3 up = glm::cross(right, m_direction);
+    glm::mat4 lightView = glm::lookAt(cameraPos, cameraPos + m_direction, up);
+    glm::mat4 lightProj = glm::ortho(-20.f, 20.f, -20.f, 20.f, 1.f, 40.f);
+    m_lightSpaceMatrix = lightProj * lightView;
+    shader.setMat4("lightSpaceMatrix", m_lightSpaceMatrix);
+    root->render(shader);
+    m_fbo->stop(screenWidth, screenHeight);
 }
 
 void DirLight::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }

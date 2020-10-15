@@ -3,6 +3,7 @@
 //
 #pragma once
 #include <API.hpp>
+#include <Engine/Renderer/Cameras/Camera.hpp>
 
 #include "Light.hpp"
 
@@ -57,6 +58,9 @@ class ENGINE_API DirLight : public Light {
      * @param index - index of the light in its list.
      */
     void loadToShader(const core::ShaderProgram &shader, int index) const override;
+
+    void renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
+                          const Camera &viewCam) override;
 
     /**
      * Accepts a DrawableVisitor.

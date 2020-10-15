@@ -16,7 +16,7 @@ namespace daft::core {
  */
 class Texture : public NonCopyable {
    public:
-    enum class Type { ALBEDO, SPECULAR, NORMAL, REFLECTION };
+    enum class Type { ALBEDO, SPECULAR, NORMAL, REFLECTION, NONE };
 
     /**
      * Base constructor.

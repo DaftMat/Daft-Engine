@@ -4,9 +4,13 @@
 #pragma once
 #include <API.hpp>
 #include <Core/Geometry/Mesh.hpp>
+#include <Core/Materials/Material.hpp>
+#include <Core/Rendering/FrameBufferObject.hpp>
 #include <Engine/Drawables/Drawable.hpp>
+#include <memory>
 
 namespace daft::engine {
+class Camera;
 /**
  * Base class for any light in a 3D world.
  */
@@ -20,8 +24,7 @@ class Light : public Drawable {
      * @param color - color emitted by the light.
      */
     explicit Light(glm::vec3 color = glm::vec3{1.f}, Composite *parent = nullptr,
-                   std::string name = "Light" + std::to_string(m_nrLight++))
-        : Drawable(parent, std::move(name)), m_color{color} {}
+                   std::string name = "Light" + std::to_string(m_nrLight++));
 
     /**
      * Destructor.
@@ -100,6 +103,15 @@ class Light : public Drawable {
     virtual void loadToShader(const core::ShaderProgram &shader, int index) const = 0;
 
     /**
+     * Render the scene to this light's depth buffer to create a light map.
+     * @param root - objects to render to the light map.
+     * @param shader - shadow shader.
+     * @param fbo - frame buffer to use to render the light map.
+     */
+    virtual void renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
+                                  const Camera &viewCam) = 0;
+
+    /**
      * Resets the light.
      */
     void reset() override;
@@ -128,8 +140,14 @@ class Light : public Drawable {
      */
     [[nodiscard]] bool isLight() const override { return true; }
 
+    const core::Texture &shadowMap() const { return m_shadowMap; }
+
    protected:
     Mesh m_mesh;
+    core::Texture m_shadowMap;
+    glm::mat4 m_lightSpaceMatrix{1.f};
+
+    std::unique_ptr<core::FrameBufferObject> m_fbo{nullptr};
 
    private:
     glm::vec3 m_color;

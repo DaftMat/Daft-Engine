@@ -22,4 +22,13 @@ void Light::reset() {
     Drawable::reset();
     m_mesh.clear();
 }
+
+Light::Light(glm::vec3 color, Composite *parent, std::string name)
+    : Drawable(parent, std::move(name)),
+      m_shadowMap{"shadowMap", core::Texture::Type::NONE},
+      m_fbo{std::make_unique<core::FrameBufferObject>(
+          2048, 2048, 1,
+          core::FrameBufferObject::Attachments{core::FrameBufferObject::Attachments::Type::NONE, 0,
+                                               core::FrameBufferObject::Attachments::Type::TEXTURE})},
+      m_color{color} {}
 }  // namespace daft::engine

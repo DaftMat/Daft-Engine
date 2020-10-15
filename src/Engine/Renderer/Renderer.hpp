@@ -183,6 +183,8 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     glm::vec3 m_defaultSkyColor{0.35, 0.35, 0.35};
     bool m_drawEdges{true};
 
+    std::unique_ptr<core::ShaderProgram> m_shadowShader{nullptr};
+
     struct Grid {
         core::Mesh grid;
         std::vector<core::Mesh> axis;

@@ -46,6 +46,15 @@ class ENGINE_API LightPool : public core::NonCopyable {
     void loadToShader(const core::ShaderProgram &shader) const;
 
     /**
+     * Render the scene to this light's depth buffer to create a light map.
+     * @param root - objects to render to the light map.
+     * @param shader - shadow shader.
+     * @param fbo - frame buffer to use to render the light map.
+     */
+    void renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
+                          const Camera &viewCam);
+
+    /**
      * Adds a PointLight to the pool.
      * @param pointLight - point light to add.
      */

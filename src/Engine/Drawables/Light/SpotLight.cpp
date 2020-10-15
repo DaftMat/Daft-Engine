@@ -5,6 +5,7 @@
 
 #include <Core/Utils/DrawableVisitor.hpp>
 #include <Engine/Drawables/Object/primitives.hpp>
+#include <Engine/Renderer/Cameras/Camera.hpp>
 
 namespace daft::engine {
 int SpotLight::m_nrSpotLight{0};
@@ -71,6 +72,9 @@ void SpotLight::loadToShader(const core::ShaderProgram &shader, int index) const
     shader.setFloat(name + ".intensity", m_intensity);
     shader.setVec3(name + ".color", color());
 }
+
+void SpotLight::renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
+                                 const daft::engine::Camera &viewCam) {}
 
 void SpotLight::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
 

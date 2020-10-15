@@ -40,6 +40,9 @@ Renderer::Renderer(int width, int height) {
     m_screenQuad->addQuad(-1.f, 1.f, 2.f, 2.f);
     m_screenQuad->quad(0).setTexture(m_multisamplePass->outTexture());
 
+    m_shadowShader =
+        std::make_unique<core::ShaderProgram>("shaders/shadowmap.vert.glsl", "shaders/shadowmap.frag.glsl");
+
     buildGrid(100);
 
     updateProjectionMatrix();
@@ -64,15 +67,18 @@ void Renderer::clearGL() const {
 }
 
 void Renderer::render() {
-    /// prepare opengl objects
+    glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
+    /// render shadow maps
+    m_shadowShader->use();
+    m_lightPool->renderToLightMap(m_root.get(), *m_shadowShader, m_width, m_height, m_camera);
+    m_shadowShader->stop();
+
     m_multisamplePass->use();
     clearGL();
-
+    /// draw objects
     m_shaders[0]->use();
     /// add lights to shader
     m_lightPool->loadToShader(*m_shaders[0]);
-    /// draw objects
-    glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
     m_root->render(*m_shaders[0]);
     m_shaders[0]->stop();
 

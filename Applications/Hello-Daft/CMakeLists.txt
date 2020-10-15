@@ -3,7 +3,7 @@ set(app_target helloDaft)
 #GLFW
 find_package(glfw3 CONFIG REQUIRED)
 
-set(EXT_LIBS glfw)
+set(EXT_LIBS glfw ${CMAKE_DL_LIBS})
 
 file(GLOB sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
 file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
