@@ -10,7 +10,7 @@
 
 namespace daft::engine {
 class HDRPass : public core::NonCopyable {
-    HDRPass(int width, int height, int multisamples = 32) {}
+    HDRPass(int width, int height, int multisamples = 32);
 
     ~HDRPass() = default;
 
@@ -22,7 +22,7 @@ class HDRPass : public core::NonCopyable {
 
     void use() const { m_multisample->use(); }
 
-    void stop(int width, int height) {}
+    void stop(int width, int height);
 
    private:
     int m_width, m_height;

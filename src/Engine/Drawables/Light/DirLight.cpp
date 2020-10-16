@@ -18,11 +18,11 @@ DirLight::DirLight(glm::vec3 dir, glm::vec3 color, Composite *parent, std::strin
 
 core::SettingManager DirLight::getSettings() const {
     core::SettingManager sm;
-    sm.add("Color", color() * 255.f);
+    sm.add("Color", color());
     return sm;
 }
 
-void DirLight::setSettings(const core::SettingManager &s) { color() = s.get<glm::vec3>("Color") / 255.f; }
+void DirLight::setSettings(const core::SettingManager &s) { color() = s.get<glm::vec3>("Color"); }
 
 void DirLight::setTransformations(const core::SettingManager &t) {
     rotations() = t.get<glm::vec3>("Rotations");
@@ -33,7 +33,7 @@ void DirLight::loadToShader(const core::ShaderProgram &shader, int index) const 
     std::string name = "dirLights[" + std::to_string(index) + "]";
     shader.setVec3(name + ".direction", m_direction);
     shader.setVec3(name + ".color", color());
-    shader.setMat4(name + ".lightSpaceMatrix", m_lightSpaceMatrix);
+    shader.setMat4(name + ".shadowData.lightSpaceMatrix", m_lightSpaceMatrix);
 }
 
 void DirLight::renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,

@@ -8,7 +8,7 @@ void LightPool::loadToShader(const core::ShaderProgram &shader) const {
     int index = 0;
     for (size_t i = 0; i < m_pointLights.size(); ++i) {
         m_pointLights[i]->loadToShader(shader, int(i));
-        shader.setInt("pointLights[" + std::to_string(i) + "].shadowMap", 31 - index);
+        shader.setInt("pointLights[" + std::to_string(i) + "].shadowData.shadowMap", 31 - index);
         glActiveTexture(GL_TEXTURE31 - index++);
         m_pointLights[i]->shadowMap().bind();
     }
@@ -16,7 +16,7 @@ void LightPool::loadToShader(const core::ShaderProgram &shader) const {
 
     for (size_t i = 0; i < m_dirLights.size(); ++i) {
         m_dirLights[i]->loadToShader(shader, int(i));
-        shader.setInt("dirLights[" + std::to_string(i) + "].shadowMap", 31 - index);
+        shader.setInt("dirLights[" + std::to_string(i) + "].shadowData.shadowMap", 31 - index);
         glActiveTexture(GL_TEXTURE31 - index++);
         m_dirLights[i]->shadowMap().bind();
     }
@@ -24,7 +24,7 @@ void LightPool::loadToShader(const core::ShaderProgram &shader) const {
 
     for (size_t i = 0; i < m_spotLights.size(); ++i) {
         m_spotLights[i]->loadToShader(shader, int(i));
-        shader.setInt("spotLights[" + std::to_string(i) + "].shadowMap", 31 - index);
+        shader.setInt("spotLights[" + std::to_string(i) + "].shadowData.shadowMap", 31 - index);
         glActiveTexture(GL_TEXTURE31 - index++);
         m_spotLights[i]->shadowMap().bind();
     }

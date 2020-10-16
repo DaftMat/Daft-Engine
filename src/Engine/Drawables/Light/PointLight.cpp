@@ -19,13 +19,13 @@ PointLight::PointLight(float intensity, glm::vec3 color, daft::engine::Composite
 
 core::SettingManager PointLight::getSettings() const {
     core::SettingManager sm;
-    sm.add("Color", color() * 255.f);
+    sm.add("Color", color());
     sm.add("Intensity", m_intensity);
     return sm;
 }
 
 void PointLight::setSettings(const core::SettingManager &s) {
-    color() = s.get<glm::vec3>("Color") / 255.f;
+    color() = s.get<glm::vec3>("Color");
     m_intensity = s.get<float>("Intensity");
 }
 

@@ -9,9 +9,13 @@ in mat3 tbn;
 
 #define MAX_SIZE 32
 
-struct PointLight {
+struct Shadow {
     sampler2D shadowMap;
     mat4 lightSpaceMatrix;
+};
+
+struct PointLight {
+    Shadow shadowData;
 
     vec3 position;
     float intensity;
@@ -19,16 +23,14 @@ struct PointLight {
 };
 
 struct DirLight {
-    sampler2D shadowMap;
-    mat4 lightSpaceMatrix;
+    Shadow shadowData;
 
     vec3 direction;
     vec3 color;
 };
 
 struct SpotLight {
-    sampler2D shadowMap;
-    mat4 lightSpaceMatrix;
+    Shadow shadowData;
 
     vec3 position;
     vec3 direction;
@@ -77,7 +79,7 @@ vec3 calcPointLight(PointLight light);
 vec3 calcDirLight(DirLight light);
 vec3 calcSpotLight(SpotLight light);
 
-float calculateShadow(sampler2D shadowMap, mat4 lightSpaceMatrix);
+float calculateShadow(Shadow shadowData);
 
 vec3 viewDir;
 vec3 normal;
@@ -132,8 +134,8 @@ vec3 calcPointLight(PointLight light) {
     float attenuation = light.intensity / (distance * distance);
     vec3 diffuse = light.color * diff * defaultMat.albedo * attenuation;
     vec3 specular = light.color * spec * defaultMat.specular * attenuation * defaultMat.reflectivity;
-    float shadow = 1.0 - calculateShadow(light.shadowMap, light.lightSpaceMatrix);
-    return shadow * (diffuse + specular);
+    float shadowValue = 1.0 - calculateShadow(light.shadowData);
+    return shadowValue * (diffuse + specular);
 }
 
 vec3 calcDirLight(DirLight light){
@@ -145,8 +147,8 @@ vec3 calcDirLight(DirLight light){
     float spec = pow(max(dot(normal, halfwayDir), 0.0), defaultMat.shininess);
     vec3 diffuse = light.color * diff * defaultMat.albedo;
     vec3 specular = light.color * spec * defaultMat.specular * defaultMat.reflectivity;
-    float shadow = 1.0 - calculateShadow(light.shadowMap, light.lightSpaceMatrix);
-    return shadow * (diffuse + specular);
+    float shadowValue = 1.0 - calculateShadow(light.shadowData);
+    return shadowValue * (diffuse + specular);
 }
 
 vec3 calcSpotLight(SpotLight light) {
@@ -165,27 +167,29 @@ vec3 calcSpotLight(SpotLight light) {
     vec3 specular = light.color * spec * defaultMat.specular * defaultMat.reflectivity;
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
-    return diffuse + specular;
+    float shadowValue = 1.0 - calculateShadow(light.shadowData);
+    return shadowValue * (diffuse + specular);
 }
 
-float calculateShadow(sampler2D shadowMap, mat4 lightSpaceMatrix) {
-    vec4 fragPosLightSpace = lightSpaceMatrix * vec4(fragPos, 1.0);
+float calculateShadow(Shadow shadowData) {
+    vec4 fragPosLightSpace = shadowData.lightSpaceMatrix * vec4(fragPos, 1.0);
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     projCoords = projCoords * 0.5 + 0.5;
     float currentDepth = projCoords.z;
     float eps = 5e-3;
+    if (currentDepth > 1.0 - eps) return 0.0;
     // PCF
-    float shadow = 0.0;
-    vec2 texSize = textureSize(shadowMap, 0);
+    float shadowValue = 0.0;
+    vec2 texSize = textureSize(shadowData.shadowMap, 0);
     vec2 texelSize = 1.0 / texSize;
     int nrSample = 0;
     for (int i = -3 ; i <= 3 ; ++i) {
         for (int j = -3 ; j <= 3 ; ++j) {
             vec2 actualCoords = projCoords.xy + vec2(i, j) * texelSize;
-            float depth = texture2D(shadowMap, actualCoords).r;
-            shadow += currentDepth - eps > depth ? 1.0 : 0.0;
+            float depth = texture2D(shadowData.shadowMap, actualCoords).r;
+            shadowValue += currentDepth - eps > depth ? 1.0 : 0.0;
             nrSample++;
         }
     }
-    return shadow / nrSample;
+    return shadowValue / nrSample;
 }

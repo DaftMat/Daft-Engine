@@ -6,6 +6,6 @@
 namespace daft::app {
 DirLightSettings::DirLightSettings(daft::core::SettingManager settings, QWidget *parent)
     : DrawableSettings(std::move(settings), parent) {
-    addIntSpinBoxVector("Color", 0, 255, 1, 255.f);
+    addDoubleSpinBoxVector("Color", 0.f, 255.f, 1.f);
 }
 }  // namespace daft::app

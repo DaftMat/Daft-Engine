@@ -4,6 +4,7 @@
 #include "SpotLight.hpp"
 
 #include <Core/Utils/DrawableVisitor.hpp>
+#include <Engine/Drawables/Composite.hpp>
 #include <Engine/Drawables/Object/primitives.hpp>
 #include <Engine/Renderer/Cameras/Camera.hpp>
 
@@ -23,7 +24,7 @@ SpotLight::SpotLight(glm::vec3 dir, float intensity, float innerCutOff, float ou
 
 core::SettingManager SpotLight::getSettings() const {
     core::SettingManager sm{};
-    sm.add("Color", color() * 255.f);
+    sm.add("Color", color());
     sm.add("Intensity", m_intensity);
     sm.add("Inner angle", m_innerCutOff);
     sm.add("Outer angle", m_outerCutOff);
@@ -31,7 +32,7 @@ core::SettingManager SpotLight::getSettings() const {
 }
 
 void SpotLight::setSettings(const core::SettingManager &s) {
-    color() = s.get<glm::vec3>("Color") / 255.f;
+    color() = s.get<glm::vec3>("Color");
     setIntensity(s.get<float>("Intensity"));
     setInnerCutOff(s.get<float>("Inner angle"));
     setOuterCutOff(s.get<float>("Outer angle"));
@@ -71,10 +72,23 @@ void SpotLight::loadToShader(const core::ShaderProgram &shader, int index) const
     shader.setFloat(name + ".outerCutOff", glm::cos(glm::radians(m_outerCutOff)));
     shader.setFloat(name + ".intensity", m_intensity);
     shader.setVec3(name + ".color", color());
+    shader.setMat4(name + ".shadowData.lightSpaceMatrix", m_lightSpaceMatrix);
 }
 
 void SpotLight::renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
-                                 const daft::engine::Camera &viewCam) {}
+                                 const daft::engine::Camera &viewCam) {
+    m_fbo->use();
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glm::vec3 center = viewCam.target();
+    glm::vec3 right = glm::cross(-m_direction, glm::vec3{0.f, 1.f, 0.f});
+    glm::vec3 up = glm::cross(right, -m_direction);
+    glm::mat4 lightView = glm::lookAt(position(), position() - m_direction, up);
+    glm::mat4 lightProj = glm::ortho(-20.f, 20.f, -20.f, 20.f, 1.f, 40.f);
+    m_lightSpaceMatrix = lightProj * lightView;
+    shader.setMat4("lightSpaceMatrix", m_lightSpaceMatrix);
+    root->render(shader);
+    m_fbo->stop(screenWidth, screenHeight);
+}
 
 void SpotLight::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
 
