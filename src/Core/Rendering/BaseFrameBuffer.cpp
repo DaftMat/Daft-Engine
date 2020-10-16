@@ -98,10 +98,11 @@ void BaseFrameBuffer::addColorBuffer() {
     GLuint rbo;
     glGenRenderbuffers(1, &rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+    GLuint format = m_isHDR ? GL_RGB16F : GL_RGB;
     if (m_numSamples == 1)
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB, m_width, m_height);
+        glRenderbufferStorage(GL_RENDERBUFFER, format, m_width, m_height);
     else
-        glRenderbufferStorageMultisample(GL_RENDERBUFFER, m_numSamples, GL_RGB, m_width, m_height);
+        glRenderbufferStorageMultisample(GL_RENDERBUFFER, m_numSamples, format, m_width, m_height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + m_num_color++, GL_RENDERBUFFER, rbo);
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_buffers.push_back(rbo);
@@ -161,7 +162,8 @@ void BaseFrameBuffer::addColorTexture() {
     GLuint tex;
     glGenTextures(1, &tex);
     glBindTexture(GL_TEXTURE_2D, tex);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+    GLuint format = m_isHDR ? GL_RGB16F : GL_RGB;
+    glTexImage2D(GL_TEXTURE_2D, 0, format, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

@@ -99,6 +99,7 @@ void Renderer::render() {
     m_multisamplePass->stop(m_width, m_height);
 
     /// render the frame-textured quad to the screen.
+    glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
     m_screenQuad->prepare();
     m_screenQuad->render();
 }
@@ -161,7 +162,7 @@ void Renderer::updateProjectionMatrix() {
 
 void Renderer::switchToEditionMode() {
     m_drawEdges = true;
-    m_defaultSkyColor = {0.35f, 0.35f, 0.35f};
+    m_defaultSkyColor = {0.1, 0.1f, 0.1f};
 }
 
 void Renderer::switchToRenderingMode() {

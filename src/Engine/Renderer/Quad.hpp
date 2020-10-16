@@ -32,7 +32,7 @@ class ENGINE_API Quad {
      * render the wrapped mesh with its material.
      * @param mode - rendering mode.
      */
-    void render(GLuint mode = GL_TRIANGLES) const;
+    void render(const core::ShaderProgram &shader, GLuint mode = GL_TRIANGLES) const;
 
     void unbind() const { m_mesh.unbind(); }
 

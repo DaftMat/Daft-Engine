@@ -117,7 +117,6 @@ void main() {
 
     vec3 ambient = vec3(0.03) * defaultMat.albedo;
     vec3 color = ambient + resultColor;
-    color = color / (color + vec3(1.0));
     color = pow(color, vec3(1.0/2.2));
     fragColor = vec4(color, 1.0);
 }
@@ -177,12 +176,16 @@ float calculateShadow(sampler2D shadowMap, mat4 lightSpaceMatrix) {
     float eps = 5e-3;
     // PCF
     float shadow = 0.0;
-    vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
-    for (int i = -1 ; i <= 1 ; ++i) {
-        for (int j = -1 ; j <= 1 ; ++j) {
-            float depth = texture2D(shadowMap, projCoords.xy + vec2(i, j) * texelSize).r;
+    vec2 texSize = textureSize(shadowMap, 0);
+    vec2 texelSize = 1.0 / texSize;
+    int nrSample = 0;
+    for (int i = -3 ; i <= 3 ; ++i) {
+        for (int j = -3 ; j <= 3 ; ++j) {
+            vec2 actualCoords = projCoords.xy + vec2(i, j) * texelSize;
+            float depth = texture2D(shadowMap, actualCoords).r;
             shadow += currentDepth - eps > depth ? 1.0 : 0.0;
+            nrSample++;
         }
     }
-    return shadow / 9;
+    return shadow / nrSample;
 }

@@ -41,7 +41,8 @@ void Quad::prepare() const {
     m_material->prepare();
 }
 
-void Quad::render(GLuint mode) const {
+void Quad::render(const core::ShaderProgram &shader, GLuint mode) const {
+    m_material->loadToShader(shader);
     m_mesh.render(mode);
     m_mesh.unbind();
 }

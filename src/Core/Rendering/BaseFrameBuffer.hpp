@@ -19,8 +19,8 @@ class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
      * @param height - height of the framebuffer.
      * @param numSamples - number of samples per pixel.
      */
-    BaseFrameBuffer(int width, int height, int numSamples)
-        : m_width{width}, m_height{height}, m_numSamples{numSamples}, m_isValid{true} {
+    BaseFrameBuffer(int width, int height, int numSamples, bool isHDR = false)
+        : m_width{width}, m_height{height}, m_numSamples{numSamples}, m_isHDR{isHDR}, m_isValid{true} {
         glGenFramebuffers(1, &m_fbo);
         std::stringstream ss;
         ss << "FrameBuffer created. ID: " << m_fbo;
@@ -113,6 +113,7 @@ class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
 
     bool m_stencil{false}, m_depth{false}, m_stencil_depth{false};
     int m_num_color{0};
+    bool m_isHDR;
 
     bool m_isValid{false};
 };

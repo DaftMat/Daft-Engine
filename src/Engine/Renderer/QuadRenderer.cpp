@@ -16,8 +16,7 @@ void QuadRenderer::render() const {
     m_shader->use();
     for (const auto &quad : m_quads) {
         quad.prepare();
-        m_shader->setInt("quadTexture", 0);
-        quad.render(GL_TRIANGLES);
+        quad.render(*m_shader, GL_TRIANGLES);
         quad.unbind();
     }
     m_shader->stop();

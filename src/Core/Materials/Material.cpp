@@ -57,45 +57,46 @@ void Material::reset() {
 }
 
 void Material::loadToShader(const ShaderProgram &shader, const std::string &name) const {
+    std::string actualName = name.empty() ? "" : name + ".";
     /// Textures
     for (size_t i = 0; i < textures().size(); ++i) {
-        shader.setInt(name + "." + textures()[i].name(), i);
+        shader.setInt(actualName + textures()[i].name(), i);
     }
     /// Int settings
     for (auto &setting : settings<int>()) {
-        shader.setInt(name + "." + setting.name, setting.data);
+        shader.setInt(actualName + setting.name, setting.data);
     }
     /// Bool settings
     for (auto &setting : settings<bool>()) {
-        shader.setBool(name + "." + setting.name, setting.data);
+        shader.setBool(actualName + setting.name, setting.data);
     }
     /// Float settings
     for (auto &setting : settings<float>()) {
-        shader.setFloat(name + "." + setting.name, setting.data);
+        shader.setFloat(actualName + setting.name, setting.data);
     }
     /// Vec2 settings
     for (auto &setting : settings<glm::vec2>()) {
-        shader.setVec2(name + "." + setting.name, setting.data);
+        shader.setVec2(actualName + setting.name, setting.data);
     }
     /// Vec3 settings
     for (auto &setting : settings<glm::vec3>()) {
-        shader.setVec3(name + "." + setting.name, setting.data);
+        shader.setVec3(actualName + setting.name, setting.data);
     }
     /// Vec4 settings
     for (auto &setting : settings<glm::vec4>()) {
-        shader.setVec4(name + "." + setting.name, setting.data);
+        shader.setVec4(actualName + setting.name, setting.data);
     }
     /// Mat2 settings
     for (auto &setting : settings<glm::mat2>()) {
-        shader.setMat2(name + "." + setting.name, setting.data);
+        shader.setMat2(actualName + setting.name, setting.data);
     }
     /// Mat3 settings
     for (auto &setting : settings<glm::mat3>()) {
-        shader.setMat3(name + "." + setting.name, setting.data);
+        shader.setMat3(actualName + setting.name, setting.data);
     }
     /// Mat4 settings
     for (auto &setting : settings<glm::mat4>()) {
-        shader.setMat4(name + "." + setting.name, setting.data);
+        shader.setMat4(actualName + setting.name, setting.data);
     }
 }
 }  // namespace daft::core
