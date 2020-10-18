@@ -33,6 +33,8 @@ class MultiSamplingPass : public core::NonCopyable {
      */
     MultiSamplingPass &operator=(MultiSamplingPass &&) noexcept = default;
 
+    [[nodiscard]] const core::FrameBufferObject &resultFBO() const { return *m_fboOut; }
+
     /**
      * Get the texture to print on the screen
      * @return output color texture from the output fbo.

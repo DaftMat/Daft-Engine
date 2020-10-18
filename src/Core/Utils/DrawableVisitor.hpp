@@ -13,6 +13,7 @@ class Sphere;
 class Torus;
 class Cube;
 class BSpline;
+class BSpline2D;
 class Cylinder;
 // lights
 class PointLight;
@@ -71,6 +72,11 @@ class ENGINE_API DrawableVisitor {
      * Visits a BSpline .
      */
     virtual void visit(engine::BSpline *) {}
+
+    /**
+     * Visits a BSpline2D .
+     */
+    virtual void visit(engine::BSpline2D *) {}
 
     /**
      * Visits a Cylinder .

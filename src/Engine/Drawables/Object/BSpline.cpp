@@ -43,18 +43,16 @@ void BSpline::renderEdges(const core::ShaderProgram &shader) {
 
 void BSpline::createBSpline() {
     /// create modal vector
-    m_spline.modalVector().clear();
-    for (int i = 0; i < m_spline.base() + int(m_spline.controlPoints().size()) + 1; ++i)
-        m_spline.modalVector().push_back(float(i));
+    m_spline.resetNodalVector();
 
     m_meshObjects.clear();
-    /// from:   m_modalVector[m_base]
-    /// to:     m_modalVector[m_modalVector.size()]
+    /// from:   m_nodalVector[m_base]
+    /// to:     m_nodalVector[m_nodalVector.size()]
     core::AttribManager am{};
     std::vector<glm::vec3> positions;
     int index = 0;
-    float umin = m_spline.modalVector()[m_spline.base()];
-    float umax = m_spline.modalVector()[m_spline.controlPoints().size()];
+    float umin = m_spline.nodalVector()[m_spline.base()];
+    float umax = m_spline.nodalVector()[m_spline.controlPoints().size()];
     for (float u = umin; u < umax; u += (umax - umin) / m_steps) {
         if (index > 0) {
             am.indices().push_back(index - 1);

@@ -3,8 +3,10 @@
 //
 #include "Renderer.hpp"
 
+#include <Core/Random.hpp>
 #include <Core/Rendering/ShaderProgram.hpp>
 #include <Core/Utils/Logger.hpp>
+#include <Engine/Drawables/Object/BSpline2D.hpp>
 #include <Engine/Drawables/Object/primitiveIncludes.hpp>
 #include <Engine/Renderer/QuadRenderer.hpp>
 #include <Engine/Renderer/RenderPasses/MultiSamplingPass.hpp>
@@ -35,10 +37,13 @@ Renderer::Renderer(int width, int height) {
     m_shaders.push_back(
         std::make_shared<core::ShaderProgram>("shaders/blinnphong.vert.glsl", "shaders/blinnphong.frag.glsl"));
     m_shaders.push_back(std::make_shared<core::ShaderProgram>("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
-    m_multisamplePass = std::make_shared<daft::engine::MultiSamplingPass>(m_width, m_height, 32);
+    m_multisamplePass = std::make_shared<daft::engine::MultiSamplingPass>(m_width, m_height, 32, true);
     m_screenQuad = std::make_shared<daft::engine::QuadRenderer>();
     m_screenQuad->addQuad(-1.f, 1.f, 2.f, 2.f);
     m_screenQuad->quad(0).setTexture(m_multisamplePass->outTexture());
+
+    // m_HDRPass = std::make_shared<HDRPass>(m_width, m_height);
+    // m_screenQuad->quad(0).setTexture(m_HDRPass->outTexture());
 
     m_shadowShader =
         std::make_unique<core::ShaderProgram>("shaders/shadowmap.vert.glsl", "shaders/shadowmap.frag.glsl");
@@ -74,6 +79,7 @@ void Renderer::render() {
     m_shadowShader->stop();
 
     m_multisamplePass->use();
+    // m_HDRPass->use();
     clearGL();
     /// draw objects
     m_shaders[0]->use();
@@ -97,6 +103,7 @@ void Renderer::render() {
 
     /// unbind opengl objects
     m_multisamplePass->stop(m_width, m_height);
+    // m_HDRPass->stop(m_width, m_height);
 
     /// render the frame-textured quad to the screen.
     glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
@@ -204,6 +211,19 @@ void Renderer::_addDrawable() {
                 std::vector<glm::vec3> controlPoints;
                 controlPoints.emplace_back(glm::vec3{0.f});
                 drawable = std::make_shared<BSpline>(controlPoints, 1);
+                break;
+            }
+            case Drawable::Type::BSpline2D: {
+                std::vector<std::vector<glm::vec3>> controlPoints{
+                    {{-2.f, 0.f, 2.f}, {-1.f, 0.f, 2.f}, {0.f, 0.f, 2.f}, {1.f, 0.f, 2.f}, {2.f, 0.f, 2.f}},
+                    {{-2.f, 0.f, 1.f}, {-1.f, 0.f, 1.f}, {0.f, 0.f, 1.f}, {1.f, 0.f, 1.f}, {2.f, 0.f, 1.f}},
+                    {{-2.f, 0.f, 0.f}, {-1.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 0.f, 0.f}, {2.f, 0.f, 0.f}},
+                    {{-2.f, 0.f, -1.f}, {-1.f, 0.f, -1.f}, {0.f, 0.f, -1.f}, {1.f, 0.f, -1.f}, {2.f, 0.f, -1.f}},
+                    {{-2.f, 0.f, -2.f}, {-1.f, 0.f, -2.f}, {0.f, 0.f, -2.f}, {1.f, 0.f, -2.f}, {2.f, 0.f, -2.f}},
+                };
+                for (auto &poly : controlPoints)
+                    for (auto &point : poly) point.y = core::Random::get(-1.f, 1.f);
+                drawable = std::make_shared<BSpline2D>(controlPoints, 2);
                 break;
             }
             case Drawable::Type::Custom: {

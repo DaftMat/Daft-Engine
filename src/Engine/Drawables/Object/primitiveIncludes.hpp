@@ -6,6 +6,7 @@
 #include <Engine/Drawables/Light/PointLight.hpp>
 #include <Engine/Drawables/Light/SpotLight.hpp>
 #include <Engine/Drawables/Object/BSpline.hpp>
+#include <Engine/Drawables/Object/BSpline2D.hpp>
 #include <Engine/Drawables/Object/Cube.hpp>
 #include <Engine/Drawables/Object/Cylinder.hpp>
 #include <Engine/Drawables/Object/Object.hpp>

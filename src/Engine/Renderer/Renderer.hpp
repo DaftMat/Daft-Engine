@@ -7,6 +7,7 @@
 #include <Engine/Drawables/Composite.hpp>
 #include <Engine/Drawables/Light/LightPool.hpp>
 #include <Engine/Renderer/Cameras/Camera.hpp>
+#include <Engine/Renderer/RenderPasses/HDRPass.hpp>
 #include <memory>
 #include <vector>
 
@@ -169,6 +170,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     std::shared_ptr<QuadRenderer> m_screenQuad{nullptr};
     std::shared_ptr<MultiSamplingPass> m_multisamplePass{nullptr};
+    std::shared_ptr<HDRPass> m_HDRPass{nullptr};
 
     std::vector<std::shared_ptr<core::ShaderProgram>> m_shaders;
     std::vector<core::FrameBufferObject> m_fbos;

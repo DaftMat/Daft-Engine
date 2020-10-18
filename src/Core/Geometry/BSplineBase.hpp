@@ -39,16 +39,16 @@ class ENGINE_API BSplineBase {
     auto &controlPoints() { return m_controlPoints; }
 
     /**
-     * Modal vector constant reference.
-     * @return const ref to modalVector.
+     * Nodal vector constant reference.
+     * @return const ref to nodalVector.
      */
-    [[nodiscard]] const auto &modalVector() const { return m_modalVector; }
+    [[nodiscard]] const auto &nodalVector() const { return m_nodalVector; }
 
     /**
-     * Model vector reference.
-     * @return ref to modalVector.
+     * Nodal vector reference.
+     * @return ref to nodalVector.
      */
-    auto &modalVector() { return m_modalVector; }
+    auto &nodalVector() { return m_nodalVector; }
 
     /**
      * Base getter.
@@ -68,9 +68,11 @@ class ENGINE_API BSplineBase {
      */
     void addPoint(glm::vec3 p = glm::vec3{0.f}) { m_controlPoints.push_back(p); }
 
+    void resetNodalVector();
+
    private:
     std::vector<glm::vec3> m_controlPoints;
-    std::vector<float> m_modalVector;
+    std::vector<float> m_nodalVector;
     int m_base{2};
 };
 }  // namespace daft::core

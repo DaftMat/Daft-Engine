@@ -5,6 +5,7 @@
 
 #include <Engine/Drawables/Composite.hpp>
 #include <Engine/Drawables/Object/primitiveIncludes.hpp>
+#include <Widgets/SettingWidgets/DrawableSettings/BSpline2DSettings.hpp>
 #include <Widgets/SettingWidgets/DrawableSettings/BSplineSettings.hpp>
 #include <Widgets/SettingWidgets/DrawableSettings/CubeSettings.hpp>
 #include <Widgets/SettingWidgets/DrawableSettings/PointLightSettings.hpp>
@@ -43,6 +44,12 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::Cube *cube) {
 void daft::app::SettingWidgetVisitor::visit(daft::engine::BSpline *bspline) {
     core::SettingManager sm = bspline->getSettings();
     DrawableSettings *ds = new BSplineSettings(sm);
+    m_widget = new SettingWidget(ds, createTransformWidget(bspline->getTransformations()), bspline->name());
+}
+
+void daft::app::SettingWidgetVisitor::visit(daft::engine::BSpline2D *bspline) {
+    core::SettingManager sm = bspline->getSettings();
+    DrawableSettings *ds = new BSpline2DSettings(sm);
     m_widget = new SettingWidget(ds, createTransformWidget(bspline->getTransformations()), bspline->name());
 }
 

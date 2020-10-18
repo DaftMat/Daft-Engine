@@ -119,7 +119,8 @@ void main() {
 
     vec3 ambient = vec3(0.03) * defaultMat.albedo;
     vec3 color = ambient + resultColor;
-    color = pow(color, vec3(1.0/2.2));
+    color = vec3(1.0) - exp(-color * 1.0);
+    color = pow(color, vec3(1.0 / 2.2));
     fragColor = vec4(color, 1.0);
 }
 

@@ -45,6 +45,12 @@ class SettingWidgetVisitor : public core::DrawableVisitor {
     void visit(engine::BSpline *bspline) override;
 
     /**
+     * Visits a BSpline2D .
+     * @param bspline - bspline to visit.
+     */
+    void visit(engine::BSpline2D *bspline) override;
+
+    /**
      * Visits a Cylinder .
      * @param cylinder - cylinder to visit.
      */
