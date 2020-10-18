@@ -15,7 +15,7 @@ class ENGINE_API PointLight : public Light {
      * @param name - light's name.
      * @param parent - Composite holding this light.
      */
-    explicit PointLight(float intensity = 1.f, glm::vec3 color = glm::vec3{1.f}, Composite *parent = nullptr,
+    explicit PointLight(float intensity = 1.f, glm::vec3 color = glm::vec3{0.8f}, Composite *parent = nullptr,
                         std::string name = "PointLight" + std::to_string(m_nrPointLights++));
 
     /**
@@ -78,10 +78,25 @@ class ENGINE_API PointLight : public Light {
     void loadToShader(const core::ShaderProgram &shader, int index) const override;
 
     /**
+     * Render the scene to this light's depth buffer to create a light map.
+     * @param root - objects to render to the light map.
+     * @param shader - shadow shader.
+     * @param fbo - frame buffer to use to render the light map.
+     */
+    void renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
+                          const Camera &viewCam) override;
+
+    /**
      * Accepts a DrawableVisitor.
      * @param visitor - visitor.
      */
     void accept(DrawableVisitor *visitor) override;
+
+    /**
+     * Gets the type of drawable.
+     * @return Type::PointLight .
+     */
+    Type getType() const override { return Type::PointLight; }
 
    private:
     void createPointLight();

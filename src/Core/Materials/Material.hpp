@@ -19,7 +19,7 @@ class Material : public NonCopyable {
     /**
      * default constructor.
      */
-    Material() = default;
+    Material(bool isObjectMaterial = true);
 
     /**
      * Move constructor.
@@ -75,6 +75,11 @@ class Material : public NonCopyable {
         m_settings.set(std::move(name), data);
     }
 
+    template <typename T>
+    T getSetting(std::string name) {
+        return m_settings.get<T>(std::move(name));
+    }
+
     /**
      * Delete a setting.
      * @tparam T - type of the setting.
@@ -119,7 +124,7 @@ class Material : public NonCopyable {
      * Loads this material to the target shader as a uniform struct.
      * @param shader - shader to load the material to.
      */
-    void loadToShader(const core::ShaderProgram &shader) const;
+    void loadToShader(const core::ShaderProgram &shader, const std::string &name = "material") const;
 
    private:
     std::vector<Texture> m_textures;

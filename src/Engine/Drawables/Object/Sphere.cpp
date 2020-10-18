@@ -57,6 +57,7 @@ void Sphere::createUVSphere() {
     std::vector<glm::vec3> positions;
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> texCoords;
+    std::vector<glm::vec3> tangents;
 
     /// geometry
     float mStep = (2.f * glm::pi<float>()) / float(m_meridians);
@@ -74,6 +75,9 @@ void Sphere::createUVSphere() {
             positions.push_back(n * m_radius);
             normals.push_back(n);
             texCoords.emplace_back(float(j) / float(m_meridians), float(i) / float(m_parallels));
+            glm::vec3 t, b;
+            core::orthoVectors(n, t, b);
+            tangents.push_back(t);
         }
     }
     am.addAttrib(positions);
@@ -100,7 +104,9 @@ void Sphere::createUVSphere() {
     }
 
     m_meshObjects.clear();
-    m_meshObjects.emplace_back(core::Mesh(am));
+    std::vector<core::Mesh> meshes;
+    meshes.emplace_back(am);
+    m_meshObjects.emplace_back(std::move(meshes));
 }
 
 void Sphere::createIcoSphere() {
@@ -118,12 +124,17 @@ void Sphere::createIcosahedron() {
 
     std::vector<glm::vec3> positions;
     std::vector<glm::vec3> normals;
+    std::vector<glm::vec2> texCoords;
+    std::vector<glm::vec3> tangents;
     core::AttribManager am;
 
     // first vertex
     glm::vec3 fv{0.f, 1.f, 0.f};
     positions.push_back(fv * m_radius);
     normals.push_back(fv);
+    glm::vec3 t, b;
+    core::orthoVectors(fv, t, b);
+    tangents.push_back(t);
 
     // 10 "middle" vertices
     for (int i = 1; i <= 5; ++i) {
@@ -138,6 +149,13 @@ void Sphere::createIcosahedron() {
 
         normals.push_back(v1);
         normals.push_back(v2);
+
+        glm::vec3 t1, b1;
+        core::orthoVectors(v1, t1, b1);
+        tangents.push_back(t1);
+        glm::vec3 t2, b2;
+        core::orthoVectors(v2, t2, b2);
+        tangents.push_back(t2);
 
         h_angle1 += H_ANGLE;
         h_angle2 += H_ANGLE;
@@ -170,20 +188,26 @@ void Sphere::createIcosahedron() {
 
     am.addAttrib(positions);
     am.addAttrib(normals);
-    // am.addAttrib(texCoords);
+    am.addAttrib(texCoords);
+    am.addAttrib(tangents);
 
     m_meshObjects.clear();
-    m_meshObjects.emplace_back(core::Mesh(am));
+    std::vector<core::Mesh> meshes;
+    meshes.emplace_back(am);
+    m_meshObjects.emplace_back(std::move(meshes));
 }
 
 void Sphere::subdivideIcosahedron() {
     for (auto &obj : m_meshObjects) {
-        std::vector<glm::vec3> tmpPositions = obj.mesh().attribManager().getAttribs<glm::vec3>(0)->attribs;
-        std::vector<glm::vec3> tmpNormals = obj.mesh().attribManager().getAttribs<glm::vec3>(1)->attribs;
-        std::vector<GLuint> tmpIndices = obj.mesh().attribManager().indices();
+        std::vector<glm::vec3> tmpPositions = obj.meshes()[0].attribManager().getAttribs<glm::vec3>(0)->attribs;
+        std::vector<glm::vec3> tmpNormals = obj.meshes()[0].attribManager().getAttribs<glm::vec3>(1)->attribs;
+        std::vector<GLuint> tmpIndices = obj.meshes()[0].attribManager().indices();
 
         std::vector<glm::vec3> positions;
         std::vector<glm::vec3> normals;
+        std::vector<glm::vec2> texCoords;
+        std::vector<glm::vec3> tangents;
+        glm::vec3 t, b;
         core::AttribManager am;
         GLuint ind_v1, ind_v2, ind_v3, index{0};
         glm::vec3 new_p1, new_n1, new_p2, new_n2, new_p3, new_n3;
@@ -207,32 +231,56 @@ void Sphere::subdivideIcosahedron() {
             positions.push_back(new_p3);
 
             normals.push_back(tmpNormals[ind_v1]);
+            core::orthoVectors(tmpNormals[ind_v1], t, b);
+            tangents.push_back(t);
             normals.push_back(new_n1);
+            core::orthoVectors(new_n1, t, b);
+            tangents.push_back(t);
             normals.push_back(new_n3);
+            core::orthoVectors(new_n3, t, b);
+            tangents.push_back(t);
             // 2nd triangle
             positions.push_back(new_p1);
             positions.push_back(tmpPositions[ind_v2]);
             positions.push_back(new_p2);
 
             normals.push_back(new_n1);
+            core::orthoVectors(new_n1, t, b);
+            tangents.push_back(t);
             normals.push_back(tmpNormals[ind_v2]);
+            core::orthoVectors(tmpNormals[ind_v2], t, b);
+            tangents.push_back(t);
             normals.push_back(new_n2);
+            core::orthoVectors(new_n3, t, b);
+            tangents.push_back(t);
             // 3rd triangle
             positions.push_back(new_p1);
             positions.push_back(new_p2);
             positions.push_back(new_p3);
 
             normals.push_back(new_n1);
+            core::orthoVectors(new_n1, t, b);
+            tangents.push_back(t);
             normals.push_back(new_n2);
+            core::orthoVectors(new_n2, t, b);
+            tangents.push_back(t);
             normals.push_back(new_n3);
+            core::orthoVectors(new_n3, t, b);
+            tangents.push_back(t);
             // 4th triangle
             positions.push_back(new_p3);
             positions.push_back(new_p2);
             positions.push_back(tmpPositions[ind_v3]);
 
             normals.push_back(new_n3);
+            core::orthoVectors(new_n3, t, b);
+            tangents.push_back(t);
             normals.push_back(new_n2);
+            core::orthoVectors(new_n2, t, b);
+            tangents.push_back(t);
             normals.push_back(tmpNormals[ind_v3]);
+            core::orthoVectors(tmpPositions[ind_v3], t, b);
+            tangents.push_back(t);
 
             /// 4 new triangles
             for (int j = 0; j < 12; ++j) am.indices().push_back(index + j);
@@ -241,8 +289,10 @@ void Sphere::subdivideIcosahedron() {
 
         am.addAttrib(positions);
         am.addAttrib(normals);
+        am.addAttrib(texCoords);
+        am.addAttrib(tangents);
 
-        obj.mesh().reset(am);
+        obj.meshes()[0].reset(am);
     }
 }
 
@@ -256,12 +306,13 @@ void Sphere::createCubeSphere() {
         glm::vec3(-1.f, 0.f, 0.f)   // right
     };
 
-    m_meshObjects.clear();
+    std::vector<core::Mesh> meshes;
 
     for (auto &dir : directions) {
         std::vector<glm::vec3> positions;
         std::vector<glm::vec3> normals;
         std::vector<glm::vec2> texCoords;
+        std::vector<glm::vec3> tangents;
         core::AttribManager am;
 
         auto axisA = glm::vec3(dir.y, dir.z, dir.x);
@@ -275,6 +326,9 @@ void Sphere::createCubeSphere() {
 
                 positions.push_back(pointOnUnitSphere * m_radius);
                 normals.push_back(pointOnUnitSphere);
+                glm::vec3 t, b;
+                core::orthoVectors(pointOnUnitSphere, t, b);
+                tangents.push_back(t);
                 texCoords.push_back(percent);
 
                 /// Triangles
@@ -293,8 +347,12 @@ void Sphere::createCubeSphere() {
         am.addAttrib(positions);
         am.addAttrib(normals);
         am.addAttrib(texCoords);
-        m_meshObjects.emplace_back(core::Mesh(am));
+        am.addAttrib(tangents);
+        meshes.emplace_back(core::Mesh(am));
     }
+
+    m_meshObjects.clear();
+    m_meshObjects.emplace_back(std::move(meshes));
 }
 
 void Sphere::accept(Drawable::DrawableVisitor *visitor) { visitor->visit(this); }
@@ -386,16 +444,25 @@ void Sphere::createFiboSphere() {
     core::AttribManager am;
     auto positions = fibo3D(m_nrPoints);
     auto normals = positions;
+    std::vector<glm::vec2> texCoords;
+    auto tangents = normals;
     am.indices() = triangulateFibo(positions);
 
     auto tempRadius = m_radius;
     std::for_each(positions.begin(), positions.end(), [tempRadius](glm::vec3 &pos) { pos *= tempRadius; });
+    std::for_each(tangents.begin(), tangents.end(), [](glm::vec3 &tangent) {
+        glm::vec3 t, b;
+        core::orthoVectors(tangent, t, b);
+        tangent = t;
+    });
 
     am.addAttrib(positions);
     am.addAttrib(normals);
 
     m_meshObjects.clear();
-    m_meshObjects.emplace_back(core::Mesh{am});
+    std::vector<core::Mesh> meshes;
+    meshes.emplace_back(am);
+    m_meshObjects.emplace_back(std::move(meshes));
 }
 
 std::vector<glm::vec3> Sphere::fibo3D(int n) {

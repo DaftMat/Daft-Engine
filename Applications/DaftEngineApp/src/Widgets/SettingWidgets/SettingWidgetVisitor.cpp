@@ -4,7 +4,16 @@
 #include "SettingWidgetVisitor.hpp"
 
 #include <Engine/Drawables/Composite.hpp>
-#include <Engine/Drawables/Object/primitives.hpp>
+#include <Engine/Drawables/Object/primitiveIncludes.hpp>
+#include <Widgets/SettingWidgets/DrawableSettings/BSpline2DSettings.hpp>
+#include <Widgets/SettingWidgets/DrawableSettings/BSplineSettings.hpp>
+#include <Widgets/SettingWidgets/DrawableSettings/CubeSettings.hpp>
+#include <Widgets/SettingWidgets/DrawableSettings/PointLightSettings.hpp>
+#include <Widgets/SettingWidgets/DrawableSettings/SphereSettings.hpp>
+#include <Widgets/SettingWidgets/DrawableSettings/TorusSettings.hpp>
+#include <src/Widgets/SettingWidgets/DrawableSettings/CylinderSettings.hpp>
+#include <src/Widgets/SettingWidgets/DrawableSettings/DirLightSettings.hpp>
+#include <src/Widgets/SettingWidgets/DrawableSettings/SpotLightSettings.hpp>
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::Object *object) {
     m_widget = new SettingWidget(nullptr, createTransformWidget(object->getTransformations()), object->name());
@@ -16,59 +25,57 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::Composite *composite) 
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::Sphere *sphere) {
     core::SettingManager sm = sphere->getSettings();
-    engine::Sphere::Type type = sphere->type();
-
-    auto ds = new DrawableSettings(sm);
-    ds->addComboBox("Type", {"UV", "Icosahedron", "Cube", "Fibonacci"}, core::toUType(type));
-    switch (type) {
-        case engine::Sphere::Type::UV:
-            ds->addIntSpinBox("Meridians", 3, 9999, 1);
-            ds->addIntSpinBox("Parallels", 3, 9999, 1);
-            break;
-        case engine::Sphere::Type::Ico:
-            ds->addIntSpinBox("Subdivisions", 0, 999, 1);
-            break;
-        case engine::Sphere::Type::Cube:
-            ds->addIntSpinBox("Resolution", 2, 9999, 1);
-            break;
-        case engine::Sphere::Type::Fibo:
-            ds->addIntSpinBox("Points", 8, 999999, 10);
-            break;
-    }
-    ds->addDoubleSpinBox("Radius", 0, 9999, 0.1);
-
+    DrawableSettings *ds = new SphereSettings(sm);
     m_widget = new SettingWidget(ds, createTransformWidget(sphere->getTransformations()), sphere->name());
 }
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::Torus *torus) {
     core::SettingManager sm = torus->getSettings();
-    auto ds = new DrawableSettings(sm);
-    ds->addIntSpinBox("Meridians", 3, 9999, 1);
-    ds->addIntSpinBox("Parallels", 3, 9999, 1);
-    ds->addDoubleSpinBox("Inner Radius", 0, 9999, 0.1);
-    ds->addDoubleSpinBox("Outer Radius", 0, 9999, 0.1);
+    DrawableSettings *ds = new TorusSettings(sm);
     m_widget = new SettingWidget(ds, createTransformWidget(torus->getTransformations()), torus->name());
 }
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::Cube *cube) {
     core::SettingManager sm = cube->getSettings();
-    auto ds = new DrawableSettings(sm);
-    ds->addIntSpinBox("Resolution", 2, 9999, 1);
-    ds->addDoubleSpinBox("Radius", 0, 9999, 0.1);
+    DrawableSettings *ds = new CubeSettings(sm);
     m_widget = new SettingWidget(ds, createTransformWidget(cube->getTransformations()), cube->name());
 }
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::BSpline *bspline) {
     core::SettingManager sm = bspline->getSettings();
-    auto ds = new DrawableSettings(sm);
+    DrawableSettings *ds = new BSplineSettings(sm);
     m_widget = new SettingWidget(ds, createTransformWidget(bspline->getTransformations()), bspline->name());
+}
+
+void daft::app::SettingWidgetVisitor::visit(daft::engine::BSpline2D *bspline) {
+    core::SettingManager sm = bspline->getSettings();
+    DrawableSettings *ds = new BSpline2DSettings(sm);
+    m_widget = new SettingWidget(ds, createTransformWidget(bspline->getTransformations()), bspline->name());
+}
+
+void daft::app::SettingWidgetVisitor::visit(daft::engine::Cylinder *cylinder) {
+    core::SettingManager sm = cylinder->getSettings();
+    DrawableSettings *ds = new CylinderSettings(sm);
+    m_widget = new SettingWidget(ds, createTransformWidget(cylinder->getTransformations()), cylinder->name());
 }
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::PointLight *pointLight) {
     core::SettingManager sm = pointLight->getSettings();
-    auto ds = new DrawableSettings(sm);
-    ds->addIntSpinBoxVector("Color", 0, 255, 1, 255.f);
-    ds->addDoubleSpinBox("Intensity", 0, 9999);
+    DrawableSettings *ds = new PointLightSettings(sm);
     m_widget = new SettingWidget(ds, createTransformWidget(pointLight->getTransformations(), true, false, false),
                                  pointLight->name());
+}
+
+void daft::app::SettingWidgetVisitor::visit(daft::engine::SpotLight *spotLight) {
+    core::SettingManager sm = spotLight->getSettings();
+    DrawableSettings *ds = new SpotLightSettings(sm);
+    m_widget = new SettingWidget(ds, createTransformWidget(spotLight->getTransformations(), true, true, false),
+                                 spotLight->name());
+}
+
+void daft::app::SettingWidgetVisitor::visit(daft::engine::DirLight *dirLight) {
+    core::SettingManager sm = dirLight->getSettings();
+    DrawableSettings *ds = new DirLightSettings(sm);
+    m_widget = new SettingWidget(ds, createTransformWidget(dirLight->getTransformations(), false, true, false),
+                                 dirLight->name());
 }

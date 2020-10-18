@@ -4,6 +4,7 @@
 #pragma once
 #include <API.hpp>
 #include <Engine/Drawables/Composite.hpp>
+#include <Engine/Drawables/Object/BSpline.hpp>
 #include <QStandardItem>
 #include <QTreeView>
 
@@ -35,5 +36,8 @@ class ENGINE_API TreeWidget : public QTreeView {
      * @param node - the composite itself.
      */
     void addNode(QStandardItem *parent, engine::Composite *node);
+
+   private:
+    void addNode(QStandardItem *parent, engine::BSpline *spline);
 };
 }  // namespace daft::app

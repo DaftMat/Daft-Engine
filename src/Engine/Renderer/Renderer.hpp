@@ -7,6 +7,7 @@
 #include <Engine/Drawables/Composite.hpp>
 #include <Engine/Drawables/Light/LightPool.hpp>
 #include <Engine/Renderer/Cameras/Camera.hpp>
+#include <Engine/Renderer/RenderPasses/HDRPass.hpp>
 #include <memory>
 #include <vector>
 
@@ -93,7 +94,9 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
      * Adds a drawable to the scene tree.
      * @param drawable - drawable to add.
      */
-    void addDrawable(Drawable::Type type) { m_addNextFrame = type; }
+    void addDrawable(Drawable::Type type) { m_addNextFrame.push_back(type); }
+
+    void addCustomObject(std::string filePath);
 
     /**
      * Removes the current selected drawable from the scene tree.
@@ -155,6 +158,8 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     void _addDrawable();
     void _setSelection();
     void _setShader();
+    void buildGrid(int size = 50);
+    void drawGrid() const;
 
     static bool GLinitialized;
     int m_width{0}, m_height{0};
@@ -165,6 +170,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     std::shared_ptr<QuadRenderer> m_screenQuad{nullptr};
     std::shared_ptr<MultiSamplingPass> m_multisamplePass{nullptr};
+    std::shared_ptr<HDRPass> m_HDRPass{nullptr};
 
     std::vector<std::shared_ptr<core::ShaderProgram>> m_shaders;
     std::vector<core::FrameBufferObject> m_fbos;
@@ -172,11 +178,19 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     daft::engine::Camera m_camera;
 
     bool m_removeNextFrame{false};
-    Drawable::Type m_addNextFrame{Drawable::Type::None};
+    std::vector<Drawable::Type> m_addNextFrame;
+    std::string m_filePathCustom;
     AvailableShaders m_newShader{AvailableShaders::None};
 
     glm::vec3 m_defaultSkyColor{0.35, 0.35, 0.35};
     bool m_drawEdges{true};
+
+    std::unique_ptr<core::ShaderProgram> m_shadowShader{nullptr};
+
+    struct Grid {
+        core::Mesh grid;
+        std::vector<core::Mesh> axis;
+    } m_grid;
 };
 }  // namespace engine
 }  // namespace daft

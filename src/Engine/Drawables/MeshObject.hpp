@@ -4,16 +4,11 @@
 #pragma once
 #include <API.hpp>
 #include <Core/Geometry/Mesh.hpp>
+#include <Core/Materials/Material.hpp>
 #include <Core/Utils/NonCopyable.hpp>
 #include <memory>
 
-namespace daft {
-/// forward declarations
-namespace core {
-class Material;
-}  // namespace core
-
-namespace engine {
+namespace daft::engine {
 /**
  * Wrapper for Mesh and a Material .
  */
@@ -27,7 +22,8 @@ class ENGINE_API MeshObject : public core::NonCopyable {
      * @param mesh - mesh wrapped.
      * @param material - material wrapped.
      */
-    explicit MeshObject(Mesh mesh = Mesh{}, std::shared_ptr<Material> material = nullptr);
+    explicit MeshObject(std::vector<Mesh> meshes = {},
+                        std::shared_ptr<Material> material = std::make_shared<Material>());
 
     /**
      * Move constructor.
@@ -61,13 +57,13 @@ class ENGINE_API MeshObject : public core::NonCopyable {
      * mesh reference getter.
      * @return ref to mesh.
      */
-    Mesh &mesh() { return m_mesh; }
+    std::vector<Mesh> &meshes() { return m_meshes; }
 
     /**
      * mesh constant reference getter.
      * @return const ref to mesh.
      */
-    const Mesh &mesh() const { return m_mesh; }
+    [[nodiscard]] const std::vector<Mesh> &meshes() const { return m_meshes; }
 
     /**
      * material reference getter.
@@ -79,13 +75,12 @@ class ENGINE_API MeshObject : public core::NonCopyable {
      * material constant reference getter.
      * @return const ref to material.
      */
-    const Material &material() const { return *m_material; }
+    [[nodiscard]] const Material &material() const { return *m_material; }
 
-    bool hasMaterial() const { return m_material != nullptr; }
+    [[nodiscard]] bool hasMaterial() const { return m_material != nullptr; }
 
    protected:
-    Mesh m_mesh;
+    std::vector<Mesh> m_meshes;
     std::shared_ptr<Material> m_material;
 };
-}  // namespace engine
-}  // namespace daft
+}  // namespace daft::engine

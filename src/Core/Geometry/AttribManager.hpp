@@ -14,7 +14,7 @@ namespace daft::core {
 /**
  * A class that holds a list for each attributes of a Mesh
  */
-class AttribManager {
+class ENGINE_API AttribManager {
    public:
     /**
      * The list wrapper for one attribute buffer.

@@ -55,6 +55,8 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
      */
     void addDrawable(engine::Drawable::Type type);
 
+    void addCustomObject(std::string filePath);
+
     /**
      * Removes the selected drawable from the scene.
      */

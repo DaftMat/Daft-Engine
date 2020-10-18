@@ -1,7 +1,5 @@
 #include <Core/Utils/Logger.hpp>
 
-#include "SettingManager.hpp"
-
 namespace daft::core {
 template <typename T>
 const std::vector<SettingManager::Setting<T>>& SettingManager::settings() const {
@@ -79,10 +77,5 @@ auto SettingManager::getIt(std::string name) {
 template <typename T>
 T& SettingManager::get(std::string name) {
     return const_cast<T&>(static_cast<const SettingManager&>(*this).get<T>(std::move(name)));
-}
-
-bool SettingManager::empty() noexcept {
-    return m_bools.empty() && m_ints.empty() && m_floats.empty() && m_vec2s.empty() && m_vec3s.empty() &&
-           m_vec4s.empty() && m_mat2s.empty() && m_mat3s.empty() && m_mat4s.empty();
 }
 }  // namespace daft::core

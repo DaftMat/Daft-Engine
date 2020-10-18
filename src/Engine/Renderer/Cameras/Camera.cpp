@@ -11,7 +11,7 @@ Camera::Camera(const glm::vec3 &position, const glm::vec3 &worldUp, float yaw, f
       m_yaw{yaw},
       m_pitch{pitch},
       m_velocity{0.005f},
-      m_sensitivity{1.9f},
+      m_sensitivity{1.0f},
       m_fov{45.f} {
     m_dist = glm::length(m_position - m_target);
     updateCameraVectors();
@@ -19,7 +19,7 @@ Camera::Camera(const glm::vec3 &position, const glm::vec3 &worldUp, float yaw, f
 
 void Camera::processMouseScroll(float offset) {
     m_dist -= offset * m_sensitivity;
-    if (m_dist <= 0) m_dist = glm::epsilon<float>();
+    if (m_dist <= 0) m_dist = 0.01f;
     glm::vec3 dir = glm::normalize(m_position - m_target);
     m_position = m_target + m_dist * dir;
 }

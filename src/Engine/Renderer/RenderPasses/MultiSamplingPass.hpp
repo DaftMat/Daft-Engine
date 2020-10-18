@@ -15,7 +15,7 @@ class MultiSamplingPass : public core::NonCopyable {
      * @param height - height of the framebuffers.
      * @param numSample - number of samples in the input framebuffer.
      */
-    MultiSamplingPass(int width, int height, int numSample);
+    MultiSamplingPass(int width, int height, int numSample, bool isHDR = false);
 
     /**
      * Default destructor.
@@ -32,6 +32,8 @@ class MultiSamplingPass : public core::NonCopyable {
      * @return ref to this.
      */
     MultiSamplingPass &operator=(MultiSamplingPass &&) noexcept = default;
+
+    [[nodiscard]] const core::FrameBufferObject &resultFBO() const { return *m_fboOut; }
 
     /**
      * Get the texture to print on the screen

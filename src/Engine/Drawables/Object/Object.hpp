@@ -2,9 +2,13 @@
 // Created by mathis on 08/07/2020.
 //
 #pragma once
+#include <assimp/postprocess.h>
+#include <assimp/scene.h>
+
 #include <API.hpp>
 #include <Engine/Drawables/Drawable.hpp>
 #include <Engine/Drawables/MeshObject.hpp>
+#include <assimp/Importer.hpp>
 
 namespace daft::engine {
 /**
@@ -17,6 +21,9 @@ class ENGINE_API Object : public Drawable {
      * @param mos - list of mesh objects.
      */
     explicit Object(Composite *parent = nullptr, std::string name = "Object" + std::to_string(m_nrObject++));
+
+    explicit Object(std::string filepath, Composite *parent = nullptr,
+                    std::string name = "Object" + std::to_string(m_nrObject++));
 
     /**
      * Destructor.
@@ -57,12 +64,6 @@ class ENGINE_API Object : public Drawable {
     void reset() override;
 
     /**
-     * Updates the object.
-     * Resets all the meshes' VAO.
-     */
-    void update() override;
-
-    /**
      * Subdivides triangles of each meshes in 4 new triangles.
      */
     void subdivide();
@@ -85,12 +86,35 @@ class ENGINE_API Object : public Drawable {
      */
     [[nodiscard]] bool isLight() const override { return false; }
 
-   protected:
-    virtual void applyUpdate() {}
+    /**
+     * Gets the type of drawable.
+     * @return Type::None .
+     */
+    Type getType() const override { return Type::None; }
 
+   protected:
     std::vector<MeshObject> m_meshObjects;
 
    private:
+    struct MeshInfo {
+        MeshInfo(core::AttribManager am, size_t i) : mesh{std::move(am)}, matIndex{i} {}
+
+        core::Mesh mesh;
+        size_t matIndex;
+    };
+
+    void loadFromFile(std::string path);
+    void processNode(aiNode *node, const aiScene *scene);
+    void processMesh(aiMesh *mesh, const aiScene *scene);
+    void processMaterials(const aiScene *scene);
+    void loadMaterialTextures(aiMaterial *mat, size_t index);
+
+    std::vector<MeshInfo> m_constructedMeshes{};
+    std::vector<std::shared_ptr<core::Material>> m_constructedMaterial{};
+    std::vector<std::string> m_loadedTextures{};
+
+    std::string m_directory;
+
     static int m_nrObject;
 };
 }  // namespace daft::engine

@@ -13,8 +13,12 @@ class Sphere;
 class Torus;
 class Cube;
 class BSpline;
+class BSpline2D;
+class Cylinder;
 // lights
 class PointLight;
+class SpotLight;
+class DirLight;
 // composite
 class Composite;
 }  // namespace engine
@@ -69,12 +73,32 @@ class ENGINE_API DrawableVisitor {
      */
     virtual void visit(engine::BSpline *) {}
 
+    /**
+     * Visits a BSpline2D .
+     */
+    virtual void visit(engine::BSpline2D *) {}
+
+    /**
+     * Visits a Cylinder .
+     */
+    virtual void visit(engine::Cylinder *) {}
+
     /// LIGHTS
 
     /**
      * Visits a PointLight .
      */
     virtual void visit(engine::PointLight *) {}
+
+    /**
+     * Visits a SpotLight .
+     */
+    virtual void visit(engine::SpotLight *) {}
+
+    /**
+     * Visits a DirLight .
+     */
+    virtual void visit(engine::DirLight *) {}
 
     /// GROUP
 

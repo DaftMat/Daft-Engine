@@ -8,26 +8,31 @@
 
 namespace daft::engine {
 
-MeshObject::MeshObject(Mesh mesh, std::shared_ptr<Material> material)
-    : m_mesh{std::move(mesh)}, m_material{std::move(material)} {}
+MeshObject::MeshObject(std::vector<Mesh> meshes, std::shared_ptr<Material> material)
+    : m_meshes{std::move(meshes)}, m_material{std::move(material)} {}
 
 MeshObject::MeshObject(MeshObject &&o) noexcept
-    : m_mesh{std::move_if_noexcept(o.m_mesh)}, m_material{std::move_if_noexcept(o.m_material)} {}
+    : m_meshes{std::move_if_noexcept(o.m_meshes)}, m_material{std::move_if_noexcept(o.m_material)} {}
 
 MeshObject &MeshObject::operator=(MeshObject &&o) noexcept {
-    m_mesh = std::move_if_noexcept(o.m_mesh);
+    m_meshes = std::move_if_noexcept(o.m_meshes);
     m_material = std::move_if_noexcept(o.m_material);
     return *this;
 }
 
 void MeshObject::prepare() const {
-    m_mesh.prepare();
-    if (m_material == nullptr) return;  // m_material = std::make_shared</*Default*/ Material>();
+    if (m_material == nullptr) return;
     m_material->prepare();
 }
 
-void MeshObject::render(GLuint mode) const { m_mesh.render(mode); }
+void MeshObject::render(GLuint mode) const {
+    for (const auto &mesh : m_meshes) {
+        mesh.prepare();
+        mesh.render(mode);
+        mesh.unbind();
+    }
+}
 
-void MeshObject::unbind() const { m_mesh.unbind(); }
+void MeshObject::unbind() const {}
 
 }  // namespace daft::engine

@@ -50,12 +50,13 @@ void Cube::createCube() {
         glm::vec3(-1.f, 0.f, 0.f)   // right
     };
 
-    m_meshObjects.clear();
+    std::vector<core::Mesh> meshes;
 
     for (auto &dir : directions) {
         std::vector<glm::vec3> positions;
         std::vector<glm::vec3> normals;
         std::vector<glm::vec2> texCoords;
+        std::vector<glm::vec3> tangents;
         core::AttribManager am;
 
         auto axisA = glm::vec3(dir.y, dir.z, dir.x);
@@ -69,6 +70,9 @@ void Cube::createCube() {
                 positions.push_back(pointOnUnitCube * m_radius);
                 normals.push_back(dir);
                 texCoords.push_back(percent);
+                glm::vec3 t, b;
+                core::orthoVectors(dir, t, b);
+                tangents.push_back(t);
 
                 /// Triangles
                 if (x != m_resolution - 1 && y != m_resolution - 1) {
@@ -86,7 +90,10 @@ void Cube::createCube() {
         am.addAttrib(positions);
         am.addAttrib(normals);
         am.addAttrib(texCoords);
-        m_meshObjects.emplace_back(core::Mesh(am));
+        meshes.emplace_back(core::Mesh{am});
     }
+
+    m_meshObjects.clear();
+    m_meshObjects.emplace_back(std::move(meshes));
 }
 }  // namespace daft::engine

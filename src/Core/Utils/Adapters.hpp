@@ -70,6 +70,29 @@ constexpr auto toUType(T e) noexcept;
  */
 constexpr int mod1(int x, int m) noexcept;
 
+/**
+ * Calculates the tangent and bi-tangent using the normal
+ * @param n - normal
+ * @param u - tangent
+ * @param v - bi-tangent
+ */
+void orthoVectors(glm::vec3 n, glm::vec3 &u, glm::vec3 &v);
+
+template <typename T>
+constexpr T lerp(T a, T b, float u);
+
+std::vector<glm::vec3> axis();
+
+template <typename T>
+constexpr T toPercent(T umin, T umax, T u) {
+    return (u - umin) / (umax - umin);
+}
+
+template <typename T>
+constexpr T toValue(T umin, T umax, T u) {
+    return umin + u * (umax - umin);
+}
+
 }  // namespace daft::core
 
 #include "Adapters.inl"

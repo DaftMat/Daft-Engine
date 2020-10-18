@@ -11,9 +11,6 @@ namespace daft::app {
 SettingWidget::SettingWidget(DrawableSettings *settings, TransformSettings *transforms, std::string name,
                              QWidget *parent)
     : QScrollArea(parent), m_settings{settings}, m_transforms{transforms} {
-    auto layout = new QVBoxLayout;
-    layout->setMargin(2);
-
     std::string pname;
     if (m_settings == nullptr && m_transforms == nullptr)
         pname = "No object selected.";
@@ -21,12 +18,24 @@ SettingWidget::SettingWidget(DrawableSettings *settings, TransformSettings *tran
         pname = std::move(name);
     m_title = new QLabel(pname.c_str());
     m_title->setObjectName("sectionTitle");
-    layout->addWidget(m_title);
-    if (m_settings != nullptr) layout->addWidget(settings);
-    if (m_transforms != nullptr) layout->addWidget(transforms);
+    createWidgets();
+    if (m_settings != nullptr) connect(m_settings.get(), SIGNAL(updateEvent()), this, SLOT(on_updateEvent()));
+    if (m_transforms != nullptr) connect(m_transforms.get(), SIGNAL(updateEvent()), this, SLOT(on_updateEvent()));
+}
+
+void SettingWidget::setTitle(const std::string &name) { m_title->setText(name.c_str()); }
+
+void SettingWidget::on_updateEvent() { createWidgets(); }
+
+void SettingWidget::createWidgets() {
+    m_layout = std::make_unique<QVBoxLayout>();
+    m_layout->setMargin(1);
+    m_layout->addWidget(m_title);
+    if (m_settings != nullptr) m_layout->addWidget(m_settings.get());
+    if (m_transforms != nullptr) m_layout->addWidget(m_transforms.get());
 
     auto widget = new QWidget;
-    widget->setLayout(layout);
+    widget->setLayout(m_layout.get());
 
     setWidget(widget);
     auto screenWidth = float(QApplication::desktop()->screenGeometry().width());
@@ -34,7 +43,5 @@ SettingWidget::SettingWidget(DrawableSettings *settings, TransformSettings *tran
     setObjectName("settingWidget");
     setSizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
 }
-
-void SettingWidget::setTitle(const std::string &name) { m_title->setText(name.c_str()); }
 
 }  // namespace daft::app

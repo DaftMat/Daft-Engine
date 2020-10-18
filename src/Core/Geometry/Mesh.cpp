@@ -46,10 +46,10 @@ void Mesh::unbind() const {
     glBindVertexArray(0);
 }
 
-void Mesh::reset(const AttribManager& attribManager) {
+void Mesh::reset(AttribManager attribManager) {
     clear();
 
-    m_attribManager = attribManager;
+    m_attribManager = std::move(attribManager);
     m_numVertex = m_attribManager.indices().size();
     m_vbos = std::vector<GLuint>(m_attribManager.size(), 0);
     m_isVisible = true;

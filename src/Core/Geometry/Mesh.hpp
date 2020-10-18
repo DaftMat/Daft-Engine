@@ -27,7 +27,7 @@ class ENGINE_API Mesh : public NonCopyable {
      * @param attribManager - geometry of the mesh.
      * @param indices - topology of the mesh.
      */
-    explicit Mesh(const AttribManager &attribManager) { reset(attribManager); };
+    explicit Mesh(AttribManager attribManager) { reset(std::move(attribManager)); };
 
     /**
      * destructor.
@@ -69,7 +69,7 @@ class ENGINE_API Mesh : public NonCopyable {
      * @param attribManager - geometry
      * @param indices - topology
      */
-    void reset(const AttribManager &attribManager);
+    void reset(AttribManager attribManager);
 
     /**
      * Clears the mesh.

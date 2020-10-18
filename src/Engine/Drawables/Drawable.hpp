@@ -32,12 +32,15 @@ class Drawable : public core::NonCopyable {
         Cylinder,
         Torus,
         BSpline,
+        BSpline2D,
         /// Lights
         PointLight,
         DirLight,
         SpotLight,
         /// Composite
         Group,
+        /// Other
+        Custom,
         /// No type
         None
     };
@@ -81,6 +84,8 @@ class Drawable : public core::NonCopyable {
      * Accepts a DrawableVisitor .
      */
     virtual void accept(DrawableVisitor *) = 0;
+
+    virtual Type getType() const = 0;
 
     /**
      * Object accessor.
@@ -219,7 +224,7 @@ class Drawable : public core::NonCopyable {
     /**
      * updates the drawable (rebuild its vao for an Object ).
      */
-    virtual void update() {}
+    virtual void update();
 
     /**
      * Tests if this is a Composite .
@@ -264,14 +269,16 @@ class Drawable : public core::NonCopyable {
     void updateNextFrame() { m_update = true; }
 
    protected:
-    bool m_update;
+    [[nodiscard]] glm::mat4 calculateScaleMat() const;
+    [[nodiscard]] glm::mat4 calculateRotationMat() const;
+    [[nodiscard]] glm::mat4 calculateTranslationMat() const;
+    virtual void applyUpdate(){};
+
+    bool m_update{false};
 
    private:
     [[nodiscard]] glm::mat4 calculateModel() const;
     [[nodiscard]] glm::mat4 calculateNormalizedModel() const;
-    [[nodiscard]] glm::mat4 calculateScaleMat() const;
-    [[nodiscard]] glm::mat4 calculateRotationMat() const;
-    [[nodiscard]] glm::mat4 calculateTranslationMat() const;
 
     glm::vec3 m_position{0.f};
     glm::vec3 m_rotations{0.f};

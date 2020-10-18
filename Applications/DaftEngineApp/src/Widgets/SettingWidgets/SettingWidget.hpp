@@ -9,8 +9,8 @@
 #include <QtWidgets/QScrollArea>
 #include <memory>
 
-#include "DrawableSettings.hpp"
 #include "TransformSettings.hpp"
+#include "src/Widgets/SettingWidgets/DrawableSettings/DrawableSettings.hpp"
 
 namespace daft::app {
 /**
@@ -65,9 +65,16 @@ class ENGINE_API SettingWidget : public QScrollArea {
      */
     void setTitle(const std::string &name);
 
+   public slots:
+    void on_updateEvent();
+
    private:
+    void createWidgets();
+
     std::unique_ptr<DrawableSettings> m_settings{nullptr};
     std::unique_ptr<TransformSettings> m_transforms{nullptr};
+
+    std::unique_ptr<QVBoxLayout> m_layout{nullptr};
 
     QLabel *m_title;
 };

@@ -13,7 +13,7 @@
 namespace daft::core {
 void Texture::bind(GLenum textureType) const { glBindTexture(textureType, m_id); }
 
-Texture::Texture(std::string name, std::string path) : m_name{std::move(name)} {
+Texture::Texture(std::string name, Type type, std::string path) : m_name{std::move(name)}, m_type{type} {
     glGenTextures(1, &m_id);
 
     int width, height, numChannels;

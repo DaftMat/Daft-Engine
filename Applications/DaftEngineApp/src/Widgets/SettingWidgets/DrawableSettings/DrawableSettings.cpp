@@ -3,8 +3,10 @@
 //
 #include "DrawableSettings.hpp"
 
+#include <QApplication>
+#include <QDesktopWidget>
 #include <QtWidgets/QLabel>
-#include <src/Widgets/MainWidget.hpp>
+#include <Widgets/MainWidget.hpp>
 
 namespace daft::app {
 
@@ -13,17 +15,22 @@ DrawableSettings::DrawableSettings(daft::core::SettingManager settings, QWidget*
     auto mainLayout = new QVBoxLayout;
     mainLayout->setMargin(2);
 
-    if (!settings.empty()) {
-        mainLayout->addWidget(new QLabel("Settings"));
+    if (!m_settings.empty()) {
+        m_title = std::make_unique<QLabel>("Settings");
+        mainLayout->addWidget(m_title.get());
         mainLayout->addWidget(MainWidget::createLine(QFrame::Shape::HLine));
+        connect(this, SIGNAL(titleClicked()), this, SLOT(on_titleClicked()));
     }
 
-    auto formWidget = new QWidget;
+    m_widget = std::make_unique<QWidget>();
     m_layout->setMargin(2);
-    formWidget->setLayout(m_layout.get());
-    mainLayout->addWidget(formWidget);
+    m_widget->setLayout(m_layout.get());
+    mainLayout->addWidget(m_widget.get());
 
     setLayout(mainLayout);
+
+    auto screenWidth = float(QApplication::desktop()->screenGeometry().width());
+    setMinimumWidth(int(screenWidth / 6.f));
 }
 
 void DrawableSettings::addIntSpinBox(std::string label, int min, int max, int step) {
@@ -56,14 +63,8 @@ void DrawableSettings::addIntSpinBoxVector(std::string label, int min, int max, 
         spinBoxVector[i]->setMaximum(max);
         spinBoxVector[i]->setValue(int(m_settings.get<glm::vec3>(label)[i] * multiplier));
         spinBoxVector[i]->setSingleStep(step);
+        connect(spinBoxVector[i], SIGNAL(valueChanged(int)), this, SLOT(on_drawableChanged()));
     }
-
-    std::for_each(spinBoxVector.begin(), spinBoxVector.end(), [min, max, step, this](QSpinBox* e) {
-        e->setMinimum(min);
-        e->setMaximum(max);
-        e->setSingleStep(step);
-        connect(e, SIGNAL(valueChanged(int)), this, SLOT(on_drawableChanged()));
-    });
 
     m_intSpinBoxVectors.insert(std::make_pair(label, spinBoxVector));
     addField(std::move(label), {spinBoxVector[0], spinBoxVector[1], spinBoxVector[2]});
@@ -77,14 +78,8 @@ void DrawableSettings::addDoubleSpinBoxVector(std::string label, double min, dou
         doubleSpinBoxVector[i]->setMaximum(max);
         doubleSpinBoxVector[i]->setValue(m_settings.get<glm::vec3>(label)[i]);
         doubleSpinBoxVector[i]->setSingleStep(step);
+        connect(doubleSpinBoxVector[i], SIGNAL(valueChanged(double)), this, SLOT(on_drawableChanged()));
     }
-
-    std::for_each(doubleSpinBoxVector.begin(), doubleSpinBoxVector.end(), [min, max, step, this](QDoubleSpinBox* e) {
-        e->setMinimum(min);
-        e->setMaximum(max);
-        e->setSingleStep(step);
-        connect(e, SIGNAL(valueChanged(double)), this, SLOT(on_drawableChanged()));
-    });
 
     m_doubleSpinBoxVectors.insert(std::make_pair(label, doubleSpinBoxVector));
     addField(std::move(label), {doubleSpinBoxVector[0], doubleSpinBoxVector[1], doubleSpinBoxVector[2]});
@@ -113,6 +108,16 @@ void DrawableSettings::addField(std::string label, const std::vector<QWidget*>& 
     m_layout->addRow(lab.c_str(), widget);
 }
 
+void DrawableSettings::mousePressEvent(QMouseEvent* event) {
+    if (m_title == nullptr) return;
+    auto xLeft = m_title->x();
+    auto yUp = m_title->y();
+    auto xRight = xLeft + m_title->width();
+    auto yBottom = yUp + m_title->height();
+
+    if (event->x() > xLeft && event->y() > yUp && event->x() < xRight && event->y() < yBottom) emit titleClicked();
+}
+
 void DrawableSettings::on_drawableChanged() {
     for (const auto& elem : m_intSpinBoxes) {
         m_settings.get<int>(elem.first) = elem.second->value();
@@ -136,5 +141,10 @@ void DrawableSettings::on_drawableChanged() {
 }
 
 void DrawableSettings::on_comboBoxChanged() { emit comboBoxChanged(); }
+
+void DrawableSettings::on_titleClicked() {
+    m_widget->setVisible(!m_widget->isVisible());
+    emit updateEvent();
+}
 
 }  // namespace daft::app

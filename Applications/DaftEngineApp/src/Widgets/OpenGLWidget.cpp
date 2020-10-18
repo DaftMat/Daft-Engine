@@ -98,11 +98,18 @@ void OpenGLWidget::wheelEvent(QWheelEvent *e) {
 
 void OpenGLWidget::setSelection(std::string s) {
     m_renderer->setSelection(std::move(s));
-    emit selectionChanged();
+    m_emitSelectionChanged = true;
 }
 
 void OpenGLWidget::addDrawable(engine::Drawable::Type type) {
     m_renderer->addDrawable(type);
+    m_emitSceneTreeChanged = true;
+    m_emitSelectionChanged = true;
+}
+
+void OpenGLWidget::addCustomObject(std::string filePath) {
+    if (filePath.size() < 5 || filePath.substr(filePath.size() - 4, filePath.size()) != ".obj") return;
+    m_renderer->addCustomObject(std::move(filePath));
     m_emitSceneTreeChanged = true;
     m_emitSelectionChanged = true;
 }

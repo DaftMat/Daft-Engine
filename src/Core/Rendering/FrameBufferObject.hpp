@@ -31,8 +31,8 @@ class FrameBufferObject : public BaseFrameBuffer {
         Type stencil_depth;
     };
 
-    FrameBufferObject(int width, int height, int numSamples, Attachments attachments)
-        : BaseFrameBuffer{width, height, numSamples} {
+    FrameBufferObject(int width, int height, int numSamples, Attachments attachments, bool isHDR = false)
+        : BaseFrameBuffer{width, height, numSamples, isHDR} {
         initialize(attachments);
     }
 

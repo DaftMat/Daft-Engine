@@ -27,8 +27,8 @@ class ENGINE_API Camera {
      * @param yaw - horizontal rotation
      * @param pitch - vertical rotation
      */
-    explicit Camera(const glm::vec3& position = {0.f, 0.f, -3.f}, const glm::vec3& worldUp = {0.f, 1.f, 0.f},
-                    float yaw = 90.f, float pitch = 0.f);
+    explicit Camera(const glm::vec3& position = {0.f, 0.f, 3.f}, const glm::vec3& worldUp = {0.f, 1.f, 0.f},
+                    float yaw = -90.f, float pitch = 0.f);
 
     /**
      * calculates view matrix.
@@ -90,6 +90,8 @@ class ENGINE_API Camera {
      * Useful for reflection effects on a plane surface.
      */
     void flip();
+
+    [[nodiscard]] glm::vec3 target() const { return m_target; }
 
    private:
     void updateCameraVectors();

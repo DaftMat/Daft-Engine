@@ -15,10 +15,11 @@ TransformSettings::TransformSettings(daft::core::SettingManager settings, bool e
     auto mainLayout = new QVBoxLayout();
     mainLayout->setMargin(2);
 
-    mainLayout->addWidget(new QLabel("Transformations"));
+    m_title = std::make_unique<QLabel>("Transformations");
+    mainLayout->addWidget(m_title.get());
     mainLayout->addWidget(MainWidget::createLine(QFrame::Shape::HLine));
 
-    auto centreWidget = new QWidget();
+    m_widget = std::make_unique<QWidget>();
     auto centreLayout = new QHBoxLayout();
     centreLayout->setMargin(2);
 
@@ -33,9 +34,10 @@ TransformSettings::TransformSettings(daft::core::SettingManager settings, bool e
     centreLayout->addWidget(rotation);
     centreLayout->addWidget(scale);
 
-    centreWidget->setLayout(centreLayout);
+    m_widget->setLayout(centreLayout);
+    connect(this, SIGNAL(titleClicked()), this, SLOT(on_titleClicked()));
 
-    mainLayout->addWidget(centreWidget);
+    mainLayout->addWidget(m_widget.get());
     setLayout(mainLayout);
 }
 
@@ -98,5 +100,20 @@ QWidget *TransformSettings::createTransformWidget(Type type) {
     layout->addWidget(coordsWidget);
     widget->setLayout(layout);
     return widget;
+}
+
+void TransformSettings::on_titleClicked() {
+    m_widget->setVisible(!m_widget->isVisible());
+    emit updateEvent();
+}
+
+void TransformSettings::mousePressEvent(QMouseEvent *event) {
+    if (m_title == nullptr) return;
+    auto xLeft = m_title->x();
+    auto yUp = m_title->y();
+    auto xRight = xLeft + m_title->width();
+    auto yBottom = yUp + m_title->height();
+
+    if (event->x() > xLeft && event->y() > yUp && event->x() < xRight && event->y() < yBottom) emit titleClicked();
 }
 }  // namespace daft::app

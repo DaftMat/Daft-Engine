@@ -47,7 +47,7 @@ QLabel#sectionTitle {
 }
 
 QAbstractButton, QAbstractSpinBox, QComboBox {
-    qproperty-minimumSize: 75px 30px;
+    qproperty-minimumSize: 80px 30px;
     qproperty-maximumSize: 128px 64px;
     background-color: #202020;
     border: 1px solid #505050;
