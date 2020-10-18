@@ -214,16 +214,19 @@ void Renderer::_addDrawable() {
                 break;
             }
             case Drawable::Type::BSpline2D: {
-                std::vector<std::vector<glm::vec3>> controlPoints{
-                    {{-2.f, 0.f, 2.f}, {-1.f, 0.f, 2.f}, {0.f, 0.f, 2.f}, {1.f, 0.f, 2.f}, {2.f, 0.f, 2.f}},
-                    {{-2.f, 0.f, 1.f}, {-1.f, 0.f, 1.f}, {0.f, 0.f, 1.f}, {1.f, 0.f, 1.f}, {2.f, 0.f, 1.f}},
-                    {{-2.f, 0.f, 0.f}, {-1.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 0.f, 0.f}, {2.f, 0.f, 0.f}},
-                    {{-2.f, 0.f, -1.f}, {-1.f, 0.f, -1.f}, {0.f, 0.f, -1.f}, {1.f, 0.f, -1.f}, {2.f, 0.f, -1.f}},
-                    {{-2.f, 0.f, -2.f}, {-1.f, 0.f, -2.f}, {0.f, 0.f, -2.f}, {1.f, 0.f, -2.f}, {2.f, 0.f, -2.f}},
-                };
+                std::vector<std::vector<glm::vec3>> controlPoints;
+                int n = 10;
+                for (int i = -n; i <= n; ++i) {
+                    std::vector<glm::vec3> subControlPoints;
+                    for (int j = -n; j <= n; ++j) {
+                        subControlPoints.emplace_back(float(i), core::Random::get(-2.f, 2.f), float(j));
+                    }
+                    controlPoints.push_back(subControlPoints);
+                    subControlPoints.clear();
+                }
                 for (auto &poly : controlPoints)
                     for (auto &point : poly) point.y = core::Random::get(-1.f, 1.f);
-                drawable = std::make_shared<BSpline2D>(controlPoints, 2, 80);
+                drawable = std::make_shared<BSpline2D>(controlPoints, 2, n * 10);
                 break;
             }
             case Drawable::Type::Custom: {
