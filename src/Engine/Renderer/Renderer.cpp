@@ -169,7 +169,7 @@ void Renderer::updateProjectionMatrix() {
 
 void Renderer::switchToEditionMode() {
     m_drawEdges = true;
-    m_defaultSkyColor = {0.1, 0.1f, 0.1f};
+    m_defaultSkyColor = {0.35, 0.35f, 0.35f};
 }
 
 void Renderer::switchToRenderingMode() {
@@ -223,7 +223,7 @@ void Renderer::_addDrawable() {
                 };
                 for (auto &poly : controlPoints)
                     for (auto &point : poly) point.y = core::Random::get(-1.f, 1.f);
-                drawable = std::make_shared<BSpline2D>(controlPoints, 2);
+                drawable = std::make_shared<BSpline2D>(controlPoints, 2, 80);
                 break;
             }
             case Drawable::Type::Custom: {

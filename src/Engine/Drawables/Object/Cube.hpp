@@ -86,7 +86,7 @@ class ENGINE_API Cube : public Object {
      * Gets the type of drawable.
      * @return Type::Cube .
      */
-    Type getType() const override { return Type::Cube; }
+    [[nodiscard]] Type getType() const override { return Type::Cube; }
 
    protected:
     void applyUpdate() override;

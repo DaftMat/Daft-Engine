@@ -10,6 +10,13 @@ BSpline2DBase::BSpline2DBase(const std::vector<std::vector<glm::vec3>> &controlP
     }
 }
 
+void BSpline2DBase::setBase(int b) {
+    m_base = b;
+    for (auto &s : m_uSplines) {
+        s.base() = b;
+    }
+}
+
 std::vector<float> BSpline2DBase::vNodalVector() const {
     std::vector<float> nv;
     for (int i = 0; i < m_base + int(m_uSplines.size()) + 1; ++i) nv.push_back(float(i));

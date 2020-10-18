@@ -3,11 +3,12 @@
 //
 #pragma once
 #include <API.hpp>
+#include <Core/Utils/NonCopyable.hpp>
 
 #include "BSplineBase.hpp"
 
 namespace daft::core {
-class ENGINE_API BSpline2DBase {
+class ENGINE_API BSpline2DBase : public core::NonCopyable {
    public:
     explicit BSpline2DBase(const std::vector<std::vector<glm::vec3>> &controlPoints = {}, int base = 2);
 
@@ -19,7 +20,7 @@ class ENGINE_API BSpline2DBase {
 
     [[nodiscard]] int base() const { return m_base; }
 
-    int &base() { return m_base; }
+    void setBase(int b);
 
     void resetNodalVectors() {
         for (auto &s : m_uSplines) s.resetNodalVector();

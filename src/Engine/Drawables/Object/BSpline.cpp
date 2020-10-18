@@ -42,7 +42,7 @@ void BSpline::renderEdges(const core::ShaderProgram &shader) {
 }
 
 void BSpline::createBSpline() {
-    /// create modal vector
+    /// create nodal vector
     m_spline.resetNodalVector();
 
     m_meshObjects.clear();

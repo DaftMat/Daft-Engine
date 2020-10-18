@@ -33,7 +33,7 @@ void BSpline2D::renderEdges(const core::ShaderProgram &shader) {
     }
 
     /// draw resulting mesh's wireframe
-    shader.setVec3("color", glm::vec3{1.f});
+    shader.setVec3("color", glm::vec3{0.f});
     if (selected()) shader.setVec3("color", {1.f, 1.f, 0.f});
     m_meshObjects[0].prepare();
     m_meshObjects[0].render();
@@ -50,12 +50,12 @@ core::SettingManager BSpline2D::getSettings() const {
 
 void BSpline2D::setSettings(const core::SettingManager &s) {
     setBase(s.get<int>("Base"));
-    setBase(s.get<float>("Steps"));
+    setSteps(s.get<float>("Steps"));
 }
 
 void BSpline2D::setBase(int b) {
     if (m_spline.base() == b) return;
-    m_spline.base() = b;
+    m_spline.setBase(b);
     updateNextFrame();
 }
 
@@ -67,6 +67,7 @@ void BSpline2D::setSteps(float s) {
 
 void BSpline2D::create2DBSpline() {
     m_spline.resetNodalVectors();
+    m_meshObjects.clear();
 
     core::AttribManager am;
     std::vector<glm::vec3> positions;
@@ -81,20 +82,17 @@ void BSpline2D::create2DBSpline() {
     float vStep = (vMax - vMin) / m_steps;
 
     /// positions + tex coords
-    for (float u = uMin; u < uMax; u += uStep) {
-        for (float v = vMin; v < vMax; v += vStep) {
+    int steps = int(m_steps);
+    for (int j = 0; j < steps; ++j) {
+        for (int i = 0; i < steps; ++i) {
+            float u = uMin + float(j) * uStep;
+            float v = vMin + float(i) * vStep;
             positions.push_back(m_spline.eval(u, v));
             float pi = (u - uMin) / (uMax - uMin);
             float pj = (v - vMin) / (vMax - vMin);
             texCoords.emplace_back(pi, pj);
-        }
-    }
 
-    /// indices
-    int steps = int(m_steps);
-    for (int j = 0; j < steps; ++j) {
-        for (int i = 0; i < steps; ++i) {
-            int index = j + i * steps;
+            int index = j * steps + i;
             if (i != steps - 1 && j != steps - 1) {
                 am.indices().push_back(index);
                 am.indices().push_back(index + steps + 1);
@@ -144,7 +142,7 @@ void BSpline2D::create2DBSpline() {
 
             /// calculate mean of all neighbor triangles' normals
             glm::vec3 normal{0.f};
-            for (int i = 0; i < inds.size(); i += 3) {
+            for (size_t i = 0; i < inds.size(); i += 3) {
                 glm::vec<3, GLuint> triangle{inds[i], inds[i + 1], inds[i + 2]};
                 if (triangle.x == index) {
                     auto a = glm::normalize(positions[triangle.z] - positions[triangle.x]);
@@ -168,8 +166,6 @@ void BSpline2D::create2DBSpline() {
             normals.push_back(glm::normalize(normal));
         }
     }
-
-    m_meshObjects.clear();
 
     am.addAttrib(positions);
     am.addAttrib(normals);
