@@ -79,7 +79,7 @@ void SpotLight::renderToLightMap(Composite *root, const core::ShaderProgram &sha
                                  const daft::engine::Camera &viewCam) {
     m_fbo->use();
     glClear(GL_DEPTH_BUFFER_BIT);
-    glm::vec3 center = viewCam.target();
+    // glm::vec3 center = viewCam.target();
     glm::vec3 right = glm::cross(-m_direction, glm::vec3{0.f, 1.f, 0.f});
     glm::vec3 up = glm::cross(right, -m_direction);
     glm::mat4 lightView = glm::lookAt(position(), position() - m_direction, up);
