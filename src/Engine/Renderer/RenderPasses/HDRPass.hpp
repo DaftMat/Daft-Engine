@@ -20,7 +20,7 @@ class HDRPass : public core::NonCopyable {
 
     HDRPass &operator=(HDRPass &&) noexcept = default;
 
-    GLuint outTexture() { return m_addFBO->textures()[0]; }
+    GLuint outTexture() { return m_finalFBO->textures()[0]; }
 
     void use() const { m_multisample->use(); }
 
@@ -31,14 +31,17 @@ class HDRPass : public core::NonCopyable {
     Quad m_hdrQuad;
     Quad m_blurQuad;
     Quad m_addQuad;
+    Quad m_finalQuad;
 
     std::unique_ptr<MultiSamplingPass> m_multisample{nullptr};
     std::unique_ptr<core::FrameBufferObject> m_bloomFBO{nullptr};
     std::vector<std::unique_ptr<core::FrameBufferObject>> m_blurFBOs;
     std::unique_ptr<core::FrameBufferObject> m_addFBO{nullptr};
+    std::unique_ptr<core::FrameBufferObject> m_finalFBO{nullptr};
 
     std::unique_ptr<core::ShaderProgram> m_bloomShader{nullptr};
     std::unique_ptr<core::ShaderProgram> m_blurShader{nullptr};
     std::unique_ptr<core::ShaderProgram> m_addShader{nullptr};
+    std::unique_ptr<core::ShaderProgram> m_finalShader{nullptr};
 };
 }  // namespace daft::engine

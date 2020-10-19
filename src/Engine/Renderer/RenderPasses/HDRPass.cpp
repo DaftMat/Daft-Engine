@@ -10,6 +10,7 @@ HDRPass::HDRPass(int width, int height, int multisamples)
       m_hdrQuad{-1.f, 1.f, 2.f, 2.f},
       m_blurQuad{-1.f, 1.f, 2.f, 2.f},
       m_addQuad{-1.f, 1.f, 2.f, 2.f},
+      m_finalQuad{-1.f, 1.f, 2.f, 2.f},
       m_multisample{std::make_unique<MultiSamplingPass>(width, height, multisamples, true)},
       m_bloomFBO{std::make_unique<core::FrameBufferObject>(
           width, height, 1,
@@ -17,9 +18,13 @@ HDRPass::HDRPass(int width, int height, int multisamples)
       m_addFBO{std::make_unique<core::FrameBufferObject>(
           width, height, 1,
           core::FrameBufferObject::Attachments{core::FrameBufferObject::Attachments::Type::TEXTURE, 1}, true)},
+      m_finalFBO{std::make_unique<core::FrameBufferObject>(
+          width, height, 1,
+          core::FrameBufferObject::Attachments{core::FrameBufferObject::Attachments::Type::TEXTURE, 1}, true)},
       m_bloomShader{std::make_unique<core::ShaderProgram>("shaders/quad.vert.glsl", "shaders/bloom.frag.glsl")},
       m_blurShader{std::make_unique<core::ShaderProgram>("shaders/quad.vert.glsl", "shaders/blur.frag.glsl")},
-      m_addShader{std::make_unique<core::ShaderProgram>("shaders/quad.vert.glsl", "shaders/add.frag.glsl")} {
+      m_addShader{std::make_unique<core::ShaderProgram>("shaders/quad.vert.glsl", "shaders/add.frag.glsl")},
+      m_finalShader{std::make_unique<core::ShaderProgram>("shaders/quad.vert.glsl", "shaders/hdr.frag.glsl")} {
     m_blurFBOs.emplace_back(std::make_unique<core::FrameBufferObject>(
         width, height, 1, core::FrameBufferObject::Attachments{core::FrameBufferObject::Attachments::Type::TEXTURE, 1},
         true));
@@ -30,14 +35,12 @@ HDRPass::HDRPass(int width, int height, int multisamples)
     m_bloomShader->use();
     m_bloomShader->setFloat("threshold", 1.f);
     m_bloomShader->stop();
-    m_addShader->use();
-    m_addShader->setBool("isHDR", true);
-    m_addShader->stop();
 
     m_hdrQuad.setTexture(m_multisample->outTexture());
     m_blurQuad.setTexture(m_bloomFBO->textures()[0]);
     m_addQuad.setTexture(m_multisample->outTexture());
     m_addQuad.addTexture();
+    m_finalQuad.setTexture(m_addFBO->textures()[0]);
 }
 
 void HDRPass::stop(int width, int height) {
@@ -57,7 +60,7 @@ void HDRPass::stop(int width, int height) {
 
     /// blur bloom parts
     bool horizontal = true, firstIt = true;
-    int amout = 10;
+    int amout = 16;
     m_blurShader->use();
     for (int i = 0; i < amout; ++i) {
         m_blurFBOs[horizontal]->use();
@@ -86,6 +89,19 @@ void HDRPass::stop(int width, int height) {
     m_addQuad.unbind();
     m_addShader->stop();
     m_addFBO->stop(width, height);
+
+    /// TODO: apply ping-pong to calculate the HDR image's intensity mean (IM) and set exposure of tone mapping to 1/IM.
+    float exposure = 1.f;
+
+    m_finalFBO->use();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    m_finalShader->use();
+    m_finalShader->setFloat("exposure", exposure);
+    m_finalQuad.prepare();
+    m_finalQuad.render(*m_addShader, GL_TRIANGLES);
+    m_finalQuad.unbind();
+    m_finalShader->stop();
+    m_finalFBO->stop(width, height);
 
     glEnable(GL_DEPTH_TEST);
 }
