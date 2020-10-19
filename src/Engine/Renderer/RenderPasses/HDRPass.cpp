@@ -90,7 +90,9 @@ void HDRPass::stop(int width, int height) {
     m_addShader->stop();
     m_addFBO->stop(width, height);
 
-    /// TODO: apply ping-pong to calculate the HDR image's intensity mean (IM) and set exposure of tone mapping to 1/IM.
+    /// TODO: apply ping-pong to calculate the HDR image's intensity mean (IM) and set exposure of tone mapping from it.
+    /// eye exposure sensitivity effect
+
     float exposure = 1.f;
 
     m_finalFBO->use();

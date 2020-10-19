@@ -47,13 +47,13 @@ class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
      * Activates the framebuffer.
      * The next frames will be rendered on this framebuffer.
      */
-    void use() const;
+    void use();
 
     /**
      * Stops using this framebuffer.
      * The next frames will be rendered on the screen's framebuffer.
      */
-    void stop(int width, int height) const;
+    void stop(int width, int height);
 
     /** Resolves one fbo's color buffer to the screen's fbo.
      *
@@ -89,7 +89,12 @@ class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
      */
     static void setDefaultFbo(GLuint fbo) { m_defaultFbo = fbo; }
 
+    void setSize(int width, int height);
+
    protected:
+    void setSizeNoActive(int width, int height);
+    void setSizeActive(int width, int height);
+
     void addColorBuffer();
     void addDepthBuffer();
     void addStencilBuffer();
@@ -116,5 +121,6 @@ class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
     bool m_isHDR;
 
     bool m_isValid{false};
+    bool m_isActive{false};
 };
 }  // namespace daft::core

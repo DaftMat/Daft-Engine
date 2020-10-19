@@ -53,7 +53,8 @@ BaseFrameBuffer &BaseFrameBuffer::operator=(BaseFrameBuffer &&o) noexcept {
     return *this;
 }
 
-void BaseFrameBuffer::use() const {
+void BaseFrameBuffer::use() {
+    if (m_isActive) return;
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
@@ -63,11 +64,14 @@ void BaseFrameBuffer::use() const {
         return;
     }
     glViewport(0, 0, m_width, m_height);
+    m_isActive = true;
 }
 
-void BaseFrameBuffer::stop(int width, int height) const {
+void BaseFrameBuffer::stop(int width, int height) {
+    if (!m_isActive) return;
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     glViewport(0, 0, width, height);
+    m_isActive = false;
 }
 
 void BaseFrameBuffer::resolve(int width, int height, int index) const {
@@ -237,5 +241,22 @@ void BaseFrameBuffer::drawBuffers() const {
     glDrawBuffers(m_num_color, bufs);
     delete[] bufs;
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
+}
+
+void BaseFrameBuffer::setSizeNoActive(int width, int height) {
+    m_width = width;
+    m_height = height;
+}
+
+void BaseFrameBuffer::setSizeActive(int width, int height) {
+    setSizeNoActive(width, height);
+    glViewport(0, 0, width, height);
+}
+
+void BaseFrameBuffer::setSize(int width, int height) {
+    if (m_isActive)
+        setSizeActive(width, height);
+    else
+        setSizeNoActive(width, height);
 }
 }  // namespace daft::core

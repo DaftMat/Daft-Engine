@@ -37,6 +37,7 @@ class HDRPass : public core::NonCopyable {
     std::unique_ptr<core::FrameBufferObject> m_bloomFBO{nullptr};
     std::vector<std::unique_ptr<core::FrameBufferObject>> m_blurFBOs;
     std::unique_ptr<core::FrameBufferObject> m_addFBO{nullptr};
+    std::vector<std::unique_ptr<core::FrameBufferObject>> m_meanFBOs;
     std::unique_ptr<core::FrameBufferObject> m_finalFBO{nullptr};
 
     std::unique_ptr<core::ShaderProgram> m_bloomShader{nullptr};
