@@ -23,6 +23,9 @@ HDRPass::HDRPass(int width, int height, int multisamples)
     m_blurFBOs.emplace_back(std::make_unique<core::FrameBufferObject>(
         width, height, 1, core::FrameBufferObject::Attachments{core::FrameBufferObject::Attachments::Type::TEXTURE, 1},
         true));
+    m_blurFBOs.emplace_back(std::make_unique<core::FrameBufferObject>(
+        width, height, 1, core::FrameBufferObject::Attachments{core::FrameBufferObject::Attachments::Type::TEXTURE, 1},
+        true));
 
     m_bloomShader->use();
     m_bloomShader->setFloat("threshold", 1.f);
@@ -35,7 +38,6 @@ HDRPass::HDRPass(int width, int height, int multisamples)
     m_blurQuad.setTexture(m_bloomFBO->textures()[0]);
     m_addQuad.setTexture(m_multisample->outTexture());
     m_addQuad.addTexture();
-    m_addQuad.setTexture(m_blurFBOs[0]->textures()[0], 1);
 }
 
 void HDRPass::stop(int width, int height) {
@@ -54,14 +56,26 @@ void HDRPass::stop(int width, int height) {
     m_bloomFBO->stop(width, height);
 
     /// blur bloom parts
-    m_blurFBOs[0]->use();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    bool horizontal = true, firstIt = true;
+    int amout = 10;
     m_blurShader->use();
-    m_blurQuad.prepare();
-    m_blurQuad.render(*m_blurShader, GL_TRIANGLES);
-    m_blurQuad.unbind();
+    for (int i = 0; i < amout; ++i) {
+        m_blurFBOs[horizontal]->use();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        m_blurShader->setBool("horizontal", horizontal);
+        if (!firstIt)
+            m_blurQuad.setTexture(m_blurFBOs[!horizontal]->textures()[0]);
+        else
+            m_blurQuad.setTexture(m_bloomFBO->textures()[0]);
+        m_blurQuad.prepare();
+        m_blurQuad.render(*m_blurShader, GL_TRIANGLES);
+        m_blurQuad.unbind();
+        m_blurFBOs[horizontal]->stop(width, height);
+        horizontal = !horizontal;
+        if (firstIt) firstIt = false;
+    }
+    m_addQuad.setTexture(m_blurFBOs[!horizontal]->textures()[0], 1);
     m_blurShader->stop();
-    m_blurFBOs[0]->stop(width, height);
 
     /// add the 2 images and apply tone mapping
     m_addFBO->use();

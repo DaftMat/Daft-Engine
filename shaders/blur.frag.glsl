@@ -7,25 +7,28 @@ in vec2 texCoords;
 
 uniform sampler2D quadTexture[MAX_TEX];
 
-float kernel[5][5] = {
-    {1.0,  4.0,  7.0,  4.0, 1.0},
-    {4.0, 16.0, 26.0, 16.0, 4.0},
-    {7.0, 26.0, 41.0, 26.0, 7.0},
-    {4.0, 16.0, 26.0, 16.0, 4.0},
-    {1.0,  4.0,  7.0,  4.0, 1.0}
-};
+uniform bool horizontal;
+uniform float weight[5] = float[] (0.227027, 0.1945946, 0.1216216, 0.054054, 0.016216);
 
-void main() {
-    vec3 color = vec3(0.0);
-    vec2 texSize = textureSize(quadTexture[0], 0);
-    vec2 texelSize = 1.f / texSize;
-
-    for (int x = -2 ; x <= 2 ; ++x) {
-        for (int y = -2 ; y <= 2 ; ++y) {
-            color += texture2D(quadTexture[0], texCoords + vec2(x,y) * texelSize).rgb * kernel[x+2][y+2];
+void main()
+{
+    vec2 tex_offset = 1.0 / textureSize(quadTexture[0], 0); // gets size of single texel
+    vec3 result = texture2D(quadTexture[0], texCoords).rgb * weight[0]; // current fragment's contribution
+    if(horizontal)
+    {
+        for(int i = 1; i < 5; ++i)
+        {
+            result += texture2D(quadTexture[0], texCoords + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
+            result += texture2D(quadTexture[0], texCoords - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
         }
     }
-    color = color / 273.0;
-
-    out_color = vec4(color, 1.0);
+    else
+    {
+        for(int i = 1; i < 5; ++i)
+        {
+            result += texture2D(quadTexture[0], texCoords + vec2(0.0, tex_offset.y * i)).rgb * weight[i];
+            result += texture2D(quadTexture[0], texCoords - vec2(0.0, tex_offset.y * i)).rgb * weight[i];
+        }
+    }
+    out_color = vec4(result, 1.0);
 }
