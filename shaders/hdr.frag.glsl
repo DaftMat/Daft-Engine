@@ -1,4 +1,4 @@
-#version 450
+#version 460
 #define MAX_TEX 32
 
 layout (location = 0) out vec4 out_color;

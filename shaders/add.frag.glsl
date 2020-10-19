@@ -12,10 +12,10 @@ uniform bool isHDR;
 void main() {
     vec3 color1 = texture2D(quadTexture[0], texCoords).rgb;
     vec3 color2 = texture2D(quadTexture[1], texCoords).rgb;
-    vec3 resColor = color1 + color2;
+    vec3 resColor = color1;// + color2; TODO: make bloom better.
     if (isHDR) {
-        /// apply tonemapping
-        resColor = resColor / (resColor + vec3(1.0));
+        resColor = vec3(1.0) - exp(-resColor * 1.0);
+        resColor = pow(resColor, vec3(1.0 / 2.2));
     }
     out_color = vec4(resColor, 1.0);
 }

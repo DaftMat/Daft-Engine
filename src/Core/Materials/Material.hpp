@@ -112,6 +112,12 @@ class Material : public NonCopyable {
     [[nodiscard]] const std::vector<Texture> &textures() const { return m_textures; }
 
     /**
+     * Textures list getter.
+     * @return list of textures in the material.
+     */
+    [[nodiscard]] std::vector<Texture> &textures() { return m_textures; }
+
+    /**
      * Settings list getter.
      * @return list of settings in the material.
      */

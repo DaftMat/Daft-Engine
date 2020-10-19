@@ -29,6 +29,8 @@ class HDRPass : public core::NonCopyable {
    private:
     int m_width, m_height;
     Quad m_hdrQuad;
+    Quad m_blurQuad;
+    Quad m_addQuad;
 
     std::unique_ptr<MultiSamplingPass> m_multisample{nullptr};
     std::unique_ptr<core::FrameBufferObject> m_bloomFBO{nullptr};

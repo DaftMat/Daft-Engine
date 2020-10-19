@@ -21,7 +21,9 @@ class ENGINE_API Quad {
 
     Quad &operator=(Quad &&) noexcept = default;
 
-    void setTexture(int id);
+    void addTexture();
+
+    void setTexture(int id, int i = 0);
 
     /**
      * prepares the wrapped mesh and its material to be rendered.

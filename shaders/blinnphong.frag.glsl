@@ -75,6 +75,8 @@ uniform int nrSpotLights;
 
 uniform Material material;
 
+uniform bool instantToneMapping;
+
 vec3 calcPointLight(PointLight light);
 vec3 calcDirLight(DirLight light);
 vec3 calcSpotLight(SpotLight light);
@@ -119,8 +121,10 @@ void main() {
 
     vec3 ambient = vec3(0.03) * defaultMat.albedo;
     vec3 color = ambient + resultColor;
-    color = vec3(1.0) - exp(-color * 1.0);
-    color = pow(color, vec3(1.0 / 2.2));
+    if (instantToneMapping) {
+        color = color / (color + vec3(1.0));;
+        color = pow(color, vec3(1.0 / 2.2));
+    }
     fragColor = vec4(color, 1.0);
 }
 
