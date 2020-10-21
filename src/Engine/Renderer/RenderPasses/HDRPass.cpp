@@ -60,9 +60,9 @@ void HDRPass::stop(int width, int height) {
 
     /// blur bloom parts
     bool horizontal = true, firstIt = true;
-    int amout = 16;
+    int amount = 16;
     m_blurShader->use();
-    for (int i = 0; i < amout; ++i) {
+    for (int i = 0; i < amount; ++i) {
         m_blurFBOs[horizontal]->use();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         m_blurShader->setBool("horizontal", horizontal);
