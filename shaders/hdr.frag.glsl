@@ -18,15 +18,20 @@ mat3 acesOutput = mat3(
 );
 
 uniform sampler2D quadTexture[MAX_TEX];
-//uniform float exposure;
+uniform float exposure;
 
 vec3 aces_approx(vec3 v);
 vec3 RRTandODTFit(vec3 v);
 
 void main() {
     vec3 color = texture2D(quadTexture[0], texCoords).rgb;
-    color = aces_approx(color);
-    //color = pow(color, vec3(1.0 / 2.2));
+    // tone mapping
+    vec3 curr = aces_approx(color * exposure);
+    vec3 W = vec3(11.2f);
+    vec3 white_scale = vec3(1.0f) / aces_approx(W);
+    color = curr * white_scale;
+    // gamma
+    color = pow(color, vec3(1.0 / 2.2));
     out_color = vec4(color, 1.0);
 }
 
@@ -35,14 +40,21 @@ vec3 aces_approx(vec3 v)
     //v = acesInput * v;
     //v = RRTandODTFit(v);
     //v = acesOutput * v;
-    v *= 0.6;
-    float a = 2.51f;
-    float b = 0.03f;
-    float c = 2.43f;
-    float d = 0.59f;
-    float e = 0.14f;
-    v = (v*(a*v+b))/(v*(c*v+d)+e);
-    return clamp(v, 0.0, 1.0);
+    //v *= 0.6;
+    //float a = 2.51f;
+    //float b = 0.03f;
+    //float c = 2.43f;
+    //float d = 0.59f;
+    //float e = 0.14f;
+    //v = (v*(a*v+b))/(v*(c*v+d)+e);
+    //return clamp(v, 0.0, 1.0);
+    float A = 0.15f;
+    float B = 0.50f;
+    float C = 0.10f;
+    float D = 0.20f;
+    float E = 0.02f;
+    float F = 0.30f;
+    return clamp(((v*(A*v+C*B)+D*E)/(v*(A*v+B)+D*F))-E/F, 0.0, 1.0);
 }
 
 vec3 RRTandODTFit(vec3 v)
