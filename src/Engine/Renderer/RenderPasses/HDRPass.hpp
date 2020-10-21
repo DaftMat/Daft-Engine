@@ -27,8 +27,8 @@ class HDRPass : public core::NonCopyable {
     void stop(int width, int height);
 
    private:
-    bool m_adaptive{true};
-    float m_exposure{1.f};
+    // bool m_adaptive{true};
+    // float m_exposure{1.f};
 
     int m_width, m_height;
     Quad m_quad;
