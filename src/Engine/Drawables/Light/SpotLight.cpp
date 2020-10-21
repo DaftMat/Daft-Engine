@@ -66,7 +66,7 @@ void SpotLight::setOuterCutOff(float o) {
 
 void SpotLight::loadToShader(const core::ShaderProgram &shader, int index) const {
     std::string name = "spotLights[" + std::to_string(index) + "]";
-    shader.setVec3(name + ".position", position());
+    shader.setVec3(name + ".position", model() * glm::vec4(glm::vec3(0.f), 1.f));
     shader.setVec3(name + ".direction", m_direction);
     shader.setFloat(name + ".innerCutOff", glm::cos(glm::radians(m_innerCutOff)));
     shader.setFloat(name + ".outerCutOff", glm::cos(glm::radians(m_outerCutOff)));

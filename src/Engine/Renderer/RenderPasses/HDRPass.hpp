@@ -27,19 +27,17 @@ class HDRPass : public core::NonCopyable {
     void stop(int width, int height);
 
    private:
+    bool m_adaptive{true};
+    float m_exposure{1.f};
+
     int m_width, m_height;
-    Quad m_hdrQuad;
-    Quad m_blurQuad;
-    Quad m_addQuad;
-    Quad m_finalQuad;
+    Quad m_quad;
 
     std::unique_ptr<MultiSamplingPass> m_multisample{nullptr};
-    std::unique_ptr<core::FrameBufferObject> m_bloomFBO{nullptr};
     std::vector<std::unique_ptr<core::FrameBufferObject>> m_blurFBOs;
-    std::unique_ptr<core::FrameBufferObject> m_addFBO{nullptr};
-    std::vector<std::unique_ptr<core::FrameBufferObject>> m_meanFBOs;
     std::unique_ptr<core::FrameBufferObject> m_finalFBO{nullptr};
 
+    std::unique_ptr<core::ShaderProgram> m_quadShader{nullptr};
     std::unique_ptr<core::ShaderProgram> m_bloomShader{nullptr};
     std::unique_ptr<core::ShaderProgram> m_blurShader{nullptr};
     std::unique_ptr<core::ShaderProgram> m_addShader{nullptr};

@@ -31,7 +31,7 @@ void PointLight::setSettings(const core::SettingManager &s) {
 
 void PointLight::loadToShader(const core::ShaderProgram &shader, int index) const {
     std::string name = "pointLights[" + std::to_string(index) + "]";
-    shader.setVec3(name + ".position", position());
+    shader.setVec3(name + ".position", model() * glm::vec4(glm::vec3(0.f), 1.f));
     shader.setVec3(name + ".color", color());
     shader.setFloat(name + ".intensity", m_intensity);
     shader.setMat4(name + ".lightSpaceMatrix", m_lightSpaceMatrix);
