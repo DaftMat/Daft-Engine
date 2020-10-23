@@ -32,6 +32,6 @@ glm::vec3 BSplineBase::eval(float u) const {
 
 void BSplineBase::resetNodalVector() {
     m_nodalVector.clear();
-    for (int i = 0; i < m_base + int(m_controlPoints.size()) + 1; ++i) m_nodalVector.push_back(float(i));
+    for (int i = 0; i < m_base + int(m_controlPoints.size()) + 1; ++i) m_nodalVector.push_back(i);
 }
 }  // namespace daft::core

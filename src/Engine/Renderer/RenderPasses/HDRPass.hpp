@@ -34,10 +34,11 @@ class HDRPass : public core::NonCopyable {
     Quad m_quad;
 
     std::unique_ptr<MultiSamplingPass> m_multisample{nullptr};
-    std::vector<std::unique_ptr<core::FrameBufferObject>> m_blurFBOs;
+    std::vector<std::unique_ptr<core::FrameBufferObject>> m_pingpongFBOs;
     std::unique_ptr<core::FrameBufferObject> m_finalFBO{nullptr};
 
-    std::unique_ptr<core::ShaderProgram> m_quadShader{nullptr};
+    std::unique_ptr<core::ShaderProgram> m_lumShader{nullptr};
+    std::unique_ptr<core::ShaderProgram> m_meanShader{nullptr};
     std::unique_ptr<core::ShaderProgram> m_bloomShader{nullptr};
     std::unique_ptr<core::ShaderProgram> m_blurShader{nullptr};
     std::unique_ptr<core::ShaderProgram> m_addShader{nullptr};
