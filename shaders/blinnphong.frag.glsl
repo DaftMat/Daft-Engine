@@ -139,8 +139,8 @@ vec3 calcPointLight(PointLight light) {
     float attenuation = light.intensity / (distance * distance);
     vec3 diffuse = light.color * diff * defaultMat.albedo * attenuation;
     vec3 specular = light.color * spec * defaultMat.specular * attenuation * defaultMat.reflectivity;
-    float shadowValue = 1.0 - calculateShadow(light.shadowData);
-    return shadowValue * (diffuse + specular);
+    //float shadowValue = 1.0 - calculateShadow(light.shadowData);
+    return (diffuse + specular);// * shadowValue;
 }
 
 vec3 calcDirLight(DirLight light){
@@ -182,7 +182,7 @@ float calculateShadow(Shadow shadowData) {
     projCoords = projCoords * 0.5 + 0.5;
     float currentDepth = projCoords.z;
     float eps = 5e-3;
-    if (currentDepth > 1.0 - eps) return 0.0;
+    //if (currentDepth > 1.0 - eps) return 0.0;
     // PCF
     float shadowValue = 0.0;
     vec2 texSize = textureSize(shadowData.shadowMap, 0);

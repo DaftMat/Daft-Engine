@@ -41,7 +41,7 @@ void SpotLight::setSettings(const core::SettingManager &s) {
 void SpotLight::setTransformations(const core::SettingManager &t) {
     position() = t.get<glm::vec3>("Position");
     rotations() = t.get<glm::vec3>("Rotations");
-    m_direction = calculateRotationMat() * glm::vec4(m_baseDirection, 0);
+    m_direction = glm::normalize(calculateRotationMat() * glm::vec4(m_baseDirection, 0));
 }
 
 void SpotLight::setIntensity(float i) {
@@ -78,12 +78,13 @@ void SpotLight::loadToShader(const core::ShaderProgram &shader, int index) const
 void SpotLight::renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
                                  const daft::engine::Camera &viewCam) {
     m_fbo->use();
-    glClear(GL_DEPTH_BUFFER_BIT);
-    // glm::vec3 center = viewCam.target();
-    glm::vec3 right = glm::cross(-m_direction, glm::vec3{0.f, 1.f, 0.f});
-    glm::vec3 up = glm::cross(right, -m_direction);
-    glm::mat4 lightView = glm::lookAt(position(), position() - m_direction, up);
-    glm::mat4 lightProj = glm::ortho(-20.f, 20.f, -20.f, 20.f, 1.f, 40.f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glm::vec3 worldUp = glm::vec3{0.f, 1.f, 0.f};
+    if (m_direction == worldUp || m_direction == -worldUp) worldUp = glm::vec3{1.f, 0.f, 0.f};
+    glm::vec3 right = glm::cross(m_direction, worldUp);
+    glm::vec3 up = glm::cross(right, m_direction);
+    glm::mat4 lightView = glm::lookAt(position(), position() + m_direction, up);
+    glm::mat4 lightProj = glm::perspective<float>(2.f * glm::radians(m_outerCutOff), 1.f, 2.f, 50.f);
     m_lightSpaceMatrix = lightProj * lightView;
     shader.setMat4("lightSpaceMatrix", m_lightSpaceMatrix);
     root->render(shader);

@@ -140,11 +140,10 @@ class Light : public Drawable {
      */
     [[nodiscard]] bool isLight() const override { return true; }
 
-    const core::Texture &shadowMap() const { return m_shadowMap; }
+    GLuint shadowMap() const;
 
    protected:
     Mesh m_mesh;
-    core::Texture m_shadowMap;
     glm::mat4 m_lightSpaceMatrix{1.f};
 
     std::unique_ptr<core::FrameBufferObject> m_fbo{nullptr};
