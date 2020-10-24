@@ -182,7 +182,7 @@ float calculateShadow(Shadow shadowData) {
     projCoords = projCoords * 0.5 + 0.5;
     float currentDepth = projCoords.z;
     float eps = 5e-3;
-    //if (currentDepth > 1.0 - eps) return 0.0;
+    if (currentDepth > 1.0 - eps) return 0.0;
     // PCF
     float shadowValue = 0.0;
     vec2 texSize = textureSize(shadowData.shadowMap, 0);
