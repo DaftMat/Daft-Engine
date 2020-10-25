@@ -13,7 +13,7 @@ HDRPass::HDRPass(int width, int height, int multisamples)
           width, height, 1,
           core::FrameBufferObject::Attachments{core::FrameBufferObject::Attachments::Type::TEXTURE, 1})},
       m_lumShader{std::make_unique<core::ShaderProgram>("shaders/quad.vert.glsl", "shaders/lum.frag.glsl")},
-      m_meanShader{std::make_unique<core::ShaderProgram>("shaders/quad.vert.glsl", "shaders/mean.frag.glsl")},
+      m_meanShader{std::make_unique<core::ShaderProgram>("shaders/quad.vert.glsl", "shaders/quad.frag.glsl")},
       m_bloomShader{std::make_unique<core::ShaderProgram>("shaders/quad.vert.glsl", "shaders/bloom.frag.glsl")},
       m_blurShader{std::make_unique<core::ShaderProgram>("shaders/quad.vert.glsl", "shaders/blur.frag.glsl")},
       m_addShader{std::make_unique<core::ShaderProgram>("shaders/quad.vert.glsl", "shaders/add.frag.glsl")},
@@ -59,8 +59,8 @@ void HDRPass::stop(int width, int height) {
             texSize /= 2.f;
             if (texSize.x < 1.f) texSize.x = 1.f;
             if (texSize.y < 1.f) texSize.y = 1.f;
-            m_pingpongFBOs[change]->use();
             m_pingpongFBOs[change]->setSize(texSize.x, texSize.y);
+            m_pingpongFBOs[change]->use();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             m_quad.prepare();
             m_quad.render(*m_meanShader, GL_TRIANGLES);
@@ -69,7 +69,7 @@ void HDRPass::stop(int width, int height) {
         }
         float colorPixel[3];
         glReadPixels(0, 0, 1, 1, GL_RGB, GL_FLOAT, &colorPixel);
-        float lumMean = colorPixel[0] / float(m_width * m_height);
+        float lumMean = colorPixel[0];  // / float(m_width * m_height);
         std::cout << lumMean << std::endl;
         if (lumMean < 0.1f) lumMean = 0.1f;
         m_exposure = core::lerp(0.5f / lumMean, m_exposure, 0.05);

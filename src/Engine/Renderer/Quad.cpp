@@ -49,6 +49,5 @@ void Quad::prepare() const {
 void Quad::render(const core::ShaderProgram &shader, GLuint mode) const {
     m_material->loadToShader(shader, "");
     m_mesh.render(mode);
-    m_mesh.unbind();
 }
 }  // namespace daft::engine

@@ -32,11 +32,16 @@ class FrameBufferObject : public BaseFrameBuffer {
     };
 
     FrameBufferObject(int width, int height, int numSamples, Attachments attachments, bool isHDR = false)
-        : BaseFrameBuffer{width, height, numSamples, isHDR} {
+        : BaseFrameBuffer{width, height, numSamples, isHDR}, m_attachments{attachments} {
         initialize(attachments);
     }
 
+    void setSize(int width, int height);
+
    protected:
     void initialize(Attachments a);
+
+   private:
+    Attachments m_attachments;
 };
 }  // namespace daft::core

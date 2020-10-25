@@ -9,7 +9,7 @@ int Light::m_nrLight{0};
 Light::Light(glm::vec3 color, Composite *parent, std::string name)
     : Drawable(parent, std::move(name)),
       m_fbo{std::make_unique<core::FrameBufferObject>(
-          2048, 2048, 1,
+          1024, 1024, 1,
           core::FrameBufferObject::Attachments{core::FrameBufferObject::Attachments::Type::NONE, 0,
                                                core::FrameBufferObject::Attachments::Type::TEXTURE})},
       m_color{color} {}

@@ -13,6 +13,8 @@ namespace daft::core {
  */
 class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
    public:
+    enum class BufferType { COLOR, DEPTH, STENCIL, DEPTHSTENCIL };
+
     /**
      * Standard constructor.
      * @param width - width of the framebuffer.
@@ -89,11 +91,9 @@ class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
      */
     static void setDefaultFbo(GLuint fbo) { m_defaultFbo = fbo; }
 
-    void setSize(int width, int height);
-
    protected:
-    void setSizeNoActive(int width, int height);
-    void setSizeActive(int width, int height);
+    void _setSize(int width, int height);
+    void clear();
 
     void addColorBuffer();
     void addDepthBuffer();
@@ -106,13 +106,17 @@ class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
 
     void drawBuffers() const;
 
+    bool m_isActive{false};
+
    private:
     static GLuint m_defaultFbo;
 
     int m_width, m_height;
     GLuint m_fbo{0};
     std::vector<GLuint> m_textures;
+    std::vector<BufferType> m_texTypes;
     std::vector<GLuint> m_buffers;
+    std::vector<BufferType> m_bufTypes;
 
     int m_numSamples;
 
@@ -121,6 +125,5 @@ class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
     bool m_isHDR;
 
     bool m_isValid{false};
-    bool m_isActive{false};
 };
 }  // namespace daft::core

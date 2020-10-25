@@ -1,4 +1,4 @@
-#version 450
+#version 460
 #define MAX_TEX 32
 
 layout (location = 0) out vec4 out_color;
@@ -19,5 +19,7 @@ void main() {
     vec4 p3 = texelFetch(quadTexture[0], uv3, 0);
 
     float lumSum = p0.x + p1.x + p2.x + p3.x;
-    out_color = vec4(vec3(lumSum), 1.0);
+    float lumMin = min(min(p0.x, p1.x), min(p2.x, p3.x));
+    float lumMax = max(max(p0.x, p1.x), max(p2.x, p3.x));
+    out_color = vec4(lumSum, lumMin, lumMax, 1.0);
 }
