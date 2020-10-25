@@ -215,8 +215,8 @@ float calculateShadow(Shadow shadowData) {
             for (int k = 0 ; k < nrPoisson ; ++k) {
                 int index = int(16.0 * random(vec4(floor(fragPos.xyz * 1000.0), k))) % 16;
                 float depth = texture2D(shadowData.shadowMap, actualCoords + poissonDisk[index] / 700.0).r;
-                float strength = 1.0 - clamp(4.0 * pow(currentDepth - depth, 2.0), 0.0, 1.0);
-                shadowValue += currentDepth - eps > depth ? 0.25 * strength : 0.0;
+                float strength = 0.9;//1.0 - clamp(4.0 * pow(currentDepth - depth, 2.0), 0.0, 1.0);
+                shadowValue += currentDepth - eps > depth ? (1.0 / nrPoisson) * strength : 0.0;
             }
             nrSample++;
         }
