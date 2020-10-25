@@ -108,10 +108,11 @@ void Renderer::render() {
     }
 
     /// unbind opengl objects
-    if (m_drawEdges)
+    if (m_drawEdges) {
         m_multisamplePass->stop(m_width, m_height);
-    else
+    } else {
         m_HDRPass->stop(m_width, m_height);
+    }
 
     /// render the frame-textured quad to the screen.
     glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
