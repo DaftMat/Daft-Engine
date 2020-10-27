@@ -222,6 +222,9 @@ void Renderer::_addDrawable() {
             case Drawable::Type::Cylinder:
                 drawable = std::make_shared<Cylinder>();
                 break;
+            case Drawable::Type::Metaballs:
+                drawable = std::make_shared<Metaballs>();
+                break;
             case Drawable::Type::BSpline: {
                 std::vector<glm::vec3> controlPoints;
                 controlPoints.emplace_back(glm::vec3{0.f});

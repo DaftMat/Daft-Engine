@@ -33,6 +33,7 @@ class Drawable : public core::NonCopyable {
         Torus,
         BSpline,
         BSpline2D,
+        Metaballs,
         /// Lights
         PointLight,
         DirLight,

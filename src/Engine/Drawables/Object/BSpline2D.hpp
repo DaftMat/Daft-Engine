@@ -11,7 +11,7 @@ namespace daft::engine {
 class ENGINE_API BSpline2D : public Object {
    public:
     explicit BSpline2D(const std::vector<std::vector<glm::vec3>> &controlPoints = {}, int base = 2, float steps = 100.f,
-                       Composite *parent = nullptr, std::string name = "BSpline" + std::to_string(m_nrBSpline2D));
+                       Composite *parent = nullptr, std::string name = "BSpline2D" + std::to_string(m_nrBSpline2D));
 
     ~BSpline2D() override = default;
 
