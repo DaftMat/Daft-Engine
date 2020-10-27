@@ -42,6 +42,10 @@ class ENGINE_API Metaballs : public Object {
      */
     void setSettings(const core::SettingManager &s) override;
 
+    void setGridSize(glm::vec3 cs);
+
+    [[nodiscard]] glm::vec3 gridSize() const { return m_dimensions; }
+
     void setCubeSize(float cs);
 
     [[nodiscard]] float cubeSize() const { return m_cubeSize; }

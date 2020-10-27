@@ -14,6 +14,7 @@ Metaballs::Metaballs(float cubeSize, float isoLevel, daft::engine::Composite *pa
 core::SettingManager Metaballs::getSettings() const {
     core::SettingManager sm;
     if (m_selectedBall == -1) {
+        sm.add("Grid Size", m_dimensions);
         sm.add("Cube Size", m_cubeSize);
         sm.add("Iso Level", m_isoLevel);
     } else {
@@ -25,6 +26,7 @@ core::SettingManager Metaballs::getSettings() const {
 
 void Metaballs::setSettings(const core::SettingManager &s) {
     if (m_selectedBall == -1) {
+        setGridSize(s.get<glm::vec3>("Grid Size"));
         setCubeSize(s.get<float>("Cube Size"));
         setIsoLevel(s.get<float>("Iso Level"));
     } else {
@@ -32,6 +34,12 @@ void Metaballs::setSettings(const core::SettingManager &s) {
         m_balls[m_selectedBall].radius = s.get<float>("Radius");
         updateNextFrame();
     }
+}
+
+void Metaballs::setGridSize(glm::vec3 cs) {
+    if (cs == m_dimensions) return;
+    m_dimensions = cs;
+    updateNextFrame();
 }
 
 void Metaballs::setCubeSize(float cs) {

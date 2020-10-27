@@ -8,6 +8,7 @@
 namespace daft::app {
 MetaballsSettings::MetaballsSettings(daft::core::SettingManager settings, QWidget *parent)
     : DrawableSettings(std::move(settings), parent) {
+    addDoubleSpinBoxVector("Grid Size", 1.0, 9999, 0.1);
     addDoubleSpinBox("Cube Size", 0.01, 9999, 0.1);
     addDoubleSpinBox("Iso Level", -99, 99, 0.1);
     auto addButton = new QPushButton{"Add Ball"};
