@@ -31,6 +31,12 @@ class ENGINE_API Metaballs : public Object {
     Metaballs &operator=(Metaballs &&) noexcept = default;
 
     /**
+     * renders the edges only of the inner geometry.
+     * @param shader - shader to render with.
+     */
+    void renderEdges(const core::ShaderProgram &shader) override;
+
+    /**
      * Gets settings as a SettingManager.
      * @return settings of the metaballs.
      */

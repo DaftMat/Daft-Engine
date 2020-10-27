@@ -11,6 +11,35 @@ int Metaballs::m_nrMetaballs{0};
 Metaballs::Metaballs(float cubeSize, float isoLevel, daft::engine::Composite *parent, std::string name)
     : Object(parent, std::move(name)), m_cubeSize{cubeSize}, m_isoLevel{isoLevel} {}
 
+void Metaballs::renderEdges(const core::ShaderProgram &shader) {
+    Object::renderEdges(shader);
+
+    std::vector<glm::vec3> positions{-m_dimensions,
+                                     {m_dimensions.x, -m_dimensions.y, -m_dimensions.z},
+                                     {m_dimensions.x, -m_dimensions.y, m_dimensions.z},
+                                     {-m_dimensions.x, -m_dimensions.y, m_dimensions.z},
+                                     {-m_dimensions.x, m_dimensions.y, -m_dimensions.z},
+                                     {m_dimensions.x, m_dimensions.y, -m_dimensions.z},
+                                     m_dimensions,
+                                     {-m_dimensions.x, m_dimensions.y, m_dimensions.z}};
+    std::vector<GLuint> indices{0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7};
+
+    core::AttribManager am;
+    am.addAttrib(positions);
+    am.indices() = indices;
+
+    core::Mesh mesh{am};
+
+    if (selected())
+        shader.setVec3("color", {1.f, 1.f, 0.f});
+    else
+        shader.setVec3("color", glm::vec3{1.f});
+    mesh.prepare();
+    mesh.render(GL_LINES);
+    mesh.unbind();
+    shader.setVec3("color", glm::vec3{0.f});
+}
+
 core::SettingManager Metaballs::getSettings() const {
     core::SettingManager sm;
     if (m_selectedBall == -1) {
