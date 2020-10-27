@@ -13,6 +13,7 @@ class ENGINE_API Metaballs : public Object {
     struct Ball {
         glm::vec3 pos;
         float radius;
+        [[nodiscard]] float eval(glm::vec3 p) const;
     };
 
     struct GridCell {

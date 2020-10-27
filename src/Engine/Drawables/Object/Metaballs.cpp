@@ -62,4 +62,9 @@ Metaballs::Ball Metaballs::getSelectedBall() const {
 }
 
 void Metaballs::accept(core::DrawableVisitor *visitor) { visitor->visit(this); }
+
+float Metaballs::Ball::eval(glm::vec3 p) const {
+    glm::vec3 s = p - pos;
+    return (radius * radius) / (s.x * s.x + s.y * s.y + s.z * s.z);
+}
 }  // namespace daft::engine
