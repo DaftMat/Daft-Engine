@@ -20,7 +20,7 @@ class ENGINE_API Metaballs : public Object {
         std::array<float, 8> v;
     };
 
-    explicit Metaballs(float cubeSize = 0.1f, Composite *parent = nullptr,
+    explicit Metaballs(float cubeSize = 0.1f, float isoLevel = 1.f, Composite *parent = nullptr,
                        std::string name = "Metaballs" + std::to_string(m_nrMetaballs));
 
     ~Metaballs() override = default;
@@ -44,6 +44,10 @@ class ENGINE_API Metaballs : public Object {
     void setCubeSize(float cs);
 
     [[nodiscard]] float cubeSize() const { return m_cubeSize; }
+
+    void setIsoLevel(float il);
+
+    [[nodiscard]] float isoLevel() const { return m_isoLevel; }
 
     /**
      * Balls getter.
@@ -97,6 +101,7 @@ class ENGINE_API Metaballs : public Object {
 
     std::vector<Ball> m_balls;
     float m_cubeSize;
+    float m_isoLevel;
 
     int m_selectedBall{-1};
 
