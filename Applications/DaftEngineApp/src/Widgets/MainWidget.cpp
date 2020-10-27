@@ -147,6 +147,8 @@ void MainWidget::on_treeSelectionChanged() {
         auto selection = m_glWidget->renderer().getSelection();
         if (selection->getType() == engine::Drawable::Type::BSpline)
             ((engine::BSpline *)selection)->setSelectedPoint(-1);
+        if (selection->getType() == engine::Drawable::Type::Metaballs)
+            ((engine::Metaballs *)selection)->setSelectedBall(-1);
     }
     m_glWidget->update();
 }

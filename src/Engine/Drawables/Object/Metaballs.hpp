@@ -22,7 +22,7 @@ class ENGINE_API Metaballs : public Object {
     };
 
     explicit Metaballs(float cubeSize = 0.1f, float isoLevel = 1.f, Composite *parent = nullptr,
-                       std::string name = "Metaballs" + std::to_string(m_nrMetaballs));
+                       std::string name = "Metaballs" + std::to_string(m_nrMetaballs++));
 
     ~Metaballs() override = default;
 
@@ -97,17 +97,20 @@ class ENGINE_API Metaballs : public Object {
 
    private:
     void polygonise(GridCell cell, std::vector<glm::vec3> &positions, std::vector<glm::vec3> &normals,
-                    std::vector<GLuint> &indices) {}
-    void createMetaballs() {}
+                    std::vector<GLuint> &indices);
+    [[nodiscard]] glm::vec3 vertexInterp(glm::vec3 p1, glm::vec3 p2, float v1, float v2) const;
+    void createMetaballs();
 
     std::vector<Ball> m_balls;
     float m_cubeSize;
     float m_isoLevel;
 
+    glm::vec3 m_dimensions{5.f};
+
     int m_selectedBall{-1};
 
     static int m_nrMetaballs;
-    int m_edgeTable[256];
-    int m_triTable[256][16];
+    static int m_edgeTable[256];
+    static int m_triTable[256][16];
 };
 }  // namespace daft::engine
