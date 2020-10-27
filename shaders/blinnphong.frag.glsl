@@ -139,7 +139,7 @@ void main() {
         resultColor += calcSpotLight(spotLights[i]);
     }
 
-    vec3 ambient = vec3(0.03) * defaultMat.albedo;
+    vec3 ambient = vec3(0.2) * defaultMat.albedo;
     vec3 color = ambient + resultColor;
     if (instantToneMapping) {
         color = color / (color + vec3(1.0));;
