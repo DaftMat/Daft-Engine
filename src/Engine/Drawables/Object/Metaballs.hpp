@@ -3,6 +3,7 @@
 //
 #pragma once
 #include <API.hpp>
+#include <Core/Geometry/MarchingCube.hpp>
 #include <array>
 
 #include "Object.hpp"
@@ -14,11 +15,6 @@ class ENGINE_API Metaballs : public Object {
         glm::vec3 pos;
         float radius;
         [[nodiscard]] float eval(glm::vec3 p) const;
-    };
-
-    struct GridCell {
-        std::array<glm::vec3, 8> p;
-        std::array<float, 8> v;
     };
 
     explicit Metaballs(float cubeSize = 0.1f, float isoLevel = 1.f, Composite *parent = nullptr,
@@ -50,15 +46,15 @@ class ENGINE_API Metaballs : public Object {
 
     void setGridSize(glm::vec3 cs);
 
-    [[nodiscard]] glm::vec3 gridSize() const { return m_dimensions; }
+    [[nodiscard]] glm::vec3 gridSize() const { return m_marchingCube.gridSize(); }
 
     void setCubeSize(float cs);
 
-    [[nodiscard]] float cubeSize() const { return m_cubeSize; }
+    [[nodiscard]] float cubeSize() const { return m_marchingCube.cubeSize(); }
 
     void setIsoLevel(float il);
 
-    [[nodiscard]] float isoLevel() const { return m_isoLevel; }
+    [[nodiscard]] float isoLevel() const { return m_marchingCube.isoLevel(); }
 
     /**
      * Balls getter.
@@ -106,21 +102,15 @@ class ENGINE_API Metaballs : public Object {
     void applyUpdate() override { createMetaballs(); }
 
    private:
-    void polygonise(GridCell cell, std::vector<glm::vec3> &positions, std::vector<glm::vec3> &normals,
-                    std::vector<GLuint> &indices);
-    [[nodiscard]] glm::vec3 vertexInterp(glm::vec3 p1, glm::vec3 p2, float v1, float v2) const;
     void createMetaballs();
 
     std::vector<Ball> m_balls;
-    float m_cubeSize;
-    float m_isoLevel;
+    core::MarchingCube m_marchingCube;
 
-    glm::vec3 m_dimensions{5.f};
+    std::function<float(glm::vec3)> m_isoSurface;
 
     int m_selectedBall{-1};
 
     static int m_nrMetaballs;
-    static int m_edgeTable[256];
-    static int m_triTable[256][16];
 };
 }  // namespace daft::engine
