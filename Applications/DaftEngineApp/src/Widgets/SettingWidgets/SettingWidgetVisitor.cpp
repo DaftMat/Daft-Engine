@@ -11,6 +11,7 @@
 #include <Widgets/SettingWidgets/DrawableSettings/PointLightSettings.hpp>
 #include <Widgets/SettingWidgets/DrawableSettings/SphereSettings.hpp>
 #include <Widgets/SettingWidgets/DrawableSettings/TorusSettings.hpp>
+#include <src/Widgets/SettingWidgets/DrawableSettings/CavesSettings.hpp>
 #include <src/Widgets/SettingWidgets/DrawableSettings/CylinderSettings.hpp>
 #include <src/Widgets/SettingWidgets/DrawableSettings/DirLightSettings.hpp>
 #include <src/Widgets/SettingWidgets/DrawableSettings/MetaballsSettings.hpp>
@@ -64,6 +65,12 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::Metaballs *metaballs) 
     core::SettingManager sm = metaballs->getSettings();
     DrawableSettings *ds = new MetaballsSettings(sm);
     m_widget = new SettingWidget(ds, createTransformWidget(metaballs->getTransformations()), metaballs->name());
+}
+
+void daft::app::SettingWidgetVisitor::visit(daft::engine::Caves *caves) {
+    core::SettingManager sm = caves->getSettings();
+    DrawableSettings *ds = new CavesSettings(sm);
+    m_widget = new SettingWidget(ds, createTransformWidget(caves->getTransformations()), caves->name());
 }
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::PointLight *pointLight) {

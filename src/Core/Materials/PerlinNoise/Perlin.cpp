@@ -10,9 +10,9 @@ namespace daft::core {
 Perlin::Perlin(int seed, int size) { init(seed, size); }
 
 float Perlin::noise(float x, float y, float z) const {
-    int X = (int)glm::floor(x) & 63;
-    int Y = (int)glm::floor(y) & 63;
-    int Z = (int)glm::floor(z) & 63;
+    int X = (int)glm::floor(x) & 127;
+    int Y = (int)glm::floor(y) & 127;
+    int Z = (int)glm::floor(z) & 127;
     x -= glm::floor(x);
     y -= glm::floor(y);
     z -= glm::floor(z);
@@ -37,9 +37,10 @@ float Perlin::grad(int hash, float x, float y, float z) {
 }
 
 void Perlin::init(int seed, int size) {
-    if (size < 65) size = 65;
+    if (size < 129) size = 129;
     m_size = size;
     Random::seed(seed);
-    for (int i = 0; i < size; ++i) p.push_back((int)Random::get(0, 63));
+    p.clear();
+    for (int i = 0; i < size; ++i) p.push_back((int)Random::get(0, 127));
 }
 }  // namespace daft::core

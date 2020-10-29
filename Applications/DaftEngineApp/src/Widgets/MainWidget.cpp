@@ -178,7 +178,7 @@ void MainWidget::connectSceneTreeEvents() {
 
 void MainWidget::createCreationComboBoxes() {
     std::vector<std::string> objects{"Sphere",      "Torus",     "Cube",  "Cylinder", "B-Spline",
-                                     "2D B-Spline", "Metaballs", "Group", "Custom"};
+                                     "2D B-Spline", "Metaballs", "Caves", "Group",    "Custom"};
     m_objectCreator = std::make_unique<QComboBox>();
     m_objectCreator->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_objectCreator->addItem("Add object");
@@ -214,6 +214,8 @@ void MainWidget::on_objectBoxChanged() {
         m_glWidget->addDrawable(engine::Drawable::Type::BSpline2D);
     else if (m_objectCreator->currentText() == "Metaballs")
         m_glWidget->addDrawable(engine::Drawable::Type::Metaballs);
+    else if (m_objectCreator->currentText() == "Caves")
+        m_glWidget->addDrawable(engine::Drawable::Type::Caves);
     else if (m_objectCreator->currentText() == "Group")
         m_glWidget->addDrawable(engine::Drawable::Type::Group);
     else if (m_objectCreator->currentText() == "Custom") {

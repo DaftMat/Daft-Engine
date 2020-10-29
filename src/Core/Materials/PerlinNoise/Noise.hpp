@@ -13,7 +13,7 @@ namespace daft::core {
 class ENGINE_API Noise : public NonCopyable {
    public:
     explicit Noise(float scale = 1.f, int octaves = 5, float persistence = 0.5f, float lacunarity = 2.f,
-                   const glm::vec3 &offset = glm::vec3{0.f},
+                   const glm::vec3 &offset = glm::vec3{1000000.f},
                    std::unique_ptr<Perlin> perlin = std::make_unique<Perlin>(2020, 255));
 
     std::vector<float> generate();
@@ -51,6 +51,8 @@ class ENGINE_API Noise : public NonCopyable {
     void setPerlin(std::unique_ptr<Perlin> perlin) { m_perlin = std::move(perlin); }
 
     [[nodiscard]] const Perlin &perlin() const { return *m_perlin; }
+
+    Perlin &perlin() { return *m_perlin; }
 
    private:
     static float invlerp(float a, float b, float v) { return (v - a) / (b - a); }

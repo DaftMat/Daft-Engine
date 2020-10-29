@@ -11,7 +11,7 @@
 namespace daft::engine {
 class ENGINE_API Caves : public Object {
    public:
-    explicit Caves(float cubeSize = 0.1f, float isoLevel = 1.f, Composite *parent = nullptr,
+    explicit Caves(float cubeSize = 0.2f, float isoLevel = 1.f, Composite *parent = nullptr,
                    std::string name = "Caves" + std::to_string(m_nrCaves++));
 
     ~Caves() override = default;
@@ -86,7 +86,7 @@ class ENGINE_API Caves : public Object {
      * Gets the type of drawable.
      * @return nothing.
      */
-    [[nodiscard]] Type getType() const override { return Type::Metaballs; }
+    [[nodiscard]] Type getType() const override { return Type::Caves; }
 
    protected:
     void applyUpdate() override { createPerlin3D(); }

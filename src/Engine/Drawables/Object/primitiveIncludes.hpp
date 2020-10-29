@@ -7,6 +7,7 @@
 #include <Engine/Drawables/Light/SpotLight.hpp>
 #include <Engine/Drawables/Object/BSpline.hpp>
 #include <Engine/Drawables/Object/BSpline2D.hpp>
+#include <Engine/Drawables/Object/Caves.hpp>
 #include <Engine/Drawables/Object/Cube.hpp>
 #include <Engine/Drawables/Object/Cylinder.hpp>
 #include <Engine/Drawables/Object/Metaballs.hpp>

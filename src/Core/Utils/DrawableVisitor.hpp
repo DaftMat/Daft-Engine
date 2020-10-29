@@ -16,6 +16,7 @@ class BSpline;
 class BSpline2D;
 class Cylinder;
 class Metaballs;
+class Caves;
 // lights
 class PointLight;
 class SpotLight;
@@ -88,6 +89,11 @@ class ENGINE_API DrawableVisitor {
      * Visits an Metaballs .
      */
     virtual void visit(engine::Metaballs *) {}
+
+    /**
+     * Visits an Metaballs .
+     */
+    virtual void visit(engine::Caves *) {}
 
     /// LIGHTS
 

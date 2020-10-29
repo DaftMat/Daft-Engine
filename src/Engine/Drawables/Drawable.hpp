@@ -34,6 +34,7 @@ class Drawable : public core::NonCopyable {
         BSpline,
         BSpline2D,
         Metaballs,
+        Caves,
         /// Lights
         PointLight,
         DirLight,

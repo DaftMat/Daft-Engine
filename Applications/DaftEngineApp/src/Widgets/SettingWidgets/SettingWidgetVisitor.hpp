@@ -63,6 +63,12 @@ class SettingWidgetVisitor : public core::DrawableVisitor {
     void visit(engine::Metaballs *metaballs) override;
 
     /**
+     * Visits a Caves .
+     * @param caves - caves to visit.
+     */
+    void visit(engine::Caves *caves) override;
+
+    /**
      * Visits a PointLight .
      * @param pointLight - point light to visit.
      */

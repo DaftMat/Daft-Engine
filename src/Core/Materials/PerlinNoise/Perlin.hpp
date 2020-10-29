@@ -10,7 +10,7 @@
 namespace daft::core {
 class ENGINE_API Perlin : public core::NonCopyable {
    public:
-    explicit Perlin(int seed = 2020, int size = 255);
+    explicit Perlin(int seed = 2020, int size = 130);
 
     ~Perlin() = default;
 
