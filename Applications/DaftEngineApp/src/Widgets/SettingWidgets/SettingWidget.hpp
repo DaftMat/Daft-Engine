@@ -28,7 +28,7 @@ class ENGINE_API SettingWidget : public QScrollArea {
      * @param parent - parent of the widget.
      */
     explicit SettingWidget(DrawableSettings *settings, TransformSettings *transforms, std::string name = "Drawable",
-                           QWidget *parent = nullptr);
+                           float exposure = 1.f, QWidget *parent = nullptr);
 
     /**
      * Gets the SettingManager from the DrawableSettings .

@@ -73,7 +73,7 @@ void MainWidget::on_selectionChanged() {
     auto selection = m_glWidget->renderer().getSelection();
     SettingWidget *widget;
     if (selection == nullptr) {
-        widget = new SettingWidget(nullptr, nullptr);
+        widget = new SettingWidget(nullptr, nullptr, "", m_glWidget->renderer().exposure());
     } else if (!m_selectionIsDrawable && selection->getType() == engine::Drawable::Type::BSpline) {
         core::SettingManager sm;
         auto spline = (engine::BSpline *)selection;
@@ -112,14 +112,17 @@ void MainWidget::on_selectionChanged() {
 
 void MainWidget::on_settingChanged() {
     auto selection = m_glWidget->renderer().getSelection();
-    if (!selection) return;
+    if (selection) {
+        std::stringstream ss;
+        ss << "Setting of drawable changed. Drawable name : " << selection->name();
+        core::Logger::info(std::move(ss));
 
-    std::stringstream ss;
-    ss << "Setting of drawable changed. Drawable name : " << selection->name();
-    core::Logger::info(std::move(ss));
-
-    if (m_settingWidget->transformsWidget()) selection->setTransformations(m_settingWidget->transforms());
-    if (m_settingWidget->settingsWidget()) selection->setSettings(m_settingWidget->settings());
+        if (m_settingWidget->transformsWidget()) selection->setTransformations(m_settingWidget->transforms());
+        if (m_settingWidget->settingsWidget()) selection->setSettings(m_settingWidget->settings());
+    } else {
+        float exposure = m_settingWidget->settingsWidget()->settings().get<float>("Exposure");
+        m_glWidget->renderer().setExposure(exposure);
+    }
     m_glWidget->update();
 }
 

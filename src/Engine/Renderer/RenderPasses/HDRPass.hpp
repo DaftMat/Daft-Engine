@@ -22,6 +22,10 @@ class HDRPass : public core::NonCopyable {
 
     GLuint outTexture() { return m_finalFBO->textures()[0]; }
 
+    float exposure() const { return m_exposure; }
+
+    float &exposure() { return m_exposure; }
+
     void use() const { m_multisample->use(); }
 
     void stop(int width, int height);

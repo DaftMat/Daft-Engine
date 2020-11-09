@@ -142,6 +142,10 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
      */
     void setShader(AvailableShaders shader) { m_newShader = shader; }
 
+    void setExposure(float exposure) { m_HDRPass->exposure() = exposure; }
+
+    float exposure() const { return m_HDRPass->exposure(); }
+
     /**
      * Changes sky color to default grey and starts render edges.
      */

@@ -9,12 +9,16 @@
 
 namespace daft::app {
 SettingWidget::SettingWidget(DrawableSettings *settings, TransformSettings *transforms, std::string name,
-                             QWidget *parent)
+                             float exposure, QWidget *parent)
     : QScrollArea(parent), m_settings{settings}, m_transforms{transforms} {
     std::string pname;
-    if (m_settings == nullptr && m_transforms == nullptr)
-        pname = "No object selected.";
-    else
+    if (m_settings == nullptr && m_transforms == nullptr) {
+        pname = "Scene settings";
+        core::SettingManager sm;
+        sm.add("Exposure", exposure);
+        m_settings = std::make_unique<DrawableSettings>(sm);
+        m_settings->addDoubleSpinBox("Exposure", 0.01, 999.9, 0.1);
+    } else
         pname = std::move(name);
     m_title = new QLabel(pname.c_str());
     m_title->setObjectName("sectionTitle");
