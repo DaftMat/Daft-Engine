@@ -47,6 +47,7 @@ void MainWindow::on_actionDir_Light_triggered() {
             engine::Drawable::Type::Cube, {core::Random::get(-100.f, 100.f), 3.f, core::Random::get(-100.f, 100.f)},
             {core::Random::get(-30.f, 30.f), 0.f, core::Random::get(-30.f, 30.f)}, {0.3f, 5.f, 0.3f});
     }
+    ui->centralwidget->glWidget().update();
 }
 
 void MainWindow::on_actionSpot_Lights_triggered() {}
