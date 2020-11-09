@@ -94,9 +94,11 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
      * Adds a drawable to the scene tree.
      * @param drawable - drawable to add.
      */
-    void addDrawable(Drawable::Type type) { m_addNextFrame.push_back(type); }
+    void addDrawable(Drawable::Type type, glm::vec3 pos = glm::vec3{0.f}, glm::vec3 rot = glm::vec3{0.f},
+                     glm::vec3 scale = glm::vec3{1.f});
 
-    void addCustomObject(std::string filePath);
+    void addCustomObject(std::string filePath, glm::vec3 pos = glm::vec3{0.f}, glm::vec3 rot = glm::vec3{0.f},
+                         glm::vec3 scale = glm::vec3{1.f});
 
     /**
      * Removes the current selected drawable from the scene tree.
@@ -165,6 +167,13 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     void buildGrid(int size = 50);
     void drawGrid() const;
 
+    struct ObjectSpec {
+        Drawable::Type type;
+        glm::vec3 pos;
+        glm::vec3 rot;
+        glm::vec3 scale;
+    };
+
     static bool GLinitialized;
     int m_width{0}, m_height{0};
     std::string m_selection;
@@ -182,7 +191,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     daft::engine::Camera m_camera;
 
     bool m_removeNextFrame{false};
-    std::vector<Drawable::Type> m_addNextFrame;
+    std::vector<ObjectSpec> m_addNextFrame;
     std::string m_filePathCustom;
     AvailableShaders m_newShader{AvailableShaders::None};
 

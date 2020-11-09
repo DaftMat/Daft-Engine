@@ -18,6 +18,11 @@ class MainWindow : public QMainWindow {
    private slots:
 
     void on_actionOpenGL_triggered();
+    void on_actionHDR_demo_triggered();
+    void on_actionDir_Light_triggered();
+    void on_actionSpot_Lights_triggered();
+    void on_actionMetaballs_triggered();
+    void on_actionProcedural_caves_triggered();
 
    private:
     void resizeEvent(QResizeEvent *event) override;

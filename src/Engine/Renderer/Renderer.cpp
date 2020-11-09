@@ -154,8 +154,22 @@ void Renderer::setSelection(std::string s) {
     m_selection = std::move(s);
 }
 
-void Renderer::addCustomObject(std::string filePath) {
-    m_addNextFrame.push_back(Drawable::Type::Custom);
+void Renderer::addDrawable(Drawable::Type type, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale) {
+    ObjectSpec os{};
+    os.type = type;
+    os.pos = pos;
+    os.rot = rot;
+    os.scale = scale;
+    m_addNextFrame.push_back(os);
+}
+
+void Renderer::addCustomObject(std::string filePath, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale) {
+    ObjectSpec os{};
+    os.type = Drawable::Type::Custom;
+    os.pos = pos;
+    os.rot = rot;
+    os.scale = scale;
+    m_addNextFrame.push_back(os);
     m_filePathCustom = std::move(filePath);
 }
 
@@ -204,9 +218,9 @@ void Renderer::_removeSelection() {
 }
 
 void Renderer::_addDrawable() {
-    for (auto type : m_addNextFrame) {
+    for (auto objSpec : m_addNextFrame) {
         std::shared_ptr<Drawable> drawable{nullptr};
-        switch (type) {
+        switch (objSpec.type) {
             case Drawable::Type::Group:
                 drawable = std::make_shared<Composite>();
                 break;
@@ -278,6 +292,9 @@ void Renderer::_addDrawable() {
         }
 
         if (drawable) {
+            drawable->position() = objSpec.pos;
+            drawable->rotations() = objSpec.rot;
+            drawable->scale() = objSpec.scale;
             auto selection = getSelection();
             if (selection && selection->isComposite()) {
                 dynamic_cast<daft::engine::Composite *>(selection)->add(drawable);

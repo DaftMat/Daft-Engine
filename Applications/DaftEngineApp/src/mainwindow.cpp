@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 
+#include <Core/Random.hpp>
 #include <Layouts/BorderLayout.hpp>
 #include <QtGui/QSurfaceFormat>
 #include <QtWidgets/QMessageBox>
@@ -33,6 +34,30 @@ void MainWindow::on_actionOpenGL_triggered() {
     message << "Qt\t: " << qVersion() << std::endl;
     QMessageBox::information(this, "OpenGL Information", message.str().c_str());
 }
+
+void MainWindow::on_actionHDR_demo_triggered() {}
+
+void MainWindow::on_actionDir_Light_triggered() {
+    ui->centralwidget->glWidget().addDrawable(engine::Drawable::Type::DirLight, glm::vec3{0.f}, {40.f, 0.f, 0.f});
+    ui->centralwidget->glWidget().addDrawable(engine::Drawable::Type::Torus);
+    ui->centralwidget->glWidget().addDrawable(engine::Drawable::Type::Cube, {0.f, -0.6f, 0.f}, glm::vec3{0.f},
+                                              {100.f, 0.05f, 100.f});
+    for (int i = 0; i < 512; ++i) {
+        ui->centralwidget->glWidget().addDrawable(
+            engine::Drawable::Type::Cube, {core::Random::get(-100.f, 100.f), 3.f, core::Random::get(-100.f, 100.f)},
+            {core::Random::get(-30.f, 30.f), 0.f, core::Random::get(-30.f, 30.f)}, {0.3f, 5.f, 0.3f});
+    }
+}
+
+void MainWindow::on_actionSpot_Lights_triggered() {}
+
+void MainWindow::on_actionMetaballs_triggered() {
+    ui->centralwidget->glWidget().addDrawable(engine::Drawable::Type::Metaballs);
+    ui->centralwidget->glWidget().addDrawable(engine::Drawable::Type::DirLight, glm::vec3{0.f}, {40.f, 0.f, 0.f});
+    ui->centralwidget->glWidget().update();
+}
+
+void MainWindow::on_actionProcedural_caves_triggered() {}
 
 void MainWindow::resizeEvent(QResizeEvent *event) {
     QMainWindow::resizeEvent(event);

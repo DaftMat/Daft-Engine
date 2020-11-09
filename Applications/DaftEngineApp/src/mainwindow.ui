@@ -27,6 +27,30 @@
     <property name="title">
      <string>File</string>
     </property>
+    <widget class="QMenu" name="menuLoad_scene_preset">
+     <property name="title">
+      <string>Load scene preset</string>
+     </property>
+     <widget class="QMenu" name="menuMarching_Cubes_demo">
+      <property name="title">
+       <string>Marching Cubes</string>
+      </property>
+      <addaction name="actionMetaballs"/>
+      <addaction name="actionProcedural_caves"/>
+     </widget>
+     <widget class="QMenu" name="menuShadow_Maps_demo">
+      <property name="title">
+       <string>Shadow Maps</string>
+      </property>
+      <addaction name="actionDir_Light"/>
+      <addaction name="actionSpot_Lights"/>
+     </widget>
+     <addaction name="actionHDR_demo"/>
+     <addaction name="menuShadow_Maps_demo"/>
+     <addaction name="menuMarching_Cubes_demo"/>
+     <addaction name="separator"/>
+    </widget>
+    <addaction name="menuLoad_scene_preset"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -41,6 +65,31 @@
   <action name="actionOpenGL">
    <property name="text">
     <string>OpenGL</string>
+   </property>
+  </action>
+  <action name="actionHDR_demo">
+   <property name="text">
+    <string>HDR demo</string>
+   </property>
+  </action>
+  <action name="actionMetaballs">
+   <property name="text">
+    <string>Metaballs</string>
+   </property>
+  </action>
+  <action name="actionProcedural_caves">
+   <property name="text">
+    <string>Procedural caves</string>
+   </property>
+  </action>
+  <action name="actionDir_Light">
+   <property name="text">
+    <string>Directionnal Light demo</string>
+   </property>
+  </action>
+  <action name="actionSpot_Lights">
+   <property name="text">
+    <string>Spot Lights demo</string>
    </property>
   </action>
  </widget>

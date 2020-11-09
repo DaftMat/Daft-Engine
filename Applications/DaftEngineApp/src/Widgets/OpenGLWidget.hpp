@@ -53,9 +53,11 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
      * Adds a drawable to the scene.
      * @param type - type of the new drawable to add.
      */
-    void addDrawable(engine::Drawable::Type type);
+    void addDrawable(engine::Drawable::Type type, glm::vec3 pos = glm::vec3{0.f}, glm::vec3 rot = glm::vec3{0.f},
+                     glm::vec3 scale = glm::vec3{1.f});
 
-    void addCustomObject(std::string filePath);
+    void addCustomObject(std::string filePath, glm::vec3 pos = glm::vec3{0.f}, glm::vec3 rot = glm::vec3{0.f},
+                         glm::vec3 scale = glm::vec3{1.f});
 
     /**
      * Removes the selected drawable from the scene.
