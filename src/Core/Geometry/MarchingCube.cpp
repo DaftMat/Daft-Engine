@@ -102,17 +102,18 @@ void MarchingCube::polygonise(MarchingCube::GridCell cell, std::vector<glm::vec3
         int index1 = 0;
         int index2 = 0;
         int index3 = 0;
+        float eps = 0.01;
 
         for (size_t ind = 0; ind < positions.size(); ++ind) {
-            if (glm::abs(glm::length(positions[ind] - p1)) < glm::epsilon<float>()) {
+            if (glm::abs(glm::length(positions[ind] - p1)) < eps) {
                 index1 = ind;
                 p1Found = true;
             }
-            if (glm::abs(glm::length(positions[ind] - p2)) < glm::epsilon<float>()) {
+            if (glm::abs(glm::length(positions[ind] - p2)) < eps) {
                 index2 = ind;
                 p2Found = true;
             }
-            if (glm::abs(glm::length(positions[ind] - p3)) < glm::epsilon<float>()) {
+            if (glm::abs(glm::length(positions[ind] - p3)) < eps) {
                 index3 = ind;
                 p3Found = true;
             }
