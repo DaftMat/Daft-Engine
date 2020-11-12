@@ -301,7 +301,6 @@ void Renderer::_addDrawable() {
             } else {
                 m_root->add(drawable);
             }
-            setSelection(drawable->name());
         }
     }
     m_addNextFrame.clear();

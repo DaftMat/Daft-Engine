@@ -35,7 +35,15 @@ void MainWindow::on_actionOpenGL_triggered() {
     QMessageBox::information(this, "OpenGL Information", message.str().c_str());
 }
 
-void MainWindow::on_actionHDR_demo_triggered() {}
+void MainWindow::on_actionHDR_demo_triggered() {
+    ui->centralwidget->glWidget().addDrawable(engine::Drawable::Type::BSpline2D);
+    ui->centralwidget->glWidget().addDrawable(engine::Drawable::Type::DirLight);
+    for (int i = 0; i < 5; ++i) {
+        ui->centralwidget->glWidget().addDrawable(engine::Drawable::Type::PointLight,
+                                                  glm::vec3{core::Random::get(-6, 6), 1.2, core::Random::get(-6, 6)});
+    }
+    ui->centralwidget->glWidget().update();
+}
 
 void MainWindow::on_actionDir_Light_triggered() {
     ui->centralwidget->glWidget().addDrawable(engine::Drawable::Type::DirLight, glm::vec3{0.f}, {40.f, 0.f, 0.f});
