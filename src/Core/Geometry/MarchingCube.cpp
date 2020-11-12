@@ -38,6 +38,8 @@ core::AttribManager MarchingCube::buildSurface(const std::function<float(glm::ve
         }
     }
 
+    std::for_each(normals.begin(), normals.end(), [](glm::vec3 &n) { n = glm::normalize(n); });
+
     core::AttribManager am;
     am.addAttrib(positions);
     am.addAttrib(normals);
@@ -83,19 +85,66 @@ void MarchingCube::polygonise(MarchingCube::GridCell cell, std::vector<glm::vec3
         glm::vec3 p1 = vertList[m_triTable[cubeIndex][i]];
         glm::vec3 p2 = vertList[m_triTable[cubeIndex][i + 1]];
         glm::vec3 p3 = vertList[m_triTable[cubeIndex][i + 2]];
-        glm::vec3 n = glm::normalize(glm::cross(glm::normalize(p3 - p1), glm::normalize(p2 - p1)));
+        glm::vec3 p1p3 = p3 - p1;
+        glm::vec3 p1p2 = p2 - p1;
+        float a = length(p1p3);
+        float b = length(p1p2);
+        float c = length(p3 - p2);
+        p1p3 = glm::normalize(p1p3);
+        p1p2 = glm::normalize(p1p2);
+        float area = 0.5f * (a + b + c);
+        glm::vec3 n = glm::cross(p1p3, p1p2) * (1.f / area);
 
-        positions.push_back(p1);
-        positions.push_back(p2);
-        positions.push_back(p3);
+        bool p1Found = false;
+        bool p2Found = false;
+        bool p3Found = false;
 
-        normals.push_back(n);
-        normals.push_back(n);
-        normals.push_back(n);
+        int index1 = 0;
+        int index2 = 0;
+        int index3 = 0;
 
-        indices.push_back(index++);
-        indices.push_back(index++);
-        indices.push_back(index++);
+        for (size_t ind = 0; ind < positions.size(); ++ind) {
+            if (glm::abs(glm::length(positions[ind] - p1)) < glm::epsilon<float>()) {
+                index1 = ind;
+                p1Found = true;
+            }
+            if (glm::abs(glm::length(positions[ind] - p2)) < glm::epsilon<float>()) {
+                index2 = ind;
+                p2Found = true;
+            }
+            if (glm::abs(glm::length(positions[ind] - p3)) < glm::epsilon<float>()) {
+                index3 = ind;
+                p3Found = true;
+            }
+        }
+
+        if (p1Found) {
+            normals[index1] += n;
+        } else {
+            index1 = index++;
+            positions.push_back(p1);
+            normals.push_back(n);
+        }
+
+        if (p2Found) {
+            normals[index2] += n;
+        } else {
+            index2 = index++;
+            positions.push_back(p2);
+            normals.push_back(n);
+        }
+
+        if (p3Found) {
+            normals[index3] += n;
+        } else {
+            index3 = index++;
+            positions.push_back(p3);
+            normals.push_back(n);
+        }
+
+        indices.push_back(index1);
+        indices.push_back(index2);
+        indices.push_back(index3);
     }
 }
 

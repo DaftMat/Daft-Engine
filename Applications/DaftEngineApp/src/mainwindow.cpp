@@ -50,16 +50,6 @@ void MainWindow::on_actionDir_Light_triggered() {
     ui->centralwidget->glWidget().update();
 }
 
-void MainWindow::on_actionSpot_Lights_triggered() {}
-
-void MainWindow::on_actionMetaballs_triggered() {
-    ui->centralwidget->glWidget().addDrawable(engine::Drawable::Type::Metaballs);
-    ui->centralwidget->glWidget().addDrawable(engine::Drawable::Type::DirLight, glm::vec3{0.f}, {40.f, 0.f, 0.f});
-    ui->centralwidget->glWidget().update();
-}
-
-void MainWindow::on_actionProcedural_caves_triggered() {}
-
 void MainWindow::resizeEvent(QResizeEvent *event) {
     QMainWindow::resizeEvent(event);
     auto size = ui->centralwidget->borderLayout().regionSize(BorderLayout::Position::Center);

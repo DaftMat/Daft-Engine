@@ -31,23 +31,8 @@
      <property name="title">
       <string>Load scene preset</string>
      </property>
-     <widget class="QMenu" name="menuMarching_Cubes_demo">
-      <property name="title">
-       <string>Marching Cubes</string>
-      </property>
-      <addaction name="actionMetaballs"/>
-      <addaction name="actionProcedural_caves"/>
-     </widget>
-     <widget class="QMenu" name="menuShadow_Maps_demo">
-      <property name="title">
-       <string>Shadow Maps</string>
-      </property>
-      <addaction name="actionDir_Light"/>
-      <addaction name="actionSpot_Lights"/>
-     </widget>
      <addaction name="actionHDR_demo"/>
-     <addaction name="menuShadow_Maps_demo"/>
-     <addaction name="menuMarching_Cubes_demo"/>
+     <addaction name="actionDir_Light"/>
      <addaction name="separator"/>
     </widget>
     <addaction name="menuLoad_scene_preset"/>
