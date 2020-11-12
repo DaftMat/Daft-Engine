@@ -41,13 +41,13 @@ void DirLight::renderToLightMap(Composite *root, const core::ShaderProgram &shad
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glm::vec3 center = viewCam.target();
     float dist = glm::length(viewCam.target() - viewCam.position()) * 1.6f;
-    glm::vec3 cameraPos = center - m_direction * 40.f;
+    glm::vec3 cameraPos = center - m_direction * dist;
     glm::vec3 worldUp = glm::vec3{0.f, 1.f, 0.f};
     if (m_direction == worldUp || m_direction == -worldUp) worldUp = glm::vec3{1.f, 0.f, 0.f};
     glm::vec3 right = glm::cross(m_direction, worldUp);
     glm::vec3 up = glm::cross(right, m_direction);
     glm::mat4 lightView = glm::lookAt(cameraPos, cameraPos + m_direction, up);
-    glm::mat4 lightProj = glm::ortho(-dist, dist, -dist, dist, 1.f, 50.f);
+    glm::mat4 lightProj = glm::ortho(-dist, dist, -dist, dist, 1.f, dist * 2.f);
     m_lightSpaceMatrix = lightProj * lightView;
     shader.setMat4("lightSpaceMatrix", m_lightSpaceMatrix);
     root->render(shader);

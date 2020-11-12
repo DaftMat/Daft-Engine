@@ -221,6 +221,7 @@ float calculateShadow(Shadow shadowData) {
             nrSample++;
         }
     }
+
     return shadowValue / nrSample;
 }
 
