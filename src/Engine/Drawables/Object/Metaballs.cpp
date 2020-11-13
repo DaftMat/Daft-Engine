@@ -57,9 +57,9 @@ core::SettingManager Metaballs::getSettings() const {
 
 void Metaballs::setSettings(const core::SettingManager &s) {
     if (m_selectedBall == -1) {
-        setGridSize(s.get<glm::vec3>("Grid Size"));
-        setCubeSize(s.get<float>("Cube Size"));
-        setIsoLevel(s.get<float>("Iso Level"));
+        if (s.has("Grid Size")) setGridSize(s.get<glm::vec3>("Grid Size"));
+        if (s.has("Cube Size")) setCubeSize(s.get<float>("Cube Size"));
+        if (s.has("Iso Level")) setIsoLevel(s.get<float>("Iso Level"));
     } else {
         m_balls[m_selectedBall].pos = s.get<glm::vec3>("Position");
         m_balls[m_selectedBall].radius = s.get<float>("Radius");

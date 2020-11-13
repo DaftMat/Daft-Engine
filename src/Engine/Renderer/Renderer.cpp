@@ -154,12 +154,14 @@ void Renderer::setSelection(std::string s) {
     m_selection = std::move(s);
 }
 
-void Renderer::addDrawable(Drawable::Type type, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale) {
+void Renderer::addDrawable(Drawable::Type type, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale,
+                           core::SettingManager sm) {
     ObjectSpec os{};
     os.type = type;
     os.pos = pos;
     os.rot = rot;
     os.scale = scale;
+    os.sm = std::move(sm);
     m_addNextFrame.push_back(os);
 }
 
@@ -218,7 +220,7 @@ void Renderer::_removeSelection() {
 }
 
 void Renderer::_addDrawable() {
-    for (auto objSpec : m_addNextFrame) {
+    for (const auto &objSpec : m_addNextFrame) {
         std::shared_ptr<Drawable> drawable{nullptr};
         switch (objSpec.type) {
             case Drawable::Type::Group:
@@ -292,9 +294,12 @@ void Renderer::_addDrawable() {
         }
 
         if (drawable) {
-            drawable->position() = objSpec.pos;
-            drawable->rotations() = objSpec.rot;
-            drawable->scale() = objSpec.scale;
+            core::SettingManager transformSM;
+            transformSM.add("Position", objSpec.pos);
+            transformSM.add("Rotations", objSpec.rot);
+            transformSM.add("Scale", objSpec.scale);
+            drawable->setTransformations(transformSM);
+            drawable->setSettings(objSpec.sm);
             auto selection = getSelection();
             if (selection && selection->isComposite()) {
                 dynamic_cast<daft::engine::Composite *>(selection)->add(drawable);

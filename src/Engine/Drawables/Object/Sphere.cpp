@@ -379,22 +379,22 @@ core::SettingManager Sphere::getSettings() const {
 }
 
 void Sphere::setSettings(const core::SettingManager &s) {
-    setType(Type(s.get<int>("Type")));
+    if (s.has("Type")) setType(Type(s.get<int>("Type")));
     if (m_update) return;
-    setRadius(s.get<float>("Radius"));
+    if (s.has("Radius")) setRadius(s.get<float>("Radius"));
     switch (m_type) {
         case Type::UV:
-            setMeridians(s.get<int>("Meridians"));
-            setParallels(s.get<int>("Parallels"));
+            if (s.has("Meridians")) setMeridians(s.get<int>("Meridians"));
+            if (s.has("Parallels")) setParallels(s.get<int>("Parallels"));
             break;
         case Type::Ico:
-            setSubdivisions(s.get<int>("Subdivisions"));
+            if (s.has("Subdivisions")) setSubdivisions(s.get<int>("Subdivisions"));
             break;
         case Type::Cube:
-            setResolution(s.get<int>("Resolution"));
+            if (s.has("Resolution")) setResolution(s.get<int>("Resolution"));
             break;
         case Type::Fibo:
-            setPoints(s.get<int>("Points"));
+            if (s.has("Points")) setPoints(s.get<int>("Points"));
     }
 }
 

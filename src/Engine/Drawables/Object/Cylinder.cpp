@@ -24,9 +24,9 @@ core::SettingManager Cylinder::getSettings() const {
 }
 
 void Cylinder::setSettings(const core::SettingManager &s) {
-    setMeridians(s.get<int>("Meridians"));
-    setParallels(s.get<int>("Parallels"));
-    setRadius(s.get<float>("Radius"));
+    if (s.has("Meridians")) setMeridians(s.get<int>("Meridians"));
+    if (s.has("Parallels")) setParallels(s.get<int>("Parallels"));
+    if (s.has("Radius")) setRadius(s.get<float>("Radius"));
 }
 
 void Cylinder::setMeridians(int m) {

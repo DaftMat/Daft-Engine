@@ -93,10 +93,10 @@ core::SettingManager BSpline::getSettings() const {
 
 void BSpline::setSettings(const core::SettingManager &s) {
     if (m_selectedPoint == -1) {
-        setBase(s.get<int>("Base"));
-        setSteps(s.get<float>("Steps"));
+        if (s.has("Base")) setBase(s.get<int>("Base"));
+        if (s.has("Steps")) setSteps(s.get<float>("Steps"));
     } else {
-        m_spline.controlPoints()[m_selectedPoint] = s.get<glm::vec3>("Position");
+        if (s.has("Position")) m_spline.controlPoints()[m_selectedPoint] = s.get<glm::vec3>("Position");
         updateNextFrame();
     }
 }

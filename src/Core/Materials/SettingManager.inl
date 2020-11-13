@@ -1,5 +1,7 @@
 #include <Core/Utils/Logger.hpp>
 
+#include "SettingManager.hpp"
+
 namespace daft::core {
 template <typename T>
 const std::vector<SettingManager::Setting<T>>& SettingManager::settings() const {

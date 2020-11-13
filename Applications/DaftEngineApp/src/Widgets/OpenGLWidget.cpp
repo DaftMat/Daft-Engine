@@ -101,8 +101,9 @@ void OpenGLWidget::setSelection(std::string s) {
     m_emitSelectionChanged = true;
 }
 
-void OpenGLWidget::addDrawable(engine::Drawable::Type type, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale) {
-    m_renderer->addDrawable(type, pos, rot, scale);
+void OpenGLWidget::addDrawable(engine::Drawable::Type type, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale,
+                               core::SettingManager sm) {
+    m_renderer->addDrawable(type, pos, rot, scale, std::move(sm));
     m_emitSceneTreeChanged = true;
     m_emitSelectionChanged = true;
 }

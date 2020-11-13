@@ -27,10 +27,10 @@ core::SettingManager Torus::getSettings() const {
 }
 
 void Torus::setSettings(const core::SettingManager &s) {
-    setMeridians(s.get<int>("Meridians"));
-    setParallels(s.get<int>("Parallels"));
-    setInnerRadius(s.get<float>("Inner Radius"));
-    setOuterRadius(s.get<float>("Outer Radius"));
+    if (s.has("Meridians")) setMeridians(s.get<int>("Meridians"));
+    if (s.has("Parallels")) setParallels(s.get<int>("Parallels"));
+    if (s.has("Inner Radius")) setInnerRadius(s.get<float>("Inner Radius"));
+    if (s.has("Outer Radius")) setOuterRadius(s.get<float>("Outer Radius"));
 }
 
 void Torus::setMeridians(int m) {

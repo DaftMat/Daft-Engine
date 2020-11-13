@@ -31,9 +31,15 @@
      <property name="title">
       <string>Load scene preset</string>
      </property>
-     <addaction name="actionHDR_demo"/>
-     <addaction name="actionDir_Light"/>
-     <addaction name="separator"/>
+     <widget class="QMenu" name="menuHDR_demos">
+      <property name="title">
+       <string>HDR demos</string>
+      </property>
+      <addaction name="actionOpen_Sky_Surface"/>
+      <addaction name="actionClosed_Space"/>
+     </widget>
+     <addaction name="menuHDR_demos"/>
+     <addaction name="actionShadow_Maps_demo"/>
     </widget>
     <addaction name="menuLoad_scene_preset"/>
    </widget>
@@ -52,11 +58,6 @@
     <string>OpenGL</string>
    </property>
   </action>
-  <action name="actionHDR_demo">
-   <property name="text">
-    <string>HDR demo</string>
-   </property>
-  </action>
   <action name="actionMetaballs">
    <property name="text">
     <string>Metaballs</string>
@@ -67,14 +68,34 @@
     <string>Procedural caves</string>
    </property>
   </action>
-  <action name="actionDir_Light">
+  <action name="actionShadow_Maps_demo">
    <property name="text">
-    <string>Directionnal Light demo</string>
+    <string>Shadow Maps demo</string>
    </property>
   </action>
   <action name="actionSpot_Lights">
    <property name="text">
     <string>Spot Lights demo</string>
+   </property>
+  </action>
+  <action name="actionOpen_Sky_Surface">
+   <property name="text">
+    <string>Open Sky Surface</string>
+   </property>
+  </action>
+  <action name="actionClosed_Space">
+   <property name="text">
+    <string>Closed Space</string>
+   </property>
+  </action>
+  <action name="actionMetaballs_2">
+   <property name="text">
+    <string>Metaballs</string>
+   </property>
+  </action>
+  <action name="actionProcedural_Caves">
+   <property name="text">
+    <string>Procedural Caves</string>
    </property>
   </action>
  </widget>

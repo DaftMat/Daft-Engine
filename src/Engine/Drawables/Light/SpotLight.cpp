@@ -32,10 +32,10 @@ core::SettingManager SpotLight::getSettings() const {
 }
 
 void SpotLight::setSettings(const core::SettingManager &s) {
-    color() = s.get<glm::vec3>("Color");
-    setIntensity(s.get<float>("Intensity"));
-    setInnerCutOff(s.get<float>("Inner angle"));
-    setOuterCutOff(s.get<float>("Outer angle"));
+    if (s.has("Color")) color() = s.get<glm::vec3>("Color");
+    if (s.has("Intensity")) setIntensity(s.get<float>("Intensity"));
+    if (s.has("Inner angle")) setInnerCutOff(s.get<float>("Inner angle"));
+    if (s.has("Outer angle")) setOuterCutOff(s.get<float>("Outer angle"));
 }
 
 void SpotLight::setTransformations(const core::SettingManager &t) {

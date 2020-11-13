@@ -95,7 +95,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
      * @param drawable - drawable to add.
      */
     void addDrawable(Drawable::Type type, glm::vec3 pos = glm::vec3{0.f}, glm::vec3 rot = glm::vec3{0.f},
-                     glm::vec3 scale = glm::vec3{1.f});
+                     glm::vec3 scale = glm::vec3{1.f}, core::SettingManager sm = core::SettingManager{});
 
     void addCustomObject(std::string filePath, glm::vec3 pos = glm::vec3{0.f}, glm::vec3 rot = glm::vec3{0.f},
                          glm::vec3 scale = glm::vec3{1.f});
@@ -172,6 +172,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
         glm::vec3 pos;
         glm::vec3 rot;
         glm::vec3 scale;
+        core::SettingManager sm{};
     };
 
     static bool GLinitialized;

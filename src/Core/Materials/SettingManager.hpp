@@ -138,6 +138,8 @@ class SettingManager {
     template <typename T>
     inline T &get(std::string name);
 
+    bool has(const std::string &name) const;
+
    private:
     template <typename T>
     inline auto getIt(std::string name) const;

@@ -21,7 +21,9 @@ core::SettingManager DirLight::getSettings() const {
     return sm;
 }
 
-void DirLight::setSettings(const core::SettingManager &s) { color() = s.get<glm::vec3>("Color"); }
+void DirLight::setSettings(const core::SettingManager &s) {
+    if (s.has("Color")) color() = s.get<glm::vec3>("Color");
+}
 
 void DirLight::setTransformations(const core::SettingManager &t) {
     rotations() = t.get<glm::vec3>("Rotations");

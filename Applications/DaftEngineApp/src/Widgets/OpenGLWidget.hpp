@@ -54,7 +54,7 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
      * @param type - type of the new drawable to add.
      */
     void addDrawable(engine::Drawable::Type type, glm::vec3 pos = glm::vec3{0.f}, glm::vec3 rot = glm::vec3{0.f},
-                     glm::vec3 scale = glm::vec3{1.f});
+                     glm::vec3 scale = glm::vec3{1.f}, core::SettingManager sm = core::SettingManager{});
 
     void addCustomObject(std::string filePath, glm::vec3 pos = glm::vec3{0.f}, glm::vec3 rot = glm::vec3{0.f},
                          glm::vec3 scale = glm::vec3{1.f});

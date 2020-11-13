@@ -24,8 +24,8 @@ core::SettingManager PointLight::getSettings() const {
 }
 
 void PointLight::setSettings(const core::SettingManager &s) {
-    color() = s.get<glm::vec3>("Color");
-    m_intensity = s.get<float>("Intensity");
+    if (s.has("Color")) color() = s.get<glm::vec3>("Color");
+    if (s.has("Intensity")) m_intensity = s.get<float>("Intensity");
 }
 
 void PointLight::loadToShader(const core::ShaderProgram &shader, int index) const {

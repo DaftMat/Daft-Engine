@@ -53,15 +53,15 @@ core::SettingManager Caves::getSettings() const {
 }
 
 void Caves::setSettings(const core::SettingManager &s) {
-    setGridSize(s.get<glm::vec3>("Grid Size"));
-    setCubeSize(s.get<float>("Cube Size"));
-    setIsoLevel(s.get<float>("Iso Level"));
-    setSeed(s.get<int>("Seed"));
-    setScale(s.get<float>("Scale"));
-    setOctaves(s.get<int>("Octaves"));
-    setPersistence(s.get<float>("Persistence"));
-    setLacunarity(s.get<float>("Lacunarity"));
-    setOffset(s.get<glm::vec3>("Offset") + 1000000.f);
+    if (s.has("Grid Size")) setGridSize(s.get<glm::vec3>("Grid Size"));
+    if (s.has("Cube Size")) setCubeSize(s.get<float>("Cube Size"));
+    if (s.has("Iso Level")) setIsoLevel(s.get<float>("Iso Level"));
+    if (s.has("Seed")) setSeed(s.get<int>("Seed"));
+    if (s.has("Scale")) setScale(s.get<float>("Scale"));
+    if (s.has("Octaves")) setOctaves(s.get<int>("Octaves"));
+    if (s.has("Persistence")) setPersistence(s.get<float>("Persistence"));
+    if (s.has("Lacunarity")) setLacunarity(s.get<float>("Lacunarity"));
+    if (s.has("Offset")) setOffset(s.get<glm::vec3>("Offset") + 1000000.f);
 }
 
 void Caves::setGridSize(glm::vec3 cs) {
