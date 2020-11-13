@@ -31,10 +31,15 @@ Quad::Quad(float x, float y, float width, float height) {
 
     m_mesh = core::Mesh(am);
     m_material = std::make_shared<core::Material>();
-    m_material->addTexture(core::Texture("quadTexture", core::Texture::Type::ALBEDO));
+    addTexture();
 }
 
-void Quad::setTexture(int id) { m_material->texture("quadTexture").id() = id; }
+void Quad::addTexture() {
+    m_material->addTexture(
+        core::Texture("quadTexture[" + std::to_string(m_material->textures().size()) + "]", core::Texture::Type::NONE));
+}
+
+void Quad::setTexture(int id, int i) { m_material->textures()[i].id() = id; }
 
 void Quad::prepare() const {
     m_mesh.prepare();
@@ -42,8 +47,7 @@ void Quad::prepare() const {
 }
 
 void Quad::render(const core::ShaderProgram &shader, GLuint mode) const {
-    m_material->loadToShader(shader);
+    m_material->loadToShader(shader, "");
     m_mesh.render(mode);
-    m_mesh.unbind();
 }
 }  // namespace daft::engine

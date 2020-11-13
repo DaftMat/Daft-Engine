@@ -68,6 +68,9 @@ class ENGINE_API BSplineBase {
      */
     void addPoint(glm::vec3 p = glm::vec3{0.f}) { m_controlPoints.push_back(p); }
 
+    /**
+     * Resets the nodal vector of the spline.
+     */
     void resetNodalVector();
 
    private:

@@ -14,7 +14,6 @@ int PointLight::m_nrPointLights{0};
 PointLight::PointLight(float intensity, glm::vec3 color, daft::engine::Composite *parent, std::string name)
     : Light(color, parent, std::move(name)), m_intensity{intensity} {
     createPointLight();
-    m_shadowMap.id() = m_fbo->textures()[0];
 }
 
 core::SettingManager PointLight::getSettings() const {
@@ -25,13 +24,13 @@ core::SettingManager PointLight::getSettings() const {
 }
 
 void PointLight::setSettings(const core::SettingManager &s) {
-    color() = s.get<glm::vec3>("Color");
-    m_intensity = s.get<float>("Intensity");
+    if (s.has("Color")) color() = s.get<glm::vec3>("Color");
+    if (s.has("Intensity")) m_intensity = s.get<float>("Intensity");
 }
 
 void PointLight::loadToShader(const core::ShaderProgram &shader, int index) const {
     std::string name = "pointLights[" + std::to_string(index) + "]";
-    shader.setVec3(name + ".position", position());
+    shader.setVec3(name + ".position", model() * glm::vec4(glm::vec3(0.f), 1.f));
     shader.setVec3(name + ".color", color());
     shader.setFloat(name + ".intensity", m_intensity);
     shader.setMat4(name + ".lightSpaceMatrix", m_lightSpaceMatrix);
@@ -40,7 +39,7 @@ void PointLight::loadToShader(const core::ShaderProgram &shader, int index) cons
 void PointLight::renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
                                   const daft::engine::Camera &viewCam) {
     m_fbo->use();
-    glClear(GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glm::vec3 center = viewCam.target();
     glm::vec3 lightToCenter = center - position();
     glm::vec3 right = glm::cross(glm::normalize(lightToCenter), glm::vec3{0.f, 1.f, 0.f});

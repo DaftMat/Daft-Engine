@@ -46,10 +46,6 @@ void Object::reset() {
     m_meshObjects.clear();
 }
 
-void Object::subdivide() {
-    /// in the future : half-edges
-}
-
 void Object::loadFromFile(std::string path) {
     std::string filepath = std::move(path);
     Assimp::Importer importer;

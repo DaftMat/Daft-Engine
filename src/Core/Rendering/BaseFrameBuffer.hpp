@@ -13,6 +13,8 @@ namespace daft::core {
  */
 class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
    public:
+    enum class BufferType { COLOR, DEPTH, STENCIL, DEPTHSTENCIL };
+
     /**
      * Standard constructor.
      * @param width - width of the framebuffer.
@@ -47,13 +49,13 @@ class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
      * Activates the framebuffer.
      * The next frames will be rendered on this framebuffer.
      */
-    void use() const;
+    void use();
 
     /**
      * Stops using this framebuffer.
      * The next frames will be rendered on the screen's framebuffer.
      */
-    void stop(int width, int height) const;
+    void stop(int width, int height);
 
     /** Resolves one fbo's color buffer to the screen's fbo.
      *
@@ -90,6 +92,9 @@ class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
     static void setDefaultFbo(GLuint fbo) { m_defaultFbo = fbo; }
 
    protected:
+    void _setSize(int width, int height);
+    void clear();
+
     void addColorBuffer();
     void addDepthBuffer();
     void addStencilBuffer();
@@ -101,13 +106,17 @@ class ENGINE_API BaseFrameBuffer : public core::NonCopyable {
 
     void drawBuffers() const;
 
+    bool m_isActive{false};
+
    private:
     static GLuint m_defaultFbo;
 
     int m_width, m_height;
     GLuint m_fbo{0};
     std::vector<GLuint> m_textures;
+    std::vector<BufferType> m_texTypes;
     std::vector<GLuint> m_buffers;
+    std::vector<BufferType> m_bufTypes;
 
     int m_numSamples;
 

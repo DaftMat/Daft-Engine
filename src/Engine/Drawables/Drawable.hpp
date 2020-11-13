@@ -33,6 +33,8 @@ class Drawable : public core::NonCopyable {
         Torus,
         BSpline,
         BSpline2D,
+        Metaballs,
+        Caves,
         /// Lights
         PointLight,
         DirLight,
@@ -85,7 +87,11 @@ class Drawable : public core::NonCopyable {
      */
     virtual void accept(DrawableVisitor *) = 0;
 
-    virtual Type getType() const = 0;
+    /**
+     * Type getter.
+     * @return drawable's type.
+     */
+    [[nodiscard]] virtual Type getType() const = 0;
 
     /**
      * Object accessor.

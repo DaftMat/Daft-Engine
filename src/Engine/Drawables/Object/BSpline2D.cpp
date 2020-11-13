@@ -49,8 +49,8 @@ core::SettingManager BSpline2D::getSettings() const {
 }
 
 void BSpline2D::setSettings(const core::SettingManager &s) {
-    setBase(s.get<int>("Base"));
-    setSteps(s.get<float>("Steps"));
+    if (s.has("Base")) setBase(s.get<int>("Base"));
+    if (s.has("Steps")) setSteps(s.get<float>("Steps"));
 }
 
 void BSpline2D::setBase(int b) {

@@ -4,6 +4,7 @@
 #include "MainWidget.hpp"
 
 #include <Core/Utils/IO.hpp>
+#include <Engine/Drawables/Object/Metaballs.hpp>
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QDoubleSpinBox>
@@ -15,6 +16,7 @@
 #include <Widgets/SettingWidgets/SettingWidget.hpp>
 #include <Widgets/SettingWidgets/SettingWidgetVisitor.hpp>
 #include <Widgets/TreeWidget/TreeWidget.hpp>
+#include <src/Widgets/SettingWidgets/DrawableSettings/BallSettings.hpp>
 #include <src/Widgets/SettingWidgets/DrawableSettings/PointSettings.hpp>
 
 #include "BorderWidget.hpp"
@@ -71,13 +73,19 @@ void MainWidget::on_selectionChanged() {
     auto selection = m_glWidget->renderer().getSelection();
     SettingWidget *widget;
     if (selection == nullptr) {
-        widget = new SettingWidget(nullptr, nullptr);
-    } else if (!m_selectionIsDrawable) {
+        widget = new SettingWidget(nullptr, nullptr, "", m_glWidget->renderer().exposure());
+    } else if (!m_selectionIsDrawable && selection->getType() == engine::Drawable::Type::BSpline) {
         core::SettingManager sm;
         auto spline = (engine::BSpline *)selection;
-        sm.add("Position", (spline->getSelectedPoint()));
+        sm = selection->getSettings();
         widget =
             new SettingWidget(new PointSettings{sm}, nullptr, ("Point" + std::to_string(spline->getSelectedIndex())));
+    } else if (!m_selectionIsDrawable && selection->getType() == engine::Drawable::Type::Metaballs) {
+        core::SettingManager sm;
+        auto metaball = (engine::Metaballs *)selection;
+        sm = selection->getSettings();
+        widget =
+            new SettingWidget(new BallSettings{sm}, nullptr, ("Ball" + std::to_string(metaball->getSelectedIndex())));
     } else {
         auto visitor = std::make_unique<SettingWidgetVisitor>();
         selection->accept(visitor.get());
@@ -91,6 +99,9 @@ void MainWidget::on_selectionChanged() {
         if (m_selectionIsDrawable && selection && selection->getType() == engine::Drawable::Type::BSpline)
             connect(m_settingWidget->settingsWidget(), SIGNAL(bSplineAddPointButtonPressed()), this,
                     SLOT(on_bSplineAddButtonPressed()));
+        else if (m_selectionIsDrawable && selection && selection->getType() == engine::Drawable::Type::Metaballs)
+            connect(m_settingWidget->settingsWidget(), SIGNAL(metaballsAddPointButtonPressed()), this,
+                    SLOT(on_metaballsAddButtonPressed()));
     }
     if (m_settingWidget->transformsWidget()) {
         connect(m_settingWidget->transformsWidget(), SIGNAL(settingChanged()), this, SLOT(on_settingChanged()));
@@ -101,14 +112,17 @@ void MainWidget::on_selectionChanged() {
 
 void MainWidget::on_settingChanged() {
     auto selection = m_glWidget->renderer().getSelection();
-    if (!selection) return;
+    if (selection) {
+        std::stringstream ss;
+        ss << "Setting of drawable changed. Drawable name : " << selection->name();
+        core::Logger::info(std::move(ss));
 
-    std::stringstream ss;
-    ss << "Setting of drawable changed. Drawable name : " << selection->name();
-    core::Logger::info(std::move(ss));
-
-    if (m_settingWidget->transformsWidget()) selection->setTransformations(m_settingWidget->transforms());
-    if (m_settingWidget->settingsWidget()) selection->setSettings(m_settingWidget->settings());
+        if (m_settingWidget->transformsWidget()) selection->setTransformations(m_settingWidget->transforms());
+        if (m_settingWidget->settingsWidget()) selection->setSettings(m_settingWidget->settings());
+    } else {
+        float exposure = m_settingWidget->settingsWidget()->settings().get<float>("Exposure");
+        m_glWidget->renderer().setExposure(exposure);
+    }
     m_glWidget->update();
 }
 
@@ -128,11 +142,16 @@ void MainWidget::on_treeSelectionChanged() {
     if (parentDrawable && parentDrawable->getType() == engine::Drawable::Type::BSpline) {
         ((engine::BSpline *)parentDrawable)->setSelectedPoint(index.row());
         m_selectionIsDrawable = false;
+    } else if (parentDrawable && parentDrawable->getType() == engine::Drawable::Type::Metaballs) {
+        ((engine::Metaballs *)parentDrawable)->setSelectedBall(index.row());
+        m_selectionIsDrawable = false;
     } else {
         m_glWidget->setSelection(selectedText.toStdString());
         auto selection = m_glWidget->renderer().getSelection();
         if (selection->getType() == engine::Drawable::Type::BSpline)
             ((engine::BSpline *)selection)->setSelectedPoint(-1);
+        if (selection->getType() == engine::Drawable::Type::Metaballs)
+            ((engine::Metaballs *)selection)->setSelectedBall(-1);
     }
     m_glWidget->update();
 }
@@ -161,8 +180,8 @@ void MainWidget::connectSceneTreeEvents() {
 }
 
 void MainWidget::createCreationComboBoxes() {
-    std::vector<std::string> objects{"Sphere",   "Torus",       "Cube",  "Cylinder",
-                                     "B-Spline", "2D B-Spline", "Group", "Custom"};
+    std::vector<std::string> objects{"Sphere",      "Torus",     "Cube",  "Cylinder", "B-Spline",
+                                     "2D B-Spline", "Metaballs", "Caves", "Group",    "Custom"};
     m_objectCreator = std::make_unique<QComboBox>();
     m_objectCreator->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_objectCreator->addItem("Add object");
@@ -196,6 +215,10 @@ void MainWidget::on_objectBoxChanged() {
         m_glWidget->addDrawable(engine::Drawable::Type::BSpline);
     else if (m_objectCreator->currentText() == "2D B-Spline")
         m_glWidget->addDrawable(engine::Drawable::Type::BSpline2D);
+    else if (m_objectCreator->currentText() == "Metaballs")
+        m_glWidget->addDrawable(engine::Drawable::Type::Metaballs);
+    else if (m_objectCreator->currentText() == "Caves")
+        m_glWidget->addDrawable(engine::Drawable::Type::Caves);
     else if (m_objectCreator->currentText() == "Group")
         m_glWidget->addDrawable(engine::Drawable::Type::Group);
     else if (m_objectCreator->currentText() == "Custom") {
@@ -303,6 +326,13 @@ void MainWidget::createEastComponents() {
 void MainWidget::on_bSplineAddButtonPressed() {
     auto spline = m_glWidget->renderer().getSelection();
     ((engine::BSpline *)spline)->addPoint();
+    on_sceneTreeChanged();
+    m_glWidget->update();
+}
+
+void MainWidget::on_metaballsAddButtonPressed() {
+    auto mb = m_glWidget->renderer().getSelection();
+    ((engine::Metaballs *)mb)->addBall();
     on_sceneTreeChanged();
     m_glWidget->update();
 }

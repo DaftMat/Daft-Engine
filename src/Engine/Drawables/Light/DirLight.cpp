@@ -13,7 +13,6 @@ int DirLight::m_nrDirLight{0};
 DirLight::DirLight(glm::vec3 dir, glm::vec3 color, Composite *parent, std::string name)
     : Light(color, parent, std::move(name)), m_direction{dir}, m_baseDirection{dir} {
     createDirLight();
-    m_shadowMap.id() = m_fbo->textures()[0];
 }
 
 core::SettingManager DirLight::getSettings() const {
@@ -22,7 +21,9 @@ core::SettingManager DirLight::getSettings() const {
     return sm;
 }
 
-void DirLight::setSettings(const core::SettingManager &s) { color() = s.get<glm::vec3>("Color"); }
+void DirLight::setSettings(const core::SettingManager &s) {
+    if (s.has("Color")) color() = s.get<glm::vec3>("Color");
+}
 
 void DirLight::setTransformations(const core::SettingManager &t) {
     rotations() = t.get<glm::vec3>("Rotations");
@@ -39,14 +40,16 @@ void DirLight::loadToShader(const core::ShaderProgram &shader, int index) const 
 void DirLight::renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
                                 const Camera &viewCam) {
     m_fbo->use();
-    glClear(GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glm::vec3 center = viewCam.target();
     float dist = glm::length(viewCam.target() - viewCam.position()) * 1.6f;
-    glm::vec3 cameraPos = center - m_direction * 10.f;
-    glm::vec3 right = glm::cross(m_direction, glm::vec3{0.f, 1.f, 0.f});
+    glm::vec3 cameraPos = center - m_direction * dist;
+    glm::vec3 worldUp = glm::vec3{0.f, 1.f, 0.f};
+    if (m_direction == worldUp || m_direction == -worldUp) worldUp = glm::vec3{1.f, 0.f, 0.f};
+    glm::vec3 right = glm::cross(m_direction, worldUp);
     glm::vec3 up = glm::cross(right, m_direction);
     glm::mat4 lightView = glm::lookAt(cameraPos, cameraPos + m_direction, up);
-    glm::mat4 lightProj = glm::ortho(-dist, dist, -dist, dist, 1.f, 40.f);
+    glm::mat4 lightProj = glm::ortho(-dist, dist, -dist, dist, 1.f, dist * 2.f);
     m_lightSpaceMatrix = lightProj * lightView;
     shader.setMat4("lightSpaceMatrix", m_lightSpaceMatrix);
     root->render(shader);

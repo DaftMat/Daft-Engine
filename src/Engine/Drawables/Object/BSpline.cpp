@@ -11,6 +11,7 @@ int BSpline::m_nrBSpline{0};
 
 BSpline::BSpline(std::vector<glm::vec3> controlPoints, int base, float steps, Composite *parent, std::string name)
     : Object(parent, std::move(name)), m_spline{std::move(controlPoints), base}, m_steps{steps} {
+    m_spline.resetNodalVector();
     createBSpline();
 }
 
@@ -42,12 +43,7 @@ void BSpline::renderEdges(const core::ShaderProgram &shader) {
 }
 
 void BSpline::createBSpline() {
-    /// create nodal vector
-    m_spline.resetNodalVector();
-
     m_meshObjects.clear();
-    /// from:   m_nodalVector[m_base]
-    /// to:     m_nodalVector[m_nodalVector.size()]
     core::AttribManager am{};
     std::vector<glm::vec3> positions;
     int index = 0;
@@ -80,6 +76,7 @@ void BSpline::createBSpline() {
 
 void BSpline::addPoint(glm::vec3 p) {
     m_spline.addPoint(p);
+    m_spline.resetNodalVector();
     updateNextFrame();
 }
 
@@ -96,10 +93,10 @@ core::SettingManager BSpline::getSettings() const {
 
 void BSpline::setSettings(const core::SettingManager &s) {
     if (m_selectedPoint == -1) {
-        setBase(s.get<int>("Base"));
-        setSteps(s.get<float>("Steps"));
+        if (s.has("Base")) setBase(s.get<int>("Base"));
+        if (s.has("Steps")) setSteps(s.get<float>("Steps"));
     } else {
-        m_spline.controlPoints()[m_selectedPoint] = s.get<glm::vec3>("Position");
+        if (s.has("Position")) m_spline.controlPoints()[m_selectedPoint] = s.get<glm::vec3>("Position");
         updateNextFrame();
     }
 }
@@ -107,6 +104,7 @@ void BSpline::setSettings(const core::SettingManager &s) {
 void BSpline::setBase(int b) {
     if (m_spline.base() == b) return;
     m_spline.base() = b;
+    m_spline.resetNodalVector();
     updateNextFrame();
 }
 

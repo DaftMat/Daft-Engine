@@ -101,15 +101,16 @@ void OpenGLWidget::setSelection(std::string s) {
     m_emitSelectionChanged = true;
 }
 
-void OpenGLWidget::addDrawable(engine::Drawable::Type type) {
-    m_renderer->addDrawable(type);
+void OpenGLWidget::addDrawable(engine::Drawable::Type type, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale,
+                               core::SettingManager sm) {
+    m_renderer->addDrawable(type, pos, rot, scale, std::move(sm));
     m_emitSceneTreeChanged = true;
     m_emitSelectionChanged = true;
 }
 
-void OpenGLWidget::addCustomObject(std::string filePath) {
+void OpenGLWidget::addCustomObject(std::string filePath, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale) {
     if (filePath.size() < 5 || filePath.substr(filePath.size() - 4, filePath.size()) != ".obj") return;
-    m_renderer->addCustomObject(std::move(filePath));
+    m_renderer->addCustomObject(std::move(filePath), pos, rot, scale);
     m_emitSceneTreeChanged = true;
     m_emitSelectionChanged = true;
 }

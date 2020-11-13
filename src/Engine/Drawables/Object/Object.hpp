@@ -18,10 +18,17 @@ class ENGINE_API Object : public Drawable {
    public:
     /**
      * Standard constructor.
-     * @param mos - list of mesh objects.
+     * @param parent - parent Composite .
+     * @param name - name of the object.
      */
     explicit Object(Composite *parent = nullptr, std::string name = "Object" + std::to_string(m_nrObject++));
 
+    /**
+     * File constructor.
+     * @param filepath - path of an obj file.
+     * @param parent - parent Composite .
+     * @param name - name of the object.
+     */
     explicit Object(std::string filepath, Composite *parent = nullptr,
                     std::string name = "Object" + std::to_string(m_nrObject++));
 
@@ -64,11 +71,6 @@ class ENGINE_API Object : public Drawable {
     void reset() override;
 
     /**
-     * Subdivides triangles of each meshes in 4 new triangles.
-     */
-    void subdivide();
-
-    /**
      * Tests if this is a Composite .
      * @return false.
      */
@@ -90,7 +92,7 @@ class ENGINE_API Object : public Drawable {
      * Gets the type of drawable.
      * @return Type::None .
      */
-    Type getType() const override { return Type::None; }
+    [[nodiscard]] Type getType() const override { return Type::None; }
 
    protected:
     std::vector<MeshObject> m_meshObjects;

@@ -22,8 +22,8 @@ core::SettingManager Cube::getSettings() const {
 }
 
 void Cube::setSettings(const core::SettingManager &s) {
-    setRadius(s.get<float>("Radius"));
-    setResolution(s.get<int>("Resolution"));
+    if (s.has("Radius")) setRadius(s.get<float>("Radius"));
+    if (s.has("Resolution")) setResolution(s.get<int>("Resolution"));
 }
 
 void Cube::setRadius(float r) {

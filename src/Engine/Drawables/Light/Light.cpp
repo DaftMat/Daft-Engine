@@ -6,6 +6,14 @@
 namespace daft::engine {
 int Light::m_nrLight{0};
 
+Light::Light(glm::vec3 color, Composite *parent, std::string name)
+    : Drawable(parent, std::move(name)),
+      m_fbo{std::make_unique<core::FrameBufferObject>(
+          1024, 1024, 1,
+          core::FrameBufferObject::Attachments{core::FrameBufferObject::Attachments::Type::NONE, 0,
+                                               core::FrameBufferObject::Attachments::Type::TEXTURE})},
+      m_color{color} {}
+
 void Light::renderEdges(const core::ShaderProgram &shader) {
     shader.setMat4("model", model());
     if (selected())
@@ -23,12 +31,5 @@ void Light::reset() {
     m_mesh.clear();
 }
 
-Light::Light(glm::vec3 color, Composite *parent, std::string name)
-    : Drawable(parent, std::move(name)),
-      m_shadowMap{"shadowMap", core::Texture::Type::NONE},
-      m_fbo{std::make_unique<core::FrameBufferObject>(
-          2048, 2048, 1,
-          core::FrameBufferObject::Attachments{core::FrameBufferObject::Attachments::Type::NONE, 0,
-                                               core::FrameBufferObject::Attachments::Type::TEXTURE})},
-      m_color{color} {}
+GLuint Light::shadowMap() const { return m_fbo->textures()[0]; }
 }  // namespace daft::engine

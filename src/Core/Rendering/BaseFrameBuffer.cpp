@@ -10,12 +10,7 @@ GLuint BaseFrameBuffer::m_defaultFbo{0};
 
 BaseFrameBuffer::~BaseFrameBuffer() {
     if (!m_isValid) return;
-    for (GLuint &b : m_buffers) {
-        glDeleteBuffers(1, &b);
-    }
-    for (GLuint &t : m_textures) {
-        glDeleteTextures(1, &t);
-    }
+    clear();
     std::stringstream ss;
     ss << "FrameBuffer of ID: " << m_fbo << " deleted";
     Logger::info(std::move(ss));
@@ -53,7 +48,8 @@ BaseFrameBuffer &BaseFrameBuffer::operator=(BaseFrameBuffer &&o) noexcept {
     return *this;
 }
 
-void BaseFrameBuffer::use() const {
+void BaseFrameBuffer::use() {
+    if (m_isActive) return;
     glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
@@ -63,11 +59,14 @@ void BaseFrameBuffer::use() const {
         return;
     }
     glViewport(0, 0, m_width, m_height);
+    m_isActive = true;
 }
 
-void BaseFrameBuffer::stop(int width, int height) const {
+void BaseFrameBuffer::stop(int width, int height) {
+    if (!m_isActive) return;
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     glViewport(0, 0, width, height);
+    m_isActive = false;
 }
 
 void BaseFrameBuffer::resolve(int width, int height, int index) const {
@@ -77,7 +76,8 @@ void BaseFrameBuffer::resolve(int width, int height, int index) const {
     glBindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
     glReadBuffer(GL_COLOR_ATTACHMENT0 + index);
     glDrawBuffer(GL_BACK);
-    glBlitFramebuffer(0, 0, m_width, m_height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+    glBlitFramebuffer(0, 0, m_width, m_height, 0, 0, width, height, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT,
+                      GL_NEAREST);
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
 }
 
@@ -98,7 +98,7 @@ void BaseFrameBuffer::addColorBuffer() {
     GLuint rbo;
     glGenRenderbuffers(1, &rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-    GLuint format = m_isHDR ? GL_RGB16F : GL_RGB;
+    GLuint format = m_isHDR ? GL_RGB32F : GL_RGB;
     if (m_numSamples == 1)
         glRenderbufferStorage(GL_RENDERBUFFER, format, m_width, m_height);
     else
@@ -106,6 +106,7 @@ void BaseFrameBuffer::addColorBuffer() {
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + m_num_color++, GL_RENDERBUFFER, rbo);
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_buffers.push_back(rbo);
+    m_bufTypes.emplace_back(BufferType::COLOR);
 }
 
 void BaseFrameBuffer::addDepthBuffer() {
@@ -122,6 +123,7 @@ void BaseFrameBuffer::addDepthBuffer() {
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_depth = true;
     m_buffers.push_back(rbo);
+    m_bufTypes.emplace_back(BufferType::DEPTH);
 }
 
 void BaseFrameBuffer::addStencilBuffer() {
@@ -138,6 +140,7 @@ void BaseFrameBuffer::addStencilBuffer() {
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_stencil = true;
     m_buffers.push_back(rbo);
+    m_bufTypes.emplace_back(BufferType::STENCIL);
 }
 
 void BaseFrameBuffer::addDepthStencilBuffer() {
@@ -154,6 +157,7 @@ void BaseFrameBuffer::addDepthStencilBuffer() {
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_stencil_depth = true;
     m_buffers.push_back(rbo);
+    m_bufTypes.emplace_back(BufferType::DEPTHSTENCIL);
 }
 
 void BaseFrameBuffer::addColorTexture() {
@@ -162,8 +166,9 @@ void BaseFrameBuffer::addColorTexture() {
     GLuint tex;
     glGenTextures(1, &tex);
     glBindTexture(GL_TEXTURE_2D, tex);
-    GLuint format = m_isHDR ? GL_RGB16F : GL_RGB;
-    glTexImage2D(GL_TEXTURE_2D, 0, format, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+    GLuint format = m_isHDR ? GL_RGB32F : GL_RGB;
+    GLuint type = m_isHDR ? GL_FLOAT : GL_UNSIGNED_BYTE;
+    glTexImage2D(GL_TEXTURE_2D, 0, format, m_width, m_height, 0, GL_RGB, type, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -171,6 +176,7 @@ void BaseFrameBuffer::addColorTexture() {
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + m_num_color++, GL_TEXTURE_2D, tex, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_textures.push_back(tex);
+    m_texTypes.emplace_back(BufferType::COLOR);
 }
 
 void BaseFrameBuffer::addDepthTexture() {
@@ -190,6 +196,7 @@ void BaseFrameBuffer::addDepthTexture() {
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_depth = true;
     m_textures.push_back(tex);
+    m_texTypes.emplace_back(BufferType::DEPTH);
 }
 
 void BaseFrameBuffer::addStencilTexture() {
@@ -209,6 +216,7 @@ void BaseFrameBuffer::addStencilTexture() {
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_stencil = true;
     m_textures.push_back(tex);
+    m_texTypes.emplace_back(BufferType::STENCIL);
 }
 
 void BaseFrameBuffer::addDepthStencilTexture() {
@@ -228,6 +236,7 @@ void BaseFrameBuffer::addDepthStencilTexture() {
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
     m_stencil_depth = true;
     m_textures.push_back(tex);
+    m_texTypes.emplace_back(BufferType::DEPTHSTENCIL);
 }
 
 void BaseFrameBuffer::drawBuffers() const {
@@ -237,5 +246,73 @@ void BaseFrameBuffer::drawBuffers() const {
     glDrawBuffers(m_num_color, bufs);
     delete[] bufs;
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFbo);
+}
+
+void BaseFrameBuffer::_setSize(int width, int height) {
+    m_width = width;
+    m_height = height;
+
+    for (size_t i = 0; i < m_buffers.size(); ++i) {
+        glBindRenderbuffer(GL_RENDERBUFFER, m_buffers[i]);
+        GLuint format;
+        switch (m_bufTypes[i]) {
+            case BufferType::COLOR:
+                format = m_isHDR ? GL_RGB32F : GL_RGB;
+                break;
+            case BufferType::DEPTH:
+                format = GL_DEPTH_COMPONENT;
+                break;
+            case BufferType::STENCIL:
+                format = GL_STENCIL_INDEX;
+                break;
+            case BufferType::DEPTHSTENCIL:
+                format = GL_DEPTH24_STENCIL8;
+                break;
+        }
+        if (m_numSamples == 1)
+            glRenderbufferStorage(GL_RENDERBUFFER, format, m_width, m_height);
+        else
+            glRenderbufferStorageMultisample(GL_RENDERBUFFER, m_numSamples, format, m_width, m_height);
+    }
+
+    for (size_t i = 0; i < m_textures.size(); ++i) {
+        glBindTexture(GL_TEXTURE_2D, m_textures[i]);
+        GLuint format1, format2, type;
+        switch (m_texTypes[i]) {
+            case BufferType::COLOR:
+                format1 = m_isHDR ? GL_RGB32F : GL_RGB;
+                format2 = GL_RGB;
+                type = m_isHDR ? GL_FLOAT : GL_UNSIGNED_BYTE;
+                break;
+            case BufferType::DEPTH:
+                format1 = GL_DEPTH_COMPONENT32;
+                format2 = GL_DEPTH_COMPONENT;
+                type = GL_FLOAT;
+                break;
+            case BufferType::STENCIL:
+                format1 = GL_STENCIL_INDEX16;
+                format2 = GL_STENCIL_INDEX;
+                type = GL_INT;
+                break;
+            case BufferType::DEPTHSTENCIL:
+                format1 = format2 = GL_DEPTH24_STENCIL8;
+                type = GL_FLOAT;
+                break;
+        }
+        glTexImage2D(GL_TEXTURE_2D, 0, format1, m_width, m_height, 0, format2, type, nullptr);
+    }
+}
+
+void BaseFrameBuffer::clear() {
+    for (GLuint &b : m_buffers) {
+        glDeleteBuffers(1, &b);
+    }
+    for (GLuint &t : m_textures) {
+        glDeleteTextures(1, &t);
+    }
+    m_buffers.clear();
+    m_textures.clear();
+    m_bufTypes.clear();
+    m_texTypes.clear();
 }
 }  // namespace daft::core

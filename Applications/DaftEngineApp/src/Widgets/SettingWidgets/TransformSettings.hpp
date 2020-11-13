@@ -36,6 +36,10 @@ class ENGINE_API TransformSettings : public QWidget {
      */
     [[nodiscard]] const core::SettingManager &transforms() const { return m_settings; }
 
+    /**
+     * Mouse press action
+     * @param event - mouse infos
+     */
     void mousePressEvent(QMouseEvent *event) override;
 
    public slots:

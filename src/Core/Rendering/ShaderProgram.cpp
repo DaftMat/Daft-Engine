@@ -37,7 +37,7 @@ ShaderProgram::ShaderProgram(const std::string &vertexPath, const std::string &f
     glDeleteShader(fragment);
 
     std::stringstream ss;
-    ss << "ShadeProgram created. ID: " << m_id << ".";
+    ss << "ShaderProgram created. ID: " << m_id << ".";
     core::Logger::info(std::move(ss));
 }
 

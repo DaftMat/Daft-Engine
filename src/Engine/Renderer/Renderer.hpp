@@ -92,11 +92,24 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     /**
      * Adds a drawable to the scene tree.
-     * @param drawable - drawable to add.
+     * @param type - Drawable::Type of drawable to add
+     * @param pos - position of the drawable to add.
+     * @param rot - rotations of the drawable to add.
+     * @param scale - scale of the drawable to add.
+     * @param sm - settings of the drawable to add.
      */
-    void addDrawable(Drawable::Type type) { m_addNextFrame.push_back(type); }
+    void addDrawable(Drawable::Type type, glm::vec3 pos = glm::vec3{0.f}, glm::vec3 rot = glm::vec3{0.f},
+                     glm::vec3 scale = glm::vec3{1.f}, core::SettingManager sm = core::SettingManager{});
 
-    void addCustomObject(std::string filePath);
+    /**
+     * Adds a drawable give an obj file.
+     * @param filePath - path of the obj file to load.
+     * @param pos - position of the drawable to add.
+     * @param rot - rotations of the drawable to add.
+     * @param scale - scale of the drawable to add.
+     */
+    void addCustomObject(std::string filePath, glm::vec3 pos = glm::vec3{0.f}, glm::vec3 rot = glm::vec3{0.f},
+                         glm::vec3 scale = glm::vec3{1.f});
 
     /**
      * Removes the current selected drawable from the scene tree.
@@ -143,6 +156,18 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     void setShader(AvailableShaders shader) { m_newShader = shader; }
 
     /**
+     * Exposure setter.
+     * @param exposure - new exposure.
+     */
+    void setExposure(float exposure) { m_HDRPass->exposure() = exposure; }
+
+    /**
+     * Exposure getter.
+     * @return exposure.
+     */
+    float exposure() const { return m_HDRPass->exposure(); }
+
+    /**
      * Changes sky color to default grey and starts render edges.
      */
     void switchToEditionMode();
@@ -161,6 +186,14 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     void buildGrid(int size = 50);
     void drawGrid() const;
 
+    struct ObjectSpec {
+        Drawable::Type type;
+        glm::vec3 pos;
+        glm::vec3 rot;
+        glm::vec3 scale;
+        core::SettingManager sm{};
+    };
+
     static bool GLinitialized;
     int m_width{0}, m_height{0};
     std::string m_selection;
@@ -178,7 +211,7 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
     daft::engine::Camera m_camera;
 
     bool m_removeNextFrame{false};
-    std::vector<Drawable::Type> m_addNextFrame;
+    std::vector<ObjectSpec> m_addNextFrame;
     std::string m_filePathCustom;
     AvailableShaders m_newShader{AvailableShaders::None};
 

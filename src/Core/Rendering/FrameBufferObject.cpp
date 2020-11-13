@@ -29,4 +29,11 @@ void FrameBufferObject::initialize(daft::core::FrameBufferObject::Attachments a)
     }
     drawBuffers();
 }
+
+void FrameBufferObject::setSize(int width, int height) {
+    _setSize(width, height);
+    if (m_isActive) {
+        glViewport(0, 0, width, height);
+    }
+}
 }  // namespace daft::core

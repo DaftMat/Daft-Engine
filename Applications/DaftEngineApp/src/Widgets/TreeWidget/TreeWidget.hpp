@@ -5,6 +5,7 @@
 #include <API.hpp>
 #include <Engine/Drawables/Composite.hpp>
 #include <Engine/Drawables/Object/BSpline.hpp>
+#include <Engine/Drawables/Object/Metaballs.hpp>
 #include <QStandardItem>
 #include <QTreeView>
 
@@ -38,6 +39,7 @@ class ENGINE_API TreeWidget : public QTreeView {
     void addNode(QStandardItem *parent, engine::Composite *node);
 
    private:
-    void addNode(QStandardItem *parent, engine::BSpline *spline);
+    static void addNode(QStandardItem *parent, engine::BSpline *spline);
+    static void addNode(QStandardItem *parent, engine::Metaballs *metaballs);
 };
 }  // namespace daft::app

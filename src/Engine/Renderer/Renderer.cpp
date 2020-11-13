@@ -36,14 +36,15 @@ Renderer::Renderer(int width, int height) {
 
     m_shaders.push_back(
         std::make_shared<core::ShaderProgram>("shaders/blinnphong.vert.glsl", "shaders/blinnphong.frag.glsl"));
+    m_shaders[0]->use();
+    m_shaders[0]->setBool("instantToneMapping", m_drawEdges);
+    m_shaders[0]->stop();
     m_shaders.push_back(std::make_shared<core::ShaderProgram>("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
     m_multisamplePass = std::make_shared<daft::engine::MultiSamplingPass>(m_width, m_height, 32, true);
     m_screenQuad = std::make_shared<daft::engine::QuadRenderer>();
     m_screenQuad->addQuad(-1.f, 1.f, 2.f, 2.f);
-    m_screenQuad->quad(0).setTexture(m_multisamplePass->outTexture());
 
-    // m_HDRPass = std::make_shared<HDRPass>(m_width, m_height);
-    // m_screenQuad->quad(0).setTexture(m_HDRPass->outTexture());
+    m_HDRPass = std::make_shared<HDRPass>(m_width, m_height, 32);
 
     m_shadowShader =
         std::make_unique<core::ShaderProgram>("shaders/shadowmap.vert.glsl", "shaders/shadowmap.frag.glsl");
@@ -78,8 +79,13 @@ void Renderer::render() {
     m_lightPool->renderToLightMap(m_root.get(), *m_shadowShader, m_width, m_height, m_camera);
     m_shadowShader->stop();
 
-    m_multisamplePass->use();
-    // m_HDRPass->use();
+    if (m_drawEdges) {
+        m_screenQuad->quad(0).setTexture(m_multisamplePass->outTexture());
+        m_multisamplePass->use();
+    } else {
+        m_screenQuad->quad(0).setTexture(m_HDRPass->outTexture());
+        m_HDRPass->use();
+    }
     clearGL();
     /// draw objects
     m_shaders[0]->use();
@@ -102,8 +108,11 @@ void Renderer::render() {
     }
 
     /// unbind opengl objects
-    m_multisamplePass->stop(m_width, m_height);
-    // m_HDRPass->stop(m_width, m_height);
+    if (m_drawEdges) {
+        m_multisamplePass->stop(m_width, m_height);
+    } else {
+        m_HDRPass->stop(m_width, m_height);
+    }
 
     /// render the frame-textured quad to the screen.
     glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
@@ -145,8 +154,24 @@ void Renderer::setSelection(std::string s) {
     m_selection = std::move(s);
 }
 
-void Renderer::addCustomObject(std::string filePath) {
-    m_addNextFrame.push_back(Drawable::Type::Custom);
+void Renderer::addDrawable(Drawable::Type type, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale,
+                           core::SettingManager sm) {
+    ObjectSpec os{};
+    os.type = type;
+    os.pos = pos;
+    os.rot = rot;
+    os.scale = scale;
+    os.sm = std::move(sm);
+    m_addNextFrame.push_back(os);
+}
+
+void Renderer::addCustomObject(std::string filePath, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale) {
+    ObjectSpec os{};
+    os.type = Drawable::Type::Custom;
+    os.pos = pos;
+    os.rot = rot;
+    os.scale = scale;
+    m_addNextFrame.push_back(os);
     m_filePathCustom = std::move(filePath);
 }
 
@@ -169,11 +194,17 @@ void Renderer::updateProjectionMatrix() {
 
 void Renderer::switchToEditionMode() {
     m_drawEdges = true;
+    m_shaders[0]->use();
+    m_shaders[0]->setBool("instantToneMapping", m_drawEdges);
+    m_shaders[0]->stop();
     m_defaultSkyColor = {0.35, 0.35f, 0.35f};
 }
 
 void Renderer::switchToRenderingMode() {
     m_drawEdges = false;
+    m_shaders[0]->use();
+    m_shaders[0]->setBool("instantToneMapping", m_drawEdges);
+    m_shaders[0]->stop();
     m_defaultSkyColor = {0.52f, 0.81f, 0.92f};
 }
 
@@ -189,9 +220,9 @@ void Renderer::_removeSelection() {
 }
 
 void Renderer::_addDrawable() {
-    for (auto type : m_addNextFrame) {
+    for (const auto &objSpec : m_addNextFrame) {
         std::shared_ptr<Drawable> drawable{nullptr};
-        switch (type) {
+        switch (objSpec.type) {
             case Drawable::Type::Group:
                 drawable = std::make_shared<Composite>();
                 break;
@@ -207,6 +238,12 @@ void Renderer::_addDrawable() {
             case Drawable::Type::Cylinder:
                 drawable = std::make_shared<Cylinder>();
                 break;
+            case Drawable::Type::Metaballs:
+                drawable = std::make_shared<Metaballs>();
+                break;
+            case Drawable::Type::Caves:
+                drawable = std::make_shared<Caves>();
+                break;
             case Drawable::Type::BSpline: {
                 std::vector<glm::vec3> controlPoints;
                 controlPoints.emplace_back(glm::vec3{0.f});
@@ -214,16 +251,19 @@ void Renderer::_addDrawable() {
                 break;
             }
             case Drawable::Type::BSpline2D: {
-                std::vector<std::vector<glm::vec3>> controlPoints{
-                    {{-2.f, 0.f, 2.f}, {-1.f, 0.f, 2.f}, {0.f, 0.f, 2.f}, {1.f, 0.f, 2.f}, {2.f, 0.f, 2.f}},
-                    {{-2.f, 0.f, 1.f}, {-1.f, 0.f, 1.f}, {0.f, 0.f, 1.f}, {1.f, 0.f, 1.f}, {2.f, 0.f, 1.f}},
-                    {{-2.f, 0.f, 0.f}, {-1.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {1.f, 0.f, 0.f}, {2.f, 0.f, 0.f}},
-                    {{-2.f, 0.f, -1.f}, {-1.f, 0.f, -1.f}, {0.f, 0.f, -1.f}, {1.f, 0.f, -1.f}, {2.f, 0.f, -1.f}},
-                    {{-2.f, 0.f, -2.f}, {-1.f, 0.f, -2.f}, {0.f, 0.f, -2.f}, {1.f, 0.f, -2.f}, {2.f, 0.f, -2.f}},
-                };
+                std::vector<std::vector<glm::vec3>> controlPoints;
+                int n = 10;
+                for (int i = -n; i <= n; ++i) {
+                    std::vector<glm::vec3> subControlPoints;
+                    for (int j = -n; j <= n; ++j) {
+                        subControlPoints.emplace_back(float(i), core::Random::get(-2.f, 2.f), float(j));
+                    }
+                    controlPoints.push_back(subControlPoints);
+                    subControlPoints.clear();
+                }
                 for (auto &poly : controlPoints)
                     for (auto &point : poly) point.y = core::Random::get(-1.f, 1.f);
-                drawable = std::make_shared<BSpline2D>(controlPoints, 2, 80);
+                drawable = std::make_shared<BSpline2D>(controlPoints, 2, n * 10);
                 break;
             }
             case Drawable::Type::Custom: {
@@ -254,13 +294,18 @@ void Renderer::_addDrawable() {
         }
 
         if (drawable) {
+            core::SettingManager transformSM;
+            transformSM.add("Position", objSpec.pos);
+            transformSM.add("Rotations", objSpec.rot);
+            transformSM.add("Scale", objSpec.scale);
+            drawable->setTransformations(transformSM);
+            drawable->setSettings(objSpec.sm);
             auto selection = getSelection();
             if (selection && selection->isComposite()) {
                 dynamic_cast<daft::engine::Composite *>(selection)->add(drawable);
             } else {
                 m_root->add(drawable);
             }
-            setSelection(drawable->name());
         }
     }
     m_addNextFrame.clear();

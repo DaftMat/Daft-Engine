@@ -77,6 +77,10 @@ class ENGINE_API MeshObject : public core::NonCopyable {
      */
     [[nodiscard]] const Material &material() const { return *m_material; }
 
+    /**
+     * Checks if this MeshObject has a valid material.
+     * @return true if its material isn't nullptr.
+     */
     [[nodiscard]] bool hasMaterial() const { return m_material != nullptr; }
 
    protected:

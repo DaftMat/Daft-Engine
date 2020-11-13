@@ -91,6 +91,10 @@ class ENGINE_API Camera {
      */
     void flip();
 
+    /**
+     * Target position getter.
+     * @return target.
+     */
     [[nodiscard]] glm::vec3 target() const { return m_target; }
 
    private:

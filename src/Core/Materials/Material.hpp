@@ -75,6 +75,12 @@ class Material : public NonCopyable {
         m_settings.set(std::move(name), data);
     }
 
+    /**
+     * Gets the data of a setting in the material.
+     * @tparam T - type of the setting's data.
+     * @param name - name of the setting to get.
+     * @return data of the setting.
+     */
     template <typename T>
     T getSetting(std::string name) {
         return m_settings.get<T>(std::move(name));
@@ -110,6 +116,12 @@ class Material : public NonCopyable {
      * @return list of textures in the material.
      */
     [[nodiscard]] const std::vector<Texture> &textures() const { return m_textures; }
+
+    /**
+     * Textures list getter.
+     * @return list of textures in the material.
+     */
+    [[nodiscard]] std::vector<Texture> &textures() { return m_textures; }
 
     /**
      * Settings list getter.

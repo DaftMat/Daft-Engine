@@ -130,13 +130,32 @@ class SettingManager {
                m_vec3s.empty() && m_vec4s.empty() && m_mat2s.empty() && m_mat3s.empty() && m_mat4s.empty();
     }
 
+    /**
+     * Gets the const ref of a setting given its name.
+     * @tparam T - type of the setting.
+     * @param name - name of the setting.
+     * @return data of the setting.
+     */
     template <typename T>
     inline const T &get(std::string name) const {
         return getIt<T>(std::move(name))->data;
     }
 
+    /**
+     * Gets the ref of a setting given its name.
+     * @tparam T - type of the setting.
+     * @param name - name of the setting.
+     * @return data of the setting.
+     */
     template <typename T>
     inline T &get(std::string name);
+
+    /**
+     * Check if a setting of a given name exists in this SettingManager.
+     * @param name - name of the setting to check.
+     * @return true if any setting has this name.
+     */
+    [[nodiscard]] bool has(const std::string &name) const;
 
    private:
     template <typename T>
