@@ -83,6 +83,10 @@ class Texture : public NonCopyable {
      */
     GLuint &id() { return m_id; }
 
+    /**
+     * Texture's Type getter.
+     * @return type of the texture
+     */
     [[nodiscard]] Type type() const { return m_type; }
 
    private:

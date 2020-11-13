@@ -17,13 +17,30 @@ class ENGINE_API Metaballs : public Object {
         [[nodiscard]] float eval(glm::vec3 p) const;
     };
 
+    /**
+     * Standard constructor.
+     * @param cubeSize - size of a cube sample.
+     * @param isoLevel - iso level of the caves' surface.
+     * @param parent - parent Composite .
+     * @param name - name of the metaballs.
+     */
     explicit Metaballs(float cubeSize = 0.1f, float isoLevel = 1.f, Composite *parent = nullptr,
                        std::string name = "Metaballs" + std::to_string(m_nrMetaballs++));
 
+    /**
+     * Default destructor.
+     */
     ~Metaballs() override = default;
 
+    /**
+     * Default move constructor.
+     */
     Metaballs(Metaballs &&) noexcept = default;
 
+    /**
+     * Default move assignment operator.
+     * @return ref to this.
+     */
     Metaballs &operator=(Metaballs &&) noexcept = default;
 
     /**
@@ -44,16 +61,40 @@ class ENGINE_API Metaballs : public Object {
      */
     void setSettings(const core::SettingManager &s) override;
 
+    /**
+     * Grid size setter.
+     * @param cs - new grid size.
+     */
     void setGridSize(glm::vec3 cs);
 
+    /**
+     * Grid size getter.
+     * @return grid size.
+     */
     [[nodiscard]] glm::vec3 gridSize() const { return m_marchingCube.gridSize(); }
 
+    /**
+     * Cube size setter.
+     * @param cs - new cube size.
+     */
     void setCubeSize(float cs);
 
+    /**
+     * Cube size getter.
+     * @return cube size.
+     */
     [[nodiscard]] float cubeSize() const { return m_marchingCube.cubeSize(); }
 
+    /**
+     * Iso level setter.
+     * @param il - new iso level.
+     */
     void setIsoLevel(float il);
 
+    /**
+     * Iso level getter.
+     * @return iso level.
+     */
     [[nodiscard]] float isoLevel() const { return m_marchingCube.isoLevel(); }
 
     /**

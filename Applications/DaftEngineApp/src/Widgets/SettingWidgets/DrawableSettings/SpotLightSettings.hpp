@@ -14,7 +14,7 @@ class ENGINE_API SpotLightSettings : public DrawableSettings {
    public:
     /**
      * Constructor.
-     * @param settings - settings of the point light.
+     * @param settings - settings of the spot light.
      * @param parent - parent widget.
      */
     explicit SpotLightSettings(core::SettingManager settings, QWidget *parent = nullptr);

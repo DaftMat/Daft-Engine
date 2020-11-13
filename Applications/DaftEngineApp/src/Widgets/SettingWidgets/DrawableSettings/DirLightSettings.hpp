@@ -11,7 +11,7 @@ class ENGINE_API DirLightSettings : public DrawableSettings {
    public:
     /**
      * Constructor.
-     * @param settings - settings of the point light.
+     * @param settings - settings of the directionnal light.
      * @param parent - parent widget.
      */
     explicit DirLightSettings(core::SettingManager settings, QWidget *parent = nullptr);

@@ -14,7 +14,7 @@ class ENGINE_API BallSettings : public DrawableSettings {
    public:
     /**
      * Constructor.
-     * @param settings - settings of the point (position).
+     * @param settings - settings of the ball (position + radius).
      * @param parent - parent widget.
      */
     explicit BallSettings(core::SettingManager settings, QWidget *parent = nullptr);

@@ -46,10 +46,12 @@ class ENGINE_API LightPool : public core::NonCopyable {
     void loadToShader(const core::ShaderProgram &shader) const;
 
     /**
-     * Render the scene to this light's depth buffer to create a light map.
-     * @param root - objects to render to the light map.
-     * @param shader - shadow shader.
-     * @param fbo - frame buffer to use to render the light map.
+     * Render the scene to a shadow map.
+     * @param root - scene.
+     * @param shader - shader to be used.
+     * @param screenWidth - width of the original viewport.
+     * @param screenHeight - height of the original viewport.
+     * @param viewCam - original viewport's camera.
      */
     void renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
                           const Camera &viewCam);

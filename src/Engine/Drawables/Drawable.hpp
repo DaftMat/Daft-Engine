@@ -87,6 +87,10 @@ class Drawable : public core::NonCopyable {
      */
     virtual void accept(DrawableVisitor *) = 0;
 
+    /**
+     * Type getter.
+     * @return drawable's type.
+     */
     [[nodiscard]] virtual Type getType() const = 0;
 
     /**

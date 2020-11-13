@@ -92,11 +92,22 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
 
     /**
      * Adds a drawable to the scene tree.
-     * @param drawable - drawable to add.
+     * @param type - Drawable::Type of drawable to add
+     * @param pos - position of the drawable to add.
+     * @param rot - rotations of the drawable to add.
+     * @param scale - scale of the drawable to add.
+     * @param sm - settings of the drawable to add.
      */
     void addDrawable(Drawable::Type type, glm::vec3 pos = glm::vec3{0.f}, glm::vec3 rot = glm::vec3{0.f},
                      glm::vec3 scale = glm::vec3{1.f}, core::SettingManager sm = core::SettingManager{});
 
+    /**
+     * Adds a drawable give an obj file.
+     * @param filePath - path of the obj file to load.
+     * @param pos - position of the drawable to add.
+     * @param rot - rotations of the drawable to add.
+     * @param scale - scale of the drawable to add.
+     */
     void addCustomObject(std::string filePath, glm::vec3 pos = glm::vec3{0.f}, glm::vec3 rot = glm::vec3{0.f},
                          glm::vec3 scale = glm::vec3{1.f});
 
@@ -144,8 +155,16 @@ class ENGINE_API Renderer : public daft::core::NonCopyable {
      */
     void setShader(AvailableShaders shader) { m_newShader = shader; }
 
+    /**
+     * Exposure setter.
+     * @param exposure - new exposure.
+     */
     void setExposure(float exposure) { m_HDRPass->exposure() = exposure; }
 
+    /**
+     * Exposure getter.
+     * @return exposure.
+     */
     float exposure() const { return m_HDRPass->exposure(); }
 
     /**

@@ -10,13 +10,31 @@
 namespace daft::engine {
 class ENGINE_API BSpline2D : public Object {
    public:
+    /**
+     * Standard constructor.
+     * @param controlPoints - control polygon of the 2D spline.
+     * @param base - base of the 2D spline.
+     * @param steps - number of points as resolution of the 2D spline.
+     * @param parent - parent Composite .
+     * @param name - name of the 2D spline.
+     */
     explicit BSpline2D(const std::vector<std::vector<glm::vec3>> &controlPoints = {}, int base = 2, float steps = 100.f,
                        Composite *parent = nullptr, std::string name = "BSpline2D" + std::to_string(m_nrBSpline2D));
 
+    /**
+     * Default destructor.
+     */
     ~BSpline2D() override = default;
 
+    /**
+     * Default move constructor.
+     */
     BSpline2D(BSpline2D &&) noexcept = default;
 
+    /**
+     * Default move assignment operator.
+     * @return ref to this.
+     */
     BSpline2D &operator=(BSpline2D &&) noexcept = default;
 
     /**
@@ -67,6 +85,10 @@ class ENGINE_API BSpline2D : public Object {
      */
     [[nodiscard]] Type getType() const override { return Type::BSpline2D; }
 
+    /**
+     * Accepts a visitor.
+     * @param visitor - visitor to accept.
+     */
     void accept(core::DrawableVisitor *visitor) override;
 
    protected:

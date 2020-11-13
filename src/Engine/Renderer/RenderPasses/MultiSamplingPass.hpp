@@ -33,6 +33,10 @@ class MultiSamplingPass : public core::NonCopyable {
      */
     MultiSamplingPass &operator=(MultiSamplingPass &&) noexcept = default;
 
+    /**
+     * Output fbo getter.
+     * @return resulting FBO.
+     */
     [[nodiscard]] const core::FrameBufferObject &resultFBO() const { return *m_fboOut; }
 
     /**

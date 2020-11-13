@@ -9,13 +9,32 @@
 namespace daft::engine {
 class ENGINE_API Torus : public Object {
    public:
+    /**
+     * Standard constructor.
+     * @param meridians - meridians of the torus.
+     * @param parallels - parallels of the torus.
+     * @param innerRadius - inner radius of the torus.
+     * @param outerRadius - outer radius of the torus.
+     * @param parent - parent Composite .
+     * @param name - name of the torus.
+     */
     explicit Torus(int meridians = 32, int parallels = 16, float innerRadius = 1.f, float outerRadius = 0.5f,
                    Composite *parent = nullptr, std::string name = "Torus" + std::to_string(m_nrTorus++));
 
+    /**
+     * Default destructor.
+     */
     ~Torus() override = default;
 
+    /**
+     * Default move constructor.
+     */
     Torus(Torus &&) noexcept = default;
 
+    /**
+     * Default move assignment operator.
+     * @return ref to this.
+     */
     Torus &operator=(Torus &&) noexcept = default;
 
     /**
@@ -88,7 +107,7 @@ class ENGINE_API Torus : public Object {
      * Gets the type of drawable.
      * @return Type::Torus .
      */
-    Type getType() const override { return Type::Torus; }
+    [[nodiscard]] Type getType() const override { return Type::Torus; }
 
    protected:
     void applyUpdate() override { createTorus(); }

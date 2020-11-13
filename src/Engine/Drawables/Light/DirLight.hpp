@@ -50,8 +50,6 @@ class ENGINE_API DirLight : public Light {
      */
     glm::vec3 direction() const { return m_direction; }
 
-    // void applyUpdate() override { createDirLight(); }
-
     /**
      * Loads this light to a target shader as a uniform struct.
      * @param shader - shader to load the light to.
@@ -59,6 +57,14 @@ class ENGINE_API DirLight : public Light {
      */
     void loadToShader(const core::ShaderProgram &shader, int index) const override;
 
+    /**
+     * Render the scene to a shadow map.
+     * @param root - scene.
+     * @param shader - shader to be used.
+     * @param screenWidth - width of the original viewport.
+     * @param screenHeight - height of the original viewport.
+     * @param viewCam - original viewport's camera.
+     */
     void renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
                           const Camera &viewCam) override;
 

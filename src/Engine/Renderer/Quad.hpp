@@ -13,16 +13,41 @@ namespace daft::engine {
  */
 class ENGINE_API Quad {
    public:
+    /**
+     * Standard constructor.
+     * @param x - x origin position.
+     * @param y - y origin position.
+     * @param width - width of the quad.
+     * @param height - height of the quad.
+     */
     Quad(float x, float y, float width, float height);
 
+    /**
+     * Default destructor.
+     */
     ~Quad() = default;
 
+    /**
+     * Default move constructor.
+     */
     Quad(Quad &&) noexcept = default;
 
+    /**
+     * Default move assignment operator.
+     * @return ref to this.
+     */
     Quad &operator=(Quad &&) noexcept = default;
 
+    /**
+     * Adds a texture to the quad.
+     */
     void addTexture();
 
+    /**
+     * Sets the texture i of the quad.
+     * @param id - texture.
+     * @param i - index.
+     */
     void setTexture(int id, int i = 0);
 
     /**
@@ -36,6 +61,9 @@ class ENGINE_API Quad {
      */
     void render(const core::ShaderProgram &shader, GLuint mode = GL_TRIANGLES) const;
 
+    /**
+     * Unbinds the quad from opengl context.
+     */
     void unbind() const { m_mesh.unbind(); }
 
    private:

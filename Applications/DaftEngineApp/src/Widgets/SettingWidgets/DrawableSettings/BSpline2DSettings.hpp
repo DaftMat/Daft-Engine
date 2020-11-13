@@ -11,7 +11,7 @@ class ENGINE_API BSpline2DSettings : public DrawableSettings {
    public:
     /**
      * Constructor.
-     * @param settings - settings of the B-Spline.
+     * @param settings - settings of the 2D B-Spline.
      * @param parent - parent widget.
      */
     explicit BSpline2DSettings(core::SettingManager settings, QWidget *parent = nullptr);

@@ -12,22 +12,58 @@
 namespace daft::engine {
 class HDRPass : public core::NonCopyable {
    public:
+    /**
+     * Standard constructor.
+     * @param width - width of the framebuffers.
+     * @param height - height of the framebuffers.
+     * @param multisamples - samples of the framebuffers.
+     */
     HDRPass(int width, int height, int multisamples = 32);
 
+    /**
+     * Default destructor.
+     */
     ~HDRPass() = default;
 
+    /**
+     * Default move constructor.
+     */
     HDRPass(HDRPass &&) noexcept = default;
 
+    /**
+     * Default move assignment operator.
+     * @return ref to this.
+     */
     HDRPass &operator=(HDRPass &&) noexcept = default;
 
+    /**
+     * Resulting texture.
+     * @return - texture of the scene.
+     */
     GLuint outTexture() { return m_finalFBO->textures()[0]; }
 
+    /**
+     * Exposure getter.
+     * @return exposure.
+     */
     float exposure() const { return m_exposure; }
 
+    /**
+     * Exposure ref getter.
+     * @return exposure.
+     */
     float &exposure() { return m_exposure; }
 
+    /**
+     * Uses this pass.
+     */
     void use() const { m_multisample->use(); }
 
+    /**
+     * Stops using this pass.
+     * @param width - screen width.
+     * @param height - screen height.
+     */
     void stop(int width, int height);
 
    private:

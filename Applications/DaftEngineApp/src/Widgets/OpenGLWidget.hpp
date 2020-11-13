@@ -52,10 +52,21 @@ class ENGINE_API OpenGLWidget : public QOpenGLWidget {
     /**
      * Adds a drawable to the scene.
      * @param type - type of the new drawable to add.
+     * @param pos - position of the object.
+     * @param rot - rotations of the object.
+     * @param scale - scale of the object.
+     * @param sm - settings of the object.
      */
     void addDrawable(engine::Drawable::Type type, glm::vec3 pos = glm::vec3{0.f}, glm::vec3 rot = glm::vec3{0.f},
                      glm::vec3 scale = glm::vec3{1.f}, core::SettingManager sm = core::SettingManager{});
 
+    /**
+     * Adds a drawable to the scene from an .obj file.
+     * @param filePath - path of the obj file.
+     * @param pos - position of the object.
+     * @param rot - rotations of the object.
+     * @param scale - scale of the object.
+     */
     void addCustomObject(std::string filePath, glm::vec3 pos = glm::vec3{0.f}, glm::vec3 rot = glm::vec3{0.f},
                          glm::vec3 scale = glm::vec3{1.f});
 

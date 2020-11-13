@@ -78,16 +78,44 @@ constexpr int mod1(int x, int m) noexcept;
  */
 void orthoVectors(glm::vec3 n, glm::vec3 &u, glm::vec3 &v);
 
+/**
+ * Calculates a linear interpolation.
+ * @tparam T - genType.
+ * @param a - first operand.
+ * @param b - second operand.
+ * @param u - factor.
+ * @return interpolation between a and b, using u.
+ */
 template <typename T>
 constexpr T lerp(T a, T b, float u);
 
+/**
+ * Return the x y z world axis.
+ * @return xyz.
+ */
 std::vector<glm::vec3> axis();
 
+/**
+ * Map a value to range 0-1 given its initial range.
+ * @tparam T - genType.
+ * @param umin - minimum value.
+ * @param umax - maximum value.
+ * @param u - value to map.
+ * @return mapped value.
+ */
 template <typename T>
 constexpr T toPercent(T umin, T umax, T u) {
     return (u - umin) / (umax - umin);
 }
 
+/**
+ * Map a value to its initial range.
+ * @tparam T - genType
+ * @param umin - minimum value.
+ * @param umax - maximum value.
+ * @param u - value to map.
+ * @return initial value.
+ */
 template <typename T>
 constexpr T toValue(T umin, T umax, T u) {
     return umin + u * (umax - umin);

@@ -9,13 +9,31 @@
 namespace daft::engine {
 class ENGINE_API Cylinder : public Object {
    public:
+    /**
+     * Standard constructor.
+     * @param meridians - meridians of the cylinder.
+     * @param parallels - parallels of the cylinder.
+     * @param radius - radius of the cylinder.
+     * @param parent - parent Composite .
+     * @param name - name of the cylinder.
+     */
     explicit Cylinder(int meridians = 64, int parallels = 8, float radius = 1.f, Composite *parent = nullptr,
                       std::string name = "Cylinder" + std::to_string(m_nrCylinder++));
 
+    /**
+     * Default destructor.
+     */
     ~Cylinder() override = default;
 
+    /**
+     * Default move constructor.
+     */
     Cylinder(Cylinder &&) noexcept = default;
 
+    /**
+     * Default move assignment operator.
+     * @return ref to this.
+     */
     Cylinder &operator=(Cylinder &&) noexcept = default;
 
     /**
