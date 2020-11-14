@@ -3,7 +3,7 @@
 ## Introduction
 After installing and running Daft-Engine, You can observe an empty scene. As you add objects to the scene, you can edit your world.
 
-![edition mode](https://github.com/DaftMat/Daft-Engine/blob/manual/resources/EditionNoSelection.png?raw=true)
+![edition mode](https://github.com/DaftMat/Daft-Engine/blob/master/resources/EditionNoSelection.png?raw=true)
 
 Here is what the interface look like, you can refer to this image in the rest of this manual.
 
@@ -69,13 +69,13 @@ will draw the scene with mesh lines, control grid and control polygons for Light
 ##### Rendering
 will only draw objects with no lines, no model for lights. the following picture show what rendering mode looks like.
 
-![rendering mode](https://github.com/DaftMat/Daft-Engine/blob/manual/resources/renderingNoSelection.png?raw=true)
+![rendering mode](https://github.com/DaftMat/Daft-Engine/blob/master/resources/renderingNoSelection.png?raw=true)
 
 ## East tree model
 This tree model represents the scene. You can select a drawable by clicking on its name in the tree model. The corresponding drawable's mesh will then appear yellow in the central section if the engine is on `edition` mode. Also, the right part of the south section will show the corresponding drawabe's settings that can then be edited from this panel.
 The following picture demonstrates it.
  
-![drawable selection](https://github.com/DaftMat/Daft-Engine/blob/manual/resources/EditionMBSelection.png?raw=true)
+![drawable selection](https://github.com/DaftMat/Daft-Engine/blob/master/resources/EditionMBSelection.png?raw=true)
 
 Lastly, you can edit the name of an object by double clicking on its name in the tree model.
 
