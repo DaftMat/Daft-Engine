@@ -209,8 +209,8 @@ float calculateShadow(Shadow shadowData) {
     vec2 texelSize = 1.0 / texSize;
     int nrSample = 0;
     int nrPoisson = 4;
-    for (int i = -3 ; i <= 3 ; ++i) {
-        for (int j = -3 ; j <= 3 ; ++j) {
+    for (int i = -1 ; i <= 1 ; ++i) {
+        for (int j = -1 ; j <= 1 ; ++j) {
             vec2 actualCoords = projCoords.xy + vec2(i, j) * texelSize;
             for (int k = 0 ; k < nrPoisson ; ++k) {
                 int index = int(16.0 * random(vec4(floor(fragPos.xyz * 1000.0), k))) % 16;
