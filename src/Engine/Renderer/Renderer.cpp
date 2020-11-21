@@ -338,6 +338,9 @@ void Renderer::_setShader() {
             break;
     }
     m_newShader = Renderer::AvailableShaders::None;
+    m_shaders[0]->use();
+    m_shaders[0]->setBool("instantToneMapping", m_drawEdges);
+    m_shaders[0]->stop();
     updateViewMatrix();
     updateProjectionMatrix();
 }
