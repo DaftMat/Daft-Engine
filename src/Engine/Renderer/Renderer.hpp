@@ -23,7 +23,7 @@ class MultiSamplingPass;
 
 class ENGINE_API Renderer : public daft::core::NonCopyable {
    public:
-    enum class AvailableShaders { BlinnPhong, Phong, None };
+    enum class AvailableShaders { BlinnPhong, Phong, PBR, None };
 
     /**
      * Default constructor.

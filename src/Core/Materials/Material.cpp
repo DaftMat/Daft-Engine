@@ -15,10 +15,14 @@ Material::Material(bool isObjectMaterial) {
         addSetting("nrSpecularTex", int(0));
         addSetting("nrNormalTex", int(0));
         addSetting("nrReflectionTex", int(0));
+        addSetting("nrRoughnessTex", int(0));
+        addSetting("nrMetalnessTex", int(0));
         addSetting("albedo", glm::vec3{0.3f});
         addSetting("specular", glm::vec3{0.8f});
         addSetting("shininess", 10.f);
         addSetting("reflectivity", 1.f);
+        addSetting("roughness", 0.2f);
+        addSetting("metalness", 0.5f);
     }
 }
 

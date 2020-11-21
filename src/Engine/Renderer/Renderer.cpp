@@ -328,6 +328,12 @@ void Renderer::_setShader() {
         case Renderer::AvailableShaders::Phong:
             m_shaders[0].reset();
             m_shaders[0] = std::make_shared<core::ShaderProgram>("shaders/phong.vert.glsl", "shaders/phong.frag.glsl");
+            break;
+        case Renderer::AvailableShaders::PBR:
+            m_shaders[0].reset();
+            m_shaders[0] =
+                std::make_shared<core::ShaderProgram>("shaders/blinnphong.vert.glsl", "shaders/pbr.frag.glsl");
+            break;
         default:
             break;
     }

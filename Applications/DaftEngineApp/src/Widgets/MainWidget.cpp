@@ -243,7 +243,7 @@ void MainWidget::on_lightBoxChanged() {
 }
 
 void MainWidget::createShaderComboBox() {
-    std::vector<std::string> shaders{"Blinn Phong"};
+    std::vector<std::string> shaders{"Blinn Phong", "PBR"};
     m_shaderBox = std::make_unique<QComboBox>();
     m_shaderBox->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     for (const auto &shader : shaders) {
@@ -255,6 +255,7 @@ void MainWidget::createShaderComboBox() {
 void MainWidget::on_shaderBoxChanged() {
     if (m_shaderBox->currentText() == "Blinn Phong")
         m_glWidget->renderer().setShader(engine::Renderer::AvailableShaders::BlinnPhong);
+    if (m_shaderBox->currentText() == "PBR") m_glWidget->renderer().setShader(engine::Renderer::AvailableShaders::PBR);
     m_glWidget->update();
 }
 
