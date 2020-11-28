@@ -117,7 +117,6 @@ const float PI = 3.14159265359;
 
 /// basic lighting
 float distributionGGX(vec3 N, vec3 H, float r);
-float geometrySchlickGGX(float NdotV, float r);
 float geometrySmith(vec3 N, vec3 V, vec3 L, float r);
 vec3 fresnelSchlick(float cosTheta, vec3 F0);
 
@@ -163,53 +162,37 @@ void main() {
 }
 
 float distributionGGX(vec3 N, vec3 H, float r){
-    float a = r * r;
-    float a2 = a * a;
     float NdotH = max(dot(N, H), 0.0);
-    float NdotH2 = NdotH * NdotH;
-
-    float d = NdotH2 * (a2 - 1.0) + 1.0;
-    d = PI * d * d;
-
-    return a2 / max(d, 0.001);
-}
-
-float geometrySchlickGGX(float NdotV, float r) {
-    float r2 = r + 1.0;
-    float k = (r2 * r2) / 8.0;
-
-    float d = NdotV * (1.0 - k) + k;
-    return NdotV / d;
+    float a = NdotH * r;
+    float k = r / (1.0 - NdotH * NdotH + a * a);
+    return k * k * (1.0 / PI);
 }
 
 float geometrySmith(vec3 N, vec3 V, vec3 L, float r) {
-    float NdotV = max(dot(N, V), 0.0);
+    float NdotV = max(dot(N, V), 0.0) + 1e-5;
     float NdotL = max(dot(N, L), 0.0);
-    float ggx2 = geometrySchlickGGX(NdotV, r);
-    float ggx1 = geometrySchlickGGX(NdotL, r);
-    return ggx1 * ggx2;
+    float ggx2 = NdotL * (NdotV * (1.0 - r) + r);
+    float ggx1 = NdotV * (NdotL * (1.0 - r) + r);
+    return 0.5 / (ggx1 + ggx2);
 }
 
 vec3 fresnelSchlick(float cosTheta, vec3 F0) {
-    return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+    float f = pow(1.0 - cosTheta, 5.0);
+    return f + F0 * (1.0 - f);
 }
 
 vec3 calcLight(vec3 lightDir, vec3 halfwayDir, vec3 radiance) {
-    float NDF = distributionGGX(normal, halfwayDir, defaultMat.roughness);
-    float G = geometrySmith(normal, viewDir, lightDir, defaultMat.roughness);
+    float D = distributionGGX(normal, halfwayDir, defaultMat.roughness);
+    float V = geometrySmith(normal, viewDir, lightDir, defaultMat.roughness);
     vec3 F0 = mix(vec3(0.04), defaultMat.albedo, defaultMat.metalness);
-    vec3 F = fresnelSchlick(clamp(dot(halfwayDir, viewDir), 0.0, 1.0), F0);
+    vec3 F = fresnelSchlick(max(dot(halfwayDir, viewDir), 0.0), F0);
 
-    vec3 a = NDF * G * F;
-    float b = 4.0 * max(dot(normal, viewDir), 0.0) * max(dot(normal, lightDir), 0.0);
-    vec3 spec = (a / max(b, 0.001)) * defaultMat.specular;
+    vec3 kS = (D * V) * F;
+    vec3 kD = material.albedo / PI;
 
-    vec3 kS = F;
-    vec3 kD = vec3(1.0) - kS;
-    kD *= 1.0 - defaultMat.metalness;
     float NdotL = max(dot(normal, lightDir), 0.0);
 
-    return (kD * defaultMat.albedo / PI + spec) * radiance * NdotL;
+    return (kS + kD) * radiance * NdotL;
 }
 
 vec3 calcPointLight(PointLight light) {

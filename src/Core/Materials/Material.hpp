@@ -19,7 +19,7 @@ class Material : public NonCopyable {
     /**
      * default constructor.
      */
-    Material(bool isObjectMaterial = true);
+    explicit Material(bool isObjectMaterial = true);
 
     /**
      * Move constructor.
