@@ -189,6 +189,7 @@ vec3 calcLight(vec3 lightDir, vec3 halfwayDir, vec3 radiance) {
 
     vec3 kS = (D * V) * F;
     vec3 kD = material.albedo / PI;
+    kD *= (1.0 - material.metalness);
 
     float NdotL = max(dot(normal, lightDir), 0.0);
 
