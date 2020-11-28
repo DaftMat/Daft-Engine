@@ -45,7 +45,7 @@ class Light : public Drawable {
     /**
      * Renders the mesh representation of the light.
      */
-    void render(const core::ShaderProgram &shader) override {}
+    void render(const core::ShaderProgram &shader) override;
 
     /**
      * renders the edges only of the inner geometry.
@@ -149,6 +149,7 @@ class Light : public Drawable {
     GLuint shadowMap() const;
 
    protected:
+    bool m_isAreaLight{false};
     Mesh m_mesh;
     glm::mat4 m_lightSpaceMatrix{1.f};
 

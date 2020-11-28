@@ -40,6 +40,16 @@ struct SpotLight {
     vec3 color;
 };
 
+struct QuadLight {
+    vec3 position;
+    vec3 dirx;
+    vec3 diry;
+    vec3 halfx;
+    vec3 halfy;
+    float intensity;
+    float color;
+};
+
 struct Material {
     int nrAlbedoTex;
     int nrSpecularTex;
@@ -55,6 +65,11 @@ struct Material {
     vec3 specular;
     float metalness;
     float roughness;
+
+    /// Linearly Transformed Cosines corresponding to the Material's BRDF
+    /// (see https://drive.google.com/file/d/0BzvWIdpUpRx_d09ndGVjNVJzZjA/view)
+    sampler2D ltc1;
+    sampler2D ltc2;
 };
 
 struct DefaultMaterial {
@@ -100,6 +115,7 @@ uniform bool instantToneMapping;
 
 const float PI = 3.14159265359;
 
+/// basic lighting
 float distributionGGX(vec3 N, vec3 H, float r);
 float geometrySchlickGGX(float NdotV, float r);
 float geometrySmith(vec3 N, vec3 V, vec3 L, float r);
@@ -109,6 +125,9 @@ vec3 calcLight(vec3 lightDir, vec3 halfwayDir, vec3 radiance);
 vec3 calcPointLight(PointLight light);
 vec3 calcDirLight(DirLight light);
 vec3 calcSpotLight(SpotLight light);
+
+/// area lighting (using LTC -> https://drive.google.com/file/d/0BzvWIdpUpRx_d09ndGVjNVJzZjA/view)
+
 
 void getObjectMaterial(Material mat);
 
