@@ -289,6 +289,12 @@ void Renderer::_addDrawable() {
                 m_lightPool->addSpot(toAdd);
                 break;
             }
+            case Drawable::Type::QuadLight: {
+                auto toAdd = std::make_shared<QuadLight>();
+                drawable = toAdd;
+                m_lightPool->addQuad(toAdd);
+                break;
+            }
             default:
                 break;
         }

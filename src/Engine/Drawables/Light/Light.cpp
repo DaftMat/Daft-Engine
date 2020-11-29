@@ -14,16 +14,6 @@ Light::Light(glm::vec3 color, Composite *parent, std::string name)
                                                core::FrameBufferObject::Attachments::Type::TEXTURE})},
       m_color{color} {}
 
-void Light::render(const core::ShaderProgram &shader) {
-    if (!m_isAreaLight) return;
-    shader.setMat4("model", model());
-    shader.setVec3("color", m_color);
-    m_mesh.prepare();
-    m_mesh.render(GL_TRIANGLES);
-    m_mesh.unbind();
-    shader.setVec3("color", glm::vec3{0.f});
-}
-
 void Light::renderEdges(const core::ShaderProgram &shader) {
     shader.setMat4("model", model());
     if (selected())
@@ -31,7 +21,7 @@ void Light::renderEdges(const core::ShaderProgram &shader) {
     else
         shader.setVec3("color", glm::vec3{1.f});
     m_mesh.prepare();
-    m_mesh.render(GL_LINES);
+    m_mesh.render(m_isAreaLight ? GL_TRIANGLES : GL_LINES);
     m_mesh.unbind();
     shader.setVec3("color", glm::vec3{0.f});
 }

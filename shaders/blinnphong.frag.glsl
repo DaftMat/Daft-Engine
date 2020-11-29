@@ -15,8 +15,6 @@ struct Shadow {
 };
 
 struct PointLight {
-    Shadow shadowData;
-
     vec3 position;
     float intensity;
     vec3 color;
@@ -40,6 +38,12 @@ struct SpotLight {
     vec3 color;
 };
 
+struct QuadLight {
+    vec3 points[4];
+    float intensity;
+    vec3 color;
+};
+
 struct Material {
     int nrAlbedoTex;
     int nrSpecularTex;
@@ -53,6 +57,8 @@ struct Material {
     vec3 specular;
     float shininess;
     float reflectivity;
+
+    bool isLight;
 };
 
 struct DefaultMaterial {
@@ -92,6 +98,9 @@ uniform int nrDirLights;
 uniform SpotLight spotLights[MAX_SIZE];
 uniform int nrSpotLights;
 
+uniform QuadLight quadLights[MAX_SIZE];
+uniform int nrQuadLights;
+
 uniform Material material;
 
 uniform bool instantToneMapping;
@@ -129,14 +138,29 @@ void main() {
     }
 
     vec3 resultColor = vec3(0.0);
-    for (int i = 0 ; i < nrPointLights ; ++i) {
-        resultColor += calcPointLight(pointLights[i]);
-    }
-    for (int i = 0 ; i < nrDirLights ; ++i) {
-        resultColor += calcDirLight(dirLights[i]);
-    }
-    for (int i = 0 ; i < nrSpotLights ; ++i) {
-        resultColor += calcSpotLight(spotLights[i]);
+
+    if (material.isLight)
+    resultColor = defaultMat.albedo * defaultMat.specular.r; /// light intensity as the specular color
+    else {
+        for (int i = 0; i < nrPointLights; ++i) {
+            resultColor += calcPointLight(pointLights[i]);
+        }
+        for (int i = 0; i < nrDirLights; ++i) {
+            resultColor += calcDirLight(dirLights[i]);
+        }
+        for (int i = 0; i < nrSpotLights; ++i) {
+            resultColor += calcSpotLight(spotLights[i]);
+        }
+        for (int i = 0; i < nrQuadLights; ++i) {
+            PointLight pl;
+            pl.position = vec3(0.f);
+            for (int j = 0 ; j < 4 ; ++j)
+                pl.position += quadLights[i].points[j];
+            pl.position /= 4.0;
+            pl.intensity = quadLights[i].intensity;
+            pl.color = quadLights[i].color;
+            resultColor += calcPointLight(pl);
+        }
     }
 
     vec3 ambient = vec3(0.2) * defaultMat.albedo;

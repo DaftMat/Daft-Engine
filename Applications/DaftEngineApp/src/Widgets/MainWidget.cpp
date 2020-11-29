@@ -190,7 +190,7 @@ void MainWidget::createCreationComboBoxes() {
     }
     connect(m_objectCreator.get(), SIGNAL(currentIndexChanged(int)), this, SLOT(on_objectBoxChanged()));
 
-    std::vector<std::string> lights{"Point Light", "Spot Light", "Directional Light"};
+    std::vector<std::string> lights{"Point Light", "Spot Light", "Directional Light", "Quad Light"};
     m_lightCreator = std::make_unique<QComboBox>();
     m_lightCreator->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_lightCreator->addItem("Add light");
@@ -238,6 +238,8 @@ void MainWidget::on_lightBoxChanged() {
         m_glWidget->addDrawable(engine::Drawable::Type::SpotLight);
     else if (m_lightCreator->currentText() == "Directional Light")
         m_glWidget->addDrawable(engine::Drawable::Type::DirLight);
+    else if (m_lightCreator->currentText() == "Quad Light")
+        m_glWidget->addDrawable(engine::Drawable::Type::QuadLight);
     m_lightCreator->setCurrentIndex(0);
     m_glWidget->update();
 }

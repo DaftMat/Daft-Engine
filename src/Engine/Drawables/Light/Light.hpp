@@ -45,7 +45,7 @@ class Light : public Drawable {
     /**
      * Renders the mesh representation of the light.
      */
-    void render(const core::ShaderProgram &shader) override;
+    void render(const core::ShaderProgram &shader) override {}
 
     /**
      * renders the edges only of the inner geometry.
@@ -111,7 +111,7 @@ class Light : public Drawable {
      * @param viewCam - original viewport's camera.
      */
     virtual void renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
-                                  const Camera &viewCam) = 0;
+                                  const Camera &viewCam){};
 
     /**
      * Resets the light.

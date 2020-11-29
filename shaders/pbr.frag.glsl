@@ -41,11 +41,7 @@ struct SpotLight {
 };
 
 struct QuadLight {
-    vec3 position;
-    vec3 dirx;
-    vec3 diry;
-    vec3 halfx;
-    vec3 halfy;
+    vec3 points[4];
     float intensity;
     float color;
 };
@@ -65,6 +61,8 @@ struct Material {
     vec3 specular;
     float metalness;
     float roughness;
+
+    bool isLight;
 
     /// Linearly Transformed Cosines corresponding to the Material's BRDF
     /// (see https://drive.google.com/file/d/0BzvWIdpUpRx_d09ndGVjNVJzZjA/view)
@@ -109,6 +107,9 @@ uniform int nrDirLights;
 uniform SpotLight spotLights[MAX_SIZE];
 uniform int nrSpotLights;
 
+uniform QuadLight quadLights[MAX_SIZE];
+uniform int nrQuadLights;
+
 uniform Material material;
 
 uniform bool instantToneMapping;
@@ -142,19 +143,24 @@ void main() {
     getObjectMaterial(material);
 
     vec3 resultColor = vec3(0.0);
-    for (int i = 0 ; i < nrPointLights ; ++i) {
-        resultColor += calcPointLight(pointLights[i]);
-    }
-    for (int i = 0 ; i < nrDirLights ; ++i) {
-        resultColor += calcDirLight(dirLights[i]);
-    }
-    for (int i = 0 ; i < nrSpotLights ; ++i) {
-        resultColor += calcSpotLight(spotLights[i]);
+
+    if (material.isLight)
+        resultColor = defaultMat.albedo * defaultMat.specular.r; /// light intensity as the specular color
+    else {
+        for (int i = 0; i < nrPointLights; ++i) {
+            resultColor += calcPointLight(pointLights[i]);
+        }
+        for (int i = 0; i < nrDirLights; ++i) {
+            resultColor += calcDirLight(dirLights[i]);
+        }
+        for (int i = 0; i < nrSpotLights; ++i) {
+            resultColor += calcSpotLight(spotLights[i]);
+        }
     }
 
     vec3 ambient = vec3(0.2) * defaultMat.albedo;
     vec3 color = ambient + resultColor;
-    if (instantToneMapping) {
+    if (instantToneMapping && !material.isLight) {
         color = color / (color + vec3(1.0));;
         color = pow(color, vec3(1.0 / 2.2));
     }

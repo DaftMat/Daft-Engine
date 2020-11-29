@@ -23,6 +23,7 @@ Material::Material(bool isObjectMaterial) {
         addSetting("reflectivity", 1.f);
         addSetting("roughness", 0.1f);
         addSetting("metalness", 0.7f);
+        addSetting("isLight", false);
     }
 }
 

@@ -21,6 +21,7 @@ class Caves;
 class PointLight;
 class SpotLight;
 class DirLight;
+class QuadLight;
 // composite
 class Composite;
 }  // namespace engine
@@ -111,6 +112,11 @@ class ENGINE_API DrawableVisitor {
      * Visits a DirLight .
      */
     virtual void visit(engine::DirLight *) {}
+
+    /**
+     * Visits a QuadLight .
+     */
+    virtual void visit(engine::QuadLight *) {}
 
     /// GROUP
 

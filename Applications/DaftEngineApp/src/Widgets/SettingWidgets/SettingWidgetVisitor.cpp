@@ -15,6 +15,7 @@
 #include <src/Widgets/SettingWidgets/DrawableSettings/CylinderSettings.hpp>
 #include <src/Widgets/SettingWidgets/DrawableSettings/DirLightSettings.hpp>
 #include <src/Widgets/SettingWidgets/DrawableSettings/MetaballsSettings.hpp>
+#include <src/Widgets/SettingWidgets/DrawableSettings/QuadLightSettings.hpp>
 #include <src/Widgets/SettingWidgets/DrawableSettings/SpotLightSettings.hpp>
 
 void daft::app::SettingWidgetVisitor::visit(daft::engine::Object *object) {
@@ -92,4 +93,11 @@ void daft::app::SettingWidgetVisitor::visit(daft::engine::DirLight *dirLight) {
     DrawableSettings *ds = new DirLightSettings(sm);
     m_widget = new SettingWidget(ds, createTransformWidget(dirLight->getTransformations(), false, true, false),
                                  dirLight->name());
+}
+
+void daft::app::SettingWidgetVisitor::visit(daft::engine::QuadLight *quadLight) {
+    core::SettingManager sm = quadLight->getSettings();
+    DrawableSettings *ds = new QuadLightSettings(sm);
+    m_widget = new SettingWidget(ds, createTransformWidget(quadLight->getTransformations(), true, true, false),
+                                 quadLight->name());
 }
