@@ -160,7 +160,7 @@ void main() {
 
     vec3 ambient = vec3(0.2) * defaultMat.albedo;
     vec3 color = ambient + resultColor;
-    if (instantToneMapping && !material.isLight) {
+    if (instantToneMapping) {
         color = color / (color + vec3(1.0));;
         color = pow(color, vec3(1.0 / 2.2));
     }
