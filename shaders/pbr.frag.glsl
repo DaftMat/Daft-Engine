@@ -121,7 +121,7 @@ float distributionGGX(vec3 N, vec3 H, float r);
 float geometrySmith(vec3 N, vec3 V, vec3 L, float r);
 vec3 fresnelSchlick(float cosTheta, vec3 F0);
 
-vec3 calcLight(vec3 lightDir, vec3 halfwayDir, vec3 radiance);
+vec3 calcLight(vec3 lightDir, vec3 halfwayDir, vec3 radiance, float shadowValue);
 vec3 calcPointLight(PointLight light);
 vec3 calcDirLight(DirLight light);
 vec3 calcSpotLight(SpotLight light);
@@ -187,7 +187,7 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0) {
     return f + F0 * (1.0 - f);
 }
 
-vec3 calcLight(vec3 lightDir, vec3 halfwayDir, vec3 radiance) {
+vec3 calcLight(vec3 lightDir, vec3 halfwayDir, vec3 radiance, float shadowValue) {
     float D = distributionGGX(normal, halfwayDir, defaultMat.roughness);
     float V = geometrySmith(normal, viewDir, lightDir, defaultMat.roughness);
     vec3 F0 = mix(vec3(0.04), defaultMat.albedo, defaultMat.metalness);
@@ -199,7 +199,12 @@ vec3 calcLight(vec3 lightDir, vec3 halfwayDir, vec3 radiance) {
 
     float NdotL = max(dot(normal, lightDir), 0.0);
 
-    return (kS + kD) * radiance * NdotL;
+    vec3 color = vec3(0);
+    if (shadowValue < 0.5f)
+        color = kD * shadowValue;
+    else
+        color = kD + kS;
+    return color * radiance * NdotL;
 }
 
 vec3 calcPointLight(PointLight light) {
@@ -212,7 +217,7 @@ vec3 calcPointLight(PointLight light) {
     vec3 radiance = light.color * attenuation;
 
     //float shadowValue = 1.0 - calculateShadow(light.shadowData);
-    return calcLight(lightDir, halfwayDir, radiance);// * shadowValue;
+    return calcLight(lightDir, halfwayDir, radiance, 1.f);// * shadowValue;
 }
 
 vec3 calcDirLight(DirLight light){
@@ -223,7 +228,7 @@ vec3 calcDirLight(DirLight light){
     vec3 radiance = light.color;
 
     float shadowValue = 1.0 - calculateShadow(light.shadowData);
-    return calcLight(lightDir, halfwayDir, radiance) * shadowValue;
+    return calcLight(lightDir, halfwayDir, radiance, shadowValue);
 }
 
 vec3 calcSpotLight(SpotLight light) {
@@ -239,7 +244,7 @@ vec3 calcSpotLight(SpotLight light) {
     vec3 radiance = light.color * attenuation * intensity;
 
     float shadowValue = 1.0 - calculateShadow(light.shadowData);
-    return calcLight(lightDir, halfwayDir, radiance) * shadowValue;
+    return calcLight(lightDir, halfwayDir, radiance, shadowValue);
 }
 
 void getObjectMaterial(Material mat) {
@@ -285,7 +290,7 @@ float calculateShadow(Shadow shadowData) {
             for (int k = 0 ; k < nrPoisson ; ++k) {
                 int index = int(16.0 * random(vec4(floor(fragPos.xyz * 1000.0), k))) % 16;
                 float depth = texture2D(shadowData.shadowMap, actualCoords + poissonDisk[index] / 700.0).r;
-                float strength = 0.9;//1.0 - clamp(4.0 * pow(currentDepth - depth, 2.0), 0.0, 1.0);
+                float strength = 1.0;//1.0 - clamp(4.0 * pow(currentDepth - depth, 2.0), 0.0, 1.0);
                 shadowValue += currentDepth - eps > depth ? (1.0 / nrPoisson) * strength : 0.0;
             }
             nrSample++;
