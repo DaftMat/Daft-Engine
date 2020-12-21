@@ -3,6 +3,7 @@
 //
 #pragma once
 #include <API.hpp>
+#include <Core/Geometry/Bone.hpp>
 
 #include "Object.hpp"
 
@@ -35,6 +36,10 @@ class ENGINE_API Cylinder : public Object {
      * @return ref to this.
      */
     Cylinder &operator=(Cylinder &&) noexcept = default;
+
+    void render(const core::ShaderProgram &shader) override;
+
+    void renderEdges(const core::ShaderProgram &shader) override;
 
     /**
      * Gets the sphere's specific settings as a SettingManager .
@@ -100,13 +105,18 @@ class ENGINE_API Cylinder : public Object {
     void applyUpdate() override { createCylinder(); }
 
    private:
+    void createBones();
     void createCylinder();
+    void createWeights(glm::vec3 pos, float &w1, float &w2) const;
     void createDisk(glm::vec3 pole, std::vector<glm::vec3> &positions, std::vector<glm::vec3> &normals,
-                    std::vector<glm::vec3> &tangents, std::vector<GLuint> &indices) const;
+                    std::vector<glm::vec3> &tangents, std::vector<glm::vec4> &skinWeights,
+                    std::vector<glm::vec4> &skinIndices, std::vector<GLuint> &indices) const;
 
     int m_meridians;
     int m_parallels;
     float m_radius;
+
+    std::vector<core::Bone> m_bones;
 
     static int m_nrCylinder;
 };

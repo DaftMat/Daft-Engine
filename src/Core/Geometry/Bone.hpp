@@ -9,7 +9,8 @@
 namespace daft::core {
 class Bone : public NonCopyable {
    public:
-    explicit Bone(glm::vec3 startPos = glm::vec3{0.f}, glm::vec3 endPos = glm::vec3{0.f});
+    explicit Bone(glm::vec3 startPos = glm::vec3{0.f}, glm::vec3 endPos = glm::vec3{0.f})
+        : m_startPos{startPos}, m_endPos{endPos} {}
 
     ~Bone() = default;
 
@@ -17,30 +18,24 @@ class Bone : public NonCopyable {
 
     Bone &operator=(Bone &&) noexcept = default;
 
-    glm::vec3 startPos() { return m_startPos; }
+    [[nodiscard]] glm::vec3 startPos() const { return m_startPos; }
 
-    glm::vec3 endPos() { return m_endPos; }
+    [[nodiscard]] glm::vec3 endPos() const { return m_endPos; }
 
-    glm::vec3 meanPos() { return (m_startPos + m_endPos) / 2.f; }
+    [[nodiscard]] glm::vec3 meanPos() const { return (m_startPos + m_endPos) / 2.f; }
 
-    /**
-     * Model matrix used to transform the bone's mesh.
-     * @return transformation matrix of the bone's mesh.
-     */
-    glm::mat4 model() { return translationMatrix() * rotationMatrix(); }
+    [[nodiscard]] glm::vec3 rotations() const { return m_rotations; }
 
-    /**
-     * Model matrix used to transform vertices.
-     * @return transformation matrix of the bone.
-     */
-    glm::mat4 matrix() { return rotationMatrix(); }
+    glm::vec3 &rotations() { return m_rotations; }
+
+    [[nodiscard]] glm::mat4 modelMatrix() const;
 
    private:
-    glm::mat4 translationMatrix() { return glm::translate(glm::mat4{1.f}, m_startPos); }
-    glm::mat4 rotationMatrix();
+    [[nodiscard]] glm::mat4 rotationMatrix() const;
 
     glm::vec3 m_startPos;
     glm::vec3 m_endPos;
-    glm::vec3 m_rotations;
+
+    glm::vec3 m_rotations{0.f};
 };
 }  // namespace daft::core

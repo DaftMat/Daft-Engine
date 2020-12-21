@@ -39,7 +39,8 @@ Renderer::Renderer(int width, int height) {
     m_shaders[0]->use();
     m_shaders[0]->setBool("instantToneMapping", m_drawEdges);
     m_shaders[0]->stop();
-    m_shaders.push_back(std::make_shared<core::ShaderProgram>("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
+    m_shaders.push_back(
+        std::make_shared<core::ShaderProgram>("shaders/blinnphong.vert.glsl", "shaders/color.frag.glsl"));
     m_multisamplePass = std::make_shared<daft::engine::MultiSamplingPass>(m_width, m_height, 32, true);
     m_screenQuad = std::make_shared<daft::engine::QuadRenderer>();
     m_screenQuad->addQuad(-1.f, 1.f, 2.f, 2.f);
