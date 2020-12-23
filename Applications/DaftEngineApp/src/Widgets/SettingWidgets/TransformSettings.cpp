@@ -79,7 +79,7 @@ QWidget *TransformSettings::createTransformWidget(Type type) {
             layout->addWidget(new QLabel("Rotations"));
             for (int i = 0; i < 3; ++i) {
                 m_rotations[i] = MainWidget::createDoubleSpinBox(m_settings.get<glm::vec3>("Rotations")[i]);
-                m_rotations[i]->setSingleStep(0.1);
+                m_rotations[i]->setSingleStep(1.0);
                 connect(m_rotations[i], SIGNAL(valueChanged(double)), this, SLOT(onTransformChanged()));
                 coordsLayout->addRow(new QLabel(labels[i].c_str()), m_rotations[i]);
             }

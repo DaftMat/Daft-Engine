@@ -6,7 +6,8 @@
 namespace daft::core {
 glm::mat4 Bone::modelMatrix() const {
     glm::mat4 baseTranslation = glm::translate(glm::mat4{1.f}, m_startPos);
-    return rotationMatrix();  // * glm::inverse(baseTranslation);
+    glm::mat4 transformationMatrix = baseTranslation * rotationMatrix();
+    return transformationMatrix * glm::inverse(baseTranslation);
 }
 
 glm::mat4 Bone::rotationMatrix() const {

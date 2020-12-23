@@ -111,6 +111,7 @@ class ENGINE_API Cylinder : public Object {
     void createDisk(glm::vec3 pole, std::vector<glm::vec3> &positions, std::vector<glm::vec3> &normals,
                     std::vector<glm::vec3> &tangents, std::vector<glm::vec4> &skinWeights,
                     std::vector<glm::vec4> &skinIndices, std::vector<GLuint> &indices) const;
+    void assignSkinMatrices(const core::ShaderProgram &shader) const;
 
     int m_meridians;
     int m_parallels;

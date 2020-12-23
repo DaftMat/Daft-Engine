@@ -25,12 +25,13 @@ uniform bool isAnimated;
 void main() {
     fragWeights = aSkinWeights.xyz;
 
-    fragPos = vec3(model * vec4(aPos, 1.0));
+    mat4 actualModel = model;
     if (isAnimated)
-        fragPos = vec3((aSkinWeights.x * skinMatrices[int(aSkinIndices.x)]) * vec4(fragPos, 1.0))
-                + vec3((aSkinWeights.y * skinMatrices[int(aSkinIndices.y)]) * vec4(fragPos, 1.0));
+        actualModel *= (aSkinWeights.x * skinMatrices[int(aSkinIndices.x)])
+                     + (aSkinWeights.y * skinMatrices[int(aSkinIndices.y)]);
 
-    mat4 normalMatrix = transpose(inverse(model));
+    fragPos = vec3(actualModel * vec4(aPos, 1.0));
+    mat4 normalMatrix = transpose(inverse(actualModel));
     fragNormal = normalize(normalMatrix * vec4(aNormal, 0.0)).xyz;
     fragTex = aTexCoords;
 
