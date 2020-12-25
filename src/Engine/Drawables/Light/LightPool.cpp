@@ -29,6 +29,11 @@ void LightPool::loadToShader(const core::ShaderProgram &shader) const {
         glBindTexture(GL_TEXTURE_2D, m_spotLights[i]->shadowMap());
     }
     shader.setInt("nrSpotLights", int(m_spotLights.size()));
+
+    for (size_t i = 0; i < m_quadLights.size(); ++i) {
+        m_quadLights[i]->loadToShader(shader, int(i));
+    }
+    shader.setInt("nrQuadLights", int(m_quadLights.size()));
 }
 
 void LightPool::renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
@@ -60,6 +65,11 @@ void LightPool::remove(const std::string &name) {
             m_spotLights.erase(m_spotLights.begin() + i);
         }
     }
+    for (size_t i = 0; i < m_quadLights.size(); ++i) {
+        if (m_quadLights[i]->name() == name) {
+            m_quadLights.erase(m_quadLights.begin() + i);
+        }
+    }
 }
 
 void LightPool::addPoint(std::shared_ptr<PointLight> pointLight) { m_pointLights.push_back(std::move(pointLight)); }
@@ -67,5 +77,7 @@ void LightPool::addPoint(std::shared_ptr<PointLight> pointLight) { m_pointLights
 void LightPool::addDir(std::shared_ptr<DirLight> dirLight) { m_dirLights.push_back(std::move(dirLight)); }
 
 void LightPool::addSpot(std::shared_ptr<SpotLight> spotLight) { m_spotLights.push_back(std::move(spotLight)); }
+
+void LightPool::addQuad(std::shared_ptr<QuadLight> quadLight) { m_quadLights.push_back(std::move(quadLight)); }
 
 }  // namespace daft::engine

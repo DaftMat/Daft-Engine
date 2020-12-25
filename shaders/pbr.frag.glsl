@@ -15,6 +15,8 @@ struct Shadow {
 };
 
 struct PointLight {
+    Shadow shadowData;
+
     vec3 position;
     float intensity;
     vec3 color;
@@ -41,31 +43,38 @@ struct SpotLight {
 struct QuadLight {
     vec3 points[4];
     float intensity;
-    vec3 color;
+    float color;
 };
 
 struct Material {
     int nrAlbedoTex;
     int nrSpecularTex;
     int nrNormalTex;
-    int nrReflectionTex;
+    int nrRoughnessTex;
+    int nrMetalnessTex;
     sampler2D albedoTex[MAX_SIZE];
     sampler2D specularTex[MAX_SIZE];
     sampler2D normalTex[MAX_SIZE];
-    sampler2D reflectionTex[MAX_SIZE];
+    sampler2D roughnessTex[MAX_SIZE];
+    sampler2D metalnessTex[MAX_SIZE];
     vec3 albedo;
     vec3 specular;
-    float shininess;
-    float reflectivity;
+    float metalness;
+    float roughness;
 
     bool isLight;
+
+    /// Linearly Transformed Cosines corresponding to the Material's BRDF
+    /// (see https://drive.google.com/file/d/0BzvWIdpUpRx_d09ndGVjNVJzZjA/view)
+    sampler2D ltc1;
+    sampler2D ltc2;
 };
 
 struct DefaultMaterial {
     vec3 albedo;
     vec3 specular;
-    float shininess;
-    float reflectivity;
+    float metalness;
+    float roughness;
 } defaultMat;
 
 vec2 poissonDisk[16] = vec2[](
@@ -105,9 +114,22 @@ uniform Material material;
 
 uniform bool instantToneMapping;
 
+const float PI = 3.14159265359;
+
+/// basic lighting
+float distributionGGX(vec3 N, vec3 H, float r);
+float geometrySmith(vec3 N, vec3 V, vec3 L, float r);
+vec3 fresnelSchlick(float cosTheta, vec3 F0);
+
+vec3 calcLight(vec3 lightDir, vec3 halfwayDir, vec3 radiance, float shadowValue);
 vec3 calcPointLight(PointLight light);
 vec3 calcDirLight(DirLight light);
 vec3 calcSpotLight(SpotLight light);
+
+/// area lighting (using LTC -> https://drive.google.com/file/d/0BzvWIdpUpRx_d09ndGVjNVJzZjA/view)
+
+
+void getObjectMaterial(Material mat);
 
 float calculateShadow(Shadow shadowData);
 float random(vec4 seed4);
@@ -116,31 +138,14 @@ vec3 viewDir;
 vec3 normal;
 
 void main() {
-    defaultMat.albedo = material.albedo;
-    defaultMat.specular = material.specular;
-    defaultMat.shininess = material.shininess;
-    defaultMat.reflectivity = material.reflectivity;
     normal = normalize(fragNormal);
     viewDir = normalize(viewPos - fragPos);
-
-    if (material.nrAlbedoTex > 0) {
-        defaultMat.albedo = texture2D(material.albedoTex[0], fragTex).rgb;
-    }
-    if (material.nrSpecularTex > 0) {
-        defaultMat.specular = vec3(texture2D(material.specularTex[0], fragTex).r);
-    }
-    if (material.nrNormalTex > 0) {
-        normal = 2.0 * normalize(texture2D(material.normalTex[0], fragTex).rgb) - 1.0;
-        viewDir = normalize(tbn * viewDir);
-    }
-    if (material.nrReflectionTex > 0) {
-        defaultMat.reflectivity = texture2D(material.reflectionTex[0], fragTex).r;
-    }
+    getObjectMaterial(material);
 
     vec3 resultColor = vec3(0.0);
 
     if (material.isLight)
-    resultColor = defaultMat.albedo * defaultMat.specular.r; /// light intensity as the specular color
+        resultColor = defaultMat.albedo * defaultMat.specular.r; /// light intensity as the specular color
     else {
         for (int i = 0; i < nrPointLights; ++i) {
             resultColor += calcPointLight(pointLights[i]);
@@ -150,16 +155,6 @@ void main() {
         }
         for (int i = 0; i < nrSpotLights; ++i) {
             resultColor += calcSpotLight(spotLights[i]);
-        }
-        for (int i = 0; i < nrQuadLights; ++i) {
-            PointLight pl;
-            pl.position = vec3(0.f);
-            for (int j = 0 ; j < 4 ; ++j)
-                pl.position += quadLights[i].points[j];
-            pl.position /= 4.0;
-            pl.intensity = quadLights[i].intensity;
-            pl.color = quadLights[i].color;
-            resultColor += calcPointLight(pl);
         }
     }
 
@@ -172,52 +167,108 @@ void main() {
     fragColor = vec4(color, 1.0);
 }
 
+float distributionGGX(vec3 N, vec3 H, float r){
+    float NdotH = max(dot(N, H), 0.0);
+    float a = NdotH * r;
+    float k = r / (1.0 - NdotH * NdotH + a * a);
+    return k * k * (1.0 / PI);
+}
+
+float geometrySmith(vec3 N, vec3 V, vec3 L, float r) {
+    float NdotV = max(dot(N, V), 0.0) + 1e-5;
+    float NdotL = max(dot(N, L), 0.0);
+    float ggx2 = NdotL * (NdotV * (1.0 - r) + r);
+    float ggx1 = NdotV * (NdotL * (1.0 - r) + r);
+    return 0.5 / (ggx1 + ggx2);
+}
+
+vec3 fresnelSchlick(float cosTheta, vec3 F0) {
+    float f = pow(1.0 - cosTheta, 5.0);
+    return f + F0 * (1.0 - f);
+}
+
+vec3 calcLight(vec3 lightDir, vec3 halfwayDir, vec3 radiance, float shadowValue) {
+    float D = distributionGGX(normal, halfwayDir, defaultMat.roughness);
+    float V = geometrySmith(normal, viewDir, lightDir, defaultMat.roughness);
+    vec3 F0 = mix(vec3(0.04), defaultMat.albedo, defaultMat.metalness);
+    vec3 F = fresnelSchlick(max(dot(halfwayDir, viewDir), 0.0), F0);
+
+    vec3 kS = (D * V) * F;
+    vec3 kD = material.albedo / PI;
+    kD *= (1.0 - material.metalness);
+
+    float NdotL = max(dot(normal, lightDir), 0.0);
+
+    vec3 color = vec3(0);
+    if (shadowValue < 0.5f)
+        color = kD * shadowValue;
+    else
+        color = kD + kS;
+    return color * radiance * NdotL;
+}
+
 vec3 calcPointLight(PointLight light) {
     vec3 lightDir = normalize(light.position - fragPos);
     if (material.nrNormalTex > 0)
         lightDir = normalize(tbn * lightDir);
-    float diff = max(dot(normal, lightDir), 0.0);
     vec3 halfwayDir = normalize(lightDir + viewDir);
-    float spec = pow(max(dot(normal, halfwayDir), 0.0), defaultMat.shininess);
     float distance = length(light.position - fragPos);
     float attenuation = light.intensity / (distance * distance);
-    vec3 diffuse = light.color * diff * defaultMat.albedo * attenuation;
-    vec3 specular = light.color * spec * defaultMat.specular * attenuation * defaultMat.reflectivity;
+    vec3 radiance = light.color * attenuation;
+
     //float shadowValue = 1.0 - calculateShadow(light.shadowData);
-    return (diffuse + specular);// * shadowValue;
+    return calcLight(lightDir, halfwayDir, radiance, 1.f);// * shadowValue;
 }
 
 vec3 calcDirLight(DirLight light){
     vec3 lightDir = normalize(-light.direction);
     if (material.nrNormalTex > 0)
         lightDir = normalize(tbn * lightDir);
-    float diff = max(dot(normal, lightDir), 0.0);
     vec3 halfwayDir = normalize(lightDir + viewDir);
-    float spec = pow(max(dot(normal, halfwayDir), 0.0), defaultMat.shininess);
-    vec3 diffuse = light.color * diff * defaultMat.albedo;
-    vec3 specular = light.color * spec * defaultMat.specular * defaultMat.reflectivity;
+    vec3 radiance = light.color;
+
     float shadowValue = 1.0 - calculateShadow(light.shadowData);
-    return shadowValue * (diffuse + specular);
+    return calcLight(lightDir, halfwayDir, radiance, shadowValue);
 }
 
 vec3 calcSpotLight(SpotLight light) {
     vec3 lightDir = normalize(light.position - fragPos);
     if (material.nrNormalTex > 0)
         lightDir = normalize(tbn * lightDir);
-    float diff = max(dot(normal, lightDir), 0.0);
     vec3 halfwayDir = normalize(lightDir + viewDir);
-    float spec = pow(max(dot(normal, halfwayDir), 0.0), defaultMat.shininess);
     float distance = length(light.position - fragPos);
     float attenuation = light.intensity / (distance * distance);
     float theta = dot(lightDir, normalize(-light.direction));
     float epsilon = light.innerCutOff - light.outerCutOff;
     float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
-    vec3 diffuse = light.color * diff * defaultMat.albedo;
-    vec3 specular = light.color * spec * defaultMat.specular * defaultMat.reflectivity;
-    diffuse *= attenuation * intensity;
-    specular *= attenuation * intensity;
+    vec3 radiance = light.color * attenuation * intensity;
+
     float shadowValue = 1.0 - calculateShadow(light.shadowData);
-    return shadowValue * (diffuse + specular);
+    return calcLight(lightDir, halfwayDir, radiance, shadowValue);
+}
+
+void getObjectMaterial(Material mat) {
+    defaultMat.albedo = mat.albedo;
+    defaultMat.specular = mat.specular;
+    defaultMat.metalness = mat.metalness;
+    defaultMat.roughness = mat.roughness;
+
+    if (mat.nrAlbedoTex > 0) {
+        defaultMat.albedo = texture2D(mat.albedoTex[0], fragTex).rgb;
+    }
+    if (mat.nrSpecularTex > 0) {
+        defaultMat.specular = vec3(texture2D(mat.specularTex[0], fragTex).r);
+    }
+    if (mat.nrNormalTex > 0) {
+        normal = 2.0 * normalize(texture2D(mat.normalTex[0], fragTex).rgb) - 1.0;
+        viewDir = normalize(tbn * viewDir);
+    }
+    if (mat.nrRoughnessTex > 0) {
+        defaultMat.roughness = texture2D(mat.roughnessTex[0], fragTex).r;
+    }
+    if (mat.nrMetalnessTex > 0) {
+        defaultMat.metalness = texture2D(mat.metalnessTex[0], fragTex).r;
+    }
 }
 
 float calculateShadow(Shadow shadowData) {
@@ -239,7 +290,7 @@ float calculateShadow(Shadow shadowData) {
             for (int k = 0 ; k < nrPoisson ; ++k) {
                 int index = int(16.0 * random(vec4(floor(fragPos.xyz * 1000.0), k))) % 16;
                 float depth = texture2D(shadowData.shadowMap, actualCoords + poissonDisk[index] / 700.0).r;
-                float strength = 0.9;//1.0 - clamp(4.0 * pow(currentDepth - depth, 2.0), 0.0, 1.0);
+                float strength = 1.0;//1.0 - clamp(4.0 * pow(currentDepth - depth, 2.0), 0.0, 1.0);
                 shadowValue += currentDepth - eps > depth ? (1.0 / nrPoisson) * strength : 0.0;
             }
             nrSample++;

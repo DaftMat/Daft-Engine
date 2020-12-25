@@ -1,12 +1,17 @@
 #version 460 core
+#define MAX_DATA 16
+
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoords;
 layout (location = 3) in vec3 aTangent;
+layout (location = 4) in vec4 aSkinWeights;
+layout (location = 5) in vec4 aSkinIndices;
 
 out vec3 fragPos;
 out vec3 fragNormal;
 out vec2 fragTex;
+out vec3 fragWeights;
 
 out mat3 tbn;
 
@@ -14,9 +19,19 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform mat4 skinMatrices[MAX_DATA];
+uniform bool isAnimated;
+
 void main() {
-    fragPos = vec3(model * vec4(aPos, 1.0));
-    mat4 normalMatrix = transpose(inverse(model));
+    fragWeights = aSkinWeights.xyz;
+
+    mat4 actualModel = model;
+    if (isAnimated)
+        actualModel *= (aSkinWeights.x * skinMatrices[int(aSkinIndices.x)])
+                     + (aSkinWeights.y * skinMatrices[int(aSkinIndices.y)]);
+
+    fragPos = vec3(actualModel * vec4(aPos, 1.0));
+    mat4 normalMatrix = transpose(inverse(actualModel));
     fragNormal = normalize(normalMatrix * vec4(aNormal, 0.0)).xyz;
     fragTex = aTexCoords;
 

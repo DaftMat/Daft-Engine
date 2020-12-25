@@ -39,7 +39,8 @@ Renderer::Renderer(int width, int height) {
     m_shaders[0]->use();
     m_shaders[0]->setBool("instantToneMapping", m_drawEdges);
     m_shaders[0]->stop();
-    m_shaders.push_back(std::make_shared<core::ShaderProgram>("shaders/color.vert.glsl", "shaders/color.frag.glsl"));
+    m_shaders.push_back(
+        std::make_shared<core::ShaderProgram>("shaders/blinnphong.vert.glsl", "shaders/color.frag.glsl"));
     m_multisamplePass = std::make_shared<daft::engine::MultiSamplingPass>(m_width, m_height, 32, true);
     m_screenQuad = std::make_shared<daft::engine::QuadRenderer>();
     m_screenQuad->addQuad(-1.f, 1.f, 2.f, 2.f);
@@ -289,6 +290,12 @@ void Renderer::_addDrawable() {
                 m_lightPool->addSpot(toAdd);
                 break;
             }
+            case Drawable::Type::QuadLight: {
+                auto toAdd = std::make_shared<QuadLight>();
+                drawable = toAdd;
+                m_lightPool->addQuad(toAdd);
+                break;
+            }
             default:
                 break;
         }
@@ -328,10 +335,19 @@ void Renderer::_setShader() {
         case Renderer::AvailableShaders::Phong:
             m_shaders[0].reset();
             m_shaders[0] = std::make_shared<core::ShaderProgram>("shaders/phong.vert.glsl", "shaders/phong.frag.glsl");
+            break;
+        case Renderer::AvailableShaders::PBR:
+            m_shaders[0].reset();
+            m_shaders[0] =
+                std::make_shared<core::ShaderProgram>("shaders/blinnphong.vert.glsl", "shaders/pbr.frag.glsl");
+            break;
         default:
             break;
     }
     m_newShader = Renderer::AvailableShaders::None;
+    m_shaders[0]->use();
+    m_shaders[0]->setBool("instantToneMapping", m_drawEdges);
+    m_shaders[0]->stop();
     updateViewMatrix();
     updateProjectionMatrix();
 }

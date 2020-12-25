@@ -39,6 +39,7 @@ class Drawable : public core::NonCopyable {
         PointLight,
         DirLight,
         SpotLight,
+        QuadLight,
         /// Composite
         Group,
         /// Other

@@ -6,6 +6,7 @@
 #include <Core/Utils/NonCopyable.hpp>
 #include <Engine/Drawables/Light/DirLight.hpp>
 #include <Engine/Drawables/Light/PointLight.hpp>
+#include <Engine/Drawables/Light/QuadLight.hpp>
 #include <Engine/Drawables/Light/SpotLight.hpp>
 #include <memory>
 #include <string>
@@ -75,6 +76,12 @@ class ENGINE_API LightPool : public core::NonCopyable {
     void addSpot(std::shared_ptr<SpotLight> spotLight);
 
     /**
+     * Adds a QuadLight to the pool.
+     * @param quadLight - quad light to add.
+     */
+    void addQuad(std::shared_ptr<QuadLight> quadLight);
+
+    /**
      * Removes a light from the pool.
      * @param name - name of the light to remove.
      */
@@ -84,6 +91,7 @@ class ENGINE_API LightPool : public core::NonCopyable {
     std::vector<std::shared_ptr<PointLight>> m_pointLights;
     std::vector<std::shared_ptr<DirLight>> m_dirLights;
     std::vector<std::shared_ptr<SpotLight>> m_spotLights;
+    std::vector<std::shared_ptr<QuadLight>> m_quadLights;
 };
 }  // namespace engine
 }  // namespace daft

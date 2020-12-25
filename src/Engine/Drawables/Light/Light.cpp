@@ -21,7 +21,7 @@ void Light::renderEdges(const core::ShaderProgram &shader) {
     else
         shader.setVec3("color", glm::vec3{1.f});
     m_mesh.prepare();
-    m_mesh.render(GL_LINES);
+    m_mesh.render(m_isAreaLight ? GL_TRIANGLES : GL_LINES);
     m_mesh.unbind();
     shader.setVec3("color", glm::vec3{0.f});
 }

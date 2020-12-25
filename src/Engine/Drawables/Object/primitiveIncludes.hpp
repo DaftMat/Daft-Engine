@@ -4,6 +4,7 @@
 #pragma once
 #include <Engine/Drawables/Light/DirLight.hpp>
 #include <Engine/Drawables/Light/PointLight.hpp>
+#include <Engine/Drawables/Light/QuadLight.hpp>
 #include <Engine/Drawables/Light/SpotLight.hpp>
 #include <Engine/Drawables/Object/BSpline.hpp>
 #include <Engine/Drawables/Object/BSpline2D.hpp>

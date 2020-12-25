@@ -111,7 +111,7 @@ class Light : public Drawable {
      * @param viewCam - original viewport's camera.
      */
     virtual void renderToLightMap(Composite *root, const core::ShaderProgram &shader, int screenWidth, int screenHeight,
-                                  const Camera &viewCam) = 0;
+                                  const Camera &viewCam){};
 
     /**
      * Resets the light.
@@ -149,6 +149,7 @@ class Light : public Drawable {
     GLuint shadowMap() const;
 
    protected:
+    bool m_isAreaLight{false};
     Mesh m_mesh;
     glm::mat4 m_lightSpaceMatrix{1.f};
 
