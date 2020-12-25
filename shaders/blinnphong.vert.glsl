@@ -26,9 +26,9 @@ void main() {
     fragWeights = aSkinWeights.xyz;
 
     mat4 actualModel = model;
-    if (isAnimated)
-        actualModel *= (aSkinWeights.x * skinMatrices[int(aSkinIndices.x)])
-                     + (aSkinWeights.y * skinMatrices[int(aSkinIndices.y)]);
+    //if (isAnimated)
+    //    actualModel *= (aSkinWeights.x * skinMatrices[int(aSkinIndices.x)])
+    //                 + (aSkinWeights.y * skinMatrices[int(aSkinIndices.y)]);
 
     fragPos = vec3(actualModel * vec4(aPos, 1.0));
     mat4 normalMatrix = transpose(inverse(actualModel));

@@ -89,6 +89,8 @@ class ENGINE_API Cylinder : public Object {
      */
     void setRadius(float r);
 
+    void setRotJoint(int index, glm::vec3 rot);
+
     /**
      * Accepts a DrawableVisitor .
      * @param visitor - visitor to accept.
@@ -112,6 +114,9 @@ class ENGINE_API Cylinder : public Object {
                     std::vector<glm::vec3> &tangents, std::vector<glm::vec4> &skinWeights,
                     std::vector<glm::vec4> &skinIndices, std::vector<GLuint> &indices) const;
     void assignSkinMatrices(const core::ShaderProgram &shader) const;
+    [[nodiscard]] glm::mat4 getSkinMatrix(float w1, float w2) const;
+    [[nodiscard]] glm::vec3 getSkinPos(float w1, float w2, glm::vec3 pos) const;
+    [[nodiscard]] glm::vec3 getSkinNormal(float w1, float w2, glm::vec3 normal) const;
 
     int m_meridians;
     int m_parallels;

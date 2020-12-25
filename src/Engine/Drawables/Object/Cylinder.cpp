@@ -44,8 +44,8 @@ void Cylinder::setSettings(const core::SettingManager &s) {
     if (s.has("Meridians")) setMeridians(s.get<int>("Meridians"));
     if (s.has("Parallels")) setParallels(s.get<int>("Parallels"));
     if (s.has("Radius")) setRadius(s.get<float>("Radius"));
-    if (s.has("Rotations Joint 1")) m_bones[0].rotations() = s.get<glm::vec3>("Rotations Joint 1");
-    if (s.has("Rotations Joint 2")) m_bones[1].rotations() = s.get<glm::vec3>("Rotations Joint 2");
+    if (s.has("Rotations Joint 1")) setRotJoint(0, s.get<glm::vec3>("Rotations Joint 1"));
+    if (s.has("Rotations Joint 2")) setRotJoint(1, s.get<glm::vec3>("Rotations Joint 2"));
 }
 
 void Cylinder::setMeridians(int m) {
@@ -63,6 +63,12 @@ void Cylinder::setParallels(int p) {
 void Cylinder::setRadius(float r) {
     if (m_radius == r) return;
     m_radius = r;
+    updateNextFrame();
+}
+
+void Cylinder::setRotJoint(int index, glm::vec3 rot) {
+    if (m_bones[index].rotations() == rot) return;
+    m_bones[index].rotations() = rot;
     updateNextFrame();
 }
 
@@ -96,8 +102,6 @@ void Cylinder::createCylinder() {
             glm::vec3 center = core::lerp(northPole, southPole, float(j) / float(m_parallels));
             glm::vec3 pos = center + circleDir * m_radius;
 
-            positions.push_back(pos);
-            normals.push_back(circleDir);
             glm::vec3 t, b;
             core::orthoVectors(circleDir, t, b);
             tangents.push_back(t);
@@ -106,6 +110,9 @@ void Cylinder::createCylinder() {
             float w1, w2;
             createWeights(pos, w1, w2);
             skinWeights.emplace_back(w1, w2, 0.f, 0.f);
+
+            positions.push_back(getSkinPos(w1, w2, pos));
+            normals.push_back(getSkinNormal(w1, w2, circleDir));
         }
     }
 
@@ -168,12 +175,12 @@ void Cylinder::createDisk(glm::vec3 pole, std::vector<glm::vec3> &positions, std
                           std::vector<glm::vec4> &skinIndices, std::vector<GLuint> &indices) const {
     GLuint startIndex = positions.size();
     GLuint index = startIndex + 1;
-    positions.push_back(pole);
-    normals.push_back(pole);
     skinIndices.emplace_back(0.f, 1.f, 0.f, 0.f);
     float w1, w2;
     createWeights(pole, w1, w2);
     skinWeights.emplace_back(w1, w2, 0.f, 0.f);
+    positions.push_back(getSkinPos(w1, w2, pole));
+    normals.push_back(getSkinNormal(w1, w2, pole));
     glm::vec3 t, b;
     core::orthoVectors(pole, t, b);
     tangents.push_back(t);
@@ -182,14 +189,14 @@ void Cylinder::createDisk(glm::vec3 pole, std::vector<glm::vec3> &positions, std
         float theta = step * float(i);
         glm::vec3 circleDir = glm::normalize(glm::vec3{glm::cos(theta), 0.f, glm::sin(theta)});
         glm::vec3 pos = pole + circleDir * m_radius;
-        positions.push_back(pos);
-        normals.push_back(pole);
         tangents.push_back(t);
 
         skinIndices.emplace_back(0.f, 1.f, 0.f, 0.f);
-        float w1, w2;
         createWeights(pos, w1, w2);
         skinWeights.emplace_back(w1, w2, 0.f, 0.f);
+
+        positions.push_back(getSkinPos(w1, w2, pos));
+        normals.push_back(getSkinNormal(w1, w2, pole));
 
         if (i > 0) {
             indices.push_back(startIndex);
@@ -207,5 +214,21 @@ void Cylinder::assignSkinMatrices(const core::ShaderProgram &shader) const {
         glm::mat4 finalMatrix = parentMatrix * m_bones[i].modelMatrix();
         shader.setMat4("skinMatrices[" + std::to_string(i) + "]", finalMatrix);
     }
+}
+
+glm::mat4 Cylinder::getSkinMatrix(float w1, float w2) const {
+    glm::mat4 m1 = m_bones[0].modelMatrix();
+    glm::mat4 m2 = m1 * m_bones[1].modelMatrix();
+    return w1 * m1 + w2 * m2;
+}
+
+glm::vec3 Cylinder::getSkinPos(float w1, float w2, glm::vec3 pos) const {
+    glm::mat4 m = getSkinMatrix(w1, w2);
+    return m * glm::vec4(pos, 1.f);
+}
+
+glm::vec3 Cylinder::getSkinNormal(float w1, float w2, glm::vec3 normal) const {
+    glm::mat4 m = getSkinMatrix(w1, w2);
+    return glm::transpose(glm::inverse(m)) * glm::vec4(normal, 0.f);
 }
 }  // namespace daft::engine
